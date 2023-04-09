@@ -1,0 +1,149 @@
+import React, { useState, useEffect }  from 'react';
+import { Box } from "@mui/material";
+import { Link } from "@mui/material";
+import { Sling as Hamburger } from 'hamburger-react'
+import "./Menu.css"
+import logoImg from "../../../images/logo192.png"
+import { ButtonOutlineGreen } from '../Buttons/Buttons';
+
+const screenWidth = window.innerWidth
+
+
+/* FOR LARGER SCREENS KTT SIGNAL */
+const MenuBarLarge = () => {
+
+    return (
+
+        <nav className="BigMenu">
+            <div>
+                <Link href='/'>
+                    <img src={logoImg} alt='KTT SIGNAL' className="Logo" />
+                </Link>
+            </div>
+
+            <div>
+                <div className='MenuItems'>
+                    <Link href='/ktt-signal' className="ListItem">
+                        <div>How I Work</div>
+                    </Link>
+                    <Link href='#what-we-do' className="ListItem">
+                        <div>Demo</div>
+                    </Link>
+                    <div style={{marginTop: '20px', marginLeft: '20px'}}>
+                        <ButtonOutlineGreen link="/login">Login</ButtonOutlineGreen>
+                    </div>
+                </div>
+            </div>
+        
+        </nav>
+
+    )
+}
+
+/* FOR SMALLER SCREENS KTT SIGNAL */
+const MenuBarSmall = () => {
+
+    const [menuOpen, setMenuOpen] = useState(false)
+    useEffect (() => {
+        const  overlay = document.getElementById('overlay');
+        const nav1 = document.getElementById('nav-1');
+        const nav2 = document.getElementById('nav-2');
+        const nav3 = document.getElementById('nav-3');
+        const nav4 = document.getElementById('nav-4');
+        const nav5 = document.getElementById('nav-5');
+        const smallMenuContainer = document.getElementById('small-menu-top');
+
+        function toggleNav() {
+            // Toggle: Menu Active
+            overlay.classList.toggle('overlay-active');
+            if(overlay.classList.contains('overlay-active')) {
+                // Hide small menu top
+                smallMenuContainer.classList.add('small-menu-out');
+                // Animate In - Overlay
+                overlay.classList.remove('overlay-slide-left');
+                overlay.classList.add('overlay-slide-right');
+                // Animate In - Nav Items
+                nav1.classList.remove('slide-out-1');
+                nav1.classList.add('slide-in-1');
+                nav2.classList.remove('slide-out-2');
+                nav2.classList.add('slide-in-2')
+                nav3.classList.remove('slide-out-3');
+                nav3.classList.add('slide-in-3');
+                nav4.classList.remove('slide-out-4');
+                nav4.classList.add('slide-in-4')
+                nav5.classList.remove('slide-out-5');
+                nav5.classList.add('slide-in-5'); 
+            } else {
+                 // Show small menu top
+                smallMenuContainer.classList.remove('small-menu-out');
+                // Animate Out - Overlay
+                overlay.classList.remove('overlay-slide-right');
+                overlay.classList.add('overlay-slide-left');
+                // Animate Out - Nav Items
+                nav1.classList.remove('slide-in-1');
+                nav1.classList.add('slide-out-1');
+                nav2.classList.remove('slide-in-2');
+                nav2.classList.add('slide-out-2');
+                nav3.classList.remove('slide-in-3');
+                nav3.classList.add('slide-out-3');
+                nav4.classList.remove('slide-in-4');
+                nav4.classList.add('slide-out-4');
+                nav5.classList.remove('slide-in-5');
+                nav5.classList.add('slide-out-5'); 
+            }
+        }
+        toggleNav()
+    }, [menuOpen])
+
+    return (
+
+        <Box >
+
+            <div id="small-menu-top" className='SmallMenuContainer'>
+                <div>
+                    <Link href='/'>
+                        <img src={logoImg} alt='LOGO' className="Logo" />
+                    </Link>
+                </div>                
+            </div>
+            <div className='HamburgerContainer'>
+                <Hamburger 
+                    color="#6FCBD1" 
+                    rounded 
+                    size={25} 
+                    distance="md"
+                    toggled={menuOpen} 
+                    toggle={setMenuOpen}
+                />
+            </div>
+
+            {/* MENU BLOCK */}
+
+            <div className="overlay" id="overlay">
+
+                <nav>
+                    <ul>
+                        <li id="nav-1"><a href="#home">Home</a></li>
+                        <li id="nav-2"><a href="#about">Resume Writer</a></li>
+                        <li id="nav-3"><a href="#skills">Business Plan Generator</a></li>
+                        <li id="nav-4"><a href="#project">Product Price Setter</a></li>
+                        <li id="nav-5"><a href="#contact">Fraud Detector</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </Box>
+
+    )
+}
+
+
+
+const MenuBar = () => {
+    if (screenWidth > 900) {
+        return <MenuBarLarge />
+    }
+    return <MenuBarSmall />
+}
+
+export default MenuBar;

@@ -1,0 +1,35 @@
+.container {
+    box-sizing: border-box;
+    margin: 20px 0 0 0;
+    width: 100vw;
+    padding: 1.6rem 6rem;
+}
+
+.container-inner {
+    box-sizing: border-box;
+    padding: 0 3rem 0 2rem;
+    border: 2px solid var(--lightModeGreen);
+    border-radius: 15px;
+    text-align: center;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+
+.form-ask-anything {
+    height: 80px;
+    width: 100%;
+    text-align: center;
+}
+
+
+/* Smaller Screens */
+@media (max-width: 900px)  {
+    .container {
+        padding: 1.5rem;
+    }
+    .container-inner {
+        padding: 0 10px;
+    }
+}

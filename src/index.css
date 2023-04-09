@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primaryColor: #fff;
+  --lightModeGreen: #6FCBD1;
+  --navColor1: #21292c;
+  --navColor2: #aa3e39;
+  --navColor3: #aa6e39;
+  --navColor4: #236267;
+  --navColor5: #2c8437;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #333333;
+  background: #FFF;
+  font-family: Inter, sans-serif;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2.2rem;
+}
