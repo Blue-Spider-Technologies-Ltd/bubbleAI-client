@@ -55,8 +55,7 @@ const MenuBarSmall = () => {
 
         function toggleNav() {
             // Toggle: Menu Active
-            overlay.classList.toggle('overlay-active');
-            if(overlay.classList.contains('overlay-active')) {
+            if(menuOpen) {
                 // Hide small menu top
                 smallMenuContainer.classList.add('small-menu-out');
                 // Animate In - Overlay
