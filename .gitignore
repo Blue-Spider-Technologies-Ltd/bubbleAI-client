@@ -3,7 +3,6 @@
 # dependencies
 /node_modules
 /tmpnodejsnpm-cache
-/build
 /.pnp
 .pnp.js
 
