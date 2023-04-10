@@ -17,10 +17,99 @@
     -o-border-radius: 15px;
 }
 
+.container-inner-borderless {
+    box-sizing: border-box;
+    border: none !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 11;
+    background-color: white;
+    height: 10vh;
+    padding-top: 1rem;
+    margin: 0;
+    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -ms-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+}
+
 .form-ask-anything {
     height: 80px;
     width: 100%;
     text-align: center;
+}
+
+.chat-bg {
+    min-height: 85vh;
+    background-image: url('../../images/chatbgone.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow-y: scroll;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    transform: translateY(-80vh);
+    -webkit-transform: translateY(-80vh);
+    -moz-transform: translateY(-80vh);
+    -ms-transform: translateY(-80vh);
+    -o-transform: translateY(-80vh);
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+}
+
+.chat-bg-in {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transition: all 0.4s ease-in;
+    -webkit-transition: all 0.4s ease-in;
+    -moz-transition: all 0.4s ease-in;
+    -ms-transition: all 0.4s ease-in;
+    -o-transition: all 0.4s ease-in;
+}
+
+.chat-bg-out {
+    transform: translateY(-100vh);
+    -webkit-transform: translateY(-100vh);
+    -moz-transform: translateY(-100vh);
+    -ms-transform: translateY(-100vh);
+    -o-transform: translateY(-100vh);
+    transition: 0.4s ease-out;
+    -webkit-transition: 0.4s ease-out;
+    -moz-transition: 0.4s ease-out;
+    -ms-transition: 0.4s ease-out;
+    -o-transition: 0.4s ease-out;
+}
+
+.categories {
+    display: none;
+}
+
+.close-icon {
+    background-color: white;
+    border-radius: 50%;
+    color: var(--lightModeGreen);
+    cursor: pointer;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    margin: 10px;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -28,8 +117,16 @@
 @media (max-width: 900px)  {
     .container {
         padding: 1.5rem;
+        margin-top: 0;
     }
     .container-inner {
         padding: 0 10px;
+    }
+
+    .chat-bg {
+        min-height: 100vh;
+    }
+    .container-inner-borderless {
+        bottom: 38%;
     }
 }
