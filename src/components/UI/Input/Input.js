@@ -59,6 +59,7 @@ export const Input = props => {
                     multiline
                     rows={4}
                     className={classes.root} 
+                    autoComplete="off"
                     required
                 />
             :
@@ -69,6 +70,7 @@ export const Input = props => {
                     className={classes.root} 
                     type={props.inputType}
                     width={props.width}
+                    autoComplete="off"
                     required
                     // value={props.value}
                 />

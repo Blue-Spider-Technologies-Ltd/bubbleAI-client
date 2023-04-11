@@ -19,15 +19,15 @@
 
 .container-inner-borderless {
     box-sizing: border-box;
-    border: none !important;
-    position: absolute;
+    border: none;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
     z-index: 11;
-    background-color: white;
     height: 10vh;
     padding-top: 1rem;
+    padding-bottom: 0;
     margin: 0;
     transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
@@ -43,10 +43,10 @@
 }
 
 .chat-bg {
-    min-height: 85vh;
-    background-image: url('../../images/chatbgone.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-image: url('../../images/chatbgtwo.png');
+    background-size: contain;
+    background-repeat: repeat;
+    box-sizing: border-box;
     overflow-y: scroll;
     width: 100%;
     position: absolute;
@@ -107,6 +107,9 @@
     margin: 10px;
     width: 3rem;
     height: 3rem;
+    position: relative;
+    top: 10px;
+    left: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,9 +127,7 @@
     }
 
     .chat-bg {
-        min-height: 100vh;
+        background-size: cover;
     }
-    .container-inner-borderless {
-        bottom: 38%;
-    }
+
 }
