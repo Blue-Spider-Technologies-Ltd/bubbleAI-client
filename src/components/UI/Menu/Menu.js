@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { Link } from "@mui/material";
 import { Sling as Hamburger } from 'hamburger-react'
 import "./Menu.css"
-import logoImg from "../../../images/logo192.png"
+import logoImg from "../../../images/bubble-logo.png"
 import { ButtonOutlineGreen } from '../Buttons/Buttons';
 
 const screenWidth = window.innerWidth

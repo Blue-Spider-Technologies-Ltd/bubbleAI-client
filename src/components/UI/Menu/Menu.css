@@ -15,7 +15,7 @@
 
 .Logo {
   width: 10rem;
-  height: 2rem;
+  height: 3.5rem;
 }
 
 .MenuItems {
@@ -51,13 +51,13 @@
       top: 0;
       width: 100vw;
       background-color: #fff;
-      padding: 2rem 2rem;
+      padding: 1.7rem 2rem;
       
   }
 
   .HamburgerContainer {
     position: fixed;
-    top: 22px;
+    top: 30px;
     right: 2.5rem;
     z-index: 999;
   }

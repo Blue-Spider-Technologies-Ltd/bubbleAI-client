@@ -31,6 +31,7 @@ const Home = () => {
             askMeContainerInner.style.top = window.innerHeight
             askMeContainer.querySelector('.ask-me-h2').style.display = "none"
             categories.classList.add('categories')
+            //This if block will align the chat bg and input field on mobile when the keyboard pops in
             if(chatBgFocused) {
                 chatBg.style.height = "90vh"
                 chatBg.style.position = "absolute"
@@ -109,8 +110,11 @@ const Home = () => {
             {!isFocused ? <MenuBar /> : null}
 
             <section id="chat-bg" className="chat-bg" onClick={handleChatBgFocus}>
-                <div className="close-icon" title="Close Chat" onClick={() => setFocused(false)}>
-                    <CloseIcon sx={{fontSize: '2.5rem'}} />  
+                <div className="chatbg-overlay">
+                    <div className="close-icon" title="Close Chat" onClick={() => setFocused(false)}>
+                        <CloseIcon sx={{fontSize: '2.5rem'}} />  
+                    </div>
+
                 </div>
             </section>
 

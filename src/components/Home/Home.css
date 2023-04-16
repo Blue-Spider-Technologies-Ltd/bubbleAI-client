@@ -47,12 +47,12 @@
     background-size: contain;
     background-repeat: repeat;
     box-sizing: border-box;
-    overflow-y: scroll;
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 10;
+    padding: 0;
     transform: translateY(-80vh);
     -webkit-transform: translateY(-80vh);
     -moz-transform: translateY(-80vh);
@@ -89,6 +89,14 @@
     -moz-transition: 0.4s ease-out;
     -ms-transition: 0.4s ease-out;
     -o-transition: 0.4s ease-out;
+}
+
+.chatbg-overlay {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.322);
+    margin: 0;
+    overflow-y: scroll;
 }
 
 .categories {
