@@ -18,11 +18,11 @@ const Register = () => {
             <div className={authCss.authContainer}>
 
                 <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginRight: '100px'}}>
-                    <Blob bgImage={bubbleBgAuthImg} altText="POP back in" />
+                    <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />
                 </div>
 
                 <div style={{marginTop: screenWidth > 900 ? '350px' : '', marginLeft: '100px'}} >
-                    <Blob bgImage={bubbleBgAuthImg} altText="POP back in" />
+                    <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />
                 </div>
 
             </div>
