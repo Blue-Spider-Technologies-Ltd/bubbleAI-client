@@ -14,4 +14,4 @@ const Blob = (props) => {
     )
 }
 
-export default Blob;
+export default React.memo(Blob);

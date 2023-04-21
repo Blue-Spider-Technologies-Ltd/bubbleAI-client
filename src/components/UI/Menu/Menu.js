@@ -122,7 +122,7 @@ const MenuBarSmall = () => {
 
                 <nav>
                     <ul>
-                        <li id="nav-1"><a href="#home">Home</a></li>
+                        <li id="nav-1"><a href="/login">Login</a></li>
                         <li id="nav-2"><a href="#about">Resume Writer</a></li>
                         <li id="nav-3"><a href="#skills">Business Plan Generator</a></li>
                         <li id="nav-4"><a href="#project">Product Price Setter</a></li>

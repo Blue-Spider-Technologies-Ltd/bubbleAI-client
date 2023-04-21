@@ -12,13 +12,17 @@
     -o-border-radius: 10px;
 }
 
-.ButtonSubmitBlack {
+.ButtonSubmitBlack, .ButtonTransparent {
     padding: 0 1.7rem;
-    background-color: black;
+    border: 1px solid black;
     border-radius: 10px;
-    color: white;
+    box-sizing: border-box;
     cursor: pointer;
-    height: 50px;
+    height: 45px;
+    width: 97%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease-in-out;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -30,8 +34,22 @@
     -o-transition: all 0.3s ease-in-out;
 }
 
+.ButtonSubmitBlack {
+    background-color: black;
+    color: white;
+}
+
 .ButtonSubmitBlack:hover {
     background-color: rgba(0, 0, 0, 0.685);
+}
+
+.ButtonTransparent {
+    background-color: rgba(255, 255, 255, 0.329);
+    color: black;
+}
+
+.ButtonTransparent:hover {
+    background-color: rgb(255, 255, 255);
 }
 
 /* Smaller Screens */

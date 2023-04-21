@@ -10,7 +10,7 @@ const useStyles = makeStyles({
         "& .MuiOutlinedInput-input": {
             backgroundColor: "#F5F5F5",
             borderRadius: "10px",
-            height: "1rem",
+            height: ".7rem",
         },
         "& .MuiInputLabel-root": {
             color: "#14225188",
@@ -18,7 +18,8 @@ const useStyles = makeStyles({
         },
         "& .MuiOutlinedInput-root": {
             borderRadius: "10px",
-            backgroundColor: "#F5F5F5",
+            border: "1px solid #F5F5F5"
+            
         },
         "&:hover .MuiOutlinedInput-input": {
             // color: "rgb(240, 240, 240)"
@@ -27,10 +28,11 @@ const useStyles = makeStyles({
             color: "#142251"
         },
         "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            border: "none"
+            border: ".6px solid #c3c3c3"
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
             color: "#142251",
+            border: ".6px solid #c3c3c3"
         },
         "& .MuiInputLabel-root.Mui-focused": {
             //Edits the Form Label when cusor is focused
@@ -64,7 +66,7 @@ export const Input = props => {
                 />
             :
                 <TextField 
-                    id={"outlined-basic" + props.label}
+                    id={"outlined-basic" + props.label + props.placeholder}
                     placeholder={props.placeholder} 
                     variant="outlined" 
                     className={classes.root} 

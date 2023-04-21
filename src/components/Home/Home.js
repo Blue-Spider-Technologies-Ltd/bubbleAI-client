@@ -123,8 +123,8 @@ const Home = () => {
                     <h1 className="ask-me-h2">Ask me anything</h1>
                     <form onSubmit={handleAskMeAnything} className="form-ask-anything">
                         <Grid container>
-                            <Input placeholder="Ask a Question..." inputType="text" inputGrid={10} inputGridSm={11} /> 
-                            <Grid item xs={1} sx={{textAlign: isFocused ? "center" : "right"}}><ButtonSubmitBlack><SendIcon /></ButtonSubmitBlack></Grid>
+                            <Input placeholder="Ask a Question..." inputType="text" inputGrid={10} inputGridSm={10} /> 
+                            <Grid item xs={2} sx={{textAlign: isFocused ? "center" : "right"}}><ButtonSubmitBlack><SendIcon /></ButtonSubmitBlack></Grid>
                         </Grid>
                         
                     </form>

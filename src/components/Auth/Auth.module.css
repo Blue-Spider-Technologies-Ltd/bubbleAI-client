@@ -1,0 +1,64 @@
+.authContainer {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 0 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+.formContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.formInner {
+    background-color: rgba(255, 255, 255, 0.74);
+    border-radius: 10px;
+    width: 480px;
+    text-align: center;
+    line-height: 1;
+    margin-top: 100px;
+    padding: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.582);
+    -webkit-box-shadow: 4px 3px 14px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 4px 3px 14px 1px rgba(0,0,0,0.75);
+}
+
+/* .formInner h2 {
+    color: var(--lightModeGreen);
+} */
+
+.pwdRec {
+    color: var(--lightModeGreen) !important;
+    position: relative;
+    top: -20px;
+    right: 10px;
+    float: right;
+    font-size: .8rem !important;
+    text-decoration: none !important;
+}
+
+
+/* Smaller Screens */
+@media (max-width: 900px)  {
+    .authContainer {
+        flex-direction: column;
+    }
+
+    .formInner {
+        width: 80%;
+    }
+}
