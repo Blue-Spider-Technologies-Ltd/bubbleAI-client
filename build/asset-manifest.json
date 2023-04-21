@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.700bf351.css",
+    "main.css": "/static/css/main.837fccf6.css",
     "main.js": "/static/js/main.02ae5c26.js",
     "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.6b097e3d322fbadd1e33.png",
@@ -8,12 +8,12 @@
     "static/media/chatbgtwo.png": "/static/media/chatbgtwo.4c974492ddf645c6d85f.png",
     "static/media/bubble-logo.png": "/static/media/bubble-logo.63e34960a90ae6d78b82.png",
     "index.html": "/index.html",
-    "main.700bf351.css.map": "/static/css/main.700bf351.css.map",
+    "main.837fccf6.css.map": "/static/css/main.837fccf6.css.map",
     "main.02ae5c26.js.map": "/static/js/main.02ae5c26.js.map",
     "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.700bf351.css",
+    "static/css/main.837fccf6.css",
     "static/js/main.02ae5c26.js"
   ]
 }
