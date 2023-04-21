@@ -1,5 +1,7 @@
-import React from "react"
-import { Grid, TextField } from "@mui/material"
+import React, { useState } from "react"
+import { Grid, TextField, OutlinedInput, InputAdornment, IconButton, FormControl } from "@mui/material"
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { makeStyles } from "@mui/styles";
 
 
@@ -51,9 +53,16 @@ const useStyles = makeStyles({
 
 
 export const Input = props => {
+    const [showPassword, setShowPassword] = useState(false);
     const classes = useStyles();
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+
     return (
-        <Grid item xs={props.inputGrid} sm={props.inputGridSm} px={1} mb={3} sx={{boxSizing: "border-box"}}>
+        <Grid item md={props.inputGrid} xs={props.inputGridSm} px={1} mb={3} sx={{boxSizing: "border-box"}}>
             {props.multiline ? 
                 <TextField
                     id="outlined-multiline-static"
@@ -65,17 +74,42 @@ export const Input = props => {
                     required
                 />
             :
-                <TextField 
-                    id={"outlined-basic" + props.label + props.placeholder}
-                    placeholder={props.placeholder} 
-                    variant="outlined" 
-                    className={classes.root} 
-                    type={props.inputType}
-                    width={props.width}
-                    autoComplete="off"
-                    required
-                    // value={props.value}
-                />
+
+                props.inputType === "password" ?
+                    <FormControl variant="outlined" className={classes.root} autoComplete="off" required>
+                        
+                        <OutlinedInput
+                            id={props.placeholder}
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                    >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            placeholder={props.placeholder}
+                        />
+                    </FormControl>
+                :
+                    <TextField 
+                        id={"outlined-basic" + props.label + props.placeholder}
+                        placeholder={props.placeholder} 
+                        variant="outlined" 
+                        className={classes.root} 
+                        type={props.inputType}
+                        width={props.width}
+                        autoComplete="off"
+                        required
+                        // value={props.value}
+                    />
+                
+
             }
         </Grid>
     )

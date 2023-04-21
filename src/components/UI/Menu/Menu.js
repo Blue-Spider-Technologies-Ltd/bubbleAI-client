@@ -5,12 +5,15 @@ import { Sling as Hamburger } from 'hamburger-react'
 import "./Menu.css"
 import logoImg from "../../../images/bubble-logo.png"
 import { ButtonOutlineGreen } from '../Buttons/Buttons';
+import { useLocation } from "react-router-dom"
 
 const screenWidth = window.innerWidth
 
 
+
 /* FOR LARGER SCREENS KTT SIGNAL */
 const MenuBarLarge = () => {
+    const location = useLocation()
 
     return (
 
@@ -30,7 +33,7 @@ const MenuBarLarge = () => {
                         <div>Demo</div>
                     </Link>
                     <div style={{marginTop: '20px', marginLeft: '20px'}}>
-                        <ButtonOutlineGreen link="/login">Login</ButtonOutlineGreen>
+                        {location.pathname === "/popin" ? <ButtonOutlineGreen link="/join-bubble">Register</ButtonOutlineGreen> : <ButtonOutlineGreen link="/popin">Login</ButtonOutlineGreen>}
                     </div>
                 </div>
             </div>
@@ -42,7 +45,7 @@ const MenuBarLarge = () => {
 
 /* FOR SMALLER SCREENS KTT SIGNAL */
 const MenuBarSmall = () => {
-
+    const location = useLocation()
     const [menuOpen, setMenuOpen] = useState(false)
     useEffect (() => {
         const  overlay = document.getElementById('overlay');
@@ -122,7 +125,7 @@ const MenuBarSmall = () => {
 
                 <nav>
                     <ul>
-                        <li id="nav-1"><a href="/login">Login</a></li>
+                        {location.pathname === "/popin" ? <li id="nav-1"><a href="/join-bubble">Register</a></li> : <li id="nav-1"><a href="/popin">Login</a></li>}
                         <li id="nav-2"><a href="#about">Resume Writer</a></li>
                         <li id="nav-3"><a href="#skills">Business Plan Generator</a></li>
                         <li id="nav-4"><a href="#project">Product Price Setter</a></li>
