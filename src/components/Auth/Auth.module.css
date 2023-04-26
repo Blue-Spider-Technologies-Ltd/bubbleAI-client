@@ -9,6 +9,7 @@
 }
 
 .formContainer {
+    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
@@ -47,7 +48,8 @@
     top: -20px;
     right: 10px;
     float: right;
-    font-size: .8rem !important;
+    font-size: .9rem !important;
+    font-weight: 700 !important;
     text-decoration: none !important;
 }
 

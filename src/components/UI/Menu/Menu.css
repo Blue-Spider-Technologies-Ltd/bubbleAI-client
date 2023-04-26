@@ -112,7 +112,8 @@
   nav li a {
     position: relative;
     top: 45%;
-    color: #fff;
+    color: #000;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 4px;
     text-decoration: none;

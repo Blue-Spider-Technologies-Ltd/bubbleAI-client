@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import MenuBar from "../UI/Menu/Menu";
 import "./Home.css"
 import { Grid } from "@mui/material";
@@ -7,12 +8,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
-import resumeImg from "../../images/resume.png"
+import { categoriesData } from "./categories"
+import { setMessages, setLoading } from "../../redux/states";
+
+import { instance } from "../../utils/axios";
 
 
 const Home = () => {
     const [isFocused, setFocused] = useState(false)
     const [chatBgFocused, setChatBgFocused] = useState(false)
+    const { messages } = useSelector(state => state.chats)
+    const dispatch = useDispatch()
+    //To use dispatch, within component, call dispatch(reducer action e.g increment()) where you would want the state to be altered in this component e.g within an onClick attribute
 
     //Chat Effect on ask me anything
     useEffect(() => {
@@ -52,56 +59,32 @@ const Home = () => {
     }, [isFocused, chatBgFocused]);
 
 
-    const categoriesData = [
-        {
-            title: "Resume Writer",
-            desc: "I can help you create the perfect resume to get your dream job",
-            url: '',
-            image: resumeImg
-        },
-        {
-            title: "Business Plan",
-            desc: "I can help you define the purpose and a trajectory for your ideas",
-            url: '',
-            image: resumeImg
-        },
-        {
-            title: "Product Price Setter",
-            desc: "I can help you create the perfect resume to get your dream job",
-            url: '',
-            image: resumeImg
-        },
-        {
-            title: "Fraud Detector",
-            desc: "I can help you create the perfect resume to get your dream job",
-            url: '',
-            image: resumeImg
-        },
-        {
-            title: "Business Plan",
-            desc: "I can help you create the perfect resume to get your dream job",
-            url: '',
-            image: resumeImg
-        },
-        {
-            title: "Business Plan",
-            desc: "I can help you create the perfect resume to get your dream job",
-            url: '',
-            image: resumeImg
-        }
-    ];
-
     const handleFocus = () => {
         setFocused(true)
         setChatBgFocused(false)
     }
 
-    const handleAskMeAnything = (e) => {
+    const handleAskMeAnything = async (e) => {
         e.preventDefault();
+        dispatch(setLoading(true))
+
+        try {
+            const response = await instance.get('/askme', messages)
+            console.log(response)
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 
     const handleChatBgFocus = () => {
         setChatBgFocused(true)
+    }
+
+    const onInputChange = (e) => {
+        dispatch(setMessages(e.target.value))
+
+        console.log(messages)
     }
 
     
@@ -123,7 +106,7 @@ const Home = () => {
                     <h1 className="ask-me-h2">Ask me anything</h1>
                     <form onSubmit={handleAskMeAnything} className="form-ask-anything">
                         <Grid container>
-                            <Input placeholder="Ask a Question..." inputType="text" inputGrid={10} inputGridSm={10} /> 
+                            <Input placeholder="Ask a Question..." inputType="text" onChange={onInputChange} inputGrid={10} inputGridSm={10} /> 
                             <Grid item xs={2} sx={{textAlign: isFocused ? "center" : "right"}}><ButtonSubmitBlack><SendIcon /></ButtonSubmitBlack></Grid>
                         </Grid>
                         

@@ -28,7 +28,7 @@ const Login = () => {
             </div>
 
             <div className={authCss.formContainer}>
-                <div className={authCss.formInner}>
+                <div className={authCss.formInner} style={{marginTop: '200px'}}>
                     <h2>Pop back in</h2>
                     <form>
                         <Input placeholder="Email..." inputType="email" inputGridSm={12} /> 

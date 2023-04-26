@@ -70,6 +70,8 @@ export const Input = props => {
                     multiline
                     rows={4}
                     className={classes.root} 
+                    onChange={props.onChange}
+                    value={props.value}
                     autoComplete="off"
                     required
                 />
@@ -86,10 +88,12 @@ export const Input = props => {
                                     <IconButton
                                     aria-label="toggle password visibility"
                                     onClick={handleClickShowPassword}
+                                    onChange={props.onChange}
+                                    value={props.value}
                                     onMouseDown={handleMouseDownPassword}
                                     edge="end"
                                     >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showPassword ? <VisibilityOff /> : <Visibility sx={{color: "#6FCBD1"}} />}
                                     </IconButton>
                                 </InputAdornment>
                             }
@@ -101,9 +105,10 @@ export const Input = props => {
                         id={"outlined-basic" + props.label + props.placeholder}
                         placeholder={props.placeholder} 
                         variant="outlined" 
-                        className={classes.root} 
+                        className={classes.root}
                         type={props.inputType}
                         width={props.width}
+                        onChange={props.onChange}
                         autoComplete="off"
                         required
                         // value={props.value}
