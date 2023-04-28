@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MenuBar from "../UI/Menu/Menu";
 import "./Home.css"
@@ -10,8 +10,8 @@ import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import { categoriesData } from "./categories"
 import { setMessages, setLoading } from "../../redux/states";
-
 import { instance } from "../../utils/axios";
+import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 
 
 const Home = () => {
@@ -19,9 +19,18 @@ const Home = () => {
     const [chatBgFocused, setChatBgFocused] = useState(false)
     const { messages } = useSelector(state => state.chats)
     const dispatch = useDispatch()
-    //To use dispatch, within component, call dispatch(reducer action e.g increment()) where you would want the state to be altered in this component e.g within an onClick attribute
+    const chatBoxRef = useRef(null);
 
-    //Chat Effect on ask me anything
+    useEffect(() => {
+        // Scroll to bottom on mount
+        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }, []);
+
+    useEffect(() => {
+        // Scroll to bottom on new message
+        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }, [messages]);
+    //Chat Effect on ask me anything styling changes on input focus
     useEffect(() => {
         const chatBg = document.getElementById("chat-bg")
         const askMeContainer = document.getElementById("ask-me")
@@ -40,7 +49,6 @@ const Home = () => {
             categories.classList.add('categories')
             //This if block will align the chat bg and input field on mobile when the keyboard pops in
             if(chatBgFocused) {
-                chatBg.style.height = "90vh"
                 chatBg.style.position = "absolute"
                 chatBg.style.bottom = "0"
                 askMeContainerInner.style.position = "fixed"
@@ -59,6 +67,12 @@ const Home = () => {
     }, [isFocused, chatBgFocused]);
 
 
+
+    const chatExchange = messages.map((message, index) => {
+        return message.role === "assistant" ? <div key={index}><Assistant>{message.content}</Assistant></div> : <div key={index}><User>{message.content}</User></div>
+    })
+
+
     const handleFocus = () => {
         setFocused(true)
         setChatBgFocused(false)
@@ -66,13 +80,24 @@ const Home = () => {
 
     const handleAskMeAnything = async (e) => {
         e.preventDefault();
+        // dispatch(setMessages(e.target.elements[0].value))
+        const newMessage = {
+            role: 'user',
+            content: e.target.elements[0].value
+        }
+        dispatch(setMessages(newMessage))
         dispatch(setLoading(true))
+        e.target.elements[0].value = ''
 
         try {
-            const response = await instance.get('/askme', messages)
+            const response = await instance.post('/askme', newMessage)
             console.log(response)
+            dispatch(setMessages(response.data))
+            dispatch(setLoading(false))
+            console.log(messages)
         } catch (error) {
             console.log(error);
+            dispatch(setLoading(false))
         }
 
     }
@@ -80,24 +105,17 @@ const Home = () => {
     const handleChatBgFocus = () => {
         setChatBgFocused(true)
     }
-
-    const onInputChange = (e) => {
-        dispatch(setMessages(e.target.value))
-
-        console.log(messages)
-    }
-
     
     return (
         <div>
             {!isFocused ? <MenuBar /> : null}
 
             <section id="chat-bg" className="chat-bg" onClick={handleChatBgFocus}>
-                <div className="chatbg-overlay">
-                    <div className="close-icon" title="Close Chat" onClick={() => setFocused(false)}>
-                        <CloseIcon sx={{fontSize: '2.5rem'}} />  
-                    </div>
-
+                <div className="close-icon" title="Close Chat" onClick={() => setFocused(false)}>
+                    <CloseIcon sx={{fontSize: '2.5rem'}} />  
+                </div>
+                <div className="chatbg-overlay" ref={chatBoxRef}>
+                    {chatExchange}
                 </div>
             </section>
 
@@ -106,7 +124,7 @@ const Home = () => {
                     <h1 className="ask-me-h2">Ask me anything</h1>
                     <form onSubmit={handleAskMeAnything} className="form-ask-anything">
                         <Grid container>
-                            <Input placeholder="Ask a Question..." inputType="text" onChange={onInputChange} inputGrid={10} inputGridSm={10} /> 
+                            <Input placeholder="Ask a Question..." inputType="text" name="askMe" inputGrid={10} inputGridSm={10} /> 
                             <Grid item xs={2} sx={{textAlign: isFocused ? "center" : "right"}}><ButtonSubmitBlack><SendIcon /></ButtonSubmitBlack></Grid>
                         </Grid>
                         

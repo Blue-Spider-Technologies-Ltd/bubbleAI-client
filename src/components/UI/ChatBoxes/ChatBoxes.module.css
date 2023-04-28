@@ -1,0 +1,46 @@
+.assistantOuter, .userOutter {
+    background: transparent;
+    display: flex;
+    padding: 10px;
+    width: 97%;
+}
+
+.assistantOuter {
+    justify-content: left;
+}
+
+.userOutter {
+    justify-content: right;
+}
+
+.Assistant {
+    color: black;
+    margin-left: 3px;
+    padding: 8px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-top-left-radius: 0;
+    background-color: beige;
+    max-width: 75%;
+    position: relative;
+    top: 15px;
+}
+
+.User {
+    color: black;
+    padding: 8px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-top-right-radius: 0;
+    background-color: #3E8F93;
+    max-width: 75%;
+    position: relative;
+    top: 15px;
+}
+

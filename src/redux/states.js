@@ -20,7 +20,7 @@ export const stateSlice = createSlice({
       state.loading = action.payload
     },
     setMessages: (state, action) => {
-      const newState = { user: 'user', text: action.payload};
+      const newState = action.payload;
       state.messages = [...state.messages, newState];
     },
   },
