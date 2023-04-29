@@ -10,8 +10,8 @@ import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import { categoriesData } from "./categories"
 import { setMessages, setLoading } from "../../redux/states";
-import { instance } from "../../utils/axios";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
+import axios from 'axios';
 
 
 const Home = () => {
@@ -90,8 +90,8 @@ const Home = () => {
         e.target.elements[0].value = ''
 
         try {
-            const response = await instance.post('/askme', newMessage)
-            console.log(response)
+            let response = await axios.post('/askme', newMessage)
+            console.log(response);
             dispatch(setMessages(response.data))
             dispatch(setLoading(false))
             console.log(messages)
