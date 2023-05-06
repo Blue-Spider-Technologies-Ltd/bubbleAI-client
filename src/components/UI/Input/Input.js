@@ -83,12 +83,12 @@ export const Input = props => {
                         <OutlinedInput
                             id={props.placeholder}
                             type={showPassword ? 'text' : 'password'}
+                            onChange={props.onChange}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
                                     aria-label="toggle password visibility"
                                     onClick={handleClickShowPassword}
-                                    onChange={props.onChange}
                                     value={props.value}
                                     onMouseDown={handleMouseDownPassword}
                                     edge="end"

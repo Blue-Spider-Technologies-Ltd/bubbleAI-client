@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import authCss from "./Auth.module.css"
 import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
@@ -7,11 +7,39 @@ import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Facebook, Google, Apple } from '@mui/icons-material';
 import { Link } from "@mui/material";
+import axios from 'axios';
 
 
 const screenWidth = window.innerWidth
 
 const Login = () => {
+    const [data, setData] = useState({
+        email: '',
+        password: ''
+    })
+    const [error, setError] = useState('')
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault()
+
+        const userData = {
+            email: data.email,
+            password: data.password
+        }
+        try {
+            const response = await axios.post('/auth/login', userData)
+            console.log(response)
+            setError("")
+        } catch (error) {
+            console.log(error)
+            setError(error.response.data.error)
+        }
+
+    }
+
+    const handleInputChange = (prop) => (event) => {
+        setData({ ...data, [prop]: event.target.value});
+    };
     return (
         <div>
             <MenuBar />
@@ -30,9 +58,10 @@ const Login = () => {
             <div className={authCss.formContainer}>
                 <div className={authCss.formInner} style={{marginTop: '200px'}}>
                     <h2>Pop back in</h2>
-                    <form>
-                        <Input placeholder="Email..." inputType="email" inputGridSm={12} /> 
-                        <Input placeholder="Password..." inputType="password" inputGridSm={12} />
+                    <form onSubmit={handleFormSubmit}>
+                        <Input placeholder="Email..." inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
+                        <span className="error-auth">{error}</span>
+                        <Input placeholder="Password..." inputType="password" inputGridSm={12} onChange={handleInputChange('password')} />
                         <Link href="/pwd-recovery" className={authCss.pwdRec}>forgot password?</Link>
                         <div >
                             <ButtonSubmitBlack type="submit"><Send /></ButtonSubmitBlack>
