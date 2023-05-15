@@ -37,7 +37,7 @@ const Register = () => {
                 console.log(response)
             } catch (error) {
                 console.log(error)
-                setError(error)
+                setError(error.response.data.message)
             }
 
         } else {
@@ -67,7 +67,7 @@ const Register = () => {
             <div className={authCss.formContainer}>
                 <div className={authCss.formInner}>
                     <h2>Get an Account</h2>
-                    <span className="error-auth">{error}</span>
+                    <div className="error">{error}</div>
                     <form method="post" onSubmit={handleFormSubmit}>
                         <Grid container>
                             <Input placeholder="First name..." inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 

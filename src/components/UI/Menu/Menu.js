@@ -4,8 +4,8 @@ import { Link } from "@mui/material";
 import { Sling as Hamburger } from 'hamburger-react'
 import "./Menu.css"
 import logoImg from "../../../images/bubble-logo.png"
-import { ButtonOutlineGreen } from '../Buttons/Buttons';
-import { useLocation } from "react-router-dom"
+import { ButtonOutlineGreen, ButtonLogOut } from '../Buttons/Buttons';
+import { useLocation, useNavigate } from "react-router-dom"
 
 const screenWidth = window.innerWidth
 
@@ -13,7 +13,16 @@ const screenWidth = window.innerWidth
 
 /* FOR LARGER SCREENS KTT SIGNAL */
 const MenuBarLarge = () => {
-    const location = useLocation()
+    const location = useLocation();
+    const navigate = useNavigate()
+    const isAuth = localStorage.getItem("token");
+
+    const handleLogout = async () => {
+        if (isAuth) {
+            localStorage.removeItem('token')
+            navigate('/popin')
+        }
+    }
 
     return (
 
@@ -33,7 +42,8 @@ const MenuBarLarge = () => {
                         <div>Demo</div>
                     </Link>
                     <div style={{marginTop: '20px', marginLeft: '20px'}}>
-                        {location.pathname === "/popin" ? <ButtonOutlineGreen link="/join-bubble">Register</ButtonOutlineGreen> : <ButtonOutlineGreen link="/popin">Login</ButtonOutlineGreen>}
+                        {location.pathname === "/popin" ? <ButtonOutlineGreen link="/join-bubble">Register</ButtonOutlineGreen> 
+                        : isAuth ? <ButtonLogOut clicked={handleLogout}>Logout</ButtonLogOut> : <div><ButtonOutlineGreen link="/popin">Login</ButtonOutlineGreen></div>}
                     </div>
                 </div>
             </div>

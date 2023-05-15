@@ -3,6 +3,6 @@ import messagesReducer from "./states.js"
 
 export default configureStore({
     reducer: {
-        chats: messagesReducer,
+        stateData: messagesReducer,
     }
 })

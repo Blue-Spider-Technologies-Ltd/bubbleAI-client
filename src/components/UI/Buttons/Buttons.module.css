@@ -12,6 +12,22 @@
     -o-border-radius: 10px;
 }
 
+.LogOut {
+    padding: .5rem 2rem;
+    border-radius: 15px;
+    border: 2px solid var(--lightModeGreen);
+    color: var(--lightModeGreen) !important;
+    cursor: pointer;
+    margin-top: -10px;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
 .ButtonSubmitBlack, .ButtonTransparent {
     padding: 0 1.7rem;
     border: 1px solid black;

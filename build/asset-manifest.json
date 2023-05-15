@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.993ec7a6.css",
-    "main.js": "/static/js/main.d72c4f1c.js",
+    "main.css": "/static/css/main.d6911658.css",
+    "main.js": "/static/js/main.27a7d4d3.js",
     "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.6b097e3d322fbadd1e33.png",
     "static/media/resume.png": "/static/media/resume.b2aee285ce8b84e6859d.png",
     "static/media/chatbgtwo.png": "/static/media/chatbgtwo.4c974492ddf645c6d85f.png",
     "static/media/bubble-logo.png": "/static/media/bubble-logo.63e34960a90ae6d78b82.png",
     "index.html": "/index.html",
-    "main.993ec7a6.css.map": "/static/css/main.993ec7a6.css.map",
-    "main.d72c4f1c.js.map": "/static/js/main.d72c4f1c.js.map",
+    "main.d6911658.css.map": "/static/css/main.d6911658.css.map",
+    "main.27a7d4d3.js.map": "/static/js/main.27a7d4d3.js.map",
     "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.993ec7a6.css",
-    "static/js/main.d72c4f1c.js"
+    "static/css/main.d6911658.css",
+    "static/js/main.27a7d4d3.js"
   ]
 }

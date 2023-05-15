@@ -2,31 +2,40 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   messages: [],
-  loading: false
+  user: {},
+  modalLoading: false
 }
 
 export const stateSlice = createSlice({
   name: 'messagesState',
   initialState,
   reducers: {
-    // increment: (state) => {
-    //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
-    //   // doesn't actually mutate the state because it uses the Immer library,
-    //   // which detects changes to a "draft state" and produces a brand new
-    //   // immutable state based off those changes
-    //   state.messages += 1
-    // },
-    setLoading: (state, action) => {
-      state.loading = action.payload
-    },
+    //For when user logs in, set messages from server
     setMessages: (state, action) => {
-      const newState = action.payload;
-      state.messages = [...state.messages, newState];
+      const newArray = [...action.payload];
+      state.messages = newArray
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+    //Set each message from user/assistant
+    setMessage: (state, action) => {
+      const newMessage = action.payload
+      state.messages = [...state.messages, newMessage]
+    },
+    //should modal show?
+    setModalLoading: (state, action) => {
+      state.modalLoading = action.payload;
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setMessages, setLoading } = stateSlice.actions
+export const { 
+  setMessages, 
+  setUser, 
+  setMessage, 
+  setModalLoading 
+} = stateSlice.actions
 
 export default stateSlice.reducer

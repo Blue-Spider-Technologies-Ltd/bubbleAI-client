@@ -10,6 +10,14 @@ export const ButtonOutlineGreen = (props) => {
     )
 }
 
+export const ButtonLogOut = (props) => {
+    return (
+        <button type={props.type} onClick={props.clicked} className={buttonCss.LogOut}>
+            {props.children}
+        </button>
+    )
+}
+
 export const ButtonSubmitBlack = (props) => {
     return (
         <button type={props.type} className={buttonCss.ButtonSubmitBlack}>

@@ -4,37 +4,37 @@ export const categoriesData = [
     {
         title: "Resume Writer",
         desc: "I can help you create the perfect resume to get your dream job",
-        url: '',
+        url: '/popin?resume',
         image: resumeImg
     },
     {
         title: "Business Plan",
         desc: "I can help you define the purpose and a trajectory for your ideas",
-        url: '',
+        url: '/popin?business-plan',
         image: resumeImg
     },
     {
         title: "Product Price Setter",
         desc: "I can help you create the perfect resume to get your dream job",
-        url: '',
+        url: '/popin?product-price',
         image: resumeImg
     },
     {
         title: "Fraud Detector",
         desc: "I can help you create the perfect resume to get your dream job",
-        url: '',
+        url: '/popin?fraud-detector',
         image: resumeImg
     },
     {
-        title: "Business Plan",
+        title: "Generate Report",
         desc: "I can help you create the perfect resume to get your dream job",
-        url: '',
+        url: '/popin?generate-report',
         image: resumeImg
     },
     {
-        title: "Business Plan",
+        title: "Relationship Fixer",
         desc: "I can help you create the perfect resume to get your dream job",
-        url: '',
+        url: '/popin?relationship',
         image: resumeImg
     }
 ];

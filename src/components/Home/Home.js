@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import MenuBar from "../UI/Menu/Menu";
 import "./Home.css"
 import { Grid } from "@mui/material";
@@ -9,7 +8,8 @@ import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import { categoriesData } from "./categories"
-import { setMessages, setLoading } from "../../redux/states";
+import { useSelector, useDispatch } from "react-redux";
+import { setMessages, setMessage, setUser } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 import axios from 'axios';
 
@@ -17,14 +17,42 @@ import axios from 'axios';
 const Home = () => {
     const [isFocused, setFocused] = useState(false)
     const [chatBgFocused, setChatBgFocused] = useState(false)
-    const { messages } = useSelector(state => state.chats)
+    const [loading, setLoading] = useState(false)
+    console.log(loading);
+    const [error, setError] = useState("")
+    const { messages, user } = useSelector(state => state.stateData)
     const dispatch = useDispatch()
     const chatBoxRef = useRef(null);
 
+
     useEffect(() => {
-        // Scroll to bottom on mount
-        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-    }, []);
+        const isAuth = localStorage.getItem('token')
+        const populateUser = async () => {
+            if (isAuth) {
+                //Check if user and messages set for authenticated user, if not, set
+                if(Object.keys(user).length > 0 ) {
+                    dispatch(setMessages(user.messages))
+                } else {
+                    try {
+                        const headers = {
+                            'x-access-token': isAuth
+                        }
+                        const response = await axios.get('/user', {headers})
+                        dispatch(setMessages(response.data.user.messages))
+                        dispatch(setUser(response.data.user))
+                        console.log(user)
+                    } catch (error) {
+                        console.log(error);
+                        setError("Reload page to fetch data")
+                    }
+                }
+            } else {
+                console.log("unauthenticated");
+            }
+        }
+        populateUser()
+
+    }, [dispatch, user]);
 
     useEffect(() => {
         // Scroll to bottom on new message
@@ -66,12 +94,9 @@ const Home = () => {
         }
     }, [isFocused, chatBgFocused]);
 
-
-
     const chatExchange = messages.map((message, index) => {
         return message.role === "assistant" ? <div key={index}><Assistant>{message.content}</Assistant></div> : <div key={index}><User>{message.content}</User></div>
     })
-
 
     const handleFocus = () => {
         setFocused(true)
@@ -80,26 +105,67 @@ const Home = () => {
 
     const handleAskMeAnything = async (e) => {
         e.preventDefault();
-        // dispatch(setMessages(e.target.elements[0].value))
+        setLoading(true)
         const newMessage = {
             role: 'user',
             content: e.target.elements[0].value
-        }
-        dispatch(setMessages(newMessage))
-        dispatch(setLoading(true))
-        e.target.elements[0].value = ''
+        } 
+        const isAuth = localStorage?.getItem('token')
+        if (isAuth) {
+            //save authenticated user message
+            dispatch(setMessage(newMessage))
+            e.target.elements[0].value = ''
+            try {
+                let response = await axios.post('/askme', newMessage, {
+                    headers: {
+                        'x-access-token': isAuth
+                    }
+                })
+                //save ai response for auth user
+                console.log(response.data);
+                dispatch(setMessage(response.data))
+                setLoading(false)
+            } catch (error) {
+                console.log(error);
+                setLoading(false)
+            }
+        } else {
+            //prevent overuse when not registered/logged in
+            const now = new Date().getTime()
+            const itemJson = localStorage.getItem('oats_3297')
+            const item = JSON.parse(itemJson)
+            const useCount = item ? item.count : 0
+            const useIndicator = {
+                count: useCount + 1,
+                expiration: now + (24 * 60 * 60 * 1000) //current time + 24hr in milliseconds
+            }
+            const useIndicatorJson = JSON.stringify(useIndicator)
+            localStorage.setItem('oats_3297', useIndicatorJson)
+            if(useCount >= 2) {
+                dispatch(setMessage(newMessage))
+                const overUseMessage = {
+                    role: 'assistant',
+                    content: 'You have used up your free interactions for the day, kindly register to enjoy more'
+                } 
+                dispatch(setMessage(overUseMessage))
+                e.target.elements[0].value = ''
+            } else {
+                //THIS BLOCK FOR unauthenticated users below 3 usage within the day
+                dispatch(setMessage(newMessage))
+                e.target.elements[0].value = ''
+    
+                try {
+                    let response = await axios.post('/askme', newMessage)
+                    console.log(response);
+                    dispatch(setMessage(response.data))
+                    setLoading(false)
+                } catch (error) {
+                    console.log(error);
+                    setLoading(false)
+                }
+            }
 
-        try {
-            let response = await axios.post('/askme', newMessage)
-            console.log(response);
-            dispatch(setMessages(response.data))
-            dispatch(setLoading(false))
-            console.log(messages)
-        } catch (error) {
-            console.log(error);
-            dispatch(setLoading(false))
         }
-
     }
 
     const handleChatBgFocus = () => {
@@ -122,6 +188,7 @@ const Home = () => {
             <section id="ask-me" className="container" style={{marginTop: "100px"}}>
                 <div className="container-inner" onFocus={handleFocus}>
                     <h1 className="ask-me-h2">Ask me anything</h1>
+                    <div className="error">{error}</div>
                     <form onSubmit={handleAskMeAnything} className="form-ask-anything">
                         <Grid container>
                             <Input placeholder="Ask a Question..." inputType="text" name="askMe" inputGrid={10} inputGridSm={10} /> 
