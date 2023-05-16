@@ -141,7 +141,7 @@ const Home = () => {
             }
             const useIndicatorJson = JSON.stringify(useIndicator)
             localStorage.setItem('oats_3297', useIndicatorJson)
-            if(useCount >= 2) {
+            if(useCount >= 0) {
                 dispatch(setMessage(newMessage))
                 const overUseMessage = {
                     role: 'assistant',
