@@ -24,7 +24,6 @@ const Home = () => {
     const dispatch = useDispatch()
     const chatBoxRef = useRef(null);
 
-
     useEffect(() => {
         const isAuth = localStorage.getItem('token')
         const populateUser = async () => {
