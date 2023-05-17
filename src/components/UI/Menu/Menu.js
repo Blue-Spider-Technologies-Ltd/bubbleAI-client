@@ -29,7 +29,7 @@ const MenuBarLarge = () => {
         <nav className="BigMenu">
             <div>
                 <Link href='/'>
-                    <img src={logoImg} alt='KTT SIGNAL' className="Logo" />
+                    <img src={logoImg} alt='Bubble Ai' className="Logo" />
                 </Link>
             </div>
 

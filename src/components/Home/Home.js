@@ -72,6 +72,7 @@ const Home = () => {
             askMeContainerInner.classList.add('container-inner-borderless')
             askMeContainerInner.style.position = "fixed"
             askMeContainerInner.style.top = window.innerHeight
+            askMeContainerInner.style.bottom = "30px"
             askMeContainer.querySelector('.ask-me-h2').style.display = "none"
             categories.classList.add('categories')
             //This if block will align the chat bg and input field on mobile when the keyboard pops in
@@ -140,7 +141,7 @@ const Home = () => {
             }
             const useIndicatorJson = JSON.stringify(useIndicator)
             localStorage.setItem('oats_3297', useIndicatorJson)
-            if(useCount >= 0) {
+            if(useCount > 1) {
                 dispatch(setMessage(newMessage))
                 const overUseMessage = {
                     role: 'assistant',
