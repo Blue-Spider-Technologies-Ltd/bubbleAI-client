@@ -10,18 +10,21 @@ import { useLocation, useNavigate } from "react-router-dom"
 const screenWidth = window.innerWidth
 
 
-
 /* FOR LARGER SCREENS KTT SIGNAL */
 const MenuBarLarge = () => {
     const location = useLocation();
     const navigate = useNavigate()
-    const isAuth = localStorage.getItem("token");
+    const isAuth = localStorage?.getItem("token");
 
     const handleLogout = async () => {
         if (isAuth) {
             localStorage.removeItem('token')
             navigate('/popin')
         }
+    }
+
+    const handleHowIWork = async () => {
+        console.log("how I work clicked")
     }
 
     return (
@@ -35,9 +38,9 @@ const MenuBarLarge = () => {
 
             <div>
                 <div className='MenuItems'>
-                    <Link href='/ktt-signal' className="ListItem">
+                    <div onClick={handleHowIWork} className="ListItem">
                         <div>How I Work</div>
-                    </Link>
+                    </div>
                     <Link href='#what-we-do' className="ListItem">
                         <div>Demo</div>
                     </Link>
@@ -57,6 +60,9 @@ const MenuBarLarge = () => {
 const MenuBarSmall = () => {
     const location = useLocation()
     const [menuOpen, setMenuOpen] = useState(false)
+    const navigate = useNavigate()
+    const isAuth = localStorage?.getItem("token");
+
     useEffect (() => {
         const  overlay = document.getElementById('overlay');
         const nav1 = document.getElementById('nav-1');
@@ -107,6 +113,15 @@ const MenuBarSmall = () => {
         toggleNav()
     }, [menuOpen])
 
+    
+    const handleLogout = async () => {
+        if (isAuth) {
+            localStorage.removeItem('token')
+            navigate('/popin')
+        }
+    }
+
+
     return (
 
         <Box >
@@ -135,7 +150,8 @@ const MenuBarSmall = () => {
 
                 <nav>
                     <ul>
-                        {location.pathname === "/popin" ? <li id="nav-1"><a href="/join-bubble">Register</a></li> : <li id="nav-1"><a href="/popin">Login</a></li>}
+                        {location.pathname === "/popin" ? <li id="nav-1"><a href="/join-bubble">Register</a></li> 
+                        : isAuth ? <li id="nav-1" className='logout' onClick={handleLogout}>Logout</li> : <li id="nav-1"><a href="/popin">Login</a></li>}
                         <li id="nav-2"><a href="#about">Resume Writer</a></li>
                         <li id="nav-3"><a href="#skills">Business Plan Generator</a></li>
                         <li id="nav-4"><a href="#project">Product Price Setter</a></li>

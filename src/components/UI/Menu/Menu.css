@@ -121,6 +121,17 @@
     text-align: center;
   }
 
+  .logout {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #000;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    justify-content: center;
+  }
+
   nav li a:hover {
     transform: scale(1.2);
   }

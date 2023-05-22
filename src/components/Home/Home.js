@@ -80,7 +80,7 @@ const Home = () => {
                 chatBg.style.position = "absolute"
                 chatBg.style.bottom = "0"
                 askMeContainerInner.style.position = "fixed"
-                askMeContainerInner.style.bottom = "0"
+                askMeContainerInner.style.bottom = "20px"
             }
         } else {
             chatBg.classList.remove('chat-bg-in')

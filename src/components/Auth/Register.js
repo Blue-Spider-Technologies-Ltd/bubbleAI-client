@@ -5,7 +5,7 @@ import Blob from "../UI/Blob/Blob";
 import bubbleBgAuthImg from "../../images/bubblebg-auth.png"
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
-import { Send, Facebook, Google, Apple } from '@mui/icons-material';
+import { Send, Google, Apple } from '@mui/icons-material';
 import { Link, Grid } from "@mui/material";
 import axios from 'axios';
 
@@ -82,8 +82,6 @@ const Register = () => {
                         </div>
                     </form>
                     <p><strong>Or</strong></p>
-                    <ButtonTransparent><span style={{ color: "#1956AE"}}><Facebook /></span><span> Register with Facebook</span></ButtonTransparent>
-                    <p></p>
                     <ButtonTransparent><span style={{ color: "#940101"}}><Google /></span><span> Register with Google</span></ButtonTransparent>
                     <p></p>
                     <ButtonTransparent><span style={{ color: "#333333"}}><Apple /></span><span> Register with Apple</span></ButtonTransparent>

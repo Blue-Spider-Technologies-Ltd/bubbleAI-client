@@ -25,6 +25,12 @@ export const categoriesData = [
         image: productImg
     },
     {
+        title: "Relationship Fixer",
+        desc: "Simulate with me to calm the tone",
+        url: '/popin?relationship',
+        image: relationshipImg
+    },
+    {
         title: "Fraud Detector",
         desc: "Pass me a suspicious file, link or message...",
         url: '/popin?fraud-detector',
@@ -32,14 +38,8 @@ export const categoriesData = [
     },
     {
         title: "Generate Report",
-        desc: "I can help you create the perfect resume to get your dream job",
+        desc: "Generate an amazing report with a few queries, want chart data? No problem!",
         url: '/popin?generate-report',
         image: reportImg
-    },
-    {
-        title: "Relationship Fixer",
-        desc: "Simulate with me to calm the tone",
-        url: '/popin?relationship',
-        image: relationshipImg
     }
 ];
