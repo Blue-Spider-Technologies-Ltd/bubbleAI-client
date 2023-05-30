@@ -18,6 +18,7 @@ const Login = () => {
     const location = useLocation()
     const queryString = location.search.slice(1)
     const navigate = useNavigate();
+    const isAuth = localStorage?.getItem('token')
     const [error, setError] = useState('')
     const [data, setData] = useState({
         email: '',
@@ -25,11 +26,10 @@ const Login = () => {
     })
 
     useEffect(() => {
-        const isAuth = localStorage.getItem("token")
         if(isAuth) {
-            navigate("/user/dashboard")
+            navigate('/')
         }
-    }, [navigate])
+    }, [isAuth, navigate])
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()

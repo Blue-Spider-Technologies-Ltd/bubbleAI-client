@@ -21,7 +21,7 @@ const Home = () => {
     console.log(loading);
     const [error, setError] = useState("")
     const { messages, user } = useSelector(state => state.stateData)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const chatBoxRef = useRef(null);
 
     useEffect(() => {
@@ -39,7 +39,6 @@ const Home = () => {
                         const response = await axios.get('/user', {headers})
                         dispatch(setMessages(response.data.user.messages))
                         dispatch(setUser(response.data.user))
-                        console.log(user)
                     } catch (error) {
                         console.log(error);
                         setError("Reload page to fetch data")
@@ -178,7 +177,7 @@ const Home = () => {
 
             <section id="chat-bg" className="chat-bg" onClick={handleChatBgFocus}>
                 <div className="close-icon" title="Close Chat" onClick={() => setFocused(false)}>
-                    <CloseIcon sx={{fontSize: '2.5rem'}} />  
+                    <CloseIcon sx={{fontSize: '1.5rem'}} />  
                 </div>
                 <div className="chatbg-overlay" ref={chatBoxRef}>
                     {chatExchange}

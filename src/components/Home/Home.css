@@ -121,8 +121,8 @@
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
     margin: 10px;
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
     position: fixed;
     top: 5px;
     left: 5px;
@@ -145,6 +145,7 @@
 
     .chat-bg {
         background-size: cover;
+        background-image: url('../../images/chatbgone.png');
     }
     .chatbg-overlay {
         padding-bottom: 25%;

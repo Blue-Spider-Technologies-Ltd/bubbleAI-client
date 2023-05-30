@@ -25,6 +25,11 @@ const Register = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
 
+        if (user.password.length < 8) {
+            setError('password too short')
+            return
+        }
+
         if (user.password === user.confirmPassword){
             const userData = {
                 email: user.email,
@@ -82,9 +87,9 @@ const Register = () => {
                         </div>
                     </form>
                     <p><strong>Or</strong></p>
-                    <ButtonTransparent><span style={{ color: "#940101"}}><Google /></span><span> Register with Google</span></ButtonTransparent>
+                    <ButtonTransparent><span style={{ color: "#940101" }}><Google /></span><span> Register with Google</span></ButtonTransparent>
                     <p></p>
-                    <ButtonTransparent><span style={{ color: "#333333"}}><Apple /></span><span> Register with Apple</span></ButtonTransparent>
+                    <ButtonTransparent><span style={{ color: "#333333" }}><Apple /></span><span> Register with Apple</span></ButtonTransparent>
                 </div>
             </div>
         </div>        

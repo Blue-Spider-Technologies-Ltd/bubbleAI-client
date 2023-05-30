@@ -6,6 +6,8 @@ import "./Menu.css"
 import logoImg from "../../../images/bubble-logo.png"
 import { ButtonOutlineGreen, ButtonLogOut } from '../Buttons/Buttons';
 import { useLocation, useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { setUser } from '../../../redux/states';
 
 const screenWidth = window.innerWidth
 
@@ -15,11 +17,13 @@ const MenuBarLarge = () => {
     const location = useLocation();
     const navigate = useNavigate()
     const isAuth = localStorage?.getItem("token");
+    const dispatch = useDispatch()
 
     const handleLogout = async () => {
         if (isAuth) {
-            localStorage.removeItem('token')
             navigate('/popin')
+            localStorage.removeItem('token')
+            dispatch(setUser({}))
         }
     }
 
@@ -62,6 +66,8 @@ const MenuBarSmall = () => {
     const [menuOpen, setMenuOpen] = useState(false)
     const navigate = useNavigate()
     const isAuth = localStorage?.getItem("token");
+    const dispatch = useDispatch()
+    
 
     useEffect (() => {
         const  overlay = document.getElementById('overlay');
@@ -116,8 +122,9 @@ const MenuBarSmall = () => {
     
     const handleLogout = async () => {
         if (isAuth) {
-            localStorage.removeItem('token')
             navigate('/popin')
+            localStorage?.removeItem('token')
+            dispatch(setUser({}))
         }
     }
 
