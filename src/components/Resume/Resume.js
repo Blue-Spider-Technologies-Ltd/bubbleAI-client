@@ -14,13 +14,57 @@ const isAuth = localStorage?.getItem('token')
 // import { SelectChangeEvent } from '@mui/material/Select';
 
 const Resume = () => {
+    const dispatch = useDispatch()
+    const { user } = useSelector(state => state.stateData)
+    const userLength = Object.keys(user).lengths
     const navigate = useNavigate()
+        
+    //resume data
+    const [basicInfo, setBsicInfo] = useState({
+        firstName: "",
+        lastName: "",
+        dob: "",
+        mobileCode: "",
+        country: "",
+        profSummary: ""
+    })
+    useEffect(() => {
+
+        if(isAuth) {
+            if(userLength > 0 ) {
+                //console.log(user)
+            } else {
+                const populateUser = async () => {
+                    try {
+                        const response = await axios.get('/user', {
+                            headers: {
+                                'x-access-token': isAuth
+                            }
+                        })
+                        setBsicInfo({
+                            firstName: response.data.user.firstName,
+                            lastName: response.data.user.lastName,
+                            dob: response.data.user.dob || "",
+                            mobileCode: response.data.user.mobileCode || "",
+                            country: response.data.user.country || "",
+                            profSummary: response.data.user.profSummary || ""
+                        })
+                        dispatch(setUser(response.data.user))
+                    } catch (error) {
+                        console.log(error)
+                        setError("Reload page to fetch data")
+                    }
+                }
+                populateUser()
+            }
+        } else {
+            navigate('/popin')
+        }
+    }, [navigate, dispatch, userLength])
+
     const [error, setError] = useState("")
     const [resumes, showResumes] = useState(false)
-    
-    const { user } = useSelector(state => state.stateData)
-    const dispatch = useDispatch()
-    const userLength = Object.keys(user).lengths
+
     const handleInputChange = (prop) => (event) => {
         // setUser({ ...user, [prop]: event.target.value});
     };
@@ -61,34 +105,10 @@ const Resume = () => {
                                     <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
                                 </Grid>
                             )])
+
     const [country, setCountry] = useState('')
     const [countryCode, setCountryCode] = useState('')
     //Checked if user logged in/found
-    useEffect(() => {
-
-        if(isAuth) {
-            if(userLength > 0 ) {
-                //console.log(user)
-            } else {
-                const populateUser = async () => {
-                    try {
-                        const response = await axios.get('/user', {
-                            headers: {
-                                'x-access-token': isAuth
-                            }
-                        })
-                        dispatch(setUser(response.data.user))
-                    } catch (error) {
-                        console.log(error)
-                        setError("Reload page to fetch data")
-                    }
-                }
-                populateUser()
-            }
-        } else {
-            navigate('/popin')
-        }
-    }, [navigate, dispatch, userLength])
 
     const toggleResumes = () => {
         showResumes(!resumes)
@@ -253,7 +273,6 @@ const Resume = () => {
     }
     
     const handleSelectChange = (event) => {
-        console.log(event.target);
         if (event.target.name === "c-code") {
             return setCountryCode(event.target.value)
         }
@@ -290,8 +309,8 @@ const Resume = () => {
                         <div className={resumeCss.Segment}>
                             <h4>Basic Info</h4>
                             <Grid container>
-                                <AuthInput value={user.firstName || ""} inputType="text" inputGridSm={12} inputGrid={6} mb={2} required={true} disabled={true} onChange={handleInputChange('firstName')} /> 
-                                <AuthInput value={user.lastName || ""} inputType="text" inputGridSm={12} inputGrid={6} mb={0} required={true} disabled={true} onChange={handleInputChange('lastName')} /> 
+                                <AuthInput value={basicInfo.firstName} inputType="text" inputGridSm={12} inputGrid={6} mb={2} required={true} disabled={true} onChange={handleInputChange('firstName')} /> 
+                                <AuthInput value={basicInfo.lastName} inputType="text" inputGridSm={12} inputGrid={6} mb={0} required={true} disabled={true} onChange={handleInputChange('lastName')} /> 
                                 <div style={{width: "100%"}}><div className={resumeCss.DetachedLabels}>Date of Birth *</div></div>
                                 <AuthInput placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={2} mb={2} required={true} onChange={handleInputChange('date')} /> 
                                 <AuthInput label="Code" inputType="select" inputGridSm={4} inputGrid={3} mb={2} list={COUNTRIES} required={true} changed={handleSelectChange} name='c-code' /> 
