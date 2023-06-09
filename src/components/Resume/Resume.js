@@ -17,6 +17,10 @@ const Resume = () => {
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const [resumes, showResumes] = useState(false)
+    
+    const { user } = useSelector(state => state.stateData)
+    const dispatch = useDispatch()
+    const userLength = Object.keys(user).lengths
     const handleInputChange = (prop) => (event) => {
         // setUser({ ...user, [prop]: event.target.value});
     };
@@ -33,10 +37,10 @@ const Resume = () => {
                                                     <AuthInput label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} /> 
                                                     <AuthInput label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} /> 
                                                     <label className={resumeCss.DetachedLabels}>From *</label>
-                                                    <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
+                                                    <AuthInput  placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
                                                     <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
                                                     <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
-                                                    <AuthInput  placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} /> 
+                                                    <AuthInput placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} /> 
                                                 </Grid>
                                             )]) 
     const [certArray, addCertArray] = useState([(<Grid container className='segment'>
@@ -52,19 +56,16 @@ const Resume = () => {
                                         </Grid>
                                     )]) 
     const [publications, addPublications] = useState([(<Grid container className='segment'>
-                                    <AuthInput label="Title" inputGridSm={12} inputType="text" mb={2} /> 
+                                    <AuthInput   label="Title" inputGridSm={12} inputType="text" mb={2} /> 
                                     <label className={resumeCss.DetachedLabels}>Date Awarded </label>
                                     <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
                                 </Grid>
                             )])
     const [country, setCountry] = useState('')
     const [countryCode, setCountryCode] = useState('')
-    const { user } = useSelector(state => state.stateData)
-    const dispatch = useDispatch()
-    const userLength = Object.keys(user).length
-
     //Checked if user logged in/found
     useEffect(() => {
+
         if(isAuth) {
             if(userLength > 0 ) {
                 //console.log(user)
@@ -161,7 +162,7 @@ const Resume = () => {
                             <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
                             <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
                             <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
-                            <AuthInput  placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} /> 
+                            <AuthInput placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} /> 
                         </Grid>)
         if(workExpArray.length < 3) {
             return addWorkExpArray([...workExpArray, newInfo])
@@ -289,8 +290,8 @@ const Resume = () => {
                         <div className={resumeCss.Segment}>
                             <h4>Basic Info</h4>
                             <Grid container>
-                                <AuthInput value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} mb={2} required={true} disabled={true} onChange={handleInputChange('firstName')} /> 
-                                <AuthInput value={user.lastName} inputType="text" inputGridSm={12} inputGrid={6} mb={0} required={true} disabled={true} onChange={handleInputChange('lastName')} /> 
+                                <AuthInput value={user.firstName || ""} inputType="text" inputGridSm={12} inputGrid={6} mb={2} required={true} disabled={true} onChange={handleInputChange('firstName')} /> 
+                                <AuthInput value={user.lastName || ""} inputType="text" inputGridSm={12} inputGrid={6} mb={0} required={true} disabled={true} onChange={handleInputChange('lastName')} /> 
                                 <div style={{width: "100%"}}><div className={resumeCss.DetachedLabels}>Date of Birth *</div></div>
                                 <AuthInput placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={2} mb={2} required={true} onChange={handleInputChange('date')} /> 
                                 <AuthInput label="Code" inputType="select" inputGridSm={4} inputGrid={3} mb={2} list={COUNTRIES} required={true} changed={handleSelectChange} name='c-code' /> 
@@ -306,7 +307,7 @@ const Resume = () => {
                                     <div className='add' title='Add More Links' onClick={handleAddLinks}>+</div>
                                 </Grid>
 
-                                <AuthInput  placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful" onChange={handleInputChange('prof-sum')} multiline={true} rows={2} inputGridSm={12} mb={2} /> 
+                                <AuthInput placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful" onChange={handleInputChange('prof-sum')} multiline={true} rows={2} inputGridSm={12} mb={2} /> 
                             </Grid>
                         </div>
                         <div className={resumeCss.Segment}>

@@ -142,7 +142,7 @@ export const AuthInput = props => {
                         return <MenuItem key={index} value={option.name}>{option.name}</MenuItem>
                     })}
                     </Select>
-                </FormControl>
+                </FormControl> 
             :
                 <TextField 
                     id={"outlined-basic" + props.label + props.placeholder}
@@ -156,7 +156,7 @@ export const AuthInput = props => {
                     autoComplete="off"
                     required={props.required}
                     disabled={props.disabled}
-                    // value={props.value}
+                    value={props.value}
                 />                                                          
                 
             }
