@@ -26,6 +26,14 @@ export const ButtonSubmitBlack = (props) => {
     )
 }
 
+export const ButtonSubmitGreen = (props) => {
+    return (
+        <button type={props.type} className={buttonCss.ButtonSubmitGreen}>
+            {props.children}
+        </button>
+    )
+}
+
 export const ButtonTransparent = (props) => {
     return (
         <button type={props.type} className={buttonCss.ButtonTransparent}>

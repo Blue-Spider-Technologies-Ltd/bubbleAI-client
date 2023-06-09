@@ -77,7 +77,6 @@ export const AuthInput = props => {
                     rows={props.rows}
                     className={classes.root} 
                     onChange={props.onChange}
-                    value={props.value}
                     autoComplete="off"
                     required={props.required}
                 />
@@ -112,8 +111,8 @@ export const AuthInput = props => {
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                     id={props.label}
-                    value={props.value}
                     onChange={props.changed}
+                    name={props.name}
                     >
                     <MenuItem >
                         <em>{props.label}</em>
@@ -131,10 +130,10 @@ export const AuthInput = props => {
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                     id={props.label}
-                    value={props.value}
                     onChange={props.changed}
+                    name={props.name}
                     >
-                    <MenuItem >
+                    <MenuItem>
                         <em>{props.label}</em>
                     </MenuItem>
                     {props.list.length !== 0 ? props.list.map((option, index) => {
@@ -154,7 +153,6 @@ export const AuthInput = props => {
                     type={props.inputType}
                     width={props.width}
                     onChange={props.onChange}
-                    value={props.value}
                     autoComplete="off"
                     required={props.required}
                     disabled={props.disabled}
