@@ -43,10 +43,12 @@ const useStyles = makeStyles({
         },
         "& .MuiInputLabel-root.Mui-focused": {
             //Edits the Form Label when cusor is focused
-            color: "#FFFFFF",
+            color: "#000",
             borderRadius: '4px',
             padding: '2px 10px',
-            backgroundColor: "#6FCBD1"
+            backgroundColor: "#6FCBD1",
+            fontSize: '.9rem',
+            fontWeight: '600'
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
             border: "none",
@@ -70,7 +72,7 @@ export const AuthInput = props => {
         <Grid item md={props.inputGrid} xs={props.inputGridSm} px={1} mb={props.mb} sx={{boxSizing: "border-box"}}>
             {props.multiline ? 
                 <TextField
-                    id="outlined-multiline-static"
+                    id={"outlined-multiline-static" + props.label + props.placeholder}
                     label={props.label}
                     placeholder={props.placeholder}
                     multiline
@@ -79,9 +81,10 @@ export const AuthInput = props => {
                     onChange={props.onChange}
                     autoComplete="off"
                     required={props.required}
+                    value={props.value}
+                    name={props.name}
                 />
             :
-
             props.inputType === "password" ?
                 <FormControl variant="outlined" className={classes.root} autoComplete="off" required={props.required}>
                     
@@ -89,6 +92,7 @@ export const AuthInput = props => {
                         id={props.placeholder}
                         type={showPassword ? 'text' : 'password'}
                         onChange={props.onChange}
+                        value={props.value}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
@@ -113,6 +117,7 @@ export const AuthInput = props => {
                     id={props.label}
                     onChange={props.changed}
                     name={props.name}
+                    value={props.value}
                     >
                     <MenuItem >
                         <em>{props.label}</em>
@@ -132,6 +137,7 @@ export const AuthInput = props => {
                     id={props.label}
                     onChange={props.changed}
                     name={props.name}
+                    value={props.value}
                     >
                     <MenuItem>
                         <em>{props.label}</em>
@@ -157,6 +163,7 @@ export const AuthInput = props => {
                     required={props.required}
                     disabled={props.disabled}
                     value={props.value}
+                    name={props.name}
                 />                                                          
                 
             }

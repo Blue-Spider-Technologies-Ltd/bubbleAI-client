@@ -18,9 +18,10 @@ const Resume = () => {
     const { user } = useSelector(state => state.stateData)
     const userLength = Object.keys(user).lengths
     const navigate = useNavigate()
-        
+    const [error, setError] = useState("")
+    const [resumes, showResumes] = useState(false)
     //resume data
-    const [basicInfo, setBsicInfo] = useState({
+    const [basicInfo, setBasicInfo] = useState({
         firstName: "",
         lastName: "",
         dob: "",
@@ -41,7 +42,7 @@ const Resume = () => {
                                 'x-access-token': isAuth
                             }
                         })
-                        setBsicInfo({
+                        setBasicInfo({
                             firstName: response.data.user.firstName,
                             lastName: response.data.user.lastName,
                             dob: response.data.user.dob || "",
@@ -62,49 +63,54 @@ const Resume = () => {
         }
     }, [navigate, dispatch, userLength])
 
-    const [error, setError] = useState("")
-    const [resumes, showResumes] = useState(false)
+    const [linkInfo, setLinkInfo] = useState([
+        {
+            value: ""
+        }
+    ])
 
-    const handleInputChange = (prop) => (event) => {
-        // setUser({ ...user, [prop]: event.target.value});
-    };
-    const [links, addLinks] = useState([<AuthInput label="Add a link e.g linkedin, github or your website" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={false} onChange={handleInputChange('links')} />]) 
-    const [skills, addSkills] = useState([<AuthInput label="Add a Skill" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={false} onChange={handleInputChange('skills')} />]) 
-    const [eduArray, addEduArray] = useState([(<Grid container className='segment'>
-                                                    <AuthInput label="Name of Institution" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} /> 
-                                                    <AuthInput label="Degree Obtained" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} /> 
-                                                    <label className={resumeCss.DetachedLabels} mr={4}>Graduation Date *</label>
-                                                    <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={8} inputGrid={2} required={true} /> 
-                                                </Grid>
-                                            )]) 
-    const [workExpArray, addWorkExpArray] = useState([(<Grid container className='segment'>
-                                                    <AuthInput label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} /> 
-                                                    <AuthInput label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} /> 
-                                                    <label className={resumeCss.DetachedLabels}>From *</label>
-                                                    <AuthInput  placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
-                                                    <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
-                                                    <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
-                                                    <AuthInput placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} /> 
-                                                </Grid>
-                                            )]) 
-    const [certArray, addCertArray] = useState([(<Grid container className='segment'>
-                                                    <AuthInput label="Certification Name" inputGridSm={12} inputType="text" mb={2} /> 
-                                                    <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                                                    <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
-                                                </Grid>
-                                            )]) 
-    const [awardArray, addAwardArray] = useState([(<Grid container className='segment'>
-                                            <AuthInput label="Name" inputGridSm={12} inputType="text" mb={2} /> 
-                                            <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                                            <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
-                                        </Grid>
-                                    )]) 
-    const [publications, addPublications] = useState([(<Grid container className='segment'>
-                                    <AuthInput   label="Title" inputGridSm={12} inputType="text" mb={2} /> 
-                                    <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                                    <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
-                                </Grid>
-                            )])
+    const [skills, addSkills] = useState([
+        {
+            value: ""
+        }
+    ])
+
+    const [eduArray, addEduArray] = useState([
+        {
+            institution: "",
+            degree: "",
+            date: ""
+        }
+    ])
+    const [workExpArray, addWorkExpArray] = useState([
+        {
+            company: "",
+            position: "",
+            dateFrom: "",
+            dateTo: "",
+            jobDesc: ""
+        }
+    ])
+ 
+    const [certArray, addCertArray] = useState([
+        {
+            cert: "",
+            date: ""
+        }
+    ])
+    const [awardArray, addAwardArray] =  useState([
+        {
+            org: "",
+            award: "",
+            date: ""
+        }
+    ])
+    const [publications, addPublications] = useState([
+        {
+            title: "",
+            date: ""
+        }
+    ])
 
     const [country, setCountry] = useState('')
     const [countryCode, setCountryCode] = useState('')
@@ -114,29 +120,35 @@ const Resume = () => {
         showResumes(!resumes)
     }
 
+    //////LINK HANDLERS
     const handleAddLinks = () => {
         setError("")
-        const newLink = <AuthInput label="Add a link e.g linkedin, github or your website" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={false} />
-        if(links.length < 3) {
-            return addLinks([newLink, ...links])
+        const newLink = { value: "" }
+        if(linkInfo.length < 3) {
+            return setLinkInfo([...linkInfo, newLink])
         }
         setError("You can add a maximum of 3 links")
     }
     const handleDeleteLinks = () => {
         setError("")
-        if(links.length > 1) {
-            const prevLinks = [...links]
+        if(linkInfo.length > 1) {
+            const prevLinks = [...linkInfo]
             prevLinks.pop()
-            return addLinks([...prevLinks])
+            return setLinkInfo([...prevLinks])
         }
         setError("Leave blank, don't delete")
     }
+    const handleLinkChange = (event, index) => {
+        const prevLinkInfo = [...linkInfo];
+        prevLinkInfo[index].value = event.target.value
+        setLinkInfo(prevLinkInfo)
+    };
 
-
+/////////////SKILL HANDLERS
     const handleAddSkill = () => {
         setError("")
-        const newSkill = <AuthInput label="Add a skill" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={false} />
-        addSkills([newSkill, ...skills])
+        const newSkill = { value: "" }
+        addSkills([...skills, newSkill])
     }
     const handleDeleteSkill = () => {
         setError("")
@@ -147,16 +159,21 @@ const Resume = () => {
         }
         setError("Leave blank, don't delete")
     }
+    const handleSkillChange = (event, index) => {
+        console.log(event);
+        const prevSkills = [...skills];
+        prevSkills[index].value = event.target.value
+        setLinkInfo(prevSkills)
+    };
 
-    
+    ///EDUCATION INFO HANDLERS
     const handleAddEduInfo = () => {
         setError("")
-        const newInfo = (<Grid container className='segment'>
-                            <AuthInput label="Name of Institution" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} /> 
-                            <AuthInput label="Degree Obtained" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} /> 
-                            <label className={resumeCss.DetachedLabels} mr={4}>Graduation Date *</label>
-                            <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={8} inputGrid={2} required={true} /> 
-                        </Grid>)
+        const newInfo = {
+            institution: "",
+            degree: "",
+            date: ""
+        }
         if(eduArray.length < 3) {
             return addEduArray([...eduArray, newInfo])
         }
@@ -171,19 +188,38 @@ const Resume = () => {
         }
         setError("Leave blank, don't delete")
     }
+    const handleEduExpChange = (event, index) => {
+        const prevEduExp = [...eduArray];
+        switch (event.target.name) {
+            case "institution":
+                prevEduExp[index].institution = event.target.value
+                addEduArray(prevEduExp)
+                break;
+            case "degree":
+                prevEduExp[index].degree = event.target.value
+                addEduArray(prevEduExp)
+                break;            
+            case "date":
+                prevEduExp[index].date = event.target.value
+                addEduArray(prevEduExp)
+                console.log(eduArray);
+                break;
+            default: addEduArray(prevEduExp)
+                break;
+        }
 
+    };
 
+    /////WORK EXP HANDLERS
     const handleAddExp = () => {
         setError("")
-        const newInfo = (<Grid container className='segment'>
-                            <AuthInput label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} /> 
-                            <AuthInput label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} /> 
-                            <label className={resumeCss.DetachedLabels}>From *</label>
-                            <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
-                            <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
-                            <AuthInput placeholder="Graduation Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} /> 
-                            <AuthInput placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} /> 
-                        </Grid>)
+        const newInfo = {
+            company: "",
+            position: "",
+            dateFrom: "",
+            dateTo: "",
+            jobDesc: ""
+        }
         if(workExpArray.length < 3) {
             return addWorkExpArray([...workExpArray, newInfo])
         }
@@ -198,15 +234,43 @@ const Resume = () => {
         }
         setError("Leave blank, don't delete")
     }
+    const handleWorkExpChange = (event, index) => {
+        const prevWorkExp = [...workExpArray];
+
+        switch (event.target.name) {
+            case "company":
+                prevWorkExp[index].company = event.target.value
+                addWorkExpArray(prevWorkExp)
+                break;
+            case "position":
+                prevWorkExp[index].position = event.target.value
+                addWorkExpArray(prevWorkExp)
+                break;            
+            case "dateFrom":
+                prevWorkExp[index].dateFrom = event.target.value
+                addWorkExpArray(prevWorkExp)
+                break;
+            case "dateTo":
+                prevWorkExp[index].dateTo = event.target.value
+                addWorkExpArray(prevWorkExp)
+                break;            
+            case "jobDesc":
+                prevWorkExp[index].jobDesc = event.target.value
+                addWorkExpArray(prevWorkExp)
+                break;
+            default: addEduArray(prevWorkExp)
+                break;
+        }
+
+    };
 
 
     const handleAddCert = () => {
         setError("")
-        const newCert = (<Grid container className='segment'>
-                            <AuthInput label="Certification Name" inputGridSm={12} inputType="text" mb={2} /> 
-                            <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                            <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
-                        </Grid>)
+        const newCert = {
+            cert: "",
+            date: ""
+        }
         if(certArray.length < 4) {
             return addCertArray([...certArray, newCert])
         }
@@ -221,15 +285,31 @@ const Resume = () => {
         }
         setError("Leave blank, don't delete")
     }
+    const handleCertChange = (event, index) => {
+        const prevCerts = [...certArray];
+        switch (event.target.name) {
+            case "cert":
+                prevCerts[index].cert = event.target.value
+                addCertArray(prevCerts)
+                break;           
+            case "date":
+                prevCerts[index].date = event.target.value
+                addCertArray(prevCerts)
+                break;
+            default: addCertArray(prevCerts)
+                break;
+        }
+
+    };
     
 
     const handleAddAward = () => {
         setError("")
-        const newAward = (<Grid container className='segment'>
-                            <AuthInput label="Name" inputGridSm={12} inputType="text" mb={2} /> 
-                            <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                            <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
-                        </Grid>)
+        const newAward = {
+            org: "",
+            award: "",
+            date: ""
+        }
         if(awardArray.length < 2) {
             return addAwardArray([...awardArray, newAward])
         }
@@ -244,14 +324,33 @@ const Resume = () => {
         }
         setError("Leave blank, don't delete")
     }
+    const handleAwardChange = (event, index) => {
+        const prevAwards = [...awardArray];
+        switch (event.target.name) {
+            case "org":
+                prevAwards[index].org = event.target.value
+                addAwardArray(prevAwards)
+                break;  
+            case "award":
+                prevAwards[index].award = event.target.value
+                addAwardArray(prevAwards)
+                break;          
+            case "date":
+                prevAwards[index].date = event.target.value
+                addAwardArray(prevAwards)
+                break;
+            default: addAwardArray(prevAwards)
+                break;
+        }
+
+    };
 
     const handleAddPublication = () => {
         setError("")
-        const newPub = (<Grid container className='segment'>
-                            <AuthInput label="Title" inputGridSm={12} inputType="text" mb={2} /> 
-                            <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                            <AuthInput placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
-                        </Grid>)
+        const newPub = {
+            title: "",
+            date: ""
+        }
         if(publications.length < 2) {
             return addPublications([...publications, newPub])
         }
@@ -266,11 +365,34 @@ const Resume = () => {
         }
         setError("Leave blank, don't delete")
     }
+    const handlePubChange = (event, index) => {
+        const prevPub = [...publications];
+        switch (event.target.name) {
+            case "title":
+                prevPub[index].title = event.target.value
+                addPublications(prevPub)
+                break;           
+            case "date":
+                prevPub[index].date = event.target.value
+                addPublications(prevPub)
+                break;
+            default: addPublications(prevPub)
+                break;
+        }
+
+    };
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         console.log(country + countryCode)
     }
+
+    
+    const handleInputChange = (event, index) => {
+        // setUser({ ...user, [prop]: event.target.value});
+    };    
+
+    
     
     const handleSelectChange = (event) => {
         if (event.target.name === "c-code") {
@@ -318,22 +440,36 @@ const Resume = () => {
                                 <AuthInput label="Street Name" inputType="text" inputGridSm={7} inputGrid={4} mb={2} required={true} onChange={handleInputChange('street')} /> 
                                 <AuthInput label="City" inputType="text" inputGridSm={5} inputGrid={4} mb={2} required={true} onChange={handleInputChange('city')} /> 
                                 <AuthInput label="Country" inputType="select2" inputGridSm={12} inputGrid={4} mb={2} list={COUNTRIES} required={true} changed={handleSelectChange} name='country' /> 
-                                {links.map((link, index) => {
-                                    return <Grid item xs={8} style={{width: "70%"}} key={index}>{link}</Grid>
+                                {linkInfo.map((info, index) => {
+                                    return <AuthInput 
+                                                key={index} 
+                                                label="Add a link e.g linkedin, github or your website" 
+                                                value={info.value} 
+                                                inputType="text" 
+                                                inputGridSm={8} 
+                                                inputGrid={8}
+                                                mb={2} 
+                                                required={false} 
+                                                onChange={(event) => handleLinkChange(event, index)}
+                                            />
                                 })}
                                 <Grid item xs={4} sx={{display: "flex", justifyContent: "center"}}>
                                     <div style={{marginRight: "10px"}} className='delete' title='Delete Link' onClick={handleDeleteLinks}>-</div>
                                     <div className='add' title='Add More Links' onClick={handleAddLinks}>+</div>
                                 </Grid>
-
-                                <AuthInput placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful" onChange={handleInputChange('prof-sum')} multiline={true} rows={2} inputGridSm={12} mb={2} /> 
+                                <AuthInput placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} mb={2} /> 
                             </Grid>
                         </div>
                         <div className={resumeCss.Segment}>
-                            <h4>Educational Info</h4>
+                            <h4>Education Info</h4>
                             <div>
-                                {eduArray.map((item, index) => {
-                                    return <div key={index}>{item}</div>
+                                {eduArray.map((info, index) => {
+                                    return (<Grid container key={index} className='segment'>
+                                               <AuthInput name="institution" value={info.institution} label="Name of Institution" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} onChange={(event) => handleEduExpChange(event, index)} /> 
+                                               <AuthInput name="degree" value={info.degree} label="Degree Obtained" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} onChange={(event) => handleEduExpChange(event, index)} /> 
+                                               <label className={resumeCss.DetachedLabels} mr={4}>Graduation Date *</label>
+                                               <AuthInput name="date" value={info.date} placeholder="Graduation Date" inputType="date" inputGridSm={8} inputGrid={2} required={true} onChange={(event) => handleEduExpChange(event, index)} /> 
+                                           </Grid>)
                                 })}
                                 <div className={resumeCss.CenteredElem}>
                                     <div style={{marginRight: "10px"}} className='delete' title='Delete Educational Info' onClick={handleDeleteEduInfo}>-</div>
@@ -344,8 +480,16 @@ const Resume = () => {
                         <div className={resumeCss.Segment}>
                             <h4>Work Experience</h4>
                             <div>
-                                {workExpArray.map((item, index) => {
-                                    return <div key={index}>{item}</div>
+                                {workExpArray.map((info, index) => {
+                                    return <Grid container className='segment' key={index}>
+                                                <AuthInput name="company" value={info.company}  label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="position" value={info.position}  label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <label className={resumeCss.DetachedLabels}>From *</label>
+                                                <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
+                                                <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="jobDesc" value={info.jobDesc}  placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                            </Grid>
                                 })}
                                 <div className={resumeCss.CenteredElem}>
                                     <div style={{marginRight: "10px"}} className='delete' title='Delete Experience' onClick={handleDeleteExp}>-</div>
@@ -356,9 +500,19 @@ const Resume = () => {
                         <div className={resumeCss.Segment}>
                             <h4>Relevant Skills</h4>
                             <Grid container>
-                                <Grid item xs={9}>
+                                <Grid container item xs={9}>
                                     {skills.map((skill, index) => {
-                                        return <Grid item xs={12} md={6} style={{width: "90%"}} key={index}>{skill}</Grid>
+                                        return <AuthInput 
+                                                    key={index} 
+                                                    value={skill.value} 
+                                                    label="Add a Skill" 
+                                                    inputType="text" 
+                                                    inputGridSm={12} 
+                                                    inputGrid={6} 
+                                                    mb={2} 
+                                                    required={false} 
+                                                    onChange={(event) => handleSkillChange(event, index)}
+                                                />
                                     })}
                                 </Grid>
                                 <Grid item xs={3} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -371,8 +525,12 @@ const Resume = () => {
                             <h4>Professional Certifications [If any]</h4>
                             <div>
                                 <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
-                                    {certArray.map((item, index) => {
-                                        return <div key={index}>{item}</div>
+                                    {certArray.map((info, index) => {
+                                        return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
+                                                    <AuthInput name="cert" value={info.cert} label="Certification Name" inputGridSm={12} inputType="text" mb={2} onChange={(event) => handleCertChange(event, index)} /> 
+                                                    <label className={resumeCss.DetachedLabels}>Date Awarded </label>
+                                                    <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" onChange={(event) => handleCertChange(event, index)} /> 
+                                                </Grid>
                                     })}
                                 </Grid>
                                 <div className={resumeCss.CenteredElem}>
@@ -385,8 +543,13 @@ const Resume = () => {
                             <h4>Awards [If any]</h4>
                             <div>
                                 <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
-                                    {awardArray.map((item, index) => {
-                                        return <div key={index}>{item}</div>
+                                    {awardArray.map((info, index) => {
+                                        return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
+                                                    <AuthInput name="org" value={info.org} label="Awarding Organization" inputGridSm={12} inputType="text" mb={2} onChange={(event) => handleAwardChange(event, index)} /> 
+                                                    <AuthInput name="award" value={info.award} label="Award Received" inputGridSm={12} inputType="text" mb={2} onChange={(event) => handleAwardChange(event, index)} /> 
+                                                    <label className={resumeCss.DetachedLabels}>Date Awarded</label>
+                                                    <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" onChange={(event) => handleAwardChange(event, index)} /> 
+                                                </Grid>
                                     })}
                                 </Grid>
                                 <div className={resumeCss.CenteredElem}>
@@ -399,8 +562,12 @@ const Resume = () => {
                             <h4>Publications [If any]</h4>
                             <div>
                                 <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
-                                    {publications.map((item, index) => {
-                                        return <div key={index}>{item}</div>
+                                    {publications.map((info, index) => {
+                                        return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
+                                                    <AuthInput name="title" value={info.title} label="Publication Title" inputGridSm={12} inputType="text" mb={2} onChange={(event) => handlePubChange(event, index)} /> 
+                                                    <label className={resumeCss.DetachedLabels}>Date Awarded </label>
+                                                    <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" onChange={(event) => handlePubChange(event, index)} /> 
+                                                </Grid>
                                     })}
                                 </Grid>
                                 <div className={resumeCss.CenteredElem}>
