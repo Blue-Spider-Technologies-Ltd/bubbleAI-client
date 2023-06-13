@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from 'react-router-dom'
 import MenuBar from "../UI/Menu/Menu";
 import "./Home.css"
 import { Grid } from "@mui/material";
@@ -7,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
-import { categoriesData } from "./categories"
+import categoriesData from "./categories"
 import { useSelector, useDispatch } from "react-redux";
 import { setMessages, setMessage, setUser } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
@@ -23,6 +24,8 @@ const Home = () => {
     const { messages, user } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const chatBoxRef = useRef(null);
+    const navigate = useNavigate()
+  
 
     useEffect(() => {
         const isAuth = localStorage.getItem('token')
@@ -36,7 +39,11 @@ const Home = () => {
                         const headers = {
                             'x-access-token': isAuth
                         }
-                        const response = await axios.get('/user', {headers})
+                        const response = await axios.get('/user/user', {headers})
+                        if (response.data.status === "unauthenticated") {
+                            localStorage?.removeItem('token')
+                            return navigate('/popin')
+                        }
                         dispatch(setMessages(response.data.user.messages))
                         dispatch(setUser(response.data.user))
                     } catch (error) {
@@ -45,12 +52,12 @@ const Home = () => {
                     }
                 }
             } else {
-                console.log("unauthenticated");
+                //console.log("unauthenticated");
             }
         }
         populateUser()
 
-    }, [dispatch, user]);
+    }, [dispatch, user, navigate]);
 
     useEffect(() => {
         // Scroll to bottom on new message

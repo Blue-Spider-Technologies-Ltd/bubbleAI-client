@@ -11,7 +11,6 @@ import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
 const isAuth = localStorage?.getItem('token')
-// import { SelectChangeEvent } from '@mui/material/Select';
 
 const Resume = () => {
     const dispatch = useDispatch()
@@ -26,6 +25,9 @@ const Resume = () => {
         lastName: "",
         dob: "",
         mobileCode: "",
+        mobile: "",
+        street: "",
+        city: "",
         country: "",
         profSummary: ""
     })
@@ -37,16 +39,23 @@ const Resume = () => {
             } else {
                 const populateUser = async () => {
                     try {
-                        const response = await axios.get('/user', {
+                        const response = await axios.get('/user/user', {
                             headers: {
                                 'x-access-token': isAuth
                             }
                         })
+                        if (response.data.status === "unauthenticated") {
+                            localStorage?.removeItem('token')
+                            return navigate('/popin')
+                        }
                         setBasicInfo({
                             firstName: response.data.user.firstName,
                             lastName: response.data.user.lastName,
                             dob: response.data.user.dob || "",
                             mobileCode: response.data.user.mobileCode || "",
+                            mobile: response.data.user.mobile || "",
+                            street: response.data.user.street || "",
+                            city: response.data.user.city || "",
                             country: response.data.user.country || "",
                             profSummary: response.data.user.profSummary || ""
                         })
@@ -112,10 +121,6 @@ const Resume = () => {
         }
     ])
 
-    const [country, setCountry] = useState('')
-    const [countryCode, setCountryCode] = useState('')
-    //Checked if user logged in/found
-
     const toggleResumes = () => {
         showResumes(!resumes)
     }
@@ -163,7 +168,7 @@ const Resume = () => {
         console.log(event);
         const prevSkills = [...skills];
         prevSkills[index].value = event.target.value
-        setLinkInfo(prevSkills)
+        addSkills(prevSkills)
     };
 
     ///EDUCATION INFO HANDLERS
@@ -202,7 +207,6 @@ const Resume = () => {
             case "date":
                 prevEduExp[index].date = event.target.value
                 addEduArray(prevEduExp)
-                console.log(eduArray);
                 break;
             default: addEduArray(prevEduExp)
                 break;
@@ -382,24 +386,40 @@ const Resume = () => {
 
     };
 
+
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        console.log(country + countryCode)
+        const resumeData = {
+            basicInfo: basicInfo,           //Object
+            linkInfo: linkInfo,             //Array
+            skills: skills,                 //Array
+            eduArray: eduArray,             //Array
+            workExpArray: workExpArray,     //Array
+            certArray: certArray,           //Array
+            awardArray: awardArray,         //Array
+            publications: publications      //Array
+        }
+
+        try {
+            const response = await axios.post('/user/resume', resumeData, {
+                headers: {
+                    'x-access-token': isAuth
+                }
+            })
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+            setError(error.response.data.message)
+        }
+
+
     }
 
     
-    const handleInputChange = (event, index) => {
-        // setUser({ ...user, [prop]: event.target.value});
+    const handleInputChange = (prop) => (event) => {
+        setBasicInfo({ ...basicInfo, [prop]: event.target.value});
     };    
 
-    
-    
-    const handleSelectChange = (event) => {
-        if (event.target.name === "c-code") {
-            return setCountryCode(event.target.value)
-        }
-        setCountry(event.target.value);
-    };
     return (
         <div className={resumeCss.Resume}>
 
@@ -425,7 +445,6 @@ const Resume = () => {
                         <div><span>2</span>Preview AI Build</div>
                         <div><span>3</span>Download</div>
                     </div>
-
                     <form method="post" onSubmit={handleFormSubmit}>
                         <div className='error'>{error}</div>
                         <div className={resumeCss.Segment}>
@@ -434,12 +453,12 @@ const Resume = () => {
                                 <AuthInput value={basicInfo.firstName} inputType="text" inputGridSm={12} inputGrid={6} mb={2} required={true} disabled={true} onChange={handleInputChange('firstName')} /> 
                                 <AuthInput value={basicInfo.lastName} inputType="text" inputGridSm={12} inputGrid={6} mb={0} required={true} disabled={true} onChange={handleInputChange('lastName')} /> 
                                 <div style={{width: "100%"}}><div className={resumeCss.DetachedLabels}>Date of Birth *</div></div>
-                                <AuthInput placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={2} mb={2} required={true} onChange={handleInputChange('date')} /> 
-                                <AuthInput label="Code" inputType="select" inputGridSm={4} inputGrid={3} mb={2} list={COUNTRIES} required={true} changed={handleSelectChange} name='c-code' /> 
-                                <AuthInput label="Mobile" inputType="number" inputGridSm={8} inputGrid={7} mb={2} required={true} onChange={handleInputChange('number')} /> 
-                                <AuthInput label="Street Name" inputType="text" inputGridSm={7} inputGrid={4} mb={2} required={true} onChange={handleInputChange('street')} /> 
-                                <AuthInput label="City" inputType="text" inputGridSm={5} inputGrid={4} mb={2} required={true} onChange={handleInputChange('city')} /> 
-                                <AuthInput label="Country" inputType="select2" inputGridSm={12} inputGrid={4} mb={2} list={COUNTRIES} required={true} changed={handleSelectChange} name='country' /> 
+                                <AuthInput value={basicInfo.dob} placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={2} mb={2} required={true} onChange={handleInputChange('dob')} /> 
+                                <AuthInput value={basicInfo.mobileCode} label="Code" inputType="select" inputGridSm={4} inputGrid={3} mb={2} list={COUNTRIES} required={true} onChange={handleInputChange('mobileCode')} name='c-code' /> 
+                                <AuthInput value={basicInfo.mobile} label="Mobile" inputType="number" inputGridSm={8} inputGrid={7} mb={2} required={true} onChange={handleInputChange('mobile')} /> 
+                                <AuthInput value={basicInfo.street} label="Street Name" inputType="text" inputGridSm={7} inputGrid={4} mb={2} required={true} onChange={handleInputChange('street')} /> 
+                                <AuthInput value={basicInfo.city} label="City" inputType="text" inputGridSm={5} inputGrid={4} mb={2} required={true} onChange={handleInputChange('city')} /> 
+                                <AuthInput value={basicInfo.country} label="Country" inputType="select2" inputGridSm={12} inputGrid={4} mb={2} list={COUNTRIES} required={true} onChange={handleInputChange('country')} /> 
                                 {linkInfo.map((info, index) => {
                                     return <AuthInput 
                                                 key={index} 
@@ -457,7 +476,7 @@ const Resume = () => {
                                     <div style={{marginRight: "10px"}} className='delete' title='Delete Link' onClick={handleDeleteLinks}>-</div>
                                     <div className='add' title='Add More Links' onClick={handleAddLinks}>+</div>
                                 </Grid>
-                                <AuthInput placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} mb={2} /> 
+                                <AuthInput value={basicInfo.profSummary} placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} mb={2} onChange={handleInputChange('profSummary')} /> 
                             </Grid>
                         </div>
                         <div className={resumeCss.Segment}>

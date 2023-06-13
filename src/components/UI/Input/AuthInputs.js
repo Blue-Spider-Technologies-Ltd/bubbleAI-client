@@ -115,7 +115,7 @@ export const AuthInput = props => {
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                     id={props.label}
-                    onChange={props.changed}
+                    onChange={props.onChange}
                     name={props.name}
                     value={props.value}
                     >
@@ -135,7 +135,7 @@ export const AuthInput = props => {
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                     id={props.label}
-                    onChange={props.changed}
+                    onChange={props.onChange}
                     name={props.name}
                     value={props.value}
                     >

@@ -5,8 +5,9 @@ import productImg from "../../images/product.jpg"
 import fraudImg from "../../images/fraud-detector.jpg"
 import reportImg from "../../images/report.jpg"
 import relationshipImg from "../../images/relationship.jpg"
+import sttImg from "../../images/stt2.jpg"
 const isAuth = localStorage?.getItem('token')
-export const categoriesData = [
+const categoriesData = [
     {
         title: "Resume Writer",
         desc: "Enter to create the perfect resume",
@@ -18,6 +19,12 @@ export const categoriesData = [
         desc: "Enter to define the purpose and a trajectory for your ideas",
         url: isAuth ? '/user/dashboard/business-plan' : '/popin?business-plan',
         image: businessPlanImg
+    },
+    {
+        title: "Depositions",
+        desc: "Minutes of Proceedings (Speech to Text & Voice Recognition) AI",
+        url: isAuth ? '/user/dashboard/depositions' : '/popin?depositions',
+        image: sttImg
     },
     {
         title: "Product Price Setter",
@@ -44,3 +51,5 @@ export const categoriesData = [
         image: reportImg
     }
 ];
+
+export default categoriesData
