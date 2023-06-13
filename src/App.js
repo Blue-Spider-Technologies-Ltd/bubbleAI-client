@@ -6,11 +6,10 @@ import Register from './components/Auth/Register';
 import Resume from './components/Resume/Resume'
 
 function App() {
-  const isAuth = localStorage.getItem('token')
   return (
     <div>
       <Routes>
-        <Route path={'/user/dashboard/resume'} element={isAuth ? <Resume /> : <Login />} />
+        <Route path={'/user/dashboard/resume'} element={ <Resume /> } />
         <Route path={'/popin'} element={ <Login /> } />
         <Route path={'/join-bubble'} element={<Register />} />
         <Route path={'/'} element={<Home />} />

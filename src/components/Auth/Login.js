@@ -16,7 +16,6 @@ const screenWidth = window.innerWidth
 
 const Login = () => {
     const location = useLocation()
-    const queryString = location.search.slice(1)
     const navigate = useNavigate();
     const isAuth = localStorage?.getItem('token')
     const [error, setError] = useState('')
@@ -25,11 +24,17 @@ const Login = () => {
         password: ''
     })
 
+    const queryString = location.search.slice(1)
+
     useEffect(() => {
         if(isAuth) {
-            navigate('/')
+            if (queryString.length >= 1)  {
+                navigate(`/user/dashboard/${queryString}`)
+            } else {
+                navigate('/')
+            }
         }
-    }, [isAuth, navigate])
+    }, [isAuth, navigate, queryString])
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
@@ -42,10 +47,12 @@ const Login = () => {
             let userDetails = response.data.user
             localStorage.setItem('token', userDetails)
             userDetails = await jwt_decode(userDetails)
-            // dispatch(setUser(userDetails))
             setError("")
-            if (queryString !== '') return navigate(`/user/dashboard/${queryString}`)
-            navigate('/')
+            if (queryString.length >= 1)  {
+                navigate(`/user/dashboard/${queryString}`)
+            } else {
+                navigate('/')
+            }
         } catch (error) {
             setError(error.response.data.message)
         }

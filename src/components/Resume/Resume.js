@@ -10,7 +10,6 @@ import { setUser } from "../../redux/states";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
-const isAuth = localStorage?.getItem('token')
 
 const Resume = () => {
     const dispatch = useDispatch()
@@ -19,6 +18,9 @@ const Resume = () => {
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const [resumes, showResumes] = useState(false)
+
+    
+    const isAuth = localStorage?.getItem('token')
     //resume data
     const [basicInfo, setBasicInfo] = useState({
         firstName: "",
@@ -70,7 +72,7 @@ const Resume = () => {
         } else {
             navigate('/popin')
         }
-    }, [navigate, dispatch, userLength])
+    }, [navigate, dispatch, userLength, isAuth])
 
     const [linkInfo, setLinkInfo] = useState([
         {

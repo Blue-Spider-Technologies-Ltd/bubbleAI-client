@@ -25,10 +25,11 @@ const Home = () => {
     const dispatch = useDispatch();
     const chatBoxRef = useRef(null);
     const navigate = useNavigate()
+
+    const isAuth = localStorage?.getItem('token')
   
 
     useEffect(() => {
-        const isAuth = localStorage.getItem('token')
         const populateUser = async () => {
             if (isAuth) {
                 //Check if user and messages set for authenticated user, if not, set
@@ -57,7 +58,7 @@ const Home = () => {
         }
         populateUser()
 
-    }, [dispatch, user, navigate]);
+    }, [dispatch, user, navigate, isAuth]);
 
     useEffect(() => {
         // Scroll to bottom on new message
@@ -116,7 +117,6 @@ const Home = () => {
             role: 'user',
             content: e.target.elements[0].value
         } 
-        const isAuth = localStorage?.getItem('token')
         if (isAuth) {
             //save authenticated user message
             dispatch(setMessage(newMessage))
@@ -212,7 +212,7 @@ const Home = () => {
                         {categoriesData.map((data, index) => {
                             return (
                                 <Grid item xs={12} md={6} lg={4} mb={5} key={index}>
-                                    <Blob link={data.url} bgImage={data.image} altText={data.title} desc={data.desc} title={data.title} />
+                                    <Blob link={isAuth ? data.isAuthURL : data.unAuthURL} bgImage={data.image} altText={data.title} desc={data.desc} title={data.title} />
                                     <h3>{data.title}</h3>
                                 </Grid>
                             )
