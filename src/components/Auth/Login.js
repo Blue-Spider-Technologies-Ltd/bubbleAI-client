@@ -85,7 +85,7 @@ const Login = () => {
                         <Input placeholder="Email..." inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
                         <Input placeholder="Password..." inputType="password" inputGridSm={12} onChange={handleInputChange('password')} />
                         <Link href="/pwd-recovery" className={authCss.pwdRec}>forgot password?</Link>
-                        <div >
+                        <div>
                             <ButtonSubmitBlack type="submit"><Send /></ButtonSubmitBlack>
                         </div>
                     </form>

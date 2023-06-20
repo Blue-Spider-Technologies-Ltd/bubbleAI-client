@@ -1,0 +1,67 @@
+.ModalContainer {
+    background-color: #0000005f;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 999999;
+}
+
+.ModalBody {
+    background-color: white;
+    border-radius: 10px;
+    width: 60%;
+    height: 70vh;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.ModalBlobBg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    position: relative;
+}
+
+.ModalInner {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    color: white;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    padding: 30px;
+    background: rgb(153,225,228);
+    background: radial-gradient(circle, rgba(153,225,228,0.9114496140252977) 0%, rgba(62,143,147,1) 35%);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+
+/* Smaller Screens */
+@media (max-width: 900px)  {
+
+    .ModalBody {
+        width: 75%;
+    }
+
+}
