@@ -10,6 +10,7 @@ import { Send, Google, Apple } from '@mui/icons-material';
 import { Link } from "@mui/material";
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import { ThreeCircles } from 'react-loader-spinner'
 
 
 const screenWidth = window.innerWidth
@@ -19,6 +20,7 @@ const Login = () => {
     const navigate = useNavigate();
     const isAuth = localStorage?.getItem('token')
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const [data, setData] = useState({
         email: '',
         password: ''
@@ -38,6 +40,7 @@ const Login = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
         const userData = {
             email: data.email,
             password: data.password
@@ -48,12 +51,14 @@ const Login = () => {
             localStorage.setItem('token', userDetails)
             userDetails = await jwt_decode(userDetails)
             setError("")
+            setLoading(false)
             if (queryString.length >= 1)  {
                 navigate(`/user/dashboard/${queryString}`)
             } else {
                 navigate('/')
             }
         } catch (error) {
+            setLoading(false)
             setError(error.response.data.message)
         }
 
@@ -86,7 +91,15 @@ const Login = () => {
                         <Input placeholder="Password..." inputType="password" inputGridSm={12} onChange={handleInputChange('password')} />
                         <Link href="/pwd-recovery" className={authCss.pwdRec}>forgot password?</Link>
                         <div>
-                            <ButtonSubmitBlack type="submit"><Send /></ButtonSubmitBlack>
+                            <ButtonSubmitBlack type="submit">{!loading ? <Send /> : 
+                                <ThreeCircles
+                                    height="25"
+                                    width="25"
+                                    color="#FFFFFF"
+                                    visible={true}
+                                    ariaLabel="three-circles-rotating"
+                                />}
+                            </ButtonSubmitBlack>
                         </div>
                     </form>
                     <p><strong>Or</strong></p>

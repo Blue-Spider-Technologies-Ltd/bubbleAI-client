@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   messages: [],
   user: {},
+  resume: {},
   modalLoading: false
 }
 
@@ -23,6 +24,12 @@ export const stateSlice = createSlice({
       const newMessage = action.payload
       state.messages = [...state.messages, newMessage]
     },
+    deleteLastMessage: (state) => {
+      state.messages.splice(-1, 1)
+    },
+    setResume: (state, action) => {
+      state.resume = action.payload;
+    },
     //should modal show?
     setModalLoading: (state, action) => {
       state.modalLoading = action.payload;
@@ -35,6 +42,8 @@ export const {
   setMessages, 
   setUser, 
   setMessage, 
+  deleteLastMessage,
+  setResume,
   setModalLoading 
 } = stateSlice.actions
 

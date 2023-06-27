@@ -3,11 +3,11 @@ import chatBoxCss from "./ChatBoxes.module.css"
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import Person4Icon from '@mui/icons-material/Person4';
 
-
 export const Assistant = (props) => {
     return (
         <div className={chatBoxCss.assistantOuter}>
-            <SmartToyIcon /><div className={chatBoxCss.Assistant}>{props.children}</div>
+            <SmartToyIcon /><div className={chatBoxCss.Assistant}>{props.children}
+        </div>
         </div>
     )
 }

@@ -12,8 +12,8 @@
     position: absolute;
     background-color: #4b939892;
     top: -86%;
-    left: -8%;
-    width: 95% !important;
+    left: -15%;
+    width: 80% !important;
     height: 140vh;
     padding: 0;
     -webkit-border-radius: 50%;
@@ -149,6 +149,8 @@
     padding: 10px;
     margin: 20px 0;
     border-radius: 20px;
+    box-sizing: border-box;
+    width: 100% !important;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     -ms-border-radius: 20px;

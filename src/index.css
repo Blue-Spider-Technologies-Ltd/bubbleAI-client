@@ -75,3 +75,27 @@ h1 {
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
 }
+
+.array-item {
+  background-color: var(--lightModeGreen);
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: black;
+  display: flex;
+  align-items: center;
+  padding: 1px 0 1px 8px;
+  font-size: .8rem;
+  font-weight: 600;
+  margin: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.itemDelete {
+  cursor: pointer;
+  border-left: 1px solid white;
+  margin-left: 10px;
+  padding: 5px 10px;
+}

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import resumeCss from './Resume.module.css'
-import { useNavigate, Link, useLocation } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import logoImg from "../../images/bubble-logo.png"
 import { AuthInput } from '../UI/Input/AuthInputs';
 import { Grid } from "@mui/material";
 import { COUNTRIES } from '../../utils/countries';
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../../redux/states";
+import { setUser, setResume } from "../../redux/states";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
@@ -17,16 +17,12 @@ const screenWidth = window.innerWidth
 const CustomizeResume = () => {
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.stateData)
-    const userLength = Object.keys(user).lengths
+    const userLength = Object.keys(user).length
     const navigate = useNavigate()
-    const location = useLocation()
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [resumes, showResumes] = useState(false)
 
-    console.log(location);
-
-    
     const isAuth = localStorage?.getItem('token')
     //resume data
     const [basicInfo, setBasicInfo] = useState({
@@ -45,9 +41,7 @@ const CustomizeResume = () => {
     useEffect(() => {
 
         if(isAuth) {
-            if(userLength > 0 ) {
-                //console.log(user)
-            } else {
+            if(userLength <= 0 ) {
                 const populateUser = async () => {
                     try {
                         const response = await axios.get('/user/user', {
@@ -170,7 +164,6 @@ const CustomizeResume = () => {
         setError("Leave blank, don't delete")
     }
     const handleSkillChange = (event, index) => {
-        console.log(event);
         const prevSkills = [...skills];
         prevSkills[index] = event.target.value
         addSkills(prevSkills)
@@ -395,6 +388,7 @@ const CustomizeResume = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
+        dispatch(setResume({}))
         const resumeData = {
             basicInfo: basicInfo,           //Object
             linkInfo: linkInfo,             //Array
@@ -412,10 +406,16 @@ const CustomizeResume = () => {
                     'x-access-token': isAuth
                 }
             })
-            console.log(response)
+            if(response.status === 500) {
+                setLoading(false)
+                return setError("We are being throttled, try again after a while")
+            }
+            dispatch(setResume(response.data.resumeData))
+            setLoading(false)
+            navigate('/user/dashboard/resume?preview')
         } catch (error) {
             console.log(error)
-            setError(error.response.data.message)
+            setError("We are being throttled, try again after a while")
         }
     }
   
@@ -455,7 +455,7 @@ const CustomizeResume = () => {
                             <Grid container>
                                 <AuthInput value={basicInfo.firstName} inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} onChange={handleInputChange('firstName')} /> 
                                 <AuthInput value={basicInfo.lastName} inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} onChange={handleInputChange('lastName')} /> 
-                                <AuthInput value={basicInfo.email} inputType="email" inputGridSm={12} inputGrid={4} mb={0} required={true} disabled={true} onChange={handleInputChange('email')} /> 
+                                <AuthInput value={basicInfo.email} inputType="email" inputGridSm={12} inputGrid={4} mb={0} required={true} disabled={false} onChange={handleInputChange('email')} /> 
                                 <div style={{width: "100%"}}><div className={resumeCss.DetachedLabels}>Date of Birth *</div></div>
                                 <AuthInput value={basicInfo.dob} placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={2} mb={2} required={true} onChange={handleInputChange('dob')} /> 
                                 <AuthInput value={basicInfo.mobileCode} label="Code" inputType="select" inputGridSm={4} inputGrid={3} mb={2} list={COUNTRIES} required={true} onChange={handleInputChange('mobileCode')} name='c-code' /> 
@@ -468,7 +468,7 @@ const CustomizeResume = () => {
                                     return <AuthInput 
                                                 key={index} 
                                                 label="Add a link e.g linkedin, github or your website" 
-                                                value={info.value} 
+                                                value={info} 
                                                 inputType="text" 
                                                 inputGridSm={8} 
                                                 inputGrid={8}

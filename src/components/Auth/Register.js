@@ -8,6 +8,7 @@ import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Google, Apple } from '@mui/icons-material';
 import { Link, Grid } from "@mui/material";
 import axios from 'axios';
+import { ThreeCircles } from 'react-loader-spinner'
 
 
 const screenWidth = window.innerWidth
@@ -21,9 +22,11 @@ const Register = () => {
         confirmPassword: ''
     })
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
 
         if (user.password.length < 8) {
             setError('password too short')
@@ -39,9 +42,11 @@ const Register = () => {
             }
             try {
                 const response = await axios.post('/auth/register', userData)
+                setLoading(false)
                 console.log(response)
             } catch (error) {
                 console.log(error)
+                setLoading(false)
                 setError(error.response.data.message)
             }
 
@@ -82,8 +87,16 @@ const Register = () => {
                         <Input placeholder="Password..." inputType="password" inputGridSm={12} onChange={handleInputChange('password')} />
                         <Input placeholder="Confirm password..." inputType="password" inputGridSm={12} onChange={handleInputChange('confirmPassword')} />
                         <Link href="/popin" className={authCss.pwdRec}>Login?</Link>
-                        <div >
-                            <ButtonSubmitBlack type="submit"><Send /></ButtonSubmitBlack>
+                        <div>
+                            <ButtonSubmitBlack type="submit">{!loading ? <Send /> : 
+                                <ThreeCircles
+                                    height="25"
+                                    width="25"
+                                    color="#FFFFFF"
+                                    visible={true}
+                                    ariaLabel="three-circles-rotating"
+                                />}
+                            </ButtonSubmitBlack>
                         </div>
                     </form>
                     <p><strong>Or</strong></p>

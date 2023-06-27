@@ -10,15 +10,15 @@ import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import categoriesData from "./categories";
 import { useSelector, useDispatch } from "react-redux";
-import { setMessages, setMessage, setUser } from "../../redux/states";
+import { setMessages, setMessage, setUser, deleteLastMessage } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
+import { ThreeDots } from 'react-loader-spinner'
 import axios from "axios";
+
 
 const Home = () => {
   const [isFocused, setFocused] = useState(false);
   const [chatBgFocused, setChatBgFocused] = useState(false);
-  const [loading, setLoading] = useState(false);
-  console.log(loading);
   const [error, setError] = useState("");
   const { messages, user } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
@@ -100,15 +100,24 @@ const Home = () => {
   }, [isFocused, chatBgFocused]);
 
   const chatExchange = messages.map((message, index) => {
-    return message.role === "assistant" ? (
-      <div key={index}>
-        <Assistant>{message.content}</Assistant>
-      </div>
+    const isAssistant = message.role === "assistant";
+    const contentTrim = message.content.trim()
+    const content = isAssistant? (
+      <Assistant>{contentTrim === "" ?        
+      <ThreeDots 
+        height="25" 
+        width="25" 
+        radius="9"
+        color="#000" 
+        ariaLabel="three-dots-loading"
+        visible={true}
+      /> : message.content
+    }
+      </Assistant>
     ) : (
-      <div key={index}>
-        <User>{message.content}</User>
-      </div>
+      <User>{message.content}</User>
     );
+    return <div key={index}>{content}</div>;
   });
 
   const handleFocus = () => {
@@ -118,14 +127,19 @@ const Home = () => {
 
   const handleAskMeAnything = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const newMessage = {
       role: "user",
       content: e.target.elements[0].value,
     };
+    //Dispatch with empty content to enable thinking algo
+    const emptyMessage = {
+      role: "assistant",
+      content: "",
+    };
     if (isAuth) {
       //save authenticated user message
       dispatch(setMessage(newMessage));
+      dispatch(setMessage(emptyMessage));
       e.target.elements[0].value = "";
       try {
         let response = await axios.post("/askme", newMessage, {
@@ -134,12 +148,11 @@ const Home = () => {
           },
         });
         //save ai response for auth user
-        console.log(response.data);
+        dispatch(deleteLastMessage());
         dispatch(setMessage(response.data));
-        setLoading(false);
       } catch (error) {
         console.log(error);
-        setLoading(false);
+        dispatch(deleteLastMessage());
       }
     } else {
       //prevent overuse when not registered/logged in
@@ -155,26 +168,28 @@ const Home = () => {
       localStorage.setItem("oats_3297", useIndicatorJson);
       if (useCount > 1) {
         dispatch(setMessage(newMessage));
+        dispatch(setMessage(emptyMessage));
         const overUseMessage = {
           role: "assistant",
           content:
             "You have used up your free interactions for the day, kindly register to enjoy more",
         };
+        dispatch(deleteLastMessage());
         dispatch(setMessage(overUseMessage));
         e.target.elements[0].value = "";
       } else {
         //THIS BLOCK FOR unauthenticated users below 3 usage within the day
         dispatch(setMessage(newMessage));
+        dispatch(setMessage(emptyMessage));
         e.target.elements[0].value = "";
 
         try {
           let response = await axios.post("/askme", newMessage);
-          console.log(response);
+          dispatch(deleteLastMessage());
           dispatch(setMessage(response.data));
-          setLoading(false);
         } catch (error) {
           console.log(error);
-          setLoading(false);
+          dispatch(deleteLastMessage());
         }
       }
     }
