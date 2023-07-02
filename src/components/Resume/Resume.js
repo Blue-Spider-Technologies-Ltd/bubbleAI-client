@@ -2,12 +2,13 @@ import React from 'react'
 // import resumeCss from './Resume.module.css'
 import CustomizeResume from './CustomizeResume'
 import PreviewResume from './PreviewResume'
+import DownloadResume from './DownloadResume'
 import { useLocation } from 'react-router-dom'
 
 
 const Resume = () => {
-
     const location = useLocation()
+    
     const currentComponent = (path) => {
         let page
         switch (path) {
@@ -17,7 +18,10 @@ const Resume = () => {
             case "?preview":
                 page = <PreviewResume />
                 break;
-        
+            case "?download":
+                page = <DownloadResume />
+                break;
+    
             default: 
                 page = <CustomizeResume />
                 break;

@@ -5,17 +5,16 @@ import logoImg from "../../images/bubble-logo.png"
 import { AuthInput } from '../UI/Input/AuthInputs';
 import { Grid } from "@mui/material";
 import { COUNTRIES } from '../../utils/countries';
-import { useSelector } from "react-redux";
-// import { setResume } from "../../redux/states";
+import { useSelector, useDispatch } from "react-redux";
+import { setResume } from "../../redux/states";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import axios from 'axios'
 import Modal from '../UI/Modal/Modal';
 import { Rings, Watch } from 'react-loader-spinner'
 const screenWidth = window.innerWidth
 
 const PreviewResume = () => {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const { resume } = useSelector(state => state.stateData)
     const navigate = useNavigate()
     const [error, setError] = useState("")
@@ -39,9 +38,9 @@ const PreviewResume = () => {
     })
     const [linkInfo, setLinkInfo] = useState([])
     const [skills, setSkills] = useState([])
+    const [interests, setInterests] = useState([])
     const [eduArray, setEduArray] = useState([])
     const [workExpArray, setWorkExpArray] = useState([])
-    const [certArray, setCertArray] = useState([])
     const [awardArray, setAwardArray] = useState([])
     const [publications, setPublications] = useState([])
     useEffect(() => {
@@ -54,9 +53,9 @@ const PreviewResume = () => {
             setBasicInfo(resume.basicInfo && resume.basicInfo)
             setLinkInfo(resume.linkInfo && resume.linkInfo)
             setSkills(resume.skills && resume.skills)
+            setInterests(resume.interests && resume.interests)
             setEduArray(resume.eduInfo && resume.eduInfo)
             setWorkExpArray(resume.workExpInfo && resume.workExpInfo)
-            setCertArray(resume.certInfo && resume.certInfo)
             setAwardArray(resume.awardInfo && resume.awardInfo)
             // setPublications(resume.awardInfo)
 
@@ -64,6 +63,15 @@ const PreviewResume = () => {
             navigate('/popin')
         }
     }, [isAuth, navigate, resume])
+
+    useEffect(() => {
+        const now = new Date().getTime();
+        let resumeObjforLocal = {
+            resumeData : resume,
+            expiration: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
+        }
+        localStorage.setItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@', JSON.stringify(resumeObjforLocal));
+    }, [resume])
 
 
     const toggleResumes = () => {
@@ -91,8 +99,17 @@ const PreviewResume = () => {
         }
     };
 
-    //     /////WORK EXP HANDLERS
+    const handleDeleteInterests = (index) => {
+        //to fix react confirm bug
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm(`Proceed to delete interest? ${interests[index]}`)) {
+            const prevInterests = [...interests];
+            prevInterests.splice(index, 1);
+            setInterests(prevInterests);
+        }
+    };
 
+    //     /////WORK EXP HANDLERS
     const handleWorkExpChange = (event, index) => {
         const prevWorkExp = [...workExpArray];     
         prevWorkExp[index].jobDesc = event.target.value
@@ -109,22 +126,18 @@ const PreviewResume = () => {
             skills: skills,                 //Array
             eduArray: eduArray,             //Array
             workExpArray: workExpArray,     //Array
-            certArray: certArray,           //Array
             awardArray: awardArray,         //Array
             // publications: publications      //Array
         }
 
-        // try {
-        //     const response = await axios.post('/user/resume', resumeData, {
-        //         headers: {
-        //             'x-access-token': isAuth
-        //         }
-        //     })
-        //     console.log(response)
-        // } catch (error) {
-        //     console.log(error)
-        //     setError(error.response.data.message)
-        // }
+        try {
+            dispatch(setResume(resumeData))
+            setLoading(false)
+            navigate('/user/dashboard/resume?download')
+        } catch (error) {
+            console.log(error)
+            setError("Try again")
+        }
     }
 
     const handleInputChange = (prop) => (event) => {
@@ -216,38 +229,30 @@ const PreviewResume = () => {
                             </div>
                         </div>
                         <div className={resumeCss.Segment}>
-                            <h4>Work Experience</h4>
+                            <h4>Work & Volunteering Experience</h4>
                             <div>
                                 {workExpArray.map((info, index) => {
-                                return <Grid container className='segment' key={index}>
-                                        <AuthInput name="company" value={info.company} label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} disabled={true} />
-                                        <AuthInput name="position" value={info.position} label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} disabled={true} />
-                                        <label className={resumeCss.DetachedLabels}>From *</label>
-                                        <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} disabled={true} />
-                                        <label className={resumeCss.DetachedLabels} style={{ marginRight: "10px" }}>To *</label>
-                                        <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} disabled={true} />
-                                        <AuthInput name="jobDesc" value={info.jobDesc} label="Job Description" multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} />
-                                    </Grid>
+                                    return <Grid container className='segment' key={index}>
+                                                <AuthInput name="company" value={info.company}  label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="position" value={info.position}  label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="industry" value={info.industry}  label="Industry e.g IT" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="workLink" value={info.workLink}  label="Related Link" inputType="text" inputGridSm={12} inputGrid={3} mb={2} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <div style={{width: "50%", margin: "0 auto 5px", display: "flex", justifyContent: "center"}}>
+                                                    <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
+                                                        <label className={resumeCss.DetachedLabels}>From *</label>
+                                                        <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                    </div>
+                                                    <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
+                                                        <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
+                                                        <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                    </div>
+                                     
+                                                </div>
+                                                <AuthInput name="jobDesc" value={info.jobDesc}  placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                            </Grid>
                                 })}
                             </div>
                         </div>
-
-                        {certArray.length > 0 &&
-                            <div className={resumeCss.Segment}>
-                                <h4>Professional Certifications [If any]</h4>
-                                <div>
-                                    <Grid container sx={{ display: "flex", justifyContent: "space-around" }}>
-                                        {certArray.map((info, index) => {
-                                            return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
-                                                <AuthInput name="cert" value={info.cert} label="Certification Name" inputGridSm={12} inputType="text" mb={2} />
-                                                <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                                                <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" />
-                                            </Grid>
-                                        })}
-                                    </Grid>
-                                </div>
-                            </div>
-                        }
 
                         {awardArray.length > 0 && 
                             <div className={resumeCss.Segment}>
@@ -284,6 +289,20 @@ const PreviewResume = () => {
                             </div>
                         }
 
+                        {interests.length > 0 &&
+                            <div className={resumeCss.Segment}>
+                                <h4>Interests</h4>
+                                <Grid container>
+                                    <Grid item xs={12} style={{padding: "5px", display: "flex", flexWrap: "wrap"}}>
+                                        {interests.map((interest, index) => {
+                                            return (
+                                                <span key={index} className='array-item'>{interest}<span className='itemDelete' title='Delete Interest' onClick={() => {handleDeleteInterests(index)}}>X</span></span>
+                                            )
+                                        })}
+                                    </Grid>
+                                </Grid>
+                            </div>
+                        }
                         <div style={{ width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px" }}>
                             <div style={{ width: "150px" }}>
                                 <ButtonSubmitGreen>
@@ -321,7 +340,7 @@ const PreviewResume = () => {
                     }
                 </div>                       
 
-                <h3>Creating your Resume, I'll only take a minute or less</h3>
+                <h3>Readying your Resume for download...</h3>
                 </Modal>
             )}
 

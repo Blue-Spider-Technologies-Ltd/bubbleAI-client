@@ -32,7 +32,6 @@ setInterval(() => {
 //Refresh usage every day for unauthenticated users
 setInterval(() => {
   let tokenToExpire = localStorage?.getItem('oats_3297')
-  tokenToExpire = jwt_decode(tokenToExpire)
   if(tokenToExpire && now > tokenToExpire.expiration) {
     localStorage.removeItem('token')
   }

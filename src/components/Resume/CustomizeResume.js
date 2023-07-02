@@ -83,6 +83,8 @@ const CustomizeResume = () => {
 
     const [skills, addSkills] = useState([""])
 
+    const [interests, addInterests] = useState([""])
+
     const [eduArray, addEduArray] = useState([
         {
             institution: "",
@@ -96,16 +98,18 @@ const CustomizeResume = () => {
             position: "",
             dateFrom: "",
             dateTo: "",
+            industry: "",
+            workLink: "",
             jobDesc: ""
         }
     ])
  
-    const [certArray, addCertArray] = useState([
-        {
-            cert: "",
-            date: ""
-        }
-    ])
+    // const [certArray, addCertArray] = useState([
+    //     {
+    //         cert: "",
+    //         date: ""
+    //     }
+    // ])
     const [awardArray, addAwardArray] =  useState([
         {
             org: "",
@@ -169,6 +173,29 @@ const CustomizeResume = () => {
         addSkills(prevSkills)
     };
 
+    
+    /////////////SKILL HANDLERS
+    const handleAddInterests = () => {
+        setError("")
+        const newInterest = ""
+        addInterests([...interests, newInterest])
+    }
+    const handleDeleteInterests = () => {
+        setError("")
+        if(interests.length > 1) {
+            const prevInterests = [...interests]
+            prevInterests.pop()
+            return addInterests([...prevInterests])
+        }
+        setError("Leave blank, don't delete")
+    }
+    const handleInterestChange = (event, index) => {
+        const prevInterests = [...interests];
+        prevInterests[index] = event.target.value
+        addInterests(prevInterests)
+    };
+
+
     ///EDUCATION INFO HANDLERS
     const handleAddEduInfo = () => {
         setError("")
@@ -220,6 +247,8 @@ const CustomizeResume = () => {
             position: "",
             dateFrom: "",
             dateTo: "",
+            industry: "",
+            workLink: "",
             jobDesc: ""
         }
         if(workExpArray.length < 3) {
@@ -247,7 +276,15 @@ const CustomizeResume = () => {
             case "position":
                 prevWorkExp[index].position = event.target.value
                 addWorkExpArray(prevWorkExp)
-                break;            
+                break;
+            case "industry":
+                prevWorkExp[index].industry = event.target.value
+                addWorkExpArray(prevWorkExp)
+                break; 
+            case "workLink":
+                prevWorkExp[index].workLink = event.target.value
+                addWorkExpArray(prevWorkExp)
+                break;               
             case "dateFrom":
                 prevWorkExp[index].dateFrom = event.target.value
                 addWorkExpArray(prevWorkExp)
@@ -266,44 +303,6 @@ const CustomizeResume = () => {
 
     };
 
-
-    const handleAddCert = () => {
-        setError("")
-        const newCert = {
-            cert: "",
-            date: ""
-        }
-        if(certArray.length < 4) {
-            return addCertArray([...certArray, newCert])
-        }
-        setError("Only add 4 Certifications")
-    }
-    const handleDeleteCert = () => {
-        setError("")
-        if(certArray.length > 1) {
-            const prevCert = [...certArray]
-            prevCert.pop()
-            return addCertArray([...prevCert])
-        }
-        setError("Leave blank, don't delete")
-    }
-    const handleCertChange = (event, index) => {
-        const prevCerts = [...certArray];
-        switch (event.target.name) {
-            case "cert":
-                prevCerts[index].cert = event.target.value
-                addCertArray(prevCerts)
-                break;           
-            case "date":
-                prevCerts[index].date = event.target.value
-                addCertArray(prevCerts)
-                break;
-            default: addCertArray(prevCerts)
-                break;
-        }
-
-    };
-    
 
     const handleAddAward = () => {
         setError("")
@@ -393,9 +392,9 @@ const CustomizeResume = () => {
             basicInfo: basicInfo,           //Object
             linkInfo: linkInfo,             //Array
             skills: skills,                 //Array
+            interests: interests,           //Array
             eduArray: eduArray,             //Array
             workExpArray: workExpArray,     //Array
-            certArray: certArray,           //Array
             awardArray: awardArray,         //Array
             publications: publications      //Array
         }
@@ -502,16 +501,25 @@ const CustomizeResume = () => {
                             </div>
                         </div>
                         <div className={resumeCss.Segment}>
-                            <h4>Work Experience</h4>
+                            <h4>Work & Volunteering Experience</h4>
                             <div>
                                 {workExpArray.map((info, index) => {
                                     return <Grid container className='segment' key={index}>
                                                 <AuthInput name="company" value={info.company}  label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
                                                 <AuthInput name="position" value={info.position}  label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
-                                                <label className={resumeCss.DetachedLabels}>From *</label>
-                                                <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
-                                                <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
-                                                <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={9} inputGrid={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="industry" value={info.industry}  label="Industry e.g IT" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="workLink" value={info.workLink}  label="Related Link" inputType="text" inputGridSm={12} inputGrid={3} mb={2} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <div style={{width: "50%", margin: "0 auto 5px", display: "flex", justifyContent: "center"}}>
+                                                    <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
+                                                        <label className={resumeCss.DetachedLabels}>From *</label>
+                                                        <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                    </div>
+                                                    <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
+                                                        <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
+                                                        <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                    </div>
+                                     
+                                                </div>
                                                 <AuthInput name="jobDesc" value={info.jobDesc}  placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} /> 
                                             </Grid>
                                 })}
@@ -528,8 +536,8 @@ const CustomizeResume = () => {
                                     {skills.map((skill, index) => {
                                         return <AuthInput 
                                                     key={index} 
-                                                    value={skill.value} 
-                                                    label="Add a Skill" 
+                                                    value={skill} 
+                                                    label="Add a Skill per Field" 
                                                     inputType="text" 
                                                     inputGridSm={12} 
                                                     inputGrid={6} 
@@ -545,26 +553,9 @@ const CustomizeResume = () => {
                                 </Grid>
                             </Grid>
                         </div>
+                    
                         <div className={resumeCss.Segment}>
-                            <h4>Professional Certifications [If any]</h4>
-                            <div>
-                                <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
-                                    {certArray.map((info, index) => {
-                                        return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
-                                                    <AuthInput name="cert" value={info.cert} label="Certification Name" inputGridSm={12} inputType="text" mb={2} onChange={(event) => handleCertChange(event, index)} /> 
-                                                    <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                                                    <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" onChange={(event) => handleCertChange(event, index)} /> 
-                                                </Grid>
-                                    })}
-                                </Grid>
-                                <div className={resumeCss.CenteredElem}>
-                                    <div style={{marginRight: "10px"}} className='delete' title='Delete Certificate' onClick={handleDeleteCert}>-</div>
-                                    <div className='add' title='Add Certificate' onClick={handleAddCert}>+</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={resumeCss.Segment}>
-                            <h4>Awards [If any]</h4>
+                            <h4>Professional Certifications & Awards [If any]</h4>
                             <div>
                                 <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
                                     {awardArray.map((info, index) => {
@@ -599,6 +590,31 @@ const CustomizeResume = () => {
                                     <div className='add' title='Add Publication' onClick={handleAddPublication}>+</div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className={resumeCss.Segment}>
+                            <h4>Interests [Optional]</h4>
+                            <Grid container>
+                                <Grid container item xs={9}>
+                                    {interests.map((interest, index) => {
+                                        return <AuthInput 
+                                                    key={index} 
+                                                    value={interest} 
+                                                    label="Add one Interest per Field" 
+                                                    inputType="text" 
+                                                    inputGridSm={12} 
+                                                    inputGrid={6} 
+                                                    mb={2} 
+                                                    required={true} 
+                                                    onChange={(event) => handleInterestChange(event, index)}
+                                                />
+                                    })}
+                                </Grid>
+                                <Grid item xs={3} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <div style={{marginRight: "10px"}} className='delete' title='Delete an Interest' onClick={handleDeleteInterests}>-</div>
+                                    <div className='add' title='Add an Interest' onClick={handleAddInterests}>+</div>
+                                </Grid>
+                            </Grid>
                         </div>
 
                         <div style={{width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px"}}>
