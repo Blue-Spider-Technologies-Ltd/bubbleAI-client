@@ -16,7 +16,7 @@ const screenWidth = window.innerWidth
 const MenuBarLarge = () => {
     const location = useLocation();
     const navigate = useNavigate()
-    const isAuth = localStorage?.getItem("token");
+    const isAuth = localStorage.getItem("token");
     const dispatch = useDispatch()
 
     const handleLogout = async () => {
@@ -45,8 +45,8 @@ const MenuBarLarge = () => {
                     <div onClick={handleHowIWork} className="ListItem">
                         <div>How I Work</div>
                     </div>
-                    <Link href='#what-we-do' className="ListItem">
-                        <div>Demo</div>
+                    <Link href='/pricing' className="ListItem">
+                        <div>Pricing</div>
                     </Link>
                     <div style={{marginTop: '20px', marginLeft: '20px'}}>
                         {location.pathname === "/popin" ? <ButtonOutlineGreen link="/join-bubble">Register</ButtonOutlineGreen> 
@@ -65,7 +65,7 @@ const MenuBarSmall = () => {
     const location = useLocation()
     const [menuOpen, setMenuOpen] = useState(false)
     const navigate = useNavigate()
-    const isAuth = localStorage?.getItem("token");
+    const isAuth = localStorage.getItem("token");
     const dispatch = useDispatch()
     
 
@@ -123,7 +123,7 @@ const MenuBarSmall = () => {
     const handleLogout = async () => {
         if (isAuth) {
             navigate('/popin')
-            localStorage?.removeItem('token')
+            localStorage.removeItem('token')
             dispatch(setUser({}))
         }
     }
@@ -159,7 +159,7 @@ const MenuBarSmall = () => {
                     <ul>
                         {location.pathname === "/popin" ? <li id="nav-1"><a href="/join-bubble">Register</a></li> 
                         : isAuth ? <li id="nav-1" className='logout' onClick={handleLogout}>Logout</li> : <li id="nav-1"><a href="/popin">Login</a></li>}
-                        <li id="nav-2"><a href="#about">Resume Writer</a></li>
+                        <li id="nav-2"><a href="/pricing">Pricing</a></li>
                         <li id="nav-3"><a href="#skills">Business Plan Generator</a></li>
                         <li id="nav-4"><a href="#project">Product Price Setter</a></li>
                         <li id="nav-5"><a href="#contact">Fraud Detector</a></li>

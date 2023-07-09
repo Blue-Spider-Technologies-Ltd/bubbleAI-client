@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom"
 import store from "./redux/store.js"
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
-import jwt_decode from "jwt-decode";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,23 +19,6 @@ root.render(
   </React.StrictMode>
 );
 
-const now = new Date().getTime()
-//Deauthenticate user hourly
-setInterval(() => {
-  let tokenToExpire = localStorage?.getItem('token')
-  tokenToExpire = jwt_decode(tokenToExpire)
-  if(tokenToExpire && now > tokenToExpire.expiration) {
-    localStorage.removeItem('token')
-  }
-}, (60 * 60 * 1000))
-
-//Refresh usage every day for unauthenticated users
-setInterval(() => {
-  let tokenToExpire = localStorage?.getItem('oats_3297')
-  if(tokenToExpire && now > tokenToExpire.expiration) {
-    localStorage.removeItem('token')
-  }
-}, (24 * 60 * 60 * 1000))
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

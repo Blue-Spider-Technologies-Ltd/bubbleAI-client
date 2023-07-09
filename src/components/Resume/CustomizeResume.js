@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import resumeCss from './Resume.module.css'
 import { useNavigate, Link } from 'react-router-dom'
 import logoImg from "../../images/bubble-logo.png"
-import { AuthInput } from '../UI/Input/AuthInputs';
+import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
 import { COUNTRIES } from '../../utils/countries';
 import { useSelector, useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
 import Modal from '../UI/Modal/Modal';
 import { Rings, Watch } from 'react-loader-spinner'
+import jwt_decode from "jwt-decode";
 const screenWidth = window.innerWidth
 
 const CustomizeResume = () => {
@@ -23,14 +24,13 @@ const CustomizeResume = () => {
     const [loading, setLoading] = useState(false)
     const [resumes, showResumes] = useState(false)
 
-    const isAuth = localStorage?.getItem('token')
+    const isAuth = localStorage.getItem('token')
     //resume data
     const [basicInfo, setBasicInfo] = useState({
         firstName: "",
         lastName: "",
         email: "",
         dob: "",
-        mobileCode: "",
         mobile: "",
         jobPosition: "",
         street: "",
@@ -39,8 +39,9 @@ const CustomizeResume = () => {
         profSummary: ""
     })
     useEffect(() => {
-
-        if(isAuth) {
+        const now = new Date().getTime()        
+        const authUser =  jwt_decode(isAuth)
+        if (isAuth && (now < authUser.expiration)) {
             if(userLength <= 0 ) {
                 const populateUser = async () => {
                     try {
@@ -50,7 +51,7 @@ const CustomizeResume = () => {
                             }
                         })
                         if (response.data.status === "unauthenticated") {
-                            localStorage?.removeItem('token')
+                            localStorage.removeItem('token')
                             return navigate('/popin')
                         }
                         setBasicInfo({
@@ -58,7 +59,6 @@ const CustomizeResume = () => {
                             lastName: response.data.user.lastName,
                             email: response.data.user.email,
                             dob: response.data.user.dob || "",
-                            mobileCode: response.data.user.mobileCode || "",
                             mobile: response.data.user.mobile || "",
                             jobPosition: response.data.user.jobPosition || "",
                             street: response.data.user.street || "",
@@ -75,6 +75,7 @@ const CustomizeResume = () => {
                 populateUser()
             }
         } else {
+            localStorage.removeItem('token')
             navigate('/popin')
         }
     }, [navigate, dispatch, userLength, isAuth])
@@ -103,13 +104,7 @@ const CustomizeResume = () => {
             jobDesc: ""
         }
     ])
- 
-    // const [certArray, addCertArray] = useState([
-    //     {
-    //         cert: "",
-    //         date: ""
-    //     }
-    // ])
+
     const [awardArray, addAwardArray] =  useState([
         {
             org: "",
@@ -419,6 +414,10 @@ const CustomizeResume = () => {
     }
   
     const handleInputChange = (prop) => (event) => {
+        
+        if (prop === "mobile") {
+            return setBasicInfo({ ...basicInfo, [prop]: "+" + event});
+        }
         setBasicInfo({ ...basicInfo, [prop]: event.target.value});
     };    
 
@@ -456,12 +455,11 @@ const CustomizeResume = () => {
                                 <AuthInput value={basicInfo.lastName} inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} onChange={handleInputChange('lastName')} /> 
                                 <AuthInput value={basicInfo.email} inputType="email" inputGridSm={12} inputGrid={4} mb={0} required={true} disabled={false} onChange={handleInputChange('email')} /> 
                                 <div style={{width: "100%"}}><div className={resumeCss.DetachedLabels}>Date of Birth *</div></div>
-                                <AuthInput value={basicInfo.dob} placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={2} mb={2} required={true} onChange={handleInputChange('dob')} /> 
-                                <AuthInput value={basicInfo.mobileCode} label="Code" inputType="select" inputGridSm={4} inputGrid={3} mb={2} list={COUNTRIES} required={true} onChange={handleInputChange('mobileCode')} name='c-code' /> 
-                                <AuthInput value={basicInfo.mobile} label="Mobile" inputType="number" inputGridSm={8} inputGrid={3} mb={2} required={true} onChange={handleInputChange('mobile')} /> 
-                                <AuthInput value={basicInfo.jobPosition} label="Job Position" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} onChange={handleInputChange('jobPosition')} /> 
-                                <AuthInput value={basicInfo.street} label="Street Name" inputType="text" inputGridSm={7} inputGrid={4} mb={2} required={true} onChange={handleInputChange('street')} /> 
-                                <AuthInput value={basicInfo.city} label="City" inputType="text" inputGridSm={5} inputGrid={4} mb={2} required={true} onChange={handleInputChange('city')} /> 
+                                <AuthInput value={basicInfo.dob} placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={handleInputChange('dob')} /> 
+                                <AuthInput value={basicInfo.mobile} label="Mobile" inputType="mobile" inputGridSm={12} inputGrid={4} mb={2} required={true} onChange={handleInputChange('mobile')} /> 
+                                <AuthInput value={basicInfo.jobPosition} label="Job Position" inputType="text" inputGridSm={12} inputGrid={5} mb={2} required={true} onChange={handleInputChange('jobPosition')} /> 
+                                <AuthInput value={basicInfo.street} label="Apt No. & Street" inputType="text" inputGridSm={7} inputGrid={4} mb={2} required={true} onChange={handleInputChange('street')} /> 
+                                <AuthInput value={basicInfo.city} label="City/State/Region" inputType="text" inputGridSm={5} inputGrid={4} mb={2} required={true} onChange={handleInputChange('city')} /> 
                                 <AuthInput value={basicInfo.country} label="Country" inputType="select2" inputGridSm={12} inputGrid={4} mb={2} list={COUNTRIES} required={true} onChange={handleInputChange('country')} /> 
                                 {linkInfo.map((info, index) => {
                                     return <AuthInput 

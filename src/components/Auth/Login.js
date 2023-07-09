@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
-import authCss from "./Auth.module.css"
+import authCss from "./Auth.module.css";
 import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
-import bubbleBgAuthImg from "../../images/bubblebg-auth.png"
+import bubbleBgAuthImg from "../../images/bubblebg-auth.png";
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Google, Apple } from '@mui/icons-material';
 import { Link } from "@mui/material";
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner'
 
@@ -18,7 +17,7 @@ const screenWidth = window.innerWidth
 const Login = () => {
     const location = useLocation()
     const navigate = useNavigate();
-    const isAuth = localStorage?.getItem('token')
+    const isAuth = localStorage.getItem('token')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState({
@@ -40,6 +39,7 @@ const Login = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
+        setError("")
         setLoading(true)
         const userData = {
             email: data.email,
@@ -47,9 +47,9 @@ const Login = () => {
         }
         try {
             const response = await axios.post('/auth/login', userData)
+            console.log(response);
             let userDetails = response.data.user
             localStorage.setItem('token', userDetails)
-            userDetails = await jwt_decode(userDetails)
             setError("")
             setLoading(false)
             if (queryString.length >= 1)  {
@@ -59,12 +59,14 @@ const Login = () => {
             }
         } catch (error) {
             setLoading(false)
+            console.log(error.response.data.mesage);
             setError(error.response.data.message)
         }
 
     }
 
     const handleInputChange = (prop) => (event) => {
+        setError("")
         setData({ ...data, [prop]: event.target.value});
     };
     return (

@@ -78,7 +78,7 @@ export const Input = props => {
             :
 
                 props.inputType === "password" ?
-                    <FormControl variant="outlined" className={classes.root} autoComplete="off" required>
+                    <FormControl variant="outlined" className={classes.root} required>
                         
                         <OutlinedInput
                             id={props.placeholder}
@@ -109,7 +109,6 @@ export const Input = props => {
                         type={props.inputType}
                         width={props.width}
                         onChange={props.onChange}
-                        autoComplete="off"
                         required
                         // value={props.value}
                     />

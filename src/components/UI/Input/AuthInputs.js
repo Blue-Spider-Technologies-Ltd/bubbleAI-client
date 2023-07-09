@@ -1,9 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, memo } from "react"
 import { Grid, TextField, OutlinedInput, InputAdornment, IconButton, FormControl, InputLabel, MenuItem } from "@mui/material"
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { makeStyles } from "@mui/styles";
 import Select from '@mui/material/Select';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import allInputCss from "./Allinputs.module.css"
 
 
 const useStyles = makeStyles({
@@ -59,7 +62,7 @@ const useStyles = makeStyles({
 });
 
 
-export const AuthInput = props => {
+const AuthInput = props => {
     const [showPassword, setShowPassword] = useState(false);
     const classes = useStyles();
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -86,7 +89,7 @@ export const AuthInput = props => {
                 />
             :
             props.inputType === "password" ?
-                <FormControl variant="outlined" className={classes.root} autoComplete="off" required={props.required}>
+                <FormControl variant="outlined" className={classes.root} required={props.required}>
                     
                     <OutlinedInput
                         id={props.placeholder}
@@ -111,7 +114,7 @@ export const AuthInput = props => {
                 </FormControl>
             :
             props.inputType === "select" ?
-                <FormControl className={classes.root} autoComplete="off" required={props.required}>
+                <FormControl className={classes.root} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                     id={props.label}
@@ -131,7 +134,7 @@ export const AuthInput = props => {
                 </FormControl>
             :
             props.inputType === "select2" ?
-                <FormControl className={classes.root} autoComplete="off" required={props.required}>
+                <FormControl className={classes.root} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                     id={props.label}
@@ -150,6 +153,17 @@ export const AuthInput = props => {
                     </Select>
                 </FormControl> 
             :
+            props.inputType === "mobile" ?
+                <PhoneInput 
+                    country='ng' 
+                    inputClass={allInputCss.Mobile}
+                    onChange={props.onChange}
+                    required={props.required}
+                    value={props.value}
+                    disabled={props.disabled}
+                    enableSearch={true}
+                />
+            :
                 <TextField 
                     id={"outlined-basic" + props.label + props.placeholder}
                     placeholder={props.placeholder} 
@@ -159,7 +173,6 @@ export const AuthInput = props => {
                     type={props.inputType}
                     width={props.width}
                     onChange={props.onChange}
-                    autoComplete="off"
                     required={props.required}
                     disabled={props.disabled}
                     value={props.value}
@@ -170,3 +183,5 @@ export const AuthInput = props => {
         </Grid>
     )
 }
+
+export default memo(AuthInput)

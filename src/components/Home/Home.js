@@ -25,7 +25,12 @@ const Home = () => {
   const chatBoxRef = useRef(null);
   const navigate = useNavigate();
 
-  const isAuth = localStorage?.getItem("token");
+  const askMeErrorObj = {
+            role: 'assistant',
+            content:  "I am currently throttling requests, try again in a moment"
+          }
+
+  const isAuth = localStorage.getItem("token");
 
   useEffect(() => {
     const populateUser = async () => {
@@ -40,7 +45,7 @@ const Home = () => {
             };
             const response = await axios.get("/user/user", { headers });
             if (response.data.status === "unauthenticated") {
-              localStorage?.removeItem("token");
+              localStorage.removeItem("token");
               return navigate("/popin");
             }
             dispatch(setMessages(response.data.user.messages));
@@ -153,6 +158,7 @@ const Home = () => {
       } catch (error) {
         console.log(error);
         dispatch(deleteLastMessage());
+        dispatch(setMessage(askMeErrorObj));
       }
     } else {
       //prevent overuse when not registered/logged in
@@ -190,6 +196,7 @@ const Home = () => {
         } catch (error) {
           console.log(error);
           dispatch(deleteLastMessage());
+          dispatch(setMessage(askMeErrorObj));
         }
       }
     }

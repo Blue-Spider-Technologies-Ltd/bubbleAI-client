@@ -160,3 +160,67 @@
     -moz-box-shadow: -1px 1px 44px -3px rgba(0, 0, 0, 0.16);
 }
 
+.TemplateContainer {
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+.carouselInner {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.carouselInner h5 {
+    color: var(--resumeColorLight);
+}
+
+.carouselMiddle, .carouselMiddleActive {
+    background-size: cover;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    box-sizing: border-box;
+    color: var(--navColor2);
+    cursor: pointer;
+    display: flex;
+    font-size: 3rem;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    width: 150px;
+}
+
+.carouselMiddle {
+    border: 5px solid var(--resumeColorLight);
+}
+
+.carouselMiddleActive {
+    border: 5px solid var(--navColor2);
+}
+
+.ResponsivePrintView {
+    background-color: white;
+    box-shadow: outset;
+    height: auto;
+    margin: 20px auto;
+    box-shadow: 0 0 0 1px gray, 0 0 10px gray;
+}                           
+
+  
+@media (min-width: 768px) {
+    .ResponsivePrintView {
+        width: 100%;
+        margin: 10px auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ResponsivePrintView {
+        width: 70%;
+        margin: 15px auto;
+    }
+}

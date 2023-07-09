@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import resumeCss from './Resume.module.css'
 import { useNavigate, Link } from 'react-router-dom'
 import logoImg from "../../images/bubble-logo.png"
-import { AuthInput } from '../UI/Input/AuthInputs';
+import AuthInput from '../UI/Input/AuthInputs';
 import { Grid } from "@mui/material";
 import { COUNTRIES } from '../../utils/countries';
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Modal from '../UI/Modal/Modal';
 import { Rings, Watch } from 'react-loader-spinner'
+import jwt_decode from "jwt-decode";
 const screenWidth = window.innerWidth
 
 const PreviewResume = () => {
@@ -21,14 +22,13 @@ const PreviewResume = () => {
     const [loading, setLoading] = useState(false)
     const [prevResumes, showPrevResumes] = useState(false)
 
-    const isAuth = localStorage?.getItem('token')
+    const isAuth = localStorage.getItem('token')
     //resume data
     const [basicInfo, setBasicInfo] = useState({
         firstName: "",
         lastName: "",
         email: "",
         dob: "",
-        mobileCode: "",
         mobile: "",
         jobPosition: "",
         street: "",
@@ -45,8 +45,11 @@ const PreviewResume = () => {
     const [publications, setPublications] = useState([])
     useEffect(() => {
         const resumeLength = Object.keys(resume).length
+        const now = new Date().getTime()
+        const authUser =  jwt_decode(isAuth)
         console.log(resume);
-        if (isAuth) {
+        if (isAuth && (now < authUser.expiration)) {
+ 
             if (resumeLength <= 0) {
                 navigate('/user/dashboard/resume?customize')
             }
@@ -60,6 +63,7 @@ const PreviewResume = () => {
             // setPublications(resume.awardInfo)
 
         } else {
+            localStorage.removeItem('token')
             navigate('/popin')
         }
     }, [isAuth, navigate, resume])
@@ -127,7 +131,8 @@ const PreviewResume = () => {
             eduArray: eduArray,             //Array
             workExpArray: workExpArray,     //Array
             awardArray: awardArray,         //Array
-            // publications: publications      //Array
+            interests: interests,           //Array
+            publications: publications      //Array
         }
 
         try {
@@ -179,8 +184,7 @@ const PreviewResume = () => {
                                 <AuthInput value={basicInfo.email} inputType="email" inputGridSm={12} inputGrid={4} mb={0} required={true} disabled={true} />
                                 <div style={{ width: "100%" }}><div className={resumeCss.DetachedLabels}>Date of Birth *</div></div>
                                 <AuthInput value={basicInfo.dob} placeholder="Date of Birth" inputType="date" inputGridSm={12} inputGrid={2} mb={2} required={true} disabled={true} />
-                                <AuthInput value={basicInfo.mobileCode} label="Code" inputType="select" inputGridSm={4} inputGrid={3} mb={2} list={COUNTRIES} required={true} name='c-code' disabled={true} />
-                                <AuthInput value={basicInfo.mobile} label="Mobile" inputType="number" inputGridSm={8} inputGrid={3} mb={2} required={true} disabled={true} />
+                                <AuthInput value={basicInfo.mobile} label="Mobile" inputType="mobile" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} /> 
                                 <AuthInput value={basicInfo.jobPosition} label="Job Position" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} />
                                 <AuthInput value={basicInfo.street} label="Street Name" inputType="text" inputGridSm={7} inputGrid={4} mb={2} required={true} disabled={true} />
                                 <AuthInput value={basicInfo.city} label="City" inputType="text" inputGridSm={5} inputGrid={4} mb={2} required={true} disabled={true} />

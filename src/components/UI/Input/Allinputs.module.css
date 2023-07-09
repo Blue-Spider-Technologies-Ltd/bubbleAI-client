@@ -1,0 +1,22 @@
+.Mobile {
+    box-sizing: border-box;
+    border: none;
+    width: 100% !important;
+    margin: 0 auto;
+    background-color: #F5F5F5 !important;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    color: #14225188 !important;
+    font-size: .8rem !important;
+    height: 1.9rem !important;
+}
+
+
+.Mobile:focus {
+    outline: none;
+    font-size: .8rem;
+    color: #142251 !important;
+}
