@@ -4,7 +4,7 @@ import Blob from '../Blob/Blob';
 import bubbleBgAuthImg from '../../../images/bubblebg-auth.png'
 
 
-const Modal = (props) => {
+export const Modal = (props) => {
 
     return (
         <div className={modalCss.ModalContainer}>
@@ -24,4 +24,16 @@ const Modal = (props) => {
     )
 }
 
-export default Modal
+export const Fetching = (props) => {
+    return (
+        <div className={modalCss.ModalContainer}>
+
+            <div className={modalCss.ModalBodyTwo}>
+                <div className={modalCss.ModalBlobBg}>
+                    <Blob />
+                </div>
+            </div>
+
+        </div>
+    )
+}

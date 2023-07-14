@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import resumeCss from './Resume.module.css'
 import { useNavigate, Link } from 'react-router-dom'
 import logoImg from "../../images/bubble-logo.png"
@@ -7,8 +7,6 @@ import { Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-import Modal from '../UI/Modal/Modal';
-import { Rings, Watch } from 'react-loader-spinner'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
@@ -17,15 +15,21 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import resumeData from './resume.json'
 import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
+import axios from 'axios'
+import { useReactToPrint  } from 'react-to-print';
 // console.log(resumeData);
 const screenWidth = window.innerWidth
 
 const DownloadResume = () => {
     const { resume } = useSelector(state => state.stateData)
     const navigate = useNavigate()
+    const componentRef = useRef();
     const [error, setError] = useState("")
-    const [loading, setLoading] = useState(false)
-    const [prevResumes, showPrevResumes] = useState(false)
+    const [previewResumes, showPreviewResumes] = useState(false)
+    const [resumeStorageDetails, setResumeStorageDetails] = useState({
+        resumeName: "",
+        desc: ""
+    })
     //Option for carousel in template section
     const responsive = {
       desktop: {
@@ -45,20 +49,20 @@ const DownloadResume = () => {
       }
     };
 
-    const isAuth = localStorage.getItem('token')
+    const isAuth = localStorage?.getItem('token')
     //resume data
-    const [basicInfo, setBasicInfo] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        dob: "",
-        mobile: "",
-        jobPosition: "",
-        street: "",
-        city: "",
-        country: "",
-        profSummary: ""
-    })
+    // const [basicInfo, setBasicInfo] = useState({
+    //     firstName: "",
+    //     lastName: "",
+    //     email: "",
+    //     dob: "",
+    //     mobile: "",
+    //     jobPosition: "",
+    //     street: "",
+    //     city: "",
+    //     country: "",
+    //     profSummary: ""
+    // })
     // const [linkInfo, setLinkInfo] = useState([])
     // const [skills, setSkills] = useState([])
     // const [eduArray, setEduArray] = useState([])
@@ -77,39 +81,42 @@ const DownloadResume = () => {
             // }
 
         } else {
-            localStorage.removeItem('token')
+            localStorage?.removeItem('token')
             navigate('/popin')
         }
     }, [isAuth, navigate, resume])
 
     const toggleResumes = () => {
-        showPrevResumes(!prevResumes)
+        showPreviewResumes(!previewResumes)
     }
 
-    const handleFormSubmit = async (e) => {
-        e.preventDefault()
-        setLoading(true)
-        // const resumeData = {
-        //     basicInfo: basicInfo,           //Object
-        //     linkInfo: linkInfo,             //Array
-        //     skills: skills,                 //Array
-        //     eduArray: eduArray,             //Array
-        //     workExpArray: workExpArray,     //Array
-        //     certArray: certArray,           //Array
-        //     awardArray: awardArray,         //Array
-        //     // publications: publications      //Array
-        // }
+
+    const handleResumeSave = async (e) => {
+        // e.preventDefault();
+        const completeResume = { ...resumeData, resumeStorageDetails }
+        console.log(completeResume);
 
         try {
-            setLoading(false)
+            const response = await axios.post('/user/save-resume', completeResume, {
+                headers: {
+                    'x-access-token': isAuth
+                }
+            })
         } catch (error) {
             console.log(error)
             setError("Try again")
         }
     }
+    
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        onAfterPrint: () => handleResumeSave(),
+        documentTitle: resumeStorageDetails.resumeName
+    });
 
     const handleInputChange = (prop) => (event) => {
-        setBasicInfo({ ...basicInfo, [prop]: event.target.value });
+        console.log(resumeStorageDetails);
+        setResumeStorageDetails({ ...resumeStorageDetails, [prop]: event.target.value });
     };
 
     return (
@@ -137,15 +144,15 @@ const DownloadResume = () => {
                         <div><span>2</span>Preview AI Build</div>
                         <div className={resumeCss.ActiveNav}><span>3</span>Download</div>
                     </div>
-                    <form method="post" onSubmit={handleFormSubmit}>
+                    <form>
                         <div className='error'>{error}</div>
                        
                         <div className={resumeCss.Segment}>
                             <h4>Save Resume Details</h4>
                             <div>
                                 <Grid container>
-                                    <AuthInput name="resumeName" value="" label="Resume Name" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={true} onChange={handleInputChange('resumeName')} />
-                                    <AuthInput name="desc" value="" label="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
+                                    <AuthInput name="resumeName" value={resumeStorageDetails.resumeName} label="Resume Name" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={true} onChange={handleInputChange('resumeName')} />
+                                    <AuthInput name="desc" value={resumeStorageDetails.desc} label="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
                                 </Grid>
                             </div>
                         </div>
@@ -191,11 +198,14 @@ const DownloadResume = () => {
                         <div className={resumeCss.Segment}>
                             <h4>View and Download</h4>
                             <div className={resumeCss.ResponsivePrintView}>
+                                <div ref={componentRef}>
                                     <Standard resume={resumeData} />
+                                </div>
+                                
                             </div>
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "150px" }}>
-                                    <ButtonSubmitGreen>
+                                    <ButtonSubmitGreen type="button" onClick={handlePrint}>
                                         <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF </span>
                                     </ButtonSubmitGreen>
                                 </div>
@@ -207,34 +217,6 @@ const DownloadResume = () => {
                 </div>
 
             </div>
-            {loading && (
-                <Modal>
-                <h4>Hello {basicInfo.firstName}</h4>
-                <div style={{marginTop: '15px'}}>
-                    {screenWidth >= 900 ?
-                        <Rings
-                            height="200"
-                            width="200"
-                            color="white"
-                            radius="6"
-                            visible={true}
-                            ariaLabel="rings-loading"
-                        />
-                    :
-                        <Watch
-                            height="150"
-                            width="150"
-                            radius={48}
-                            color="white"
-                            ariaLabel="revolving-dot-loading"
-                            visible={true}
-                        />
-                    }
-                </div>                       
-
-                <h3>Readying your Resume for download...</h3>
-                </Modal>
-            )}
 
         </div>
     )

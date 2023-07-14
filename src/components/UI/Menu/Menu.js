@@ -16,13 +16,13 @@ const screenWidth = window.innerWidth
 const MenuBarLarge = () => {
     const location = useLocation();
     const navigate = useNavigate()
-    const isAuth = localStorage.getItem("token");
+    const isAuth = localStorage?.getItem("token");
     const dispatch = useDispatch()
 
     const handleLogout = async () => {
         if (isAuth) {
             navigate('/popin')
-            localStorage.removeItem('token')
+            localStorage?.removeItem('token')
             dispatch(setUser({}))
         }
     }
@@ -65,7 +65,7 @@ const MenuBarSmall = () => {
     const location = useLocation()
     const [menuOpen, setMenuOpen] = useState(false)
     const navigate = useNavigate()
-    const isAuth = localStorage.getItem("token");
+    const isAuth = localStorage?.getItem("token");
     const dispatch = useDispatch()
     
 
@@ -123,7 +123,7 @@ const MenuBarSmall = () => {
     const handleLogout = async () => {
         if (isAuth) {
             navigate('/popin')
-            localStorage.removeItem('token')
+            localStorage?.removeItem('token')
             dispatch(setUser({}))
         }
     }

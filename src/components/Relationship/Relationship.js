@@ -9,11 +9,11 @@ const Relationship = () => {
 
     //Checked if user logged in/found
     useEffect(() => {
-        const token = localStorage.getItem('token')
+        const token = localStorage?.getItem('token')
         if(token) {
             const user = jwt_decode(token)
             if (!user) {
-                localStorage.removeItem('token')
+                localStorage?.removeItem('token')
                 navigate('/popin')
             } else {
                 try {

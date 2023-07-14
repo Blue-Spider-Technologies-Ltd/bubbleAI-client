@@ -15,7 +15,7 @@ const Standard = (props) => {
                 <div>
                     {props.resume.linkInfo.length > 0 ?
                         props.resume.linkInfo.map((link, index) => {
-                            return <span><a href="/" key={index}>{link}</a> </span>
+                            return <span key={index}><a href="/">{link}</a> </span>
                         }) : ""
                     }
                 </div>
@@ -43,26 +43,26 @@ const Standard = (props) => {
                     <h3>Relevant Experience</h3>
                     {props.resume.workExpArray.map((workInfo, index) => {
                         return (
-                            <div>
-                            <div className={standardCss.FlexContainer}>
-                                <div>
-                                <h5 style={{ display: "inline" }}>
-                                    <span>{workInfo.position}</span> - <span>{workInfo.company}</span>{" "}
-                                    <a href={workInfo.workLink}>({workInfo.workLink})</a>
-                                </h5>
+                            <div key={index}>
+                                <div className={standardCss.FlexContainer}>
+                                    <div>
+                                        <h5 style={{ display: "inline" }}>
+                                            <span>{workInfo.position}</span> - <span>{workInfo.company}</span>{" "}
+                                            <a href={workInfo.workLink}>({workInfo.workLink})</a>
+                                        </h5>
+                                    </div>
+                                    <div style={{ textAlign: "right" }}>
+                                        <span>{workInfo.dateFrom}</span> - <span>{workInfo.dateTo}</span>
+                                    </div>
                                 </div>
-                                <div style={{ textAlign: "right" }}>
-                                <span>{workInfo.dateFrom}</span> - <span>{workInfo.dateTo}</span>
-                                </div>
-                            </div>
-                            <div style={{ color: "rgba(0, 0, 0, 0.454)" }}>{workInfo.industry}</div>
-                            <ul>
-                                {workInfo.jobDesc
-                                .split(";")
-                                .map((item, index) => (
-                                    <li key={index}>{item.trim()}</li>
-                                ))}
-                            </ul>
+                                <div style={{ color: "rgba(0, 0, 0, 0.454)" }}>{workInfo.industry}</div>
+                                <ul>
+                                    {workInfo.jobDesc
+                                    .split(";")
+                                    .map((item, index) => (
+                                        <li key={index}>{item.trim()}</li>
+                                    ))}
+                                </ul>
                             </div>
                         );
                     })}

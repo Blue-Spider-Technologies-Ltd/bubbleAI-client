@@ -9,7 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setResume } from "../../redux/states";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import Modal from '../UI/Modal/Modal';
+import { Modal, Fetching } from '../UI/Modal/Modal';
+
 import { Rings, Watch } from 'react-loader-spinner'
 import jwt_decode from "jwt-decode";
 const screenWidth = window.innerWidth
@@ -20,9 +21,10 @@ const PreviewResume = () => {
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
+    const [fetching, setFetching] = useState(false)
     const [prevResumes, showPrevResumes] = useState(false)
 
-    const isAuth = localStorage.getItem('token')
+    const isAuth = localStorage?.getItem('token')
     //resume data
     const [basicInfo, setBasicInfo] = useState({
         firstName: "",
@@ -44,6 +46,7 @@ const PreviewResume = () => {
     const [awardArray, setAwardArray] = useState([])
     const [publications, setPublications] = useState([])
     useEffect(() => {
+        setFetching(true)
         const resumeLength = Object.keys(resume).length
         const now = new Date().getTime()
         const authUser =  jwt_decode(isAuth)
@@ -61,9 +64,9 @@ const PreviewResume = () => {
             setWorkExpArray(resume.workExpInfo && resume.workExpInfo)
             setAwardArray(resume.awardInfo && resume.awardInfo)
             // setPublications(resume.awardInfo)
-
+            setFetching(false)
         } else {
-            localStorage.removeItem('token')
+            localStorage?.removeItem('token')
             navigate('/popin')
         }
     }, [isAuth, navigate, resume])
@@ -347,6 +350,7 @@ const PreviewResume = () => {
                 <h3>Readying your Resume for download...</h3>
                 </Modal>
             )}
+            {fetching && <Fetching />}
 
         </div>
     )

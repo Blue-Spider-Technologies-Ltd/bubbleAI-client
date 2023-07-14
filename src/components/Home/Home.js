@@ -30,7 +30,7 @@ const Home = () => {
             content:  "I am currently throttling requests, try again in a moment"
           }
 
-  const isAuth = localStorage.getItem("token");
+  const isAuth = localStorage?.getItem("token");
 
   useEffect(() => {
     const populateUser = async () => {
@@ -45,7 +45,7 @@ const Home = () => {
             };
             const response = await axios.get("/user/user", { headers });
             if (response.data.status === "unauthenticated") {
-              localStorage.removeItem("token");
+              localStorage?.removeItem("token");
               return navigate("/popin");
             }
             dispatch(setMessages(response.data.user.messages));
@@ -163,7 +163,7 @@ const Home = () => {
     } else {
       //prevent overuse when not registered/logged in
       const now = new Date().getTime();
-      const itemJson = localStorage.getItem("oats_3297");
+      const itemJson = localStorage?.getItem("oats_3297");
       const item = JSON.parse(itemJson);
       const useCount = item ? item.count : 0;
       const useIndicator = {

@@ -17,7 +17,7 @@ const screenWidth = window.innerWidth
 const Login = () => {
     const location = useLocation()
     const navigate = useNavigate();
-    const isAuth = localStorage.getItem('token')
+    const isAuth = localStorage?.getItem('token')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState({

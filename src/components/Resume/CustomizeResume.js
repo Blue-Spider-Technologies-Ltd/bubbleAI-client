@@ -10,10 +10,11 @@ import { setUser, setResume } from "../../redux/states";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
-import Modal from '../UI/Modal/Modal';
+import { Modal, Fetching } from '../UI/Modal/Modal';
 import { Rings, Watch } from 'react-loader-spinner'
 import jwt_decode from "jwt-decode";
 const screenWidth = window.innerWidth
+
 
 const CustomizeResume = () => {
     const dispatch = useDispatch()
@@ -22,9 +23,10 @@ const CustomizeResume = () => {
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
+    const [fetching, setFetching] = useState(false)
     const [resumes, showResumes] = useState(false)
 
-    const isAuth = localStorage.getItem('token')
+    const isAuth = localStorage?.getItem('token')
     //resume data
     const [basicInfo, setBasicInfo] = useState({
         firstName: "",
@@ -39,6 +41,7 @@ const CustomizeResume = () => {
         profSummary: ""
     })
     useEffect(() => {
+        setFetching(true)
         const now = new Date().getTime()        
         const authUser =  jwt_decode(isAuth)
         if (isAuth && (now < authUser.expiration)) {
@@ -51,7 +54,7 @@ const CustomizeResume = () => {
                             }
                         })
                         if (response.data.status === "unauthenticated") {
-                            localStorage.removeItem('token')
+                            localStorage?.removeItem('token')
                             return navigate('/popin')
                         }
                         setBasicInfo({
@@ -67,15 +70,20 @@ const CustomizeResume = () => {
                             profSummary: response.data.user.profSummary || ""
                         })
                         dispatch(setUser(response.data.user))
+                        setFetching(false)
                     } catch (error) {
                         console.log(error)
+                        setFetching(false)
                         setError("Reload page to fetch data")
                     }
                 }
-                populateUser()
+                populateUser() 
+            } else {
+                setFetching(false)
             }
         } else {
-            localStorage.removeItem('token')
+            setFetching(false)
+            localStorage?.removeItem('token')
             navigate('/popin')
         }
     }, [navigate, dispatch, userLength, isAuth])
@@ -629,32 +637,35 @@ const CustomizeResume = () => {
             </div>
             {loading && (
                 <Modal>
-                <h4>Hello {user.firstName}</h4>
-                <div style={{marginTop: '15px'}}>
-                    {screenWidth >= 900 ?
-                        <Rings
-                            height="200"
-                            width="200"
-                            color="white"
-                            radius="6"
-                            visible={true}
-                            ariaLabel="rings-loading"
-                        />
-                    :
-                        <Watch
-                            height="150"
-                            width="150"
-                            radius={48}
-                            color="white"
-                            ariaLabel="revolving-dot-loading"
-                            visible={true}
-                        />
-                    }
-                </div>                       
+                    <h4>Hello {user.firstName}</h4>
+                    <div style={{marginTop: '15px'}}>
+                        {screenWidth >= 900 ?
+                            <Rings
+                                height="200"
+                                width="200"
+                                color="white"
+                                radius="6"
+                                visible={true}
+                                ariaLabel="rings-loading"
+                            />
+                        :
+                            <Watch
+                                height="150"
+                                width="150"
+                                radius={48}
+                                color="white"
+                                ariaLabel="revolving-dot-loading"
+                                visible={true}
+                            />
+                        }
+                    </div>                       
 
-                <h3>Creating your Resume, I'll only take a minute or less</h3>
+                    <h3>Creating your Resume, I'll only take a minute or less</h3>
                 </Modal>
+
             )}
+
+            {fetching && <Fetching />}
 
         </div>
     )
