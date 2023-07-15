@@ -25,6 +25,7 @@ const Login = () => {
         password: ''
     })
 
+    //get query string and remove question mark
     const queryString = location.search.slice(1)
 
     useEffect(() => {

@@ -1,0 +1,136 @@
+import React, { useState, useEffect } from "react";
+import authCss from "./Auth.module.css";
+import MenuBar from "../UI/Menu/Menu";
+import Blob from "../UI/Blob/Blob";
+import bubbleBgAuthImg from "../../images/bubblebg-auth.png";
+import { Input } from "../UI/Input/Input";
+import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
+import { Send} from '@mui/icons-material';
+import { Link } from "@mui/material";
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { ThreeCircles } from 'react-loader-spinner';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+
+const screenWidth = window.innerWidth
+
+const Verification = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    //get query string and remove question mark and other chars
+    const emailString = location.search.slice(6);
+    const [data, setData] = useState({
+        email: emailString || "",
+        code: ""
+    });
+    const [verified, setVerified] = useState(false);
+    const [count, setCount] = useState(60);
+    const [isZero, setIsZero] = useState(false);
+
+    //set email verification countdown
+    useEffect(() => {
+        if (count > 0) {
+          const timer = setTimeout(() => setCount(count - 1), 1000);
+          return () => clearTimeout(timer);
+        } else {
+          setIsZero(true);
+        }
+    }, [count]);
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault()
+        setError("")
+        setLoading(true)
+        try {
+            const response = await axios.post('/auth/verify', data)
+            setLoading(false)
+            console.log(response);
+            //check for predefined errors that might not be caught by error handler
+            if (response.data.status === "error") {
+                setError(response.data.message)
+                return
+            }
+            //if no error, set verification status
+            setVerified(true)
+
+        } catch (error) {
+            setLoading(false)
+            console.log(error.response.data.mesage);
+            setError(error.response.data.message)
+        }
+
+    }
+
+    const handleReset = () => {
+        setCount(60);
+        setIsZero(false);
+    };
+
+    const handleInputChange = (prop) => (event) => {
+        setError("")
+        setData({ ...data, [prop]: event.target.value});
+    };
+    return (
+        <div>
+            <MenuBar />
+            <div className={authCss.authContainer}>
+
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginRight: '100px'}}>
+                    <Blob bgImage={bubbleBgAuthImg} altText="Verify" />
+                </div>
+
+                <div style={{marginTop: screenWidth > 900 ? '350px' : '', marginLeft: '100px'}} >
+                    <Blob bgImage={bubbleBgAuthImg} altText="Verify" />
+                </div>
+
+            </div>
+
+            <div className={authCss.formContainer}>
+                <div className={authCss.formInner} style={{marginTop: '200px'}}>
+                    {!verified ? (
+                        <div>
+                            <h2>Verify</h2>
+                            <span>Verification code sent to email below</span>
+                            <div className="error">{error}</div>
+                                <div style={{margin: '10px 0', fontSize: '.8rem'}}>
+                                    <span>
+                                        <button disabled={!isZero} className={isZero ? authCss.enabledResendBtn :  authCss.disabledResendBtn} onClick={handleReset}>Resend</button>
+                                        {!isZero && `code in ${count} seconds`}
+                                    </span> 
+                                </div>
+                            <form onSubmit={handleFormSubmit}>
+                                <Input placeholder="Email..." value={data.email} inputType="email" inputGridSm={12} onChange={handleInputChange('email')} disabled required />
+                                <Input placeholder="Verification Code" value={data.code} inputType="password" inputGridSm={12} onChange={handleInputChange('code')} required />
+                                <div>
+                                    <ButtonSubmitBlack type="submit">{!loading ? <Send /> : 
+                                        <ThreeCircles
+                                            height="25"
+                                            width="25"
+                                            color="#FFFFFF"
+                                            visible={true}
+                                            ariaLabel="three-circles-rotating"
+                                        />}
+                                    </ButtonSubmitBlack>
+                                </div>
+                            </form>
+                        </div>
+                    ) : (
+                        <div>
+                            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#56A8AC'}} >
+                                <CheckCircleIcon fontSize="large" /> 
+                                <h2>Account Verified</h2>
+                            </div>
+                            
+                            <p style={{fontSize: '.75rem', fontWeight: '600'}}>Proceed to <Link href="/popin" sx={{color: '#56A8AC', textDecoration: 'none'}}>Login</Link></p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>        
+    )
+}
+
+export default Verification;

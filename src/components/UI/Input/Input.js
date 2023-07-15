@@ -84,6 +84,8 @@ export const Input = props => {
                             id={props.placeholder}
                             type={showPassword ? 'text' : 'password'}
                             onChange={props.onChange}
+                            onFocus={props.onFocus}
+                            onBlur={props.onBlur}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -110,7 +112,8 @@ export const Input = props => {
                         width={props.width}
                         onChange={props.onChange}
                         required
-                        // value={props.value}
+                        value={props.value}
+                        disabled={props.disabled}
                     />
                 
             }
