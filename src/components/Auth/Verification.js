@@ -7,28 +7,34 @@ import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import { Send} from '@mui/icons-material';
 import { Link } from "@mui/material";
-import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 
 const screenWidth = window.innerWidth
 
 const Verification = () => {
+    const { email } = useSelector(state => state.stateData)
     const navigate = useNavigate();
-    const location = useLocation();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    //get query string and remove question mark and other chars
-    const emailString = location.search.slice(6);
     const [data, setData] = useState({
-        email: emailString || "",
+        email: email || "",
         code: ""
     });
     const [verified, setVerified] = useState(false);
     const [count, setCount] = useState(60);
     const [isZero, setIsZero] = useState(false);
+
+    //If email is not set for verification
+    useEffect(() => {
+        if (email === "") {
+            navigate('/join-bubble')
+        } 
+    }, [email, navigate]);
 
     //set email verification countdown
     useEffect(() => {
@@ -64,9 +70,16 @@ const Verification = () => {
 
     }
 
-    const handleReset = () => {
+    const handleReset = async () => {
         setCount(60);
         setIsZero(false);
+        //send email resend request
+        try {
+            const response = await axios.post('/auth/resend-email-code', data)
+            console.log(response);
+        } catch (error) {
+            
+        }
     };
 
     const handleInputChange = (prop) => (event) => {
@@ -92,17 +105,18 @@ const Verification = () => {
                 <div className={authCss.formInner} style={{marginTop: '200px'}}>
                     {!verified ? (
                         <div>
-                            <h2>Verify</h2>
+                            <h2>Verify Email</h2>
                             <span>Verification code sent to email below</span>
                             <div className="error">{error}</div>
+                            <div style={{fontSize: '.8rem', color: '#56A8AC', marginBottom: '10px'}}>{data.email}</div>
                                 <div style={{margin: '10px 0', fontSize: '.8rem'}}>
                                     <span>
                                         <button disabled={!isZero} className={isZero ? authCss.enabledResendBtn :  authCss.disabledResendBtn} onClick={handleReset}>Resend</button>
-                                        {!isZero && `code in ${count} seconds`}
+                                        {!isZero && <span>code in <span style={{backgroundColor: '#c0d1d453', padding: '3px', borderRadius: '5px', color: '#3E8F93'}}>{count}</span> seconds</span>}
                                     </span> 
                                 </div>
                             <form onSubmit={handleFormSubmit}>
-                                <Input placeholder="Email..." value={data.email} inputType="email" inputGridSm={12} onChange={handleInputChange('email')} disabled required />
+
                                 <Input placeholder="Verification Code" value={data.code} inputType="password" inputGridSm={12} onChange={handleInputChange('code')} required />
                                 <div>
                                     <ButtonSubmitBlack type="submit">{!loading ? <Send /> : 

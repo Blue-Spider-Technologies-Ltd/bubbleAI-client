@@ -6,20 +6,23 @@ import bubbleBgAuthImg from "../../images/bubblebg-auth.png";
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Google, Apple } from '@mui/icons-material';
-import { Link } from "@mui/material";
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ThreeCircles } from 'react-loader-spinner'
+import { ThreeCircles } from 'react-loader-spinner';
+import { useDispatch } from "react-redux";
+import { setEmail } from "../../redux/states";
 
 
 const screenWidth = window.innerWidth
 
 const Login = () => {
-    const location = useLocation()
+    const dispatch = useDispatch();
+    const location = useLocation();
     const navigate = useNavigate();
     const isAuth = localStorage?.getItem('token')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [pwdRec, setPwdRec] = useState(false)
     const [data, setData] = useState({
         email: '',
         password: ''
@@ -38,7 +41,8 @@ const Login = () => {
         }
     }, [isAuth, navigate, queryString])
 
-    const handleFormSubmit = async (e) => {
+    //Login submit handler
+    const handleFormSubmitLogin = async (e) => {
         e.preventDefault()
         setError("")
         setLoading(true)
@@ -53,6 +57,7 @@ const Login = () => {
             localStorage.setItem('token', userDetails)
             setError("")
             setLoading(false)
+            //If user was redirected to login from a page because of a service request to a protected route
             if (queryString.length >= 1)  {
                 navigate(`/user/dashboard/${queryString}`)
             } else {
@@ -65,6 +70,32 @@ const Login = () => {
         }
 
     }
+
+    //password recovery handler
+    const handleFormSubmitPwdRecovery= async (e) => {
+        e.preventDefault()
+        setError("")
+        setLoading(true)
+        const email = {
+            email: data.email
+        }
+        try {
+            const response = await axios.post('/auth/pwd-recover', email)
+            console.log(response);
+            setError("");
+            setLoading(false)
+            dispatch(setEmail(data.email))
+            //navigate to reset password
+            navigate('/reset-password')
+
+        } catch (error) {
+            setLoading(false)
+            console.log(error.response.data.mesage);
+            setError(error.response.data.message);
+        }
+
+    }
+
 
     const handleInputChange = (prop) => (event) => {
         setError("")
@@ -87,12 +118,17 @@ const Login = () => {
 
             <div className={authCss.formContainer}>
                 <div className={authCss.formInner} style={{marginTop: '200px'}}>
-                    <h2>Pop back in</h2>
+                    <h2>{!pwdRec ? "Pop back in" : "Enter Email"}</h2>
                     <div className="error">{error}</div>
-                    <form onSubmit={handleFormSubmit}>
+                    <form onSubmit={!pwdRec ? handleFormSubmitLogin : handleFormSubmitPwdRecovery}>
                         <Input placeholder="Email..." inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
-                        <Input placeholder="Password..." inputType="password" inputGridSm={12} onChange={handleInputChange('password')} />
-                        <Link href="/pwd-recovery" className={authCss.pwdRec}>forgot password?</Link>
+                        
+                        {!pwdRec && 
+                            <div>
+                                <Input placeholder="Password..." inputType="password" inputGridSm={12} onChange={handleInputChange('password')} />
+                                <div className={authCss.pwdRec} onClick={() => setPwdRec(true)}>forgot password?</div>
+                            </div>
+                        }
                         <div>
                             <ButtonSubmitBlack type="submit">{!loading ? <Send /> : 
                                 <ThreeCircles
@@ -105,10 +141,15 @@ const Login = () => {
                             </ButtonSubmitBlack>
                         </div>
                     </form>
-                    <p><strong>Or</strong></p>
-                    <ButtonTransparent><span style={{ color: "#940101"}}><Google /></span><span> Login with Google</span></ButtonTransparent>
-                    <p></p>
-                    <ButtonTransparent><span style={{ color: "#333333"}}><Apple /></span><span> Login with Apple</span></ButtonTransparent>
+                    {!pwdRec && (
+                        <div>
+                            <p><strong>Or</strong></p>
+                            <ButtonTransparent><span style={{ color: "#940101"}}><Google /></span><span> Login with Google</span></ButtonTransparent>
+                            <p></p>
+                            <ButtonTransparent><span style={{ color: "#333333"}}><Apple /></span><span> Login with Apple</span></ButtonTransparent>
+                        </div>
+                    )}
+
                 </div>
             </div>
         </div>        

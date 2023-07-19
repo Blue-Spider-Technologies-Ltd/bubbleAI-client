@@ -44,13 +44,13 @@
 
 .pwdRec {
     color: var(--lightModeGreen) !important;
+    cursor: pointer;
     position: relative;
     top: -20px;
     right: 10px;
     float: right;
     font-size: .9rem !important;
     font-weight: 700 !important;
-    text-decoration: none !important;
 }
 
 .enabledResendBtn, .disabledResendBtn {
@@ -79,7 +79,7 @@
 
 .disabledResendBtn {
     background-color: #c0d1d453;
-    cursor: text;
+    cursor: no-drop;
 }
 
 

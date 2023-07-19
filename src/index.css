@@ -23,6 +23,7 @@ body {
   background: #FFF;
   font-family: Inter, sans-serif;
   padding: 0;
+  overflow-x: hidden;
 }
 
 h1 {

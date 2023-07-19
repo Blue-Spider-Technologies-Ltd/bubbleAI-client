@@ -4,7 +4,7 @@ const initialState = {
   messages: [],
   user: {},
   resume: {},
-  modalLoading: false
+  email: ""
 }
 
 export const stateSlice = createSlice({
@@ -31,8 +31,8 @@ export const stateSlice = createSlice({
       state.resume = action.payload;
     },
     //should modal show?
-    setModalLoading: (state, action) => {
-      state.modalLoading = action.payload;
+    setEmail: (state, action) => {
+      state.email = action.payload;
     },
   },
 })
@@ -44,7 +44,7 @@ export const {
   setMessage, 
   deleteLastMessage,
   setResume,
-  setModalLoading 
+  setEmail 
 } = stateSlice.actions
 
 export default stateSlice.reducer

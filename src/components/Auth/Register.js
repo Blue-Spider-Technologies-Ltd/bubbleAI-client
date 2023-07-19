@@ -11,11 +11,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner'
 import PasswordChecklist from "react-multiple-password-validator"
+import { useDispatch } from "react-redux";
+import { setEmail } from "../../redux/states";
 
 
 const screenWidth = window.innerWidth
 
 const Register = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [user, setUser] = useState({
         firstName: '',
@@ -27,6 +30,7 @@ const Register = () => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [pwdChecklist, showPwdChecklist] = useState(false)
+    //Set password rules parameters
     const minLength = 8
     const numberLength = 1
     const capitalLength = 1
@@ -50,8 +54,10 @@ const Register = () => {
             try {
                 const response = await axios.post('/auth/register', userData)
                 setLoading(false)
-                console.log(response)
-                navigate(`/verify?user=${user.email}`)
+                console.log(response.status);
+                //Set email to retrieve for verification
+                dispatch(setEmail(user.email))
+                navigate("/verify")
 
             } catch (error) {
                 console.log(error)
