@@ -7,6 +7,9 @@ import Select from '@mui/material/Select';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import allInputCss from "./Allinputs.module.css"
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 
 
 const useStyles = makeStyles({
@@ -99,11 +102,11 @@ const AuthInput = props => {
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                value={props.value}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    value={props.value}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
                                 >
                                 {showPassword ? <VisibilityOff /> : <Visibility sx={{color: "#6FCBD1"}} />}
                                 </IconButton>
@@ -163,6 +166,22 @@ const AuthInput = props => {
                     disabled={props.disabled}
                     enableSearch={true}
                 />
+            :
+            props.inputType === "search" ?
+                <Paper
+                    component="form"
+                    sx={{display: props.hidden ? 'none' : 'flex', alignItems: 'center'}}
+                >
+                    <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder={props.placeholder}
+                        inputProps={{ 'aria-label': props.placeholder }}
+                        className={classes.root}
+                    />
+                    <IconButton type="button" aria-label="search">
+                        <SearchIcon />
+                    </IconButton>
+                </Paper>
             :
                 <TextField 
                     id={"outlined-basic" + props.label + props.placeholder}

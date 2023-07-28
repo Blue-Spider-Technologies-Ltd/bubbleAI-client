@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import resumeCss from './Resume.module.css'
-import { useNavigate, Link } from 'react-router-dom'
-import logoImg from "../../images/bubble-logo.png"
+import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs';
 import { Grid } from "@mui/material";
 import { COUNTRIES } from '../../utils/countries';
@@ -10,7 +9,8 @@ import { setResume } from "../../redux/states";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Modal, Fetching } from '../UI/Modal/Modal';
-
+import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
+import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import { Rings, Watch } from 'react-loader-spinner'
 import jwt_decode from "jwt-decode";
 const screenWidth = window.innerWidth
@@ -22,7 +22,7 @@ const PreviewResume = () => {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [fetching, setFetching] = useState(false)
-    const [prevResumes, showPrevResumes] = useState(false)
+    const [authMenuOpen, setAuthMenuOpen] = useState(false)
 
     const isAuth = localStorage?.getItem('token')
     //resume data
@@ -48,9 +48,9 @@ const PreviewResume = () => {
     useEffect(() => {
         setFetching(true)
         const resumeLength = Object.keys(resume).length
-        const now = new Date().getTime()
+        const now = Date.now()
         const authUser =  jwt_decode(isAuth)
-        console.log(resume);
+        // console.log(resume);
         if (isAuth && (now < authUser.expiration)) {
  
             if (resumeLength <= 0) {
@@ -63,7 +63,7 @@ const PreviewResume = () => {
             setEduArray(resume.eduInfo && resume.eduInfo)
             setWorkExpArray(resume.workExpInfo && resume.workExpInfo)
             setAwardArray(resume.awardInfo && resume.awardInfo)
-            // setPublications(resume.awardInfo)
+            setPublications(resume.publications && resume.publications)
             setFetching(false)
         } else {
             localStorage?.removeItem('token')
@@ -80,14 +80,9 @@ const PreviewResume = () => {
         localStorage.setItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@', JSON.stringify(resumeObjforLocal));
     }, [resume])
 
-
-    const toggleResumes = () => {
-        showPrevResumes(!prevResumes)
-    }
-
     //////LINK HANDLERS
     const handleDeleteLinks = (index) => {
-        //to fix react confirm bug
+        //comment line below is to fix react confirm bug
         // eslint-disable-next-line no-restricted-globals
         if (confirm(`Proceed to delete link? ${linkInfo[index]}`)) {
             const prevLinks = [...linkInfo];
@@ -148,28 +143,27 @@ const PreviewResume = () => {
         }
     }
 
+    const toggleResumes = () => {
+        setAuthMenuOpen(!authMenuOpen)
+    }
+
     const handleInputChange = (prop) => (event) => {
         setBasicInfo({ ...basicInfo, [prop]: event.target.value });
     };
 
     return (
-        <div className={resumeCss.Resume}>
+        <div className="auth-container">
+            {/* For SIDE MENU */}
+            <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} />
 
             <div style={{ width: '100%', padding: '0' }}>
-                <div className={resumeCss.ResumeBlob}>
+                <div className="auth-bg-blob">
                 </div>
             </div>
 
-            <div className={resumeCss.ResumeInner}>
-                <div className={resumeCss.ResumeInnerHeader}>
-                    <div className={resumeCss.showResumes} onClick={toggleResumes}>
-                        My Resumes
-                    </div>
-                    <h3>Create my Resume</h3>
-                    <Link to='/'>
-                        <img src={logoImg} alt='Bubble Ai' className="authLogo" />
-                    </Link>
-                </div>
+            <div className="auth-container-inner">
+                {/* for TOP MENU */}
+                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" />
 
                 <div className={resumeCss.BodyWrapper}>
                     <div className={resumeCss.BuildNavigator}>
@@ -240,22 +234,21 @@ const PreviewResume = () => {
                             <div>
                                 {workExpArray.map((info, index) => {
                                     return <Grid container className='segment' key={index}>
-                                                <AuthInput name="company" value={info.company}  label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
-                                                <AuthInput name="position" value={info.position}  label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="company" value={info.company}  label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
+                                                <AuthInput name="position" value={info.position}  label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
                                                 <AuthInput name="industry" value={info.industry}  label="Industry e.g IT" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
-                                                <AuthInput name="workLink" value={info.workLink}  label="Related Link" inputType="text" inputGridSm={12} inputGrid={3} mb={2} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="workLink" value={info.workLink}  label="Related Link" inputType="text" inputGridSm={12} inputGrid={3} mb={2} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
                                                 <div style={{width: "50%", margin: "0 auto 5px", display: "flex", justifyContent: "center"}}>
                                                     <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
                                                         <label className={resumeCss.DetachedLabels}>From *</label>
-                                                        <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                        <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
                                                     </div>
                                                     <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
                                                         <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
-                                                        <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                        <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
                                                     </div>
-                                     
                                                 </div>
-                                                <AuthInput name="jobDesc" value={info.jobDesc}  placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                <AuthInput name="jobDesc" label="Job Description" value={info.jobDesc} multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} /> 
                                             </Grid>
                                 })}
                             </div>
@@ -268,10 +261,10 @@ const PreviewResume = () => {
                                     <Grid container sx={{ display: "flex", justifyContent: "space-around" }}>
                                         {awardArray.map((info, index) => {
                                             return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
-                                                <AuthInput name="org" value={info.org} label="Awarding Organization" inputGridSm={12} inputType="text" mb={2} />
-                                                <AuthInput name="award" value={info.award} label="Award Received" inputGridSm={12} inputType="text" mb={2} />
+                                                <AuthInput name="org" value={info.org} label="Awarding Organization" inputGridSm={12} inputType="text" mb={2} disabled={true} />
+                                                <AuthInput name="award" value={info.award} label="Award Received" inputGridSm={12} inputType="text" mb={2} disabled={true} />
                                                 <label className={resumeCss.DetachedLabels}>Date Awarded</label>
-                                                <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" />
+                                                <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" disabled={true} />
                                             </Grid>
                                         })}
                                     </Grid>
@@ -286,9 +279,10 @@ const PreviewResume = () => {
                                     <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
                                         {publications.map((info, index) => {
                                             return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
-                                                        <AuthInput name="title" value={info.title} label="Publication Title" inputGridSm={12} inputType="text" mb={2} /> 
+                                                        <AuthInput name="title" value={info.title} label="Publication Title" inputGridSm={12} inputType="text" mb={2} disabled={true} /> 
+                                                        <AuthInput name="source" value={info.source} label="Source" inputGridSm={12} inputType="text" mb={2} disabled={true} /> 
                                                         <label className={resumeCss.DetachedLabels}>Date Awarded </label>
-                                                        <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" /> 
+                                                        <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" disabled={true} /> 
                                                     </Grid>
                                         })}
                                     </Grid>

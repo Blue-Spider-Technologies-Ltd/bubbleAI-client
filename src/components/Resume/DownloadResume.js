@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import resumeCss from './Resume.module.css'
-import { useNavigate, Link } from 'react-router-dom'
-import logoImg from "../../images/bubble-logo.png"
+import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
@@ -12,7 +11,8 @@ import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
 import standardTempImg from "../../images/resume-standard.png"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import resumeData from './resume.json'
+import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
+import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
 import axios from 'axios'
@@ -25,11 +25,12 @@ const DownloadResume = () => {
     const navigate = useNavigate()
     const componentRef = useRef();
     const [error, setError] = useState("")
-    const [previewResumes, showPreviewResumes] = useState(false)
+    const [authMenuOpen, setAuthMenuOpen] = useState(false)
     const [resumeStorageDetails, setResumeStorageDetails] = useState({
         resumeName: "",
         desc: ""
     })
+    const isAuth = localStorage?.getItem('token')
     //Option for carousel in template section
     const responsive = {
       desktop: {
@@ -49,36 +50,16 @@ const DownloadResume = () => {
       }
     };
 
-    const isAuth = localStorage?.getItem('token')
-    //resume data
-    // const [basicInfo, setBasicInfo] = useState({
-    //     firstName: "",
-    //     lastName: "",
-    //     email: "",
-    //     dob: "",
-    //     mobile: "",
-    //     jobPosition: "",
-    //     street: "",
-    //     city: "",
-    //     country: "",
-    //     profSummary: ""
-    // })
-    // const [linkInfo, setLinkInfo] = useState([])
-    // const [skills, setSkills] = useState([])
-    // const [eduArray, setEduArray] = useState([])
-    // const [workExpArray, setWorkExpArray] = useState([])
-    // const [certArray, setCertArray] = useState([])
-    // const [awardArray, setAwardArray] = useState([])
-    // const [publications, setPublications] = useState([])
+
     useEffect(() => {
         const resumeLength = Object.keys(resume).length        
         const now = new Date().getTime()
         const authUser =  jwt_decode(isAuth)
         console.log(resume);
         if (isAuth && (now < authUser.expiration)) {
-            // if (resumeLength <= 0) {
-            //     navigate('/user/dashboard/resume?customize')
-            // }
+            if (resumeLength <= 0) {
+                navigate('/user/dashboard/resume?customize')
+            }
 
         } else {
             localStorage?.removeItem('token')
@@ -86,15 +67,10 @@ const DownloadResume = () => {
         }
     }, [isAuth, navigate, resume])
 
-    const toggleResumes = () => {
-        showPreviewResumes(!previewResumes)
-    }
-
 
     const handleResumeSave = async (e) => {
         // e.preventDefault();
-        const completeResume = { ...resumeData, resumeStorageDetails }
-        console.log(completeResume);
+        const completeResume = { ...resume, resumeStorageDetails }
 
         try {
             const response = await axios.post('/user/save-resume', completeResume, {
@@ -102,6 +78,7 @@ const DownloadResume = () => {
                     'x-access-token': isAuth
                 }
             })
+            console.log(response);
         } catch (error) {
             console.log(error)
             setError("Try again")
@@ -113,30 +90,29 @@ const DownloadResume = () => {
         onAfterPrint: () => handleResumeSave(),
         documentTitle: resumeStorageDetails.resumeName
     });
+    
+    const toggleResumes = () => {
+        setAuthMenuOpen(!authMenuOpen)
+    }
 
     const handleInputChange = (prop) => (event) => {
-        console.log(resumeStorageDetails);
+        // console.log(resumeStorageDetails);
         setResumeStorageDetails({ ...resumeStorageDetails, [prop]: event.target.value });
     };
 
     return (
-        <div className={resumeCss.Resume}>
+        <div className="auth-container">
+        {/* For SIDE MENU */}
+        <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} />
 
             <div style={{ width: '100%', padding: '0' }}>
-                <div className={resumeCss.ResumeBlob}>
+                <div className="auth-bg-blob">
                 </div>
             </div>
 
-            <div className={resumeCss.ResumeInner}>
-                <div className={resumeCss.ResumeInnerHeader}>
-                    <div className={resumeCss.showResumes} onClick={toggleResumes}>
-                        My Resumes
-                    </div>
-                    <h3>Create my Resume</h3>
-                    <Link to='/'>
-                        <img src={logoImg} alt='Bubble Ai' className="authLogo" />
-                    </Link>
-                </div>
+            <div className="auth-container-inner">
+                {/* for TOP MENU */}
+                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" />
 
                 <div className={resumeCss.BodyWrapper}>
                     <div className={resumeCss.BuildNavigator}>
@@ -199,7 +175,7 @@ const DownloadResume = () => {
                             <h4>View and Download</h4>
                             <div className={resumeCss.ResponsivePrintView}>
                                 <div ref={componentRef}>
-                                    <Standard resume={resumeData} />
+                                    <Standard resume={resume} />
                                 </div>
                                 
                             </div>

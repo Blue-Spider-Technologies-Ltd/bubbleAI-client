@@ -52,7 +52,6 @@ const Login = () => {
         }
         try {
             const response = await axios.post('/auth/login', userData)
-            console.log(response);
             let userDetails = response.data.user
             localStorage.setItem('token', userDetails)
             setError("")

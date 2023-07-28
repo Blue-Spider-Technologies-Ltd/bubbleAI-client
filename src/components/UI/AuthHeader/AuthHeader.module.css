@@ -1,0 +1,36 @@
+.ResumeInnerHeader {
+    color: white !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.showOptions, .hideOptions {
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: .8rem;
+    font-weight: 500;
+    padding: 5px;
+    z-index: 9999999;
+}
+
+.showOptions {
+    background-color: inherit;
+}
+
+.hideOptions {
+    background-color: var(--navColor2);
+    position: fixed;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+
+
+@media (max-width: 1024px) {
+    .ResumeInnerHeader {
+        font-size: .9rem;
+    }
+}

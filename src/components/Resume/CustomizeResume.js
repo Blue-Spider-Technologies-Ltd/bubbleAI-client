@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import resumeCss from './Resume.module.css'
-import { useNavigate, Link } from 'react-router-dom'
-import logoImg from "../../images/bubble-logo.png"
+import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
 import { COUNTRIES } from '../../utils/countries';
@@ -11,7 +10,9 @@ import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
 import { Modal, Fetching } from '../UI/Modal/Modal';
-import { Rings, Watch } from 'react-loader-spinner'
+import { Rings, Watch } from 'react-loader-spinner';
+import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
+import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import jwt_decode from "jwt-decode";
 const screenWidth = window.innerWidth
 
@@ -24,7 +25,7 @@ const CustomizeResume = () => {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [fetching, setFetching] = useState(false)
-    const [resumes, showResumes] = useState(false)
+    const [authMenuOpen, setAuthMenuOpen] = useState(false)
 
     const isAuth = localStorage?.getItem('token')
     //resume data
@@ -42,8 +43,8 @@ const CustomizeResume = () => {
     })
     useEffect(() => {
         setFetching(true)
-        const now = new Date().getTime()        
-        const authUser =  jwt_decode(isAuth)
+        const now = Date.now()        
+        const authUser = jwt_decode(isAuth)
         if (isAuth && (now < authUser.expiration)) {
             if(userLength <= 0 ) {
                 const populateUser = async () => {
@@ -123,12 +124,13 @@ const CustomizeResume = () => {
     const [publications, addPublications] = useState([
         {
             title: "",
+            source: "",
             date: ""
         }
     ])
 
     const toggleResumes = () => {
-        showResumes(!resumes)
+        setAuthMenuOpen(!authMenuOpen)
     }
 
     //////LINK HANDLERS
@@ -353,9 +355,10 @@ const CustomizeResume = () => {
         setError("")
         const newPub = {
             title: "",
+            source: "",
             date: ""
         }
-        if(publications.length < 2) {
+        if(publications.length < 3) {
             return addPublications([...publications, newPub])
         }
         setError("Only add 2 Publications")
@@ -375,7 +378,11 @@ const CustomizeResume = () => {
             case "title":
                 prevPub[index].title = event.target.value
                 addPublications(prevPub)
-                break;           
+                break;       
+            case "source":
+                prevPub[index].source = event.target.value
+                addPublications(prevPub)
+                break;       
             case "date":
                 prevPub[index].date = event.target.value
                 addPublications(prevPub)
@@ -403,7 +410,7 @@ const CustomizeResume = () => {
         }
 
         try {
-            const response = await axios.post('/user/resume', resumeData, {
+            const response = await axios.post('/user/customize-resume', resumeData, {
                 headers: {
                     'x-access-token': isAuth
                 }
@@ -422,7 +429,7 @@ const CustomizeResume = () => {
     }
   
     const handleInputChange = (prop) => (event) => {
-        
+        //if data is mobile number
         if (prop === "mobile") {
             return setBasicInfo({ ...basicInfo, [prop]: "+" + event});
         }
@@ -430,25 +437,20 @@ const CustomizeResume = () => {
     };    
 
     return (
-        <div className={resumeCss.Resume}>
+        <div className="auth-container">
+            {/* For SIDE MENU */}
+            <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} />
 
             <div style={{width: '100%', padding: '0'}}>
-                <div className={resumeCss.ResumeBlob}>
+                <div className="auth-bg-blob">
                 </div>
             </div>
 
-            <div className={resumeCss.ResumeInner}>
-                <div className={resumeCss.ResumeInnerHeader}>
-                    <div className={resumeCss.showResumes} onClick={toggleResumes}>
-                        My Resumes
-                    </div>
-                    <h3>Create my Resume</h3>
-                    <Link to='/'>
-                        <img src={logoImg} alt='Bubble Ai' className="authLogo" />
-                    </Link>
-                </div>
+            <div className="auth-container-inner">
+                {/* for TOP MENU */}
+                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" />
 
-                <div className={resumeCss.BodyWrapper}>
+                <div className={resumeCss.BodyWrapper} onClick={() => setAuthMenuOpen(false)}>
                     <div className={resumeCss.BuildNavigator}>
                         <div className={resumeCss.ActiveNav}><span>1</span>Customise</div>
                         <div><span>2</span>Preview AI Build</div>
@@ -586,6 +588,7 @@ const CustomizeResume = () => {
                                     {publications.map((info, index) => {
                                         return <Grid item xs={12} md={5} mb={2} className='segment' key={index} >
                                                     <AuthInput name="title" value={info.title} label="Publication Title" inputGridSm={12} inputType="text" mb={2} onChange={(event) => handlePubChange(event, index)} /> 
+                                                    <AuthInput name="source" value={info.source} label="Source" inputGridSm={12} inputType="text" mb={2} onChange={(event) => handlePubChange(event, index)} /> 
                                                     <label className={resumeCss.DetachedLabels}>Date Awarded </label>
                                                     <AuthInput name="date" value={info.date} placeholder="Date Awarded" inputGridSm={12} inputType="date" onChange={(event) => handlePubChange(event, index)} /> 
                                                 </Grid>

@@ -6,12 +6,14 @@ import Register from './components/Auth/Register';
 import Verification from './components/Auth/Verification';
 import PwdRecovery from './components/Auth/PwdRecovery';
 import Resume from './components/Resume/Resume'
+import Depositions from './components/Depositions/Depositions';
 
 function App() {
   return (
     <div>
       <Routes>
         <Route path={'/user/dashboard/resume'} element={ <Resume /> } />
+        <Route path={'/user/dashboard/depositions'} element={ <Depositions /> } />
         <Route path={'/popin'} element={ <Login /> } />
         <Route path={'/verify'} element={ <Verification /> } />
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />

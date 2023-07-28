@@ -15,7 +15,7 @@ const Standard = (props) => {
                 <div>
                     {props.resume.linkInfo.length > 0 ?
                         props.resume.linkInfo.map((link, index) => {
-                            return <span key={index}><a href="/">{link}</a> </span>
+                            return <span key={index}><a href={link}>{link}</a> </span>
                         }) : ""
                     }
                 </div>
@@ -32,7 +32,7 @@ const Standard = (props) => {
                                     <h5>{eduInfo.institution}</h5>
                                     <div className={standardCss.FlexContainer}>
                                         <div><span>{eduInfo.degree}</span></div>
-                                        <div>{eduInfo.date}</div>
+                                        <div>{eduInfo.date.slice(0, 4)}</div>
                                     </div>
                                 </div>)
                     })}
@@ -48,7 +48,7 @@ const Standard = (props) => {
                                     <div>
                                         <h5 style={{ display: "inline" }}>
                                             <span>{workInfo.position}</span> - <span>{workInfo.company}</span>{" "}
-                                            <a href={workInfo.workLink}>({workInfo.workLink})</a>
+                                            {workInfo.workLink && <a href={workInfo.workLink}>({workInfo.workLink})</a>}
                                         </h5>
                                     </div>
                                     <div style={{ textAlign: "right" }}>
@@ -81,41 +81,47 @@ const Standard = (props) => {
 
                 </section>
 
-                <section>
-                    <h3>Certifications & Awards</h3>
-                    {props.resume.awardArray.map((awardInfo, index) => {
-                        return (<div key={index} className={standardCss.Education}>
-                                    <h5>{awardInfo.org}</h5>
-                                    <div className={standardCss.FlexContainer}>
-                                        <div><span>{awardInfo.award}</span></div>
-                                        <div>{awardInfo.date}</div>
-                                    </div>
-                                </div>)
-                    })}
+                {props.resume.awardArray.length > 0 &&
+                    <section>
+                        <h3>Certifications & Awards</h3>
+                        {props.resume.awardArray.map((awardInfo, index) => {
+                            return (<div key={index} className={standardCss.Education}>
+                                        <h5>{awardInfo.org}</h5>
+                                        <div className={standardCss.FlexContainer}>
+                                            <div><span>{awardInfo.award}</span></div>
+                                            <div>{awardInfo.date.slice(0, 4)}</div>
+                                        </div>
+                                    </div>)
+                        })}
 
-                </section>
+                    </section>
+                }
 
-                <section>
-                    <h3>Publications</h3>
-                    <ul>
-                        <li><span>Pollution Education Inclusion in Secondary School Curriculum</span>, <span>(source) A Case Study of Edo South Senatorial District</span>, <span>2018</span></li>
-                        <li><span>Tech Curriculum Development and Inclusion in Early Child Education</span>, <span>(source) A research Proposal Submitted to The Federal Ministry of Education, Abuja Nigeria</span>, <span>2022</span></li>
-                    </ul>
-                </section>
+                {props.resume.publications.length > 0 &&
+                    <section>
+                        <h3>Publications</h3>
+                        <ul>
+                            {props.resume.publications.map((publication, index) => {
+                                return <li>{publication.title + ", " + publication.source + ", " + publication.date.slice(0, 4)}</li>
+                            })}
+                        </ul>
+                    </section>
+                }
 
-                <section>
-                    <h3>Interests</h3>
+                {props.resume.interests.length > 0 &&
+                    <section>
+                        <h3>Interests</h3>
 
-                    <div className={standardCss.Skills}>
-                    {props.resume.interests.map((interest, index) => {
-                        return (
-                            <span key={index} className={standardCss.SkillItems}><FavoriteIcon fontSize="inherit" /> <span>{interest}</span></span>
-                        );
-                    })}
+                        <div className={standardCss.Skills}>
+                            {props.resume.interests.map((interest, index) => {
+                                return (
+                                    <span key={index} className={standardCss.SkillItems}><FavoriteIcon fontSize="inherit" /> <span>{interest}</span></span>
+                                );
+                            })}
+                        </div>
+                    </section>
+                }
 
-                    </div>
-
-                </section>
 
             </div>
         </div>
