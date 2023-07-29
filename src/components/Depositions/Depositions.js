@@ -42,7 +42,7 @@ const Depositions = () => {
 
             <div className="auth-container-inner">
                 {/* for TOP MENU */}
-                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleOptions} headerText="Minutes of Proceedings AI" />
+                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleOptions} headerText="Speech to Text AI" />
 
                 <Grid container sx={{padding: '50px 30px'}}>
 

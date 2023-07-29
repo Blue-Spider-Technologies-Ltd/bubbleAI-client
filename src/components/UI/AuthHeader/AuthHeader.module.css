@@ -16,6 +16,7 @@
 
 .showOptions {
     background-color: inherit;
+    display: flex;
 }
 
 .hideOptions {
