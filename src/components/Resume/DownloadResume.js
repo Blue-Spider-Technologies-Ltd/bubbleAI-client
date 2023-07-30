@@ -114,16 +114,16 @@ const DownloadResume = () => {
                 {/* for TOP MENU */}
                 <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" />
 
-                <div className={resumeCss.BodyWrapper}>
-                    <div className={resumeCss.BuildNavigator}>
+                <div className="BodyWrapper">
+                    <div className="BuildNavigator">
                         <div><span>1</span>Customise</div>
                         <div><span>2</span>Preview AI Build</div>
-                        <div className={resumeCss.ActiveNav}><span>3</span>Download</div>
+                        <div className="ActiveNav"><span>3</span>Download</div>
                     </div>
                     <form>
                         <div className='error'>{error}</div>
                        
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Save Resume Details</h4>
                             <div>
                                 <Grid container>
@@ -133,7 +133,7 @@ const DownloadResume = () => {
                             </div>
                         </div>
 
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Choose Template</h4>
                             <div className={resumeCss.TemplateContainer}>
                                 <Carousel
@@ -171,7 +171,7 @@ const DownloadResume = () => {
                                 </Carousel>
                             </div>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>View and Download</h4>
                             <div className={resumeCss.ResponsivePrintView}>
                                 <div ref={componentRef}>

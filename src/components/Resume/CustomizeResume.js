@@ -450,15 +450,15 @@ const CustomizeResume = () => {
                 {/* for TOP MENU */}
                 <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" />
 
-                <div className={resumeCss.BodyWrapper} onClick={() => setAuthMenuOpen(false)}>
-                    <div className={resumeCss.BuildNavigator}>
-                        <div className={resumeCss.ActiveNav}><span>1</span>Customise</div>
+                <div className="BodyWrapper" onClick={() => setAuthMenuOpen(false)}>
+                    <div className="BuildNavigator">
+                        <div className="ActiveNav"><span>1</span>Customise</div>
                         <div><span>2</span>Preview AI Build</div>
                         <div><span>3</span>Download</div>
                     </div>
                     <form method="post" onSubmit={handleFormSubmit}>
                         <div className='error'>{error}</div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Basic Info</h4>
                             <Grid container>
                                 <AuthInput value={basicInfo.firstName} inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} onChange={handleInputChange('firstName')} /> 
@@ -491,7 +491,7 @@ const CustomizeResume = () => {
                                 <AuthInput value={basicInfo.profSummary} placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful" multiline={true} rows={2} inputGridSm={12} mb={2} onChange={handleInputChange('profSummary')} /> 
                             </Grid>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Education Info</h4>
                             <div>
                                 {eduArray.map((info, index) => {
@@ -508,7 +508,7 @@ const CustomizeResume = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Work & Volunteering Experience</h4>
                             <div>
                                 {workExpArray.map((info, index) => {
@@ -537,7 +537,7 @@ const CustomizeResume = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Relevant Skills</h4>
                             <Grid container>
                                 <Grid container item xs={9}>
@@ -562,7 +562,7 @@ const CustomizeResume = () => {
                             </Grid>
                         </div>
                     
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Professional Certifications & Awards [If any]</h4>
                             <div>
                                 <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
@@ -581,7 +581,7 @@ const CustomizeResume = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Publications [If any]</h4>
                             <div>
                                 <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
@@ -601,7 +601,7 @@ const CustomizeResume = () => {
                             </div>
                         </div>
 
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Interests [Optional]</h4>
                             <Grid container>
                                 <Grid container item xs={9}>

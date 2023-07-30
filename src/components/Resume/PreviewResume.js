@@ -165,15 +165,15 @@ const PreviewResume = () => {
                 {/* for TOP MENU */}
                 <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" />
 
-                <div className={resumeCss.BodyWrapper}>
-                    <div className={resumeCss.BuildNavigator}>
+                <div className="BodyWrapper">
+                    <div className="BuildNavigator">
                         <div><span>1</span>Customise</div>
-                        <div className={resumeCss.ActiveNav}><span>2</span>Preview AI Build</div>
+                        <div className="ActiveNav"><span>2</span>Preview AI Build</div>
                         <div><span>3</span>Download</div>
                     </div>
                     <form method="post" onSubmit={handleFormSubmit}>
                         <div className='error'>{error}</div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Basic Info</h4>
                             <Grid container>
                                 <AuthInput value={basicInfo.firstName} inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} />
@@ -204,7 +204,7 @@ const PreviewResume = () => {
                                 </Grid>
                             </Grid>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Relevant Skills</h4>
                             <Grid container>
                                 <Grid item xs={12} style={{padding: "5px", display: "flex", flexWrap: "wrap"}}>
@@ -216,7 +216,7 @@ const PreviewResume = () => {
                                 </Grid>
                             </Grid>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Education Info</h4>
                             <div>
                                 {eduArray.map((info, index) => {
@@ -229,7 +229,7 @@ const PreviewResume = () => {
                                 })}
                             </div>
                         </div>
-                        <div className={resumeCss.Segment}>
+                        <div className="Segment">
                             <h4>Work & Volunteering Experience</h4>
                             <div>
                                 {workExpArray.map((info, index) => {
@@ -255,7 +255,7 @@ const PreviewResume = () => {
                         </div>
 
                         {awardArray.length > 0 && 
-                            <div className={resumeCss.Segment}>
+                            <div className="Segment">
                                 <h4>Awards [If any]</h4>
                                 <div>
                                     <Grid container sx={{ display: "flex", justifyContent: "space-around" }}>
@@ -273,7 +273,7 @@ const PreviewResume = () => {
                         }
 
                         {publications.length > 0 &&
-                            <div className={resumeCss.Segment}>
+                            <div className="Segment">
                                 <h4>Publications [If any]</h4>
                                 <div>
                                     <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
@@ -291,7 +291,7 @@ const PreviewResume = () => {
                         }
 
                         {interests.length > 0 &&
-                            <div className={resumeCss.Segment}>
+                            <div className="Segment">
                                 <h4>Interests</h4>
                                 <Grid container>
                                     <Grid item xs={12} style={{padding: "5px", display: "flex", flexWrap: "wrap"}}>
