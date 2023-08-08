@@ -9,13 +9,13 @@ import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
-import standardTempImg from "../../images/resume-standard.png"
+import standardTempImg from "../../images/resume-standard.png";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
-import axios from 'axios'
+import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
 // console.log(resumeData);
 const screenWidth = window.innerWidth

@@ -4,7 +4,8 @@ const initialState = {
   messages: [],
   user: {},
   resume: {},
-  email: ""
+  email: "",
+  meeting: {}
 }
 
 export const stateSlice = createSlice({
@@ -30,9 +31,11 @@ export const stateSlice = createSlice({
     setResume: (state, action) => {
       state.resume = action.payload;
     },
-    //should modal show?
     setEmail: (state, action) => {
       state.email = action.payload;
+    },
+    setMeeting: (state, action) => {
+      state.meeting = action.payload;
     },
   },
 })
@@ -44,7 +47,8 @@ export const {
   setMessage, 
   deleteLastMessage,
   setResume,
-  setEmail 
+  setEmail,
+  setMeeting 
 } = stateSlice.actions
 
 export default stateSlice.reducer

@@ -157,7 +157,7 @@ h1 {
 
 }
 
-.BodyWrapper form {
+.BodyWrapper form, .BodyWrapper .content {
   margin: 2rem 0;
   padding: 10px 20px;
 }
@@ -231,8 +231,17 @@ h1 {
 }
 
 .explanation-points {
-  margin: 20px 0;
+  margin: 0;
   font-size: .8rem !important;
+}
+
+.go-back {
+  width: 380px;
+  margin: auto;
+  position: relative;
+  bottom: -3rem;
+  color: white;
+  z-index: 999;
 }
 
 /* For webkit-based browsers */
@@ -255,6 +264,12 @@ h1 {
   background-color: #f1f1f1;
   border-radius: 5px;
 }
+
+
+audio::-webkit-media-controls-download-button {
+  display: none !important;
+}
+
 
 
 

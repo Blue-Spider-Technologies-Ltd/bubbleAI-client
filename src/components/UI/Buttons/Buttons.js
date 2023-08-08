@@ -74,7 +74,7 @@ export const ButtonCard = props => {
 
 
     return (
-        <div className={buttonCss.ButtonCard} onClick={props.onClick} sx={{height: props.height ? props.height : "auto"}}>
+        <div className={buttonCss.ButtonCard} name={props.name} onClick={props.onClick} style={{width: props.width && props.width}}>
             <div>
                 {iconImg}
             </div>
