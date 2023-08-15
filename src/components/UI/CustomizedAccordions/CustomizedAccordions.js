@@ -79,7 +79,7 @@ export default React.memo(function CustomizedAccordions(props) {
       const formData = new FormData();
       //Append Audio to form
       formData.append('audio', blob, 'audio.mp3');
-      console.log(formData);
+
       const response = await axios.post('/transcript/transcribe-meeting', formData, {
           headers: {
               'x-access-token': localStorage?.getItem('token'),
