@@ -7,20 +7,30 @@ import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Alert from '@mui/material/Alert';
 import CustomizedAccordions from '../../UI/CustomizedAccordions/CustomizedAccordions';
+import axios from 'axios'
 
 const Meeting = (props) => {
     const dispatch = useDispatch()
+    const isAuth = localStorage?.getItem('token')
     const { meeting } = useSelector(state => state.stateData)
     const [error, setError] = useState(false);
-    const [participants, addParticipants] = useState([]);
     const [meetingTitle, setMeetingTitle] = useState("");
     const [loading, setLoading] = useState(false);
-    const [meetingStarted, setMeetingStarted] = useState(true)
+    const [meetingStarted, setMeetingStarted] = useState(false)
+    const [participants, addParticipants] = useState([
+        {
+            name: '',
+            transcripts : []
+        }
+    ]);
     
     //////Participants HANDLERS
     const handleAddParticipant = () => {
         setError("")
-        const newPartcipant = ""
+        const newPartcipant = {
+            name: "",
+            transcripts: []
+        }
         if(participants.length < 10) {
             return addParticipants([...participants, newPartcipant])
         }
@@ -36,29 +46,41 @@ const Meeting = (props) => {
         setError("Meeting must have participants")
     }
     const handleParticipantChange = (event, index) => {
-        const newParticipant = {
-            name: event.target.value,
-            transcriptions: []
-        }
-        const prevParticipants = [...participants, newParticipant];
+        const prevParticipants = [...participants];
+        prevParticipants[index].name = event.target.value
         addParticipants(prevParticipants)
     };
 
+    //Meeting HANDLERS
     const handleMeetingTitleChange = event => {
         setMeetingTitle(event.target.value)
     }
 
-    const handleMeetingStart = (e) => {
+    const handleMeetingStart = async (e) => {
         e.preventDefault()
+        setError('')
+        if (meetingTitle === '') return setError('Meeting must have a title');
         if (participants.length < 2) return setError('Meeting must have at least 2 Participants');
         setLoading(true)
-        const newMeeting = {
-            meetingTitle: meetingTitle,
-            participants: participants
+
+        try {
+            const newMeeting = {
+                meetingTitle: meetingTitle,
+                participants: participants
+            }
+            const response = await axios.post('/transcript/start-meeting', newMeeting, {
+                headers: {
+                    'x-access-token': isAuth
+                }
+            })
+            dispatch(setMeeting(response.data))
+            setMeetingStarted(true)
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            setError(error.response.data.error)
         }
-        dispatch(setMeeting(newMeeting))
-        setMeetingStarted(true)
-        setLoading(false)
+
     }
 
     const setUpForm = (
@@ -99,7 +121,7 @@ const Meeting = (props) => {
                         return <AuthInput 
                                     key={index} 
                                     label="Participant Full Name" 
-                                    value={participant} 
+                                    value={participant.name} 
                                     inputType="text" 
                                     inputGridSm={8} 
                                     inputGrid={8}
@@ -125,10 +147,30 @@ const Meeting = (props) => {
     )
 
 
+    const meetingContainer = (
+        <div className='content'>
+            <div className='explanation-points'>
+                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click on any participant's name to view or start transcriptions</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click the red record button to start</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click the stop button that shows only while recording to stop and automatically transcribe</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">Transcriptions can not be deleted or editted as a security measure to information minuted</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">Avoid reloading page once transcription has started to reduce the risk of any data loss</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">For best transcriptions, pause recording when participant is not actively speaking</Alert>
+            </div>
+
+            <div className='error'>{error}</div>
+        
+            <div className="Segment">
+                <h4>Ongoing Transcriptions</h4>
+                <CustomizedAccordions participants={meeting.participants} />
+            </div>
+        </div>
+    )
     
 
 
 
+    
     
     return (
         <div className="BodyWrapper">
@@ -138,24 +180,8 @@ const Meeting = (props) => {
                 <div className={meetingStarted ? "ActiveNav" : undefined}><span>2</span>Transcribe</div>
             </div>
 
-            {/* Shows Setting up meeting or transcribing */}
-            {/* {!meetingStarted && setUpForm} */}
-            <div className='content'>
-                <div className='explanation-points'>
-                    <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click on any participant's name to view or start transcriptions</Alert>
-                    <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click the red record button to start</Alert>
-                    <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click the stop button that shows only while recording to stop and automatically transcribe</Alert>
-                    <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">Transcriptions can not be deleted or editted as a security measure to information minuted</Alert>
-                    <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">Avoid reloading page once transcription has started to reduce the risk of any data loss</Alert>
-                </div>
+            {!meetingStarted ? setUpForm : meetingContainer}
 
-                <div className='error'>{error}</div>
-            
-                <div className="Segment">
-                    <h4>Ongoing Transcriptions</h4>
-                    <CustomizedAccordions participants={meeting.participants} />
-                </div>
-            </div>
         </div>
     )
 }

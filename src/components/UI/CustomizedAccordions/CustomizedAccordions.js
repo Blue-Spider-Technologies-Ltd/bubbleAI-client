@@ -56,29 +56,32 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 
 
-
-export default React.memo(function CustomizedAccordions(props) {
-  const [expanded, setExpanded] = React.useState('panel1');
+export default function CustomizedAccordions(props) {
+  const [expanded, setExpanded] = React.useState(null);
+  const [expandedInner, setExpandedInner] = React.useState('panely');
   const [errorRec, setErrorRec] = React.useState('');
   const [error, setError] = React.useState('');
-  const [audioFile, setAudioFile] = React.useState(null);
+  const [selectedParticipant, setSelectedParticipant] = React.useState(null);
 
   const recorderControls = useAudioRecorder(
     {
       noiseSuppression: true,
       echoCancellation: true,
     },
-    (err) => setErrorRec(err.message) // onNotAllowedOrFound
+    (err) => {
+      console.error(err)
+      setErrorRec(err.message)
+    } // onNotAllowedOrFound
   );
 
+  const addAudioElement = React.useCallback(async (blob, index) => {
 
-  const addAudioElement = React.useCallback(async (blob) => {
-    setErrorRec('')
-    const url = URL.createObjectURL(blob);
     try {
+      setErrorRec('')
+
       const formData = new FormData();
-      //Append Audio to form
       formData.append('audio', blob, 'audio.mp3');
+      formData.append('participantName', props.participants[index].name);
 
       const response = await axios.post('/transcript/transcribe-meeting', formData, {
           headers: {
@@ -86,19 +89,21 @@ export default React.memo(function CustomizedAccordions(props) {
               'Content-Type': 'multipart/form-data'
           }
       })
+
+      console.log(response.data)
+      
       if(response.status === 500) {
-          return setError("We are being throttled, try again after a while")
+        throw new Error("We are being throttled, try again after a while")
       }
-      const audio = document.createElement('audio');
-      audio.src = url;
-      audio.controls = true;
-      document.body.appendChild(audio);
+
     } catch (error) {
-        console.log(error)
+        console.error(error)
         setError("We are being throttled, try again after a while")
     }
 
-  }, []);
+  }, [props.participants]);
+
+
 
 //   const [audioSrc, setAudioSrc] = useState('');
 
@@ -116,65 +121,85 @@ export default React.memo(function CustomizedAccordions(props) {
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
+    setSelectedParticipant(panel)
+  };
+
+  const handleChangeInner = (panel) => (event, newExpanded) => {
+    setExpandedInner(newExpanded ? panel : false);
   };
 
   return (
     <div>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Tamir Thoro #1</Typography>
-        </AccordionSummary>
-        <div className='error'>{errorRec}</div>
-        <AccordionDetails>
-          <div className={accordCss.NewTranscript}>
-            <Grid container>
-              <Grid item xs={!recorderControls.isRecording && 10} sx={{display: !recorderControls.isRecording ? 'flex' : 'none', alignItems: 'center'}}>
-                Start New Transcription for Tamir
-              </Grid>
-              <Grid item xs={recorderControls.isRecording ? 12 : 2}>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <AudioRecorder
-                    onRecordingComplete={(blob) => addAudioElement(blob)}
-                    recorderControls={recorderControls}
-                    showVisualizer={true}
-                  />
-                </div>
-              </Grid>
-            </Grid>
-          </div>
+      {props.participants.length > 0 ? props.participants.map((participant, index) => {
+        return (
 
-          <div className={accordCss.Transcript}>
-            <Grid container>
-              <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
-                View Transcript 1
-              </Grid>
-              <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
-                <PlayCircleIcon className={accordCss.Icon} title="Play Audio" />
-                <TextSnippetIcon className={accordCss.Icon} title="View Transcript" />
-              </Grid>
-            </Grid>
-          </div>
+          <Accordion key={index} expanded={expanded === index} onChange={handleChange(index)}>
+            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+              <Typography>{participant.name}</Typography>
+            </AccordionSummary>
+            <div className='error'>{errorRec}</div>
+            <AccordionDetails>
+              <div className={accordCss.NewTranscript}>
+                <Grid container>
+                  <Grid item xs={!recorderControls.isRecording && 10} sx={{display: !recorderControls.isRecording ? 'flex' : 'none', alignItems: 'center'}}>
+                    Start New Transcription for Tamir
+                  </Grid>
+                  <Grid item xs={recorderControls.isRecording ? 12 : 2}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                      <AudioRecorder
+                        onRecordingComplete={(blob) => {
+                          if(index === selectedParticipant) {
+                            addAudioElement(blob, index)
+                          }
+                        }}
+                        recorderControls={recorderControls}
+                        showVisualizer={true}
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+              </div>
 
-          <div className={accordCss.Transcript}>
-            <Grid container>
-              <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
-                View Transcript 2
-              </Grid>
-              <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
-                <PlayCircleIcon className={accordCss.Icon} title="Play Audio" />
-                <TextSnippetIcon className={accordCss.Icon} title="View Transcript" />
-              </Grid>
-            </Grid>
-          </div>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+                {participant.transcripts.length > 0 ? (
+                  <Accordion expanded={expandedInner === 'panelx'} onChange={handleChangeInner('panelx')} sx={{padding: '0 !important'}}>
+                    <AccordionSummary aria-controls="panel1d-content" id="panelxd-header" expandIcon={null} sx={{padding: '0 !important', backgroundColor: 'black'}}>
+                      <div className={accordCss.Transcript} style={{margin: '0 !important'}}>
+                        <Grid container>
+                          <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
+                            View Transcript 1
+                          </Grid>
+                          <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
+                            <div title="Play Audio">
+                              <PlayCircleIcon className={accordCss.Icon} />
+                            </div>
+                            <div title="View Transcript">
+                              <TextSnippetIcon className={accordCss.Icon} />
+                            </div>
+                            
+                          </Grid>
+                        </Grid>
+                      </div>
+                    </AccordionSummary>
+                      
+                    <AccordionDetails>
+                      <Typography>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+                        sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                        sit amet blandit leo lobortis eget.
+                      </Typography>
+                    </AccordionDetails>
+                    
+                  </Accordion>
+                ) : undefined}
+
+
+            </AccordionDetails>
+          </Accordion>
+        )
+      }) : undefined}
+
 
     </div>
   );
-})
+}

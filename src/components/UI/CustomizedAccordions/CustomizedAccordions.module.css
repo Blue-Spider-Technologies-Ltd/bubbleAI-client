@@ -25,6 +25,8 @@
     -moz-transition: all 0.3s ease-in;
     -ms-transition: all 0.3s ease-in;
     -o-transition: all 0.3s ease-in;
+    position: relative;
+    z-index: 9999;
 }
 
 .Icon:hover {
