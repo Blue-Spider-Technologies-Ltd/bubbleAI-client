@@ -97,8 +97,8 @@ const PreviewResume = () => {
     }, [isAuth, navigate, dispatch, resume])
 
     useEffect(() => {
-
-    }, [resume])
+        if (!eduArray) setError('Reload page to get complete data')
+    }, [eduArray])
 
     //////LINK HANDLERS
     const handleDeleteLinks = (index) => {
@@ -155,6 +155,13 @@ const PreviewResume = () => {
 
         try {
             dispatch(setResume(resumeData))
+            //save a copy for later incase user doesn't finish now
+            const now = new Date().getTime();
+            let resumeObjforLocal = {
+            resumeData : resumeData,
+            expiration: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
+            }
+            localStorage.setItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@', JSON.stringify(resumeObjforLocal));
             setLoading(false)
             navigate('/user/dashboard/resume?download')
         } catch (error) {
@@ -238,45 +245,49 @@ const PreviewResume = () => {
                                 </Grid>
                             </div>
                         )}
-                        <div className="Segment">
-                            <h4>Education Info</h4>
-                            <div>
-                                {eduArray.map((info, index) => {
-                                return (<Grid container key={index} className='segment'>
-                                        <AuthInput name="institution" value={info.institution} label="Name of Institution" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} />
-                                        <AuthInput name="degree" value={info.degree} label="Degree Obtained" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} />
-                                        <label className={resumeCss.DetachedLabels} mr={4}>Graduation Date *</label>
-                                        <AuthInput name="date" value={info.date} placeholder="Graduation Date" inputType="date" inputGridSm={8} inputGrid={2} required={true} disabled={true} />
-                                    </Grid>)
-                                })}
+                        {eduArray ? (
+                            <div className="Segment">
+                                <h4>Education Info</h4>
+                                <div>
+                                    {eduArray.map((info, index) => {
+                                    return (<Grid container key={index} className='segment'>
+                                            <AuthInput name="institution" value={info.institution} label="Name of Institution" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} />
+                                            <AuthInput name="degree" value={info.degree} label="Degree Obtained" inputType="text" inputGridSm={12} inputGrid={4} mb={2} required={true} disabled={true} />
+                                            <label className={resumeCss.DetachedLabels} mr={4}>Graduation Date *</label>
+                                            <AuthInput name="date" value={info.date} placeholder="Graduation Date" inputType="date" inputGridSm={8} inputGrid={2} required={true} disabled={true} />
+                                        </Grid>)
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                        <div className="Segment">
-                            <h4>Work & Volunteering Experience</h4>
-                            <div>
-                                {workExpArray.map((info, index) => {
-                                    return <Grid container className='segment' key={index}>
-                                                <AuthInput name="company" value={info.company}  label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
-                                                <AuthInput name="position" value={info.position}  label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
-                                                <AuthInput name="industry" value={info.industry}  label="Industry e.g IT" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
-                                                <AuthInput name="workLink" value={info.workLink}  label="Related Link" inputType="text" inputGridSm={12} inputGrid={3} mb={2} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
-                                                <div style={{width: "50%", margin: "0 auto 5px", display: "flex", justifyContent: "center"}}>
-                                                    <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
-                                                        <label className={resumeCss.DetachedLabels}>From *</label>
-                                                        <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
+                        ) : null}
+                        {workExpArray && (
+                            <div className="Segment">
+                                <h4>Work & Volunteering Experience</h4>
+                                <div>
+                                    {workExpArray.map((info, index) => {
+                                        return <Grid container className='segment' key={index}>
+                                                    <AuthInput name="company" value={info.company}  label="Company/Org. Name" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
+                                                    <AuthInput name="position" value={info.position}  label="Position Held" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
+                                                    <AuthInput name="industry" value={info.industry}  label="Industry e.g IT" inputType="text" inputGridSm={12} inputGrid={3} mb={2} required={true} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                    <AuthInput name="workLink" value={info.workLink}  label="Related Link" inputType="text" inputGridSm={12} inputGrid={3} mb={2} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
+                                                    <div style={{width: "50%", margin: "0 auto 5px", display: "flex", justifyContent: "center"}}>
+                                                        <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
+                                                            <label className={resumeCss.DetachedLabels}>From *</label>
+                                                            <AuthInput name="dateFrom" value={info.DateFrom} placeholder="Start Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
+                                                        </div>
+                                                        <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
+                                                            <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
+                                                            <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
+                                                        </div>
                                                     </div>
-                                                    <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
-                                                        <label className={resumeCss.DetachedLabels} style={{marginRight: "10px"}}>To *</label>
-                                                        <AuthInput name="dateTo" value={info.dateTo} placeholder="End Date" inputType="date" inputGridSm={12} inputGrid={12} required={true} onChange={(event) => handleWorkExpChange(event, index)} disabled={true} /> 
-                                                    </div>
-                                                </div>
-                                                <AuthInput name="jobDesc" label="Job Description" value={info.jobDesc} multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} /> 
-                                            </Grid>
-                                })}
+                                                    <AuthInput name="jobDesc" label="Job Description" value={info.jobDesc} multiline={true} rows={2} inputGridSm={12} onChange={(event) => handleWorkExpChange(event, index)} /> 
+                                                </Grid>
+                                    })}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
-                        {awardArray.length > 0 && 
+                        {awardArray && 
                             <div className="Segment">
                                 <h4>Awards [If any]</h4>
                                 <div>
