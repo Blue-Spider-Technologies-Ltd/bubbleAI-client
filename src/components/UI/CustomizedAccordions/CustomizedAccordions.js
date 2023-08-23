@@ -11,6 +11,8 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { useAudioRecorder, AudioRecorder } from 'react-audio-voice-recorder';
 import axios from 'axios'
+import { setMeeting } from '../../../redux/states';
+import { useDispatch } from "react-redux";
 
 
 
@@ -57,8 +59,9 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 
 export default function CustomizedAccordions(props) {
+  const dispatch = useDispatch()
   const [expanded, setExpanded] = React.useState(null);
-  const [expandedInner, setExpandedInner] = React.useState('panely');
+  const [expandedInner, setExpandedInner] = React.useState(null);
   const [errorRec, setErrorRec] = React.useState('');
   const [error, setError] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState(null);
@@ -91,6 +94,7 @@ export default function CustomizedAccordions(props) {
       })
 
       console.log(response.data)
+      dispatch(setMeeting(response.data))
       
       if(response.status === 500) {
         throw new Error("We are being throttled, try again after a while")
@@ -101,17 +105,15 @@ export default function CustomizedAccordions(props) {
         setError("We are being throttled, try again after a while")
     }
 
-  }, [props.participants]);
+  }, [props.participants, dispatch]);
 
 
 
 //   const [audioSrc, setAudioSrc] = useState('');
 
-// const handlePlay = () => {
-//   const audio = new Audio(audioSrc);
-//   audio.controls = false; // hide default controls
-//   audio.play();
-// };
+const handlePlay = (index) => {
+//
+};
 
 // return (
 //   <div>
@@ -134,7 +136,7 @@ export default function CustomizedAccordions(props) {
         return (
 
           <Accordion key={index} expanded={expanded === index} onChange={handleChange(index)}>
-            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <AccordionSummary aria-controls="panel1d-content" >
               <Typography>{participant.name}</Typography>
             </AccordionSummary>
             <div className='error'>{errorRec}</div>
@@ -161,36 +163,38 @@ export default function CustomizedAccordions(props) {
               </div>
 
                 {participant.transcripts.length > 0 ? (
-                  <Accordion expanded={expandedInner === 'panelx'} onChange={handleChangeInner('panelx')} sx={{padding: '0 !important'}}>
-                    <AccordionSummary aria-controls="panel1d-content" id="panelxd-header" expandIcon={null} sx={{padding: '0 !important', backgroundColor: 'black'}}>
-                      <div className={accordCss.Transcript} style={{margin: '0 !important'}}>
-                        <Grid container>
-                          <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
-                            View Transcript 1
-                          </Grid>
-                          <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
-                            <div title="Play Audio">
-                              <PlayCircleIcon className={accordCss.Icon} />
-                            </div>
-                            <div title="View Transcript">
-                              <TextSnippetIcon className={accordCss.Icon} />
-                            </div>
-                            
-                          </Grid>
-                        </Grid>
-                      </div>
-                    </AccordionSummary>
-                      
-                    <AccordionDetails>
-                      <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                        sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                        sit amet blandit leo lobortis eget.
-                      </Typography>
-                    </AccordionDetails>
-                    
-                  </Accordion>
+                  participant.transcripts.map((transcript, index) => {
+                    return (
+                      <Accordion key={index} expanded={expandedInner === index} sx={{padding: '0 !important'}} onChange={handleChangeInner(index)}>
+                        <AccordionSummary aria-controls="panel1d-content" expandIcon={null} sx={{padding: '0 !important', backgroundColor: 'black'}}>
+                          <div className={accordCss.Transcript} style={{margin: '0 !important'}}>
+                            <Grid container>
+                              <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
+                                View Transcript {index}
+                              </Grid>
+                              <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
+                                <div title="Play Audio" onClick={handlePlay(index)}>
+                                  <PlayCircleIcon className={accordCss.Icon} />
+                                </div>
+                                <div title="View Transcript">
+                                  <TextSnippetIcon className={accordCss.Icon} />
+                                </div>
+                                
+                              </Grid>
+                            </Grid>
+                          </div>
+                        </AccordionSummary>
+                          
+                        <AccordionDetails>
+                          <Typography>
+                            {transcript.text}
+                          </Typography>
+                        </AccordionDetails>
+                        
+                      </Accordion>
+                    )
+                  })
+
                 ) : undefined}
 
 
