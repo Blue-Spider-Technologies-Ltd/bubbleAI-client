@@ -45,7 +45,19 @@ const CustomizeResume = () => {
         setFetching(true)
         const now = Date.now()        
         const authUser = jwt_decode(isAuth)
+        const isResumePresent = localStorage?.getItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@')
+        const localResume = JSON.parse(isResumePresent)
         if (isAuth && (now < authUser.expiration)) {
+            if (localResume) {
+                //to fix react confirm bug
+                // eslint-disable-next-line no-restricted-globals
+                if (confirm(`You have a previously unfinished Resume, Click Proceed to Finish it or cancel to start new Resume`)) {
+                    dispatch(setResume(localResume.resumeData))
+                    navigate('/user/dashboard/resume?preview')
+                }
+                //remove previous resumes in local storage
+                localStorage?.removeItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@')
+            }
             if(userLength <= 0 ) {
                 const populateUser = async () => {
                     try {
@@ -420,6 +432,13 @@ const CustomizeResume = () => {
                 return setError("We are being throttled, try again after a while")
             }
             dispatch(setResume(response.data.resumeData))
+            const now = new Date().getTime();
+            //save a copy for later incase user doesn't finish now
+            let resumeObjforLocal = {
+                resumeData : response.data.resumeData,
+                expiration: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
+            }
+            localStorage.setItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@', JSON.stringify(resumeObjforLocal));
             setLoading(false)
             navigate('/user/dashboard/resume?preview')
         } catch (error) {

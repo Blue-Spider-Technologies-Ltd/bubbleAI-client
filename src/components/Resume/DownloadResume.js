@@ -68,10 +68,8 @@ const DownloadResume = () => {
     }, [isAuth, navigate, resume])
 
 
-    const handleResumeSave = async (e) => {
-        // e.preventDefault();
+    const handleResumeSave = async () => {
         const completeResume = { ...resume, resumeStorageDetails }
-
         try {
             const response = await axios.post('/user/save-resume', completeResume, {
                 headers: {
@@ -181,7 +179,12 @@ const DownloadResume = () => {
                             </div>
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "150px" }}>
-                                    <ButtonSubmitGreen type="button" onClick={handlePrint}>
+                                    <ButtonSubmitGreen type="button" onClick={() => {
+                                        if(resumeStorageDetails.resumeName === "") {
+                                            return setError('Resume must have a name')
+                                        }
+                                        handlePrint()
+                                    }}>
                                         <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF </span>
                                     </ButtonSubmitGreen>
                                 </div>

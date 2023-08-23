@@ -161,7 +161,7 @@ const Meeting = (props) => {
             <div className='error'>{error}</div>
         
             <div className="Segment">
-                <h4>Ongoing Transcriptions</h4>
+                <h4>{meeting.meetingTitle}'s Ongoing Transcriptions</h4>
                 <CustomizedAccordions participants={meeting.participants} />
             </div>
         </div>

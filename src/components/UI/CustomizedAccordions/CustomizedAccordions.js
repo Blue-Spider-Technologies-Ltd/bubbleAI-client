@@ -58,13 +58,19 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 
 
-export default function CustomizedAccordions(props) {
+export default React.memo(function CustomizedAccordions(props) {
   const dispatch = useDispatch()
   const [expanded, setExpanded] = React.useState(null);
   const [expandedInner, setExpandedInner] = React.useState(null);
   const [errorRec, setErrorRec] = React.useState('');
   const [error, setError] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState(null);
+
+  const getParticipantFirstName = (str) => {
+    const index = str.indexOf(" ");
+    const result = str.slice(0, index);
+    return result;
+  }
 
   const recorderControls = useAudioRecorder(
     {
@@ -144,7 +150,7 @@ const handlePlay = (index) => {
               <div className={accordCss.NewTranscript}>
                 <Grid container>
                   <Grid item xs={!recorderControls.isRecording && 10} sx={{display: !recorderControls.isRecording ? 'flex' : 'none', alignItems: 'center'}}>
-                    Start New Transcription for Tamir
+                    Start New Transcription for {getParticipantFirstName(participant.name)}
                   </Grid>
                   <Grid item xs={recorderControls.isRecording ? 12 : 2}>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -206,4 +212,4 @@ const handlePlay = (index) => {
 
     </div>
   );
-}
+})

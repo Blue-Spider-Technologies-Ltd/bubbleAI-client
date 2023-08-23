@@ -45,17 +45,40 @@ const PreviewResume = () => {
     const [workExpArray, setWorkExpArray] = useState([])
     const [awardArray, setAwardArray] = useState([])
     const [publications, setPublications] = useState([])
+
     useEffect(() => {
         setFetching(true)
         const resumeLength = Object.keys(resume).length
         const now = Date.now()
         const authUser =  jwt_decode(isAuth)
+        const isResumePresent = localStorage?.getItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@')
+
         // console.log(resume);
         if (isAuth && (now < authUser.expiration)) {
- 
+
+            const localResume = JSON.parse(isResumePresent)
+            //When user returning from download page
             if (resumeLength <= 0) {
-                navigate('/user/dashboard/resume?customize')
+                if (!localResume) {
+                    localStorage?.removeItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@')
+                    navigate('/user/dashboard/resume?customize')
+                } else {
+                    //if resume is found in local storage
+                    console.log(localResume);
+                    dispatch(setResume(localResume.resumeData))
+                    setBasicInfo(localResume.resumeData.basicInfo && localResume.resumeData.basicInfo)
+                    setLinkInfo(localResume.resumeData.linkInfo && localResume.resumeData.linkInfo)
+                    setSkills(localResume.resumeData.skills && localResume.resumeData.skills)
+                    setInterests(localResume.resumeData.interests && localResume.resumeData.interests)
+                    setEduArray(localResume.resumeData.eduInfo && localResume.resumeData.eduInfo)
+                    setWorkExpArray(localResume.resumeData.workExpInfo && localResume.resumeData.workExpInfo)
+                    setAwardArray(localResume.resumeData.awardInfo && localResume.resumeData.awardInfo)
+                    setPublications(localResume.resumeData.publications && localResume.resumeData.publications)
+                    setFetching(false)
+                    return;
+                }
             }
+            //when user coming from customize page
             setBasicInfo(resume.basicInfo && resume.basicInfo)
             setLinkInfo(resume.linkInfo && resume.linkInfo)
             setSkills(resume.skills && resume.skills)
@@ -65,19 +88,16 @@ const PreviewResume = () => {
             setAwardArray(resume.awardInfo && resume.awardInfo)
             setPublications(resume.publications && resume.publications)
             setFetching(false)
+
+                
         } else {
             localStorage?.removeItem('token')
             navigate('/popin')
         }
-    }, [isAuth, navigate, resume])
+    }, [isAuth, navigate, dispatch, resume])
 
     useEffect(() => {
-        const now = new Date().getTime();
-        let resumeObjforLocal = {
-            resumeData : resume,
-            expiration: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
-        }
-        localStorage.setItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@', JSON.stringify(resumeObjforLocal));
+
     }, [resume])
 
     //////LINK HANDLERS
@@ -204,18 +224,20 @@ const PreviewResume = () => {
                                 </Grid>
                             </Grid>
                         </div>
-                        <div className="Segment">
-                            <h4>Relevant Skills</h4>
-                            <Grid container>
-                                <Grid item xs={12} style={{padding: "5px", display: "flex", flexWrap: "wrap"}}>
-                                    {skills.map((skill, index) => {
-                                        return (
-                                            <span key={index} className='array-item'>{skill}<span className='itemDelete' title='Delete Skill' onClick={() => {handleDeleteSkills(index)}}>X</span></span>
-                                        )
-                                    })}
+                        {skills.length > 0 && (
+                            <div className="Segment">
+                                <h4>Relevant Skills</h4>
+                                <Grid container>
+                                    <Grid item xs={12} style={{padding: "5px", display: "flex", flexWrap: "wrap"}}>
+                                        {skills.map((skill, index) => {
+                                            return (
+                                                <span key={index} className='array-item'>{skill}<span className='itemDelete' title='Delete Skill' onClick={() => {handleDeleteSkills(index)}}>X</span></span>
+                                            )
+                                        })}
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </div>
+                            </div>
+                        )}
                         <div className="Segment">
                             <h4>Education Info</h4>
                             <div>
