@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import depoCss from './Depositions.module.css'
 import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import { ButtonCard } from '../UI/Buttons/Buttons';
 import { Grid } from "@mui/material"
 import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
 import Meeting from './Partials/Meeting';
 import { Fetching } from '../UI/Modal/Modal';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
@@ -20,7 +18,6 @@ const Depositions = () => {
     const [meetingButton, showMeetingButton] = useState(true)
     const [transcribeButton, showTranscribeButton] = useState(true)
     const [translateButton, showTranslateButton] = useState(true)
-    const [error, setError] = useState(false)
 
     useEffect(() => {
         setFetching(true)
@@ -103,19 +100,6 @@ const Depositions = () => {
                     </Grid>
                 )}
 
-
-                    
-                    {/* <Grid item  md={12} xs={12}>
-                    
-                        <div className='explanation-points'>
-                            <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Once meeting is started, you can not return to edit this page</Alert>
-                            <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">To edit page, you will have to reset meeting</Alert>
-                            <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">To reset meeting, you will have to close the current tab</Alert>
-                            <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">When you reopen it, you will be prompted to either continue or cancel previous session</Alert>
-                            <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Choose cancel to confirm</Alert>
-                        </div>
-
-                    </Grid> */}
                 </Grid>
 
                 {checkMeetingBoolean() && <Meeting />}

@@ -12,11 +12,13 @@ import { Modal, Fetching } from '../UI/Modal/Modal';
 import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import { Rings, Watch } from 'react-loader-spinner'
+import { useConfirm } from "material-ui-confirm";
 import jwt_decode from "jwt-decode";
 const screenWidth = window.innerWidth
 
 const PreviewResume = () => {
     const dispatch = useDispatch()
+    const confirm = useConfirm();
     const { resume } = useSelector(state => state.stateData)
     const navigate = useNavigate()
     const [error, setError] = useState("")
@@ -102,33 +104,33 @@ const PreviewResume = () => {
 
     //////LINK HANDLERS
     const handleDeleteLinks = (index) => {
-        //comment line below is to fix react confirm bug
-        // eslint-disable-next-line no-restricted-globals
-        if (confirm(`Proceed to delete link? ${linkInfo[index]}`)) {
+        confirm({ description: `Proceed to delete link? ${linkInfo[index]}` })
+        .then(() => {
             const prevLinks = [...linkInfo];
             prevLinks.splice(index, 1);
             setLinkInfo(prevLinks);
-        }
+        })
+        .catch(() => setError("Not Deleted"));
     };
 
     const handleDeleteSkills = (index) => {
-        //to fix react confirm bug
-        // eslint-disable-next-line no-restricted-globals
-        if (confirm(`Proceed to delete skill? ${skills[index]}`)) {
+        confirm({ description: `Proceed to delete skill? ${skills[index]}` })
+        .then(() => {
             const prevSkills = [...skills];
             prevSkills.splice(index, 1);
             setSkills(prevSkills);
-        }
+        })
+        .catch(() => setError("Not Deleted"));
     };
 
     const handleDeleteInterests = (index) => {
-        //to fix react confirm bug
-        // eslint-disable-next-line no-restricted-globals
-        if (confirm(`Proceed to delete interest? ${interests[index]}`)) {
+        confirm({ description: `Proceed to delete interest? ${interests[index]}` })
+        .then(() => {
             const prevInterests = [...interests];
             prevInterests.splice(index, 1);
             setInterests(prevInterests);
-        }
+        })
+        .catch(() => setError("Not Deleted"));
     };
 
     //     /////WORK EXP HANDLERS

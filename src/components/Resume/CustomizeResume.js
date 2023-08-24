@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, memo } from 'react'
 import resumeCss from './Resume.module.css'
 import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
@@ -14,11 +14,13 @@ import { Rings, Watch } from 'react-loader-spinner';
 import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import jwt_decode from "jwt-decode";
+import { useConfirm } from "material-ui-confirm";
 const screenWidth = window.innerWidth
 
 
 const CustomizeResume = () => {
     const dispatch = useDispatch()
+    const confirm = useConfirm();
     const { user } = useSelector(state => state.stateData)
     const userLength = Object.keys(user).length
     const navigate = useNavigate()
@@ -49,12 +51,13 @@ const CustomizeResume = () => {
         const localResume = JSON.parse(isResumePresent)
         if (isAuth && (now < authUser.expiration)) {
             if (localResume) {
-                //to fix react confirm bug
-                // eslint-disable-next-line no-restricted-globals
-                if (confirm(`You have a previously unfinished Resume, Click Proceed to Finish it or cancel to start new Resume`)) {
+
+                confirm({ description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume` })
+                .then(() => {
                     dispatch(setResume(localResume.resumeData))
                     navigate('/user/dashboard/resume?preview')
-                }
+                })
+                .catch(() => setError("Not Deleted"));
                 //remove previous resumes in local storage
                 localStorage?.removeItem('5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@')
             }
@@ -99,7 +102,7 @@ const CustomizeResume = () => {
             localStorage?.removeItem('token')
             navigate('/popin')
         }
-    }, [navigate, dispatch, userLength, isAuth])
+    }, [navigate, dispatch, userLength, isAuth, confirm])
 
     const [linkInfo, setLinkInfo] = useState([""])
 
@@ -694,4 +697,4 @@ const CustomizeResume = () => {
 }
 
 
-export default CustomizeResume;
+export default memo(CustomizeResume);
