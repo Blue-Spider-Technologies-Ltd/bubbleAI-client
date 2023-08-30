@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import { ButtonCard } from '../UI/Buttons/Buttons';
+import { useSelector, useDispatch } from "react-redux";
+import { setHideCards } from '../../redux/states';
 import { Grid } from "@mui/material"
 import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +14,8 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 const Depositions = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { hideCards, transcriptActivityStarted } = useSelector(state => state.stateData)
     const isAuth = localStorage?.getItem('token')
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
     const [fetching, setFetching] = useState(false)
@@ -43,13 +47,15 @@ const Depositions = () => {
     }
 
     const toggleButtonCards = (prop) => {
+        dispatch(setHideCards(true))
         //sets what is clicked to true and the others false
         showMeetingButton(prop === "meeting");
         showTranscribeButton(prop === "transcribe");
         showTranslateButton(prop === "translate");
     };
 
-    const resetButtonCardBolleans = () => {
+    const resetButtonCardBoleans = () => {
+        dispatch(setHideCards(false))
         showMeetingButton(true);
         showTranscribeButton(true);
         showTranslateButton(true);
@@ -74,33 +80,39 @@ const Depositions = () => {
 
             <div className="auth-container-inner">
                 {/* for TOP MENU */}
-                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleOptions} headerText={!checkAnyFalseButtonCard() && "Speech to Text AI"} />
+                {!transcriptActivityStarted ? <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleOptions} headerText={!checkAnyFalseButtonCard() && "Speech to Text AI"} /> : undefined}
                 
-                {checkAnyFalseButtonCard() && <div className='go-back'>
-                    <div onClick={resetButtonCardBolleans} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '100px'}}>
-                        <ArrowCircleLeftIcon fontSize='large' /> Back
-                    </div>
-                </div>}
+                
+                {!transcriptActivityStarted && checkAnyFalseButtonCard() ? 
+                    (<div className='go-back'>
+                        <div onClick={resetButtonCardBoleans} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '100px'}}>
+                            <ArrowCircleLeftIcon fontSize='large' /> Back
+                        </div>
+                    </div>) : 
+                undefined}
 
-                <Grid container sx={{padding: '50px 30px'}}>
+                {!hideCards ? (
+                    <Grid container sx={{padding: '50px 30px'}}>
 
-                {meetingButton && (
-                    <Grid item lg={checkMeetingBoolean() ? 12 : 4} md={checkMeetingBoolean() ? 12 : 6} xs={12}>
-                        <ButtonCard icon="meeting" title="Set up Meeting" width={checkMeetingBoolean() && '350px'} onClick={() => toggleButtonCards('meeting')} description="Convert your conversations in a meeting into text, mapping each person's contributions to their identity" />
-                    </Grid>
-                )}
-                {transcribeButton && (
-                    <Grid item lg={checkTranscribeBoolean() ? 12 : 4} md={checkTranscribeBoolean() ? 12 : 6} xs={12}>
-                        <ButtonCard icon="transcribe" title="Transcribe Audio File" width={checkTranscribeBoolean() && '350px'} onClick={() => toggleButtonCards('transcribe')} description="Import or upload an audio file to get a text output. Save or download output for later use" />
-                    </Grid>
-                )}
-                {translateButton && (
-                    <Grid item lg={checkTranslateBoolean() ? 12 : 4} md={12} xs={12}>
-                        <ButtonCard icon="translate" title="Translate Audio File" width={checkTranslateBoolean() && '350px'} onClick={() => toggleButtonCards('translate')} description="upload or record an audio file and translate it to a wide variety of languages I have available for you" />
-                    </Grid>
-                )}
+                        {meetingButton && (
+                            <Grid item lg={checkMeetingBoolean() ? 12 : 4} md={checkMeetingBoolean() ? 12 : 6} xs={12}>
+                                <ButtonCard icon="meeting" title="Set up Meeting" width={checkMeetingBoolean() && '350px'} onClick={() => toggleButtonCards('meeting')} description="Convert your conversations in a meeting into text, mapping each person's contributions to their identity" />
+                            </Grid>
+                        )}
+                        {transcribeButton && (
+                            <Grid item lg={checkTranscribeBoolean() ? 12 : 4} md={checkTranscribeBoolean() ? 12 : 6} xs={12}>
+                                <ButtonCard icon="transcribe" title="Transcribe Audio File" width={checkTranscribeBoolean() && '350px'} onClick={() => toggleButtonCards('transcribe')} description="Import or upload an audio file to get a text output. Save or download output for later use" />
+                            </Grid>
+                        )}
+                        {translateButton && (
+                            <Grid item lg={checkTranslateBoolean() ? 12 : 4} md={12} xs={12}>
+                                <ButtonCard icon="translate" title="Translate Audio File" width={checkTranslateBoolean() && '350px'} onClick={() => toggleButtonCards('translate')} description="upload or record an audio file and translate it to a wide variety of languages I have available for you" />
+                            </Grid>
+                        )}
 
-                </Grid>
+                    </Grid>
+                ) : undefined}
+
 
                 {checkMeetingBoolean() && <Meeting />}
 

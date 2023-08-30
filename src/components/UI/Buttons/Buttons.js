@@ -71,8 +71,6 @@ export const ButtonCard = props => {
             break;
     }
 
-
-
     return (
         <div className={buttonCss.ButtonCard} name={props.name} onClick={props.onClick} style={{width: props.width && props.width}}>
             <div>
@@ -83,6 +81,15 @@ export const ButtonCard = props => {
             <div style={{margin: '20px 0'}}>
                 {props.description}
             </div>
+        </div>
+    )
+}
+
+export const ButtonThin = props => {
+    
+    return (
+        <div className={buttonCss.ButtonThin} onClick={props.onClick}>
+            {props.children}
         </div>
     )
 }

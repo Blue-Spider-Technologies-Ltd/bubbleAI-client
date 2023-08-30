@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { setMeeting } from '../../../redux/states';
+import { setMeeting, setTranscriptActivityStarted } from '../../../redux/states';
+import { Fetching } from '../../UI/Modal/Modal';
 import AuthInput from '../../UI/Input/AuthInputs';
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -15,7 +16,7 @@ const Meeting = (props) => {
     const { meeting } = useSelector(state => state.stateData)
     const [error, setError] = useState(false);
     const [meetingTitle, setMeetingTitle] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(false)
     const [meetingStarted, setMeetingStarted] = useState(false)
     const [participants, addParticipants] = useState([
         {
@@ -61,7 +62,7 @@ const Meeting = (props) => {
         setError('')
         if (meetingTitle === '') return setError('Meeting must have a title');
         if (participants.length < 2) return setError('Meeting must have at least 2 Participants');
-        setLoading(true)
+        setFetching(true)
 
         try {
             const newMeeting = {
@@ -75,7 +76,8 @@ const Meeting = (props) => {
             })
             dispatch(setMeeting(response.data))
             setMeetingStarted(true)
-            setLoading(false)
+            dispatch(setTranscriptActivityStarted(true))
+            setFetching(false)
         } catch (error) {
             console.log(error)
             setError(error.response.data.error)
@@ -162,7 +164,15 @@ const Meeting = (props) => {
         
             <div className="Segment">
                 <h4>{meeting.meetingTitle}'s Ongoing Transcriptions</h4>
-                <CustomizedAccordions participants={meeting.participants} />
+                <CustomizedAccordions participants={meeting.participants} />            
+
+            </div>
+            <div style={{width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px"}}>
+                <div style={{width: "150px"}}>
+                    <ButtonSubmitGreen>
+                        <span style={{marginRight: "5px", paddingTop: "1px"}}>Finish Meeting </span> <ArrowForwardIosIcon fontSize='inherit' />
+                    </ButtonSubmitGreen>
+                </div>
             </div>
         </div>
     )
@@ -181,7 +191,7 @@ const Meeting = (props) => {
             </div>
 
             {!meetingStarted ? setUpForm : meetingContainer}
-
+            {fetching && <Fetching />}
         </div>
     )
 }

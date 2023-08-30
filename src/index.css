@@ -237,9 +237,7 @@ h1 {
 
 .go-back {
   width: 380px;
-  margin: auto;
   position: relative;
-  bottom: -3rem;
   color: white;
   z-index: 999;
 }

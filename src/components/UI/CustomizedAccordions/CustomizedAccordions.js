@@ -13,6 +13,8 @@ import { useAudioRecorder, AudioRecorder } from 'react-audio-voice-recorder';
 import axios from 'axios'
 import { setMeeting } from '../../../redux/states';
 import { useDispatch } from "react-redux";
+import { ButtonThin } from '../Buttons/Buttons';
+import ReactAudioPlayer from 'react-audio-player';
 
 
 
@@ -64,6 +66,7 @@ export default React.memo(function CustomizedAccordions(props) {
   const [errorRec, setErrorRec] = React.useState('');
   const [error, setError] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState(null);
+  const [audioSrc, setAudioSrc] = React.useState(null)
 
   const getParticipantFirstName = (str) => {
     const index = str.indexOf(" ");
@@ -114,10 +117,36 @@ export default React.memo(function CustomizedAccordions(props) {
 
 
 
-//   const [audioSrc, setAudioSrc] = useState('');
+const handlePlay = async (index, audioId) => {
+  try {
+    setErrorRec('')
+    setError('')
+    const data = {
+      participant: props.participants[selectedParticipant].name,
+      audioId: audioId,
+      transcriptIndex: index
+    }
 
-const handlePlay = (index) => {
-//
+    const response = await axios.post('/transcript/get-audio', data, {
+      responseType: 'blob', 
+      headers: {
+          'x-access-token': localStorage?.getItem('token')
+      }
+    })
+console.log(response);
+    const audioBlob = new Blob([response.data], { type: 'audio/mpeg' });
+    const audioURL = URL.createObjectURL(audioBlob);
+
+    console.log(audioURL);
+    setAudioSrc(audioURL);
+    if(response.status === 500) {
+      setErrorRec("We are being throttled, try again after a while")
+    }
+
+  } catch (error) {
+      console.error(error)
+      setErrorRec("Oops. Please Try Again")
+  }
 };
 
 // return (
@@ -129,10 +158,12 @@ const handlePlay = (index) => {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
     setSelectedParticipant(panel)
+    setAudioSrc(null);
   };
 
   const handleChangeInner = (panel) => (event, newExpanded) => {
     setExpandedInner(newExpanded ? panel : false);
+    setAudioSrc(null);
   };
 
   return (
@@ -178,9 +209,6 @@ const handlePlay = (index) => {
                                 View Transcript {index}
                               </Grid>
                               <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
-                                <div title="Play Audio" onClick={handlePlay(index)}>
-                                  <PlayCircleIcon className={accordCss.Icon} />
-                                </div>
                                 <div title="View Transcript">
                                   <TextSnippetIcon className={accordCss.Icon} />
                                 </div>
@@ -191,17 +219,37 @@ const handlePlay = (index) => {
                         </AccordionSummary>
                           
                         <AccordionDetails>
+
+                          <div style={{width: '90%', margin: 'auto', display: 'flex', justifyContent: 'right'}}>
+
+                            <Grid container>
+                              <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
+                                <ReactAudioPlayer
+                                  src={audioSrc && audioSrc}
+                                  controls
+                                />
+                              </Grid>
+                              <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
+                                <ButtonThin onClick={() => handlePlay(index, transcript.audio_Id)}>
+                                  <div>Get Audio</div>
+                                  <div title="Play Audio">
+                                    <PlayCircleIcon className={accordCss.Icon} />
+                                  </div>
+                                </ButtonThin>
+                              </Grid>
+                            </Grid>
+
+                          </div>
                           <Typography>
                             {transcript.text}
                           </Typography>
                         </AccordionDetails>
-                        
+                      
                       </Accordion>
                     )
                   })
 
                 ) : undefined}
-
 
             </AccordionDetails>
           </Accordion>

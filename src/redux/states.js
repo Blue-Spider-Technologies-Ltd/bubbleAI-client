@@ -5,7 +5,9 @@ const initialState = {
   user: {},
   resume: {},
   email: "",
-  meeting: {}
+  meeting: {},
+  hideCards: false,
+  transcriptActivityStarted: false
 }
 
 export const stateSlice = createSlice({
@@ -37,6 +39,12 @@ export const stateSlice = createSlice({
     setMeeting: (state, action) => {
       state.meeting = action.payload;
     },
+    setHideCards: (state, action) => {
+      state.hideCards = action.payload;
+    },
+    setTranscriptActivityStarted: (state, action) => {
+      state.transcriptActivityStarted = action.payload;
+    }
   },
 })
 
@@ -48,7 +56,9 @@ export const {
   deleteLastMessage,
   setResume,
   setEmail,
-  setMeeting 
+  setMeeting,
+  setHideCards,
+  setTranscriptActivityStarted 
 } = stateSlice.actions
 
 export default stateSlice.reducer
