@@ -64,6 +64,7 @@ const Meeting = (props) => {
 
     
     const handleMeetingEnd = async () => {
+        setFetching(true)
         try {
             confirm({ title: "Save and End Meeting?", description: `Once you end the meeting, you will be able to view it again but not be able to alter it in form of additions.` })
             .then(async () => {
@@ -73,6 +74,17 @@ const Meeting = (props) => {
                     }
                 });
                 console.log(response);
+                if (response.data.status === 'unauthenticated') {
+                    confirm({ title: "Session Expired", description: `Click OK to login and continue from where you stopped` })
+                    .then(async () => {
+                        localStorage?.removeItem('token')
+                        navigate('/popin');
+                    })
+                    .catch(() => {
+                        localStorage?.removeItem('token')
+                        navigate('/popin')
+                    });
+                }
                 if (response.data.message === 'Meeting Ended') {
                     confirm({ title: "Meeting Saved", description: `Click OK` })
                     .then(async () => {
@@ -85,6 +97,7 @@ const Meeting = (props) => {
 
         } catch (error) {
             console.log(error);
+            setFetching(false)
             setError(error.response ? error.response.data.error : error.message);
         }
     }
