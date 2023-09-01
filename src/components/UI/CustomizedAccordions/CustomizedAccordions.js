@@ -138,7 +138,6 @@ export default React.memo(function CustomizedAccordions(props) {
 
       dispatch(setMeeting(response.data))
       setIsFetchingTranscript(false)
-      setSelectedParticipant(index)
       
       if(response.status === 500) {
         throw new Error("We are being throttled, try again after a while")
@@ -153,45 +152,39 @@ export default React.memo(function CustomizedAccordions(props) {
 
 
 
-const handlePlay = async (index, audioId) => {
-  try {
-    setIsGettingAudioSrc(true)
-    setErrorRec('')
-    setError('')
-    const data = {
-      participant: props.participants[selectedParticipant].name,
-      audioId: audioId,
-      transcriptIndex: index
-    }
-
-    const response = await axios.post('/transcript/get-audio', data, {
-      responseType: 'blob', 
-      headers: {
-          'x-access-token': localStorage?.getItem('token')
+  const handlePlay = async (index, audioId) => {
+    try {
+      setIsGettingAudioSrc(true)
+      setErrorRec('')
+      setError('')
+      const data = {
+        participant: props.participants[selectedParticipant].name,
+        audioId: audioId,
+        transcriptIndex: index
       }
-    })
-    console.log(response);
-    const audioBlob = new Blob([response.data], { type: 'audio/webm' });
-    const audioURL = URL.createObjectURL(audioBlob);
 
-    setAudioSrc(audioURL);
-    setIsGettingAudioSrc(false)
-    if(response.status === 500) {
-      setErrorRec("We are being throttled, try again after a while")
-    }
+      const response = await axios.post('/transcript/get-audio', data, {
+        responseType: 'blob', 
+        headers: {
+            'x-access-token': localStorage?.getItem('token')
+        }
+      })
+      console.log(response);
+      const audioBlob = new Blob([response.data], { type: 'audio/webm' });
+      const audioURL = URL.createObjectURL(audioBlob);
 
-  } catch (error) {
-      console.error(error)
-      setErrorRec("Oops. Please Try Again")
+      setAudioSrc(audioURL);
       setIsGettingAudioSrc(false)
-  }
-};
+      if(response.status === 500) {
+        setErrorRec("We are being throttled, try again after a while")
+      }
 
-// return (
-//   <div>
-//     <audio src={audioSrc} onPlay={handlePlay} />
-//   </div>
-// );
+    } catch (error) {
+        console.error(error)
+        setErrorRec("Oops. Please Try Again")
+        setIsGettingAudioSrc(false)
+    }
+  };
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -233,8 +226,20 @@ const handlePlay = async (index, audioId) => {
                     </div>
                   </Grid>
                 </Grid>
-              </div>
 
+              </div>
+              <div style={{display: 'flex', justifyContent: 'center', width: '100%', paddingBottom: '20px'}}>
+                  {isFetchingTranscript ? (
+                    <Puff
+                      height="30"
+                      width="30"
+                      radius={1}
+                      color="#99E1E4"
+                      ariaLabel="puff-loading"
+                      visible={true}
+                    />
+                  ) : undefined}
+                </div>
                 {participant.transcripts.length > 0 ? (
                   participant.transcripts.map((transcript, index) => {
                     return (
@@ -243,7 +248,7 @@ const handlePlay = async (index, audioId) => {
                           <div className={accordCss.Transcript} style={{margin: '0 !important'}}>
                             <Grid container>
                               <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
-                                View Transcript {index}
+                                View Transcript {index + 1} --- createdAt: {transcript.createdAt.slice(0, 19)}
                               </Grid>
                               <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
                                 <div title="View Transcript">
