@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Grid } from "@mui/material";
+import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
+import { useConfirm } from "material-ui-confirm";
 import { setMeeting, setTranscriptActivityStarted } from '../../../redux/states';
 import { Fetching } from '../../UI/Modal/Modal';
 import AuthInput from '../../UI/Input/AuthInputs';
@@ -12,6 +14,8 @@ import axios from 'axios'
 
 const Meeting = (props) => {
     const dispatch = useDispatch()
+    const confirm = useConfirm();
+    const navigate = useNavigate()
     const isAuth = localStorage?.getItem('token')
     const { meeting } = useSelector(state => state.stateData)
     const [error, setError] = useState(false);
@@ -57,6 +61,34 @@ const Meeting = (props) => {
         setMeetingTitle(event.target.value)
     }
 
+
+    
+    const handleMeetingEnd = async () => {
+        try {
+            confirm({ title: "Save and End Meeting?", description: `Once you end the meeting, you will be able to view it again but not be able to alter it in form of additions.` })
+            .then(async () => {
+                const response = await axios.post('/transcript/finish-meeting', meeting, {
+                    headers: {
+                        'x-access-token': isAuth
+                    }
+                });
+                console.log(response);
+                if (response.data.message === 'Meeting Ended') {
+                    confirm({ title: "Meeting Saved", description: `Click OK` })
+                    .then(async () => {
+                        window.location.reload();
+                    })
+                    .catch(() => {navigate('/')});
+                }
+            })
+            .catch(() => {});
+
+        } catch (error) {
+            console.log(error);
+            setError(error.response ? error.response.data.error : error.message);
+        }
+    }
+
     const handleMeetingStart = async (e) => {
         e.preventDefault()
         setError('')
@@ -74,16 +106,37 @@ const Meeting = (props) => {
                     'x-access-token': isAuth
                 }
             })
-            dispatch(setMeeting(response.data))
-            setMeetingStarted(true)
-            dispatch(setTranscriptActivityStarted(true))
-            setFetching(false)
+            console.log(response);
+            //Success but not yet created
+            if (response.status === 200) {
+                setFetching(false)
+                //prompt user about unfinished meeting session
+                if (response.data.message === 'You have an unfinished Meeting') {
+                    confirm({ title: "You have an unfinished Meeting", description: `Click OK to Continue Previous Session or Cancel to Start New Meeting` })
+                    .then(async () => {
+                        dispatch(setMeeting(response.data.meeting))
+                        setMeetingStarted(true)
+                        dispatch(setTranscriptActivityStarted(true))
+                        setFetching(false)
+                    })
+                    .catch(() => {
+                        handleMeetingEnd()
+                    });
+                }
+            } else {
+                dispatch(setMeeting(response.data))
+                setMeetingStarted(true)
+                dispatch(setTranscriptActivityStarted(true))
+                setFetching(false)
+            }
         } catch (error) {
+            setFetching(false)
             console.log(error)
             setError(error.response.data.error)
-        }
 
+        }
     }
+
 
     const setUpForm = (
         <form method="post" onSubmit={handleMeetingStart}>
@@ -169,8 +222,8 @@ const Meeting = (props) => {
             </div>
             <div style={{width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px"}}>
                 <div style={{width: "150px"}}>
-                    <ButtonSubmitGreen>
-                        <span style={{marginRight: "5px", paddingTop: "1px"}}>Finish Meeting </span> <ArrowForwardIosIcon fontSize='inherit' />
+                    <ButtonSubmitGreen onClick={handleMeetingEnd}>
+                        <span style={{marginRight: "5px", paddingTop: "1px"}}>Finish Meeting</span> <ArrowForwardIosIcon fontSize='inherit' />
                     </ButtonSubmitGreen>
                 </div>
             </div>
@@ -183,16 +236,20 @@ const Meeting = (props) => {
     
     
     return (
-        <div className="BodyWrapper">
-        {/* ALL MEETINGS HEADER */}
-            <div className="BuildNavigator">
-                <div className={!meetingStarted ? "ActiveNav" : undefined}><span>1</span>Add Participants</div>
-                <div className={meetingStarted ? "ActiveNav" : undefined}><span>2</span>Transcribe</div>
-            </div>
+        <div>
+            <div className="BodyWrapper">
+            {/* ALL MEETINGS HEADER */}
+                <div className="BuildNavigator">
+                    <div className={!meetingStarted ? "ActiveNav" : undefined}><span>1</span>Add Participants</div>
+                    <div className={meetingStarted ? "ActiveNav" : undefined}><span>2</span>Transcribe</div>
+                </div>
 
-            {!meetingStarted ? setUpForm : meetingContainer}
-            {fetching && <Fetching />}
+                {!meetingStarted ? setUpForm : meetingContainer}
+                
+            </div>
+            {fetching ? <Fetching /> : undefined}
         </div>
+
     )
 }
 

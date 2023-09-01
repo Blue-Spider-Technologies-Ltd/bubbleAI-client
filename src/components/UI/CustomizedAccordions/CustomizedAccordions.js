@@ -15,6 +15,7 @@ import { setMeeting } from '../../../redux/states';
 import { useDispatch } from "react-redux";
 import { ButtonThin } from '../Buttons/Buttons';
 import ReactAudioPlayer from 'react-audio-player';
+import { Puff } from 'react-loader-spinner';
 
 
 
@@ -58,6 +59,37 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }))
 
+const renderAudioComponent = (isGettingAudioSrc, audioSrc, handlePlay, index, transId) => {
+  if (isGettingAudioSrc) {
+    return (
+      <Puff
+        height="30"
+        width="30"
+        radius={1}
+        color="#99E1E4"
+        ariaLabel="puff-loading"
+        visible={true}
+      />
+    );
+  } else if (audioSrc) {
+    return (
+      <ReactAudioPlayer
+        src={audioSrc}
+        controls
+      />
+    );
+  } else {
+    return (
+      <ButtonThin onClick={() => handlePlay(index, transId)}>
+        <div>Get Audio</div>
+        <div title="Play Audio">
+          <PlayCircleIcon className={accordCss.Icon} />
+        </div>
+      </ButtonThin>
+    );
+  }
+};
+
 
 export default React.memo(function CustomizedAccordions(props) {
   const dispatch = useDispatch()
@@ -67,6 +99,8 @@ export default React.memo(function CustomizedAccordions(props) {
   const [error, setError] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState(null);
   const [audioSrc, setAudioSrc] = React.useState(null)
+  const [isGettingAudioSrc, setIsGettingAudioSrc] = React.useState(false)
+  const [isFetchingTranscript, setIsFetchingTranscript] = React.useState(false)
 
   const getParticipantFirstName = (str) => {
     const index = str.indexOf(" ");
@@ -85,9 +119,10 @@ export default React.memo(function CustomizedAccordions(props) {
     } // onNotAllowedOrFound
   );
 
-  const addAudioElement = React.useCallback(async (blob, index) => {
+  const addAudioElement = async (blob, index) => {
 
     try {
+      setIsFetchingTranscript(true)
       setErrorRec('')
 
       const formData = new FormData();
@@ -101,24 +136,26 @@ export default React.memo(function CustomizedAccordions(props) {
           }
       })
 
-      console.log(response.data)
       dispatch(setMeeting(response.data))
+      setIsFetchingTranscript(false)
+      setSelectedParticipant(index)
       
       if(response.status === 500) {
         throw new Error("We are being throttled, try again after a while")
       }
-
     } catch (error) {
         console.error(error)
+        setIsFetchingTranscript(false)
         setError("We are being throttled, try again after a while")
     }
 
-  }, [props.participants, dispatch]);
+  };
 
 
 
 const handlePlay = async (index, audioId) => {
   try {
+    setIsGettingAudioSrc(true)
     setErrorRec('')
     setError('')
     const data = {
@@ -133,12 +170,12 @@ const handlePlay = async (index, audioId) => {
           'x-access-token': localStorage?.getItem('token')
       }
     })
-console.log(response);
-    const audioBlob = new Blob([response.data], { type: 'audio/mpeg' });
+    console.log(response);
+    const audioBlob = new Blob([response.data], { type: 'audio/webm' });
     const audioURL = URL.createObjectURL(audioBlob);
 
-    console.log(audioURL);
     setAudioSrc(audioURL);
+    setIsGettingAudioSrc(false)
     if(response.status === 500) {
       setErrorRec("We are being throttled, try again after a while")
     }
@@ -146,6 +183,7 @@ console.log(response);
   } catch (error) {
       console.error(error)
       setErrorRec("Oops. Please Try Again")
+      setIsGettingAudioSrc(false)
   }
 };
 
@@ -179,19 +217,18 @@ console.log(response);
             <AccordionDetails>
               <div className={accordCss.NewTranscript}>
                 <Grid container>
-                  <Grid item xs={!recorderControls.isRecording && 10} sx={{display: !recorderControls.isRecording ? 'flex' : 'none', alignItems: 'center'}}>
+                  <Grid item xs={!recorderControls.isRecording ? 10 : 8} >
                     Start New Transcription for {getParticipantFirstName(participant.name)}
                   </Grid>
-                  <Grid item xs={recorderControls.isRecording ? 12 : 2}>
+                  <Grid item xs={recorderControls.isRecording ? 4 : 2}>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
                       <AudioRecorder
                         onRecordingComplete={(blob) => {
-                          if(index === selectedParticipant) {
-                            addAudioElement(blob, index)
+                          if (index === selectedParticipant) {
+                            addAudioElement(blob, index);
                           }
                         }}
                         recorderControls={recorderControls}
-                        showVisualizer={true}
                       />
                     </div>
                   </Grid>
@@ -220,29 +257,17 @@ console.log(response);
                           
                         <AccordionDetails>
 
-                          <div style={{width: '90%', margin: 'auto', display: 'flex', justifyContent: 'right'}}>
-
-                            <Grid container>
-                              <Grid item xs={10} sx={{display: 'flex', alignItems: 'center'}}>
-                                <ReactAudioPlayer
-                                  src={audioSrc && audioSrc}
-                                  controls
-                                />
-                              </Grid>
-                              <Grid item xs={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
-                                <ButtonThin onClick={() => handlePlay(index, transcript.audio_Id)}>
-                                  <div>Get Audio</div>
-                                  <div title="Play Audio">
-                                    <PlayCircleIcon className={accordCss.Icon} />
-                                  </div>
-                                </ButtonThin>
-                              </Grid>
+                          <Grid container>
+                            <Grid item xs={!isGettingAudioSrc ? 8 : 10} md={!isGettingAudioSrc ? 9 : 10} sx={{display: 'flex', alignItems: 'center'}}>
+                              <Typography>
+                                {transcript.text}
+                              </Typography>
                             </Grid>
+                            <Grid item xs={!isGettingAudioSrc ? 4 : 2} md={!isGettingAudioSrc ? 3 : 2} sx={{display: 'flex', justifyContent: 'space-around'}}>
+                              {renderAudioComponent(isGettingAudioSrc, audioSrc, handlePlay, index, transcript.audio_Id)}                            
+                            </Grid>
+                          </Grid>
 
-                          </div>
-                          <Typography>
-                            {transcript.text}
-                          </Typography>
                         </AccordionDetails>
                       
                       </Accordion>
