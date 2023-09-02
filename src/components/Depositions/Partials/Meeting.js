@@ -66,15 +66,18 @@ const Meeting = (props) => {
     const handleMeetingEnd = async () => {
         setFetching(true)
         try {
+            setFetching(false)
             confirm({ title: "Save and End Meeting?", description: `Once you end the meeting, you will be able to view it again but not be able to alter it in form of additions.` })
             .then(async () => {
+                setFetching(true)
                 const response = await axios.post('/transcript/finish-meeting', meeting, {
                     headers: {
                         'x-access-token': isAuth
                     }
                 });
-                console.log(response);
+                //Session expired
                 if (response.data.status === 'unauthenticated') {
+                    setFetching(false)
                     confirm({ title: "Session Expired", description: `Click OK to login and continue from where you stopped` })
                     .then(async () => {
                         localStorage?.removeItem('token')
@@ -86,11 +89,14 @@ const Meeting = (props) => {
                     });
                 }
                 if (response.data.message === 'Meeting Ended') {
+                    setFetching(false)
                     confirm({ title: "Meeting Saved", description: `Click OK` })
                     .then(async () => {
                         window.location.reload();
                     })
-                    .catch(() => {navigate('/')});
+                    .catch(() => {
+                        navigate('/')
+                    });
                 }
             })
             .catch(() => {});
@@ -125,6 +131,7 @@ const Meeting = (props) => {
                 setFetching(false)
                 //prompt user about unfinished meeting session
                 if (response.data.message === 'You have an unfinished Meeting') {
+                    setFetching(false)
                     confirm({ title: "You have an unfinished Meeting", description: `Click OK to Continue Previous Session or Cancel to Start New Meeting` })
                     .then(async () => {
                         dispatch(setMeeting(response.data.meeting))
