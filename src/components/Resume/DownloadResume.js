@@ -49,7 +49,10 @@ const DownloadResume = () => {
         slidesToSlide: 1 // optional, default to 1.
       }
     };
-
+    //scroll to page top on render
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         const resumeLength = Object.keys(resume).length        

@@ -455,7 +455,10 @@ const CustomizeResume = () => {
         if (prop === "mobile") {
             return setBasicInfo({ ...basicInfo, [prop]: "+" + event});
         }
-        setBasicInfo({ ...basicInfo, [prop]: event.target.value});
+        setBasicInfo({ 
+            ...basicInfo, 
+            [prop]: event.target.value
+        });
     };    
 
     return (

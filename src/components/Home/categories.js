@@ -6,6 +6,7 @@ import fraudImg from "../../images/fraud-detector.jpg"
 import reportImg from "../../images/report.jpg"
 import relationshipImg from "../../images/relationship.jpg"
 import sttImg from "../../images/stt2.jpg"
+import bizProposalImg from "../../images/biz-proposal.jpg"
 
 const categoriesData = [
     {
@@ -16,11 +17,11 @@ const categoriesData = [
         image: resumeImg
     },
     {
-        title: "Business Plan",
-        desc: "Enter to define the purpose and a trajectory for your ideas",
-        isAuthURL: '/user/dashboard/business-plan',
-        unAuthURL: '/popin?business-plan',
-        image: businessPlanImg
+        title: "Business Proposals",
+        desc: "Enter for resources to capture that fine client",
+        isAuthURL: '/user/dashboard/business-proposals',
+        unAuthURL: '/popin?business-proposals',
+        image: bizProposalImg
     },
     {
         title: "Depositions",
@@ -28,6 +29,13 @@ const categoriesData = [
         isAuthURL: '/user/dashboard/depositions',
         unAuthURL: '/popin?depositions',
         image: sttImg
+    },
+    {
+        title: "Business Plan",
+        desc: "Enter to define the purpose and a trajectory for your ideas",
+        isAuthURL: '/user/dashboard/business-plan',
+        unAuthURL: '/popin?business-plan',
+        image: businessPlanImg
     },
     {
         title: "Product Price Setter",

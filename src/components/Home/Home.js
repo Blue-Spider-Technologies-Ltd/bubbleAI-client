@@ -62,6 +62,7 @@ const Home = () => {
     populateUser();
   }, [dispatch, user, navigate, isAuth]);
 
+
   useEffect(() => {
     // Scroll to bottom on new message
     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
@@ -70,8 +71,7 @@ const Home = () => {
   useEffect(() => {
     const chatBg = document.getElementById("chat-bg");
     const askMeContainer = document.getElementById("ask-me");
-    const askMeContainerInner =
-      askMeContainer.querySelector(".container-inner");
+    const askMeContainerInner = askMeContainer.querySelector(".container-inner");
     const categories = document.getElementById("categories");
 
     if (isFocused) {
@@ -132,10 +132,19 @@ const Home = () => {
 
   const handleAskMeAnything = async (e) => {
     e.preventDefault();
+    const now = new Date().getTime();
+    const itemJson = localStorage?.getItem("oats_3297");
+    const item = JSON.parse(itemJson);
+    const useCount = item ? item.count : 0;
+    const expiration = item && item.expiration;
+    if (expiration < now) {
+      localStorage?.removeItem("oats_3297");
+    }
     const newMessage = {
       role: "user",
       content: e.target.elements[0].value,
     };
+
     //Dispatch with empty content to enable thinking algo
     const emptyMessage = {
       role: "assistant",
@@ -162,16 +171,12 @@ const Home = () => {
       }
     } else {
       //prevent overuse when not registered/logged in
-      const now = new Date().getTime();
-      const itemJson = localStorage?.getItem("oats_3297");
-      const item = JSON.parse(itemJson);
-      const useCount = item ? item.count : 0;
       const useIndicator = {
         count: useCount + 1,
         expiration: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
       };
       const useIndicatorJson = JSON.stringify(useIndicator);
-      localStorage.setItem("oats_3297", useIndicatorJson);
+
       if (useCount > 1) {
         dispatch(setMessage(newMessage));
         dispatch(setMessage(emptyMessage));
@@ -184,7 +189,7 @@ const Home = () => {
         dispatch(setMessage(overUseMessage));
         e.target.elements[0].value = "";
       } else {
-        //THIS BLOCK FOR unauthenticated users below 3 usage within the day
+        //THIS BLOCK WORKS FOR unauthenticated users below 3 usage within the day
         dispatch(setMessage(newMessage));
         dispatch(setMessage(emptyMessage));
         e.target.elements[0].value = "";
@@ -193,6 +198,7 @@ const Home = () => {
           let response = await axios.post("/askme", newMessage);
           dispatch(deleteLastMessage());
           dispatch(setMessage(response.data));
+          localStorage.setItem("oats_3297", useIndicatorJson);
         } catch (error) {
           console.log(error);
           dispatch(deleteLastMessage());

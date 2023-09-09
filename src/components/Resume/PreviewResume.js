@@ -47,6 +47,10 @@ const PreviewResume = () => {
     const [workExpArray, setWorkExpArray] = useState([])
     const [awardArray, setAwardArray] = useState([])
     const [publications, setPublications] = useState([])
+    //scroll to page top on render
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         setFetching(true)
@@ -66,7 +70,6 @@ const PreviewResume = () => {
                     navigate('/user/dashboard/resume?customize')
                 } else {
                     //if resume is found in local storage
-                    console.log(localResume);
                     dispatch(setResume(localResume.resumeData))
                     setBasicInfo(localResume.resumeData.basicInfo && localResume.resumeData.basicInfo)
                     setLinkInfo(localResume.resumeData.linkInfo && localResume.resumeData.linkInfo)

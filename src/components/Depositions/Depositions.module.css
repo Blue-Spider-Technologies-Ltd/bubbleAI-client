@@ -1,0 +1,14 @@
+.DragnDrop {
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 360px;
+    width: 100%;
+    margin: auto;
+    border: 4px dashed var(--navColor2);
+    cursor: pointer;
+}
