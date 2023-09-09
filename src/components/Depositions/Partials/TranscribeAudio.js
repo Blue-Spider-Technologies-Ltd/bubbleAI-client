@@ -1,21 +1,28 @@
 import React, { useState, useRef } from 'react';
 import depoCss from '../Depositions.module.css'
-// import { useNavigate } from 'react-router-dom'
+import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css'
+import { useNavigate } from 'react-router-dom'
 // import { useSelector, useDispatch } from "react-redux";
 import { Fetching } from '../../UI/Modal/Modal';
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Alert from '@mui/material/Alert';
+import axios from  'axios'
+import jwt_decode from "jwt-decode";
+import { useReactToPrint  } from 'react-to-print';
 
 const TranscribeAudio = (props) => {
     // const dispatch = useDispatch()
-    // const navigate = useNavigate()
-    // const isAuth = localStorage?.getItem('token')
+    const navigate = useNavigate()
+    const isAuth = localStorage?.getItem('token')
     const inputRef = useRef()
+    const printRef = useRef()
     const [audioTranscriptionDone, setAudioTranscriptionDone] = useState(false);
+    const [transcripts, setTranscripts] = useState([]);
     const [file, setFile] = useState(null);
     const [error, setError] = useState(false);
-    const [fetching, setFetching] = useState(false)
+    const [fetching, setFetching] = useState(false);
+
 
 
     const handleDrop = e => {
@@ -31,6 +38,57 @@ const TranscribeAudio = (props) => {
     const handleUploadFile = e => {
         setFile(e.target.files[0])
     }
+
+    const handlePrint = useReactToPrint({
+        content: () => printRef.current,
+    });
+
+    const handleAudioTranscription = async () => {
+        const now = new Date().getTime()
+        const authUser =  jwt_decode(isAuth)
+        if (isAuth && (now < authUser.expiration)) {
+
+            try {
+                if (!file) {
+                    setError('No file audio selected');
+                    return
+                }
+                setFetching(true)
+                setError('')
+        
+                const formData = new FormData();
+                formData.append('audio', file, file.name);
+    
+                const response = await axios.post('/transcript/transcribe-audio', formData, {
+                    headers: {
+                        'x-access-token': isAuth,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+    
+                if(response.status === 500) {
+                    throw new Error("Something went wrong, Try again")
+                }
+                
+                if(response.data.length < 1) {
+                    throw new Error("Something went wrong, Try again")
+                }
+                setTranscripts(response.data)
+                setFetching(false)
+                setAudioTranscriptionDone(true)
+    
+            } catch (error) {
+                console.error(error)
+                setFetching(false)
+                setError("Something went wrong, Try again")
+            }
+        } else {
+            localStorage?.removeItem('token')
+            navigate('/popin')
+        }
+        
+    
+      };
 
     const dragDropAudio = (
         <div className='content'>
@@ -86,7 +144,7 @@ const TranscribeAudio = (props) => {
 
             <div style={{ width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px" }}>
                 <div style={{ width: "150px" }}>
-                    <ButtonSubmitGreen>
+                    <ButtonSubmitGreen onClick={handleAudioTranscription}>
                         <span style={{ marginRight: "5px", paddingTop: "1px" }}>Transcribe </span> <ArrowForwardIosIcon fontSize='inherit' />
                     </ButtonSubmitGreen>
                 </div>
@@ -95,31 +153,28 @@ const TranscribeAudio = (props) => {
     )
 
 
-    // const meetingContainer = (
-    //     <div className='content'>
-    //         <div className='explanation-points'>
-    //             <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click on any participant's name to view or start transcriptions</Alert>
-    //             <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click the red record button to start</Alert>
-    //             <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">Click the stop button that shows only while recording to stop and automatically transcribe</Alert>
-    //             <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">Transcriptions can not be deleted or editted as a security measure to information minuted</Alert>
-    //             <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">Avoid reloading page once transcription has started to reduce the risk of any data loss</Alert>
-    //             <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="warning">For best transcriptions, pause recording when participant is not actively speaking</Alert>
-    //         </div>
+    const transcriptionDone = (
+        <div className='content'>
 
-    //         <div className='error'>{error}</div>
+            <div className='error'>{error}</div>
 
-    //         <div className="Segment">
+            <div className="Segment">
+                <div ref={printRef} className={resumeTemplateCss.StandardContainer} style={{padding: '10px'}}>
+                    {transcripts.map((transcript, index) => {
+                        return <p key={index}>{transcript}</p>
+                    })}
+                </div>
+            </div>
 
-    //         </div>
-    //         <div style={{width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px"}}>
-    //             <div style={{width: "150px"}}>
-    //                 <ButtonSubmitGreen onClick={handleMeetingEnd}>
-    //                     <span style={{marginRight: "5px", paddingTop: "1px"}}>Finish Meeting</span> <ArrowForwardIosIcon fontSize='inherit' />
-    //                 </ButtonSubmitGreen>
-    //             </div>
-    //         </div>
-    //     </div>
-    // )
+            <div style={{width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px"}}>
+                <div style={{width: "150px"}}>
+                    <ButtonSubmitGreen type='button' onClick={handlePrint}>
+                        <span style={{marginRight: "5px", paddingTop: "1px"}}>Save Document</span> <ArrowForwardIosIcon fontSize='inherit' />
+                    </ButtonSubmitGreen>
+                </div>
+            </div>
+        </div>
+    )
 
 
 
@@ -135,7 +190,7 @@ const TranscribeAudio = (props) => {
                     <div className={audioTranscriptionDone ? "ActiveNav" : undefined}><span>2</span>Transcribed</div>
                 </div>
 
-                {!audioTranscriptionDone && dragDropAudio}
+                {!audioTranscriptionDone ? dragDropAudio : transcriptionDone}
 
             </div>
             {fetching ? <Fetching /> : undefined}
