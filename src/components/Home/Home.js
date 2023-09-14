@@ -24,6 +24,12 @@ const Home = () => {
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
   const navigate = useNavigate();
+  const now = new Date().getTime();
+  const countItemJson = localStorage?.getItem("oats_3297");
+  const item = JSON.parse(countItemJson);
+  const useCount = item ? item.cu78tgGgivhcountJVGIbGguguGhgh : 0;
+  const expiration = item && item.UYiygc768FYexpUVIirationHi87f86DCCC;
+
 
   const askMeErrorObj = {
             role: 'assistant',
@@ -31,6 +37,19 @@ const Home = () => {
           }
 
   const isAuth = localStorage?.getItem("token");
+
+  
+  useEffect(() => {
+    // Scroll to bottom on new message
+    chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+  }, [messages]);
+
+  //check and remove unauth user's expired use count for ask me anything
+  useEffect(() => {
+    if (expiration < now) {
+      localStorage?.removeItem("oats_3297");
+    }
+  }, [expiration, now])
 
   useEffect(() => {
     const populateUser = async () => {
@@ -63,10 +82,6 @@ const Home = () => {
   }, [dispatch, user, navigate, isAuth]);
 
 
-  useEffect(() => {
-    // Scroll to bottom on new message
-    chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-  }, [messages]);
   //Chat Effect on ask me anything styling changes on input focus
   useEffect(() => {
     const chatBg = document.getElementById("chat-bg");
@@ -132,14 +147,7 @@ const Home = () => {
 
   const handleAskMeAnything = async (e) => {
     e.preventDefault();
-    const now = new Date().getTime();
-    const itemJson = localStorage?.getItem("oats_3297");
-    const item = JSON.parse(itemJson);
-    const useCount = item ? item.count : 0;
-    const expiration = item && item.expiration;
-    if (expiration < now) {
-      localStorage?.removeItem("oats_3297");
-    }
+
     const newMessage = {
       role: "user",
       content: e.target.elements[0].value,
@@ -172,8 +180,8 @@ const Home = () => {
     } else {
       //prevent overuse when not registered/logged in
       const useIndicator = {
-        count: useCount + 1,
-        expiration: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
+        cu78tgGgivhcountJVGIbGguguGhgh: useCount + 1,
+        UYiygc768FYexpUVIirationHi87f86DCCC: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
       };
       const useIndicatorJson = JSON.stringify(useIndicator);
 
@@ -222,7 +230,9 @@ const Home = () => {
           title="Close Chat"
           onClick={() => setFocused(false)}
         >
-          <CloseIcon sx={{ fontSize: "1.5rem" }} />
+          <CloseIcon 
+            sx={{ fontSize: "1.5rem" }} 
+          />
         </div>
         <div className="chatbg-overlay" ref={chatBoxRef}>
           {chatExchange}

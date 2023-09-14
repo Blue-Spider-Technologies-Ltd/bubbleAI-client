@@ -9,6 +9,7 @@ import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 import Meeting from './Partials/Meeting';
 import TranscribeAudio from './Partials/TranscribeAudio';
+import TranslateAudio from './Partials/TranslateAudio';
 import { Fetching } from '../UI/Modal/Modal';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
@@ -117,6 +118,7 @@ const Depositions = () => {
 
                 {checkMeetingBoolean() && <Meeting />}
                 {checkTranscribeBoolean() && <TranscribeAudio />}
+                {checkTranslateBoolean() && <TranslateAudio />}
 
             </div>
 

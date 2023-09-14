@@ -17,7 +17,6 @@ import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
-// console.log(resumeData);
 const screenWidth = window.innerWidth
 
 const DownloadResume = () => {

@@ -12,14 +12,14 @@ import jwt_decode from "jwt-decode";
 import { useReactToPrint  } from 'react-to-print';
 import { useConfirm } from "material-ui-confirm";
 
-const TranscribeAudio = (props) => {
+const TranslateAudio = (props) => {
     const confirm = useConfirm();
     const navigate = useNavigate()
     const isAuth = localStorage?.getItem('token')
     const inputRef = useRef()
     const printRef = useRef()
     const [audioTranscriptionDone, setAudioTranscriptionDone] = useState(false);
-    const [transcripts, setTranscripts] = useState([]);
+    const [translations, setTranslations] = useState([]);
     const [file, setFile] = useState(null);
     const [error, setError] = useState(false);
     const [fetching, setFetching] = useState(false);
@@ -52,7 +52,7 @@ const TranscribeAudio = (props) => {
         onAfterPrint: () => handleAfterPrint(),
     });
 
-    const handleAudioTranscription = async () => {
+    const handleAudioTranslation = async () => {
         const now = new Date().getTime()
         const authUser =  jwt_decode(isAuth)
         if (isAuth && (now < authUser.expiration)) {
@@ -75,18 +75,19 @@ const TranscribeAudio = (props) => {
                     }
                 })
     
-                if (response.status === 500) {
+                if(response.status === 500) {
                     throw new Error("Something went wrong, Try again")
                 }
                 
-                if (response.data.length < 1) {
-                    throw new Error("Empty audio or Something went wrong. Reload & Try again")
+                if(response.data.length < 1) {
+                    throw new Error("Something went wrong, Try again")
                 }
-                setTranscripts(response.data)
+                setTranslations(response.data)
                 setFetching(false)
                 setAudioTranscriptionDone(true)
     
             } catch (error) {
+                console.error(error)
                 setFetching(false)
                 setError("Something went wrong, Try again")
             }
@@ -101,10 +102,9 @@ const TranscribeAudio = (props) => {
     const dragDropAudio = (
         <div className='content'>
             <div className='explanation-points'>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Within this bubble, I can convert your audio files to text</Alert>
+                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I can translate your audio files to text in several languages</Alert>
                 <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Click the panel below to upload</Alert>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Alternatively, drag and drop your audio file from a folder</Alert>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I accept only audio files here</Alert>
+                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I accept only audio and video files here</Alert>
             </div>
 
             <div className='error'>{error}</div>
@@ -138,8 +138,9 @@ const TranscribeAudio = (props) => {
                         style={{border: error && '4px dashed rgb(216, 7, 7)'}}
                     >
                         <h1>{file.name}</h1>
-                        <h4 style={{color: error && 'rgb(216, 7, 7)'}}
-                        >selected</h4>
+                        <h4 style={{color: error && 'rgb(216, 7, 7)'}}>
+                            selected
+                        </h4>
                         <input
                             type='file'
                             accept="audio/*"
@@ -154,8 +155,8 @@ const TranscribeAudio = (props) => {
 
             <div style={{ width: "100%", display: "flex", justifyContent: "right", marginBottom: "20px" }}>
                 <div style={{ width: "150px" }}>
-                    <ButtonSubmitGreen onClick={handleAudioTranscription}>
-                        <span style={{ marginRight: "5px", paddingTop: "1px" }}>Transcribe </span> <ArrowForwardIosIcon fontSize='inherit' />
+                    <ButtonSubmitGreen onClick={handleAudioTranslation}>
+                        <span style={{ marginRight: "5px", paddingTop: "1px" }}>Translate </span> <ArrowForwardIosIcon fontSize='inherit' />
                     </ButtonSubmitGreen>
                 </div>
             </div>
@@ -170,8 +171,8 @@ const TranscribeAudio = (props) => {
 
             <div className="Segment">
                 <div ref={printRef} className={resumeTemplateCss.StandardContainer} style={{padding: '10px'}}>
-                    {transcripts.map((transcript, index) => {
-                        return <p key={index}>{transcript}</p>
+                    {translations.map((translation, index) => {
+                        return <p key={index}>{translation}</p>
                     })}
                 </div>
             </div>
@@ -197,7 +198,7 @@ const TranscribeAudio = (props) => {
                 {/* ALL MEETINGS HEADER */}
                 <div className="BuildNavigator">
                     <div className={!audioTranscriptionDone ? "ActiveNav" : undefined}><span>1</span>Upload Audio</div>
-                    <div className={audioTranscriptionDone ? "ActiveNav" : undefined}><span>2</span>Transcribed</div>
+                    <div className={audioTranscriptionDone ? "ActiveNav" : undefined}><span>2</span>Translate</div>
                 </div>
 
                 {!audioTranscriptionDone ? dragDropAudio : transcriptionDone}
@@ -209,4 +210,4 @@ const TranscribeAudio = (props) => {
     )
 }
 
-export default TranscribeAudio;
+export default TranslateAudio;
