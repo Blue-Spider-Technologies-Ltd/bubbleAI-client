@@ -68,7 +68,7 @@ const TranscribeAudio = (props) => {
                 const formData = new FormData();
                 formData.append('audio', file, file.name);
     
-                const response = await axios.post('/transcript/transcribe-audio', formData, {
+                const response = await axios.post('/transcript/transcribe-file', formData, {
                     headers: {
                         'x-access-token': isAuth,
                         'Content-Type': 'multipart/form-data'

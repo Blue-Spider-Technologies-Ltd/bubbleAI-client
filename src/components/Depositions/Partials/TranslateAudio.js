@@ -1,16 +1,19 @@
 import React, { useState, useRef } from 'react';
-import depoCss from '../Depositions.module.css'
-import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css'
-import { useNavigate } from 'react-router-dom'
+import depoCss from '../Depositions.module.css';
+import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css';
+import { useNavigate } from 'react-router-dom';
+import { Grid } from "@mui/material";
 // import { useSelector, useDispatch } from "react-redux";
 import { Fetching } from '../../UI/Modal/Modal';
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Alert from '@mui/material/Alert';
-import axios from  'axios'
+import axios from  'axios';
 import jwt_decode from "jwt-decode";
 import { useReactToPrint  } from 'react-to-print';
 import { useConfirm } from "material-ui-confirm";
+import AuthInput from '../../UI/Input/AuthInputs';
+import { LANGUAGES } from '../../../utils/languages';
 
 const TranslateAudio = (props) => {
     const confirm = useConfirm();
@@ -22,6 +25,8 @@ const TranslateAudio = (props) => {
     const [translations, setTranslations] = useState([]);
     const [file, setFile] = useState(null);
     const [error, setError] = useState(false);
+    const [languageSelectError, setLanguageSelectError] = useState(false);
+    const [language, setLanguage] = useState('');
     const [fetching, setFetching] = useState(false);
 
 
@@ -62,13 +67,18 @@ const TranslateAudio = (props) => {
                     setError('No file audio selected');
                     return
                 }
+                if (language === '') {
+                    setLanguageSelectError('Select a valid language');
+                    return
+                }
                 setFetching(true)
                 setError('')
         
                 const formData = new FormData();
+                formData.append('language', language);
                 formData.append('audio', file, file.name);
     
-                const response = await axios.post('/transcript/transcribe-audio', formData, {
+                const response = await axios.post('/transcript/translate-file', formData, {
                     headers: {
                         'x-access-token': isAuth,
                         'Content-Type': 'multipart/form-data'
@@ -96,8 +106,12 @@ const TranslateAudio = (props) => {
             navigate('/popin')
         }
         
-    
-      };
+    };
+
+    const handleSelectChange = (e) => {
+        setLanguageSelectError('')
+        setLanguage(e.target.value)
+    }
 
     const dragDropAudio = (
         <div className='content'>
@@ -107,7 +121,14 @@ const TranslateAudio = (props) => {
                 <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I accept only audio and video files here</Alert>
             </div>
 
-            <div className='error'>{error}</div>
+            <div className='error'>{error || languageSelectError}</div>
+
+            <div className='Segment'>
+                <h4>Choose Language</h4>
+                <Grid container sx={{border: languageSelectError && '1px dashed rgb(216, 7, 7)'}}>
+                    <AuthInput value={language} label="Translate to:" inputType="select2" inputGridSm={12} inputGrid={12} mb={2} list={LANGUAGES} required={true} onChange={handleSelectChange} />     
+                </Grid>
+            </div>
 
             <div className="Segment">
                 {!file ? (
@@ -198,7 +219,7 @@ const TranslateAudio = (props) => {
                 {/* ALL MEETINGS HEADER */}
                 <div className="BuildNavigator">
                     <div className={!audioTranscriptionDone ? "ActiveNav" : undefined}><span>1</span>Upload Audio</div>
-                    <div className={audioTranscriptionDone ? "ActiveNav" : undefined}><span>2</span>Translate</div>
+                    <div className={audioTranscriptionDone ? "ActiveNav" : undefined}><span>2</span>Translated</div>
                 </div>
 
                 {!audioTranscriptionDone ? dragDropAudio : transcriptionDone}

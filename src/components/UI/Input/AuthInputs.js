@@ -120,19 +120,19 @@ const AuthInput = props => {
                 <FormControl className={classes.root} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
-                    id={props.label}
-                    onChange={props.onChange}
-                    name={props.name}
-                    value={props.value}
+                        id={props.label}
+                        onChange={props.onChange}
+                        name={props.name}
+                        value={props.value}
                     >
-                    <MenuItem >
-                        <em>{props.label}</em>
-                    </MenuItem>
-                    {props.list.length !== 0 ? props.list.map((option, index) => {
-                        return <MenuItem key={index} value={option.mobileCode}>{option.mobileCode} {option.name}</MenuItem>
-                    }) : [{mobileCode: "Country code"}].map((option, index) => {
-                        return <MenuItem key={index} value={option.mobileCode}>{option.mobileCode}</MenuItem>
-                    })}
+                        <MenuItem >
+                            <em>{props.label}</em>
+                        </MenuItem>
+                        {props.list.length !== 0 ? props.list.map((option, index) => {
+                            return <MenuItem key={index} value={option.mobileCode}>{option.mobileCode} {option.name}</MenuItem>
+                        }) : [{mobileCode: "Country code"}].map((option, index) => {
+                            return <MenuItem key={index} value={option.mobileCode}>{option.mobileCode}</MenuItem>
+                        })}
                     </Select>
                 </FormControl>
             :
@@ -140,19 +140,19 @@ const AuthInput = props => {
                 <FormControl className={classes.root} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
-                    id={props.label}
-                    onChange={props.onChange}
-                    name={props.name}
-                    value={props.value}
+                        id={props.label}
+                        onChange={props.onChange}
+                        name={props.name}
+                        value={props.value}
                     >
-                    <MenuItem>
-                        <em>{props.label}</em>
-                    </MenuItem>
-                    {props.list.length !== 0 ? props.list.map((option, index) => {
-                        return <MenuItem key={index} value={option.name}>{option.name}</MenuItem>
-                    }) : [{name: "Country code"}].map((option, index) => {
-                        return <MenuItem key={index} value={option.name}>{option.name}</MenuItem>
-                    })}
+                        <MenuItem>
+                            <em>{props.label}</em>
+                        </MenuItem>
+                        {props.list.length !== 0 ? props.list.map((option, index) => {
+                            return <MenuItem key={index} value={option.name}>{option.name}</MenuItem>
+                        }) : [{name: props.label}].map((option, index) => {
+                            return <MenuItem key={index} value={option.name}>{option.name}</MenuItem>
+                        })}
                     </Select>
                 </FormControl> 
             :
