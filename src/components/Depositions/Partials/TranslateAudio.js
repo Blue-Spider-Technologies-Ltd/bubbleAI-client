@@ -111,8 +111,11 @@ const TranslateAudio = (props) => {
 
     const handleSelectChange = (e) => {
         setLanguageSelectError('')
+        if (!e.target.value) {
+            setLanguage('')
+            return
+        }
         setLanguage(e.target.value)
-        console.log(e.target.value);
     }
 
     const dragDropAudio = (
