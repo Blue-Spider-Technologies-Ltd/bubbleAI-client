@@ -183,6 +183,7 @@ const DownloadResume = () => {
                                 <div style={{ width: "150px" }}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
                                         if(resumeStorageDetails.resumeName === "") {
+                                            window.scrollTo(0, 0);
                                             return setError('Resume must have a name')
                                         }
                                         handlePrint()

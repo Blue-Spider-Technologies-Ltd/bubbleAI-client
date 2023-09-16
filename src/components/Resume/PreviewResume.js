@@ -11,10 +11,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Modal, Fetching } from '../UI/Modal/Modal';
 import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
-import { Rings, Watch } from 'react-loader-spinner'
 import { useConfirm } from "material-ui-confirm";
 import jwt_decode from "jwt-decode";
-const screenWidth = window.innerWidth
 
 const PreviewResume = () => {
     const dispatch = useDispatch()
@@ -354,34 +352,10 @@ const PreviewResume = () => {
                 </div>
 
             </div>
-            {loading && (
-                <Modal>
-                <h4>Hello {basicInfo.firstName}</h4>
-                <div style={{marginTop: '15px'}}>
-                    {screenWidth >= 900 ?
-                        <Rings
-                            height="200"
-                            width="200"
-                            color="white"
-                            radius="6"
-                            visible={true}
-                            ariaLabel="rings-loading"
-                        />
-                    :
-                        <Watch
-                            height="150"
-                            width="150"
-                            radius={48}
-                            color="white"
-                            ariaLabel="revolving-dot-loading"
-                            visible={true}
-                        />
-                    }
-                </div>                       
-
-                <h3>Readying your Resume for download...</h3>
-                </Modal>
-            )}
+            {loading && <Modal 
+                            header4={`Hello ${basicInfo.firstName}`} 
+                            header3='Readying your Resume for download...'
+                        />}
             {fetching && <Fetching />}
 
         </div>

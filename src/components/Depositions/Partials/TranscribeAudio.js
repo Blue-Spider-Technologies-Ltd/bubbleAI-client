@@ -3,7 +3,7 @@ import depoCss from '../Depositions.module.css'
 import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css'
 import { useNavigate } from 'react-router-dom'
 // import { useSelector, useDispatch } from "react-redux";
-import { Fetching } from '../../UI/Modal/Modal';
+import { Modal } from '../../UI/Modal/Modal';
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Alert from '@mui/material/Alert';
@@ -203,7 +203,10 @@ const TranscribeAudio = (props) => {
                 {!audioTranscriptionDone ? dragDropAudio : transcriptionDone}
 
             </div>
-            {fetching ? <Fetching /> : undefined}
+            {fetching && <Modal 
+                            header4='Just a moment'
+                            header3='Transcribing your file...'
+                        />}
         </div>
 
     )

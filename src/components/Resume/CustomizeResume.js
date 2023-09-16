@@ -663,35 +663,11 @@ const CustomizeResume = () => {
                 </div>
 
             </div>
-            {loading && (
-                <Modal>
-                    <h4>Hello {user.firstName}</h4>
-                    <div style={{marginTop: '15px'}}>
-                        {screenWidth >= 900 ?
-                            <Rings
-                                height="200"
-                                width="200"
-                                color="white"
-                                radius="6"
-                                visible={true}
-                                ariaLabel="rings-loading"
-                            />
-                        :
-                            <Watch
-                                height="150"
-                                width="150"
-                                radius={48}
-                                color="white"
-                                ariaLabel="revolving-dot-loading"
-                                visible={true}
-                            />
-                        }
-                    </div>                       
-
-                    <h3>Creating your Resume, I'll only take a minute or less</h3>
-                </Modal>
-
-            )}
+            {loading &&
+                <Modal 
+                    header4={`Hello ${user.firstName}`} 
+                    header3="Creating your Resume, I'll only take a minute or less"
+                />}
 
             {fetching && <Fetching />}
 
