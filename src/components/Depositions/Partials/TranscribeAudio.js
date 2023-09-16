@@ -28,8 +28,8 @@ const TranscribeAudio = (props) => {
     const handleDrop = e => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
-        if (!file.type.startsWith('audio/')) {
-            alert('Please drop an audio file.');
+        if (!file.type.startsWith('audio/') && !file.type.startsWith('video/') ) {
+            alert('Please drop only audio or video file.');
             return;
         }
         setFile(file)
@@ -88,7 +88,7 @@ const TranscribeAudio = (props) => {
     
             } catch (error) {
                 setFetching(false)
-                setError("Something went wrong, Try again")
+                setError(error.response.data.error)
             }
         } else {
             localStorage?.removeItem('token')
@@ -101,10 +101,10 @@ const TranscribeAudio = (props) => {
     const dragDropAudio = (
         <div className='content'>
             <div className='explanation-points'>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Within this bubble, I can convert your audio files to text</Alert>
+                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Within this bubble, I can convert your audio & video files to text</Alert>
                 <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Click the panel below to upload</Alert>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Alternatively, drag and drop your audio file from a folder</Alert>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I accept only audio files here</Alert>
+                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Alternatively, drag and drop your file from a folder</Alert>
+                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I accept only audio & video files here</Alert>
             </div>
 
             <div className='error'>{error}</div>
@@ -118,11 +118,11 @@ const TranscribeAudio = (props) => {
                         onDrop={handleDrop}
                         onClick={() => inputRef.current.click()}
                     >
-                        <h1>Drag & Drop Audio File</h1>
+                        <h1>Drag & Drop File</h1>
                         <h4>or</h4>
                         <input
                             type='file'
-                            accept="audio/*"
+                            accept="audio/*,video/*"
                             onChange={handleUploadFile}
                             hidden
                             ref={inputRef}
@@ -196,7 +196,7 @@ const TranscribeAudio = (props) => {
             <div className="BodyWrapper">
                 {/* ALL MEETINGS HEADER */}
                 <div className="BuildNavigator">
-                    <div className={!audioTranscriptionDone ? "ActiveNav" : undefined}><span>1</span>Upload Audio</div>
+                    <div className={!audioTranscriptionDone ? "ActiveNav" : undefined}><span>1</span>Upload File</div>
                     <div className={audioTranscriptionDone ? "ActiveNav" : undefined}><span>2</span>Transcribed</div>
                 </div>
 

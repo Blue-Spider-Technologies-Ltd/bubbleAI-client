@@ -150,7 +150,7 @@ const AuthInput = props => {
                         </MenuItem>
                         {props.list.length !== 0 ? props.list.map((option, index) => {
                             return <MenuItem key={index} value={option.name}>{option.name}</MenuItem>
-                        }) : [{name: props.label}].map((option, index) => {
+                        }) : [{name: ''}].map((option, index) => {
                             return <MenuItem key={index} value={option.name}>{option.name}</MenuItem>
                         })}
                     </Select>

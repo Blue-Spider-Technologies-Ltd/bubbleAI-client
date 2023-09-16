@@ -33,8 +33,9 @@ const TranslateAudio = (props) => {
     const handleDrop = e => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
-        if (!file.type.startsWith('audio/')) {
-            alert('Please drop an audio file.');
+        console.log(file.type);
+        if (!file.type.startsWith('audio/') && !file.type.startsWith('video/') ) {
+            alert('Please drop only audio or video file.');
             return;
         }
         setFile(file)
@@ -67,7 +68,7 @@ const TranslateAudio = (props) => {
                     setError('No file audio selected');
                     return
                 }
-                if (language === '') {
+                if (language === '' || language === undefined ) {
                     setLanguageSelectError('Select a valid language');
                     return
                 }
@@ -99,7 +100,7 @@ const TranslateAudio = (props) => {
             } catch (error) {
                 console.error(error)
                 setFetching(false)
-                setError("Something went wrong, Try again")
+                setError(error.response.data.error)
             }
         } else {
             localStorage?.removeItem('token')
@@ -111,14 +112,15 @@ const TranslateAudio = (props) => {
     const handleSelectChange = (e) => {
         setLanguageSelectError('')
         setLanguage(e.target.value)
+        console.log(e.target.value);
     }
 
     const dragDropAudio = (
         <div className='content'>
             <div className='explanation-points'>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I can translate your audio files to text in several languages</Alert>
+                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I can translate your audio video files to text in several languages from the dropdown</Alert>
                 <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">Click the panel below to upload</Alert>
-                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I accept only audio and video files here</Alert>
+                <Alert sx={{ padding: '0 5px', fontSize: '.8rem' }} severity="info">I accept only audio & video files here</Alert>
             </div>
 
             <div className='error'>{error || languageSelectError}</div>
@@ -139,11 +141,11 @@ const TranslateAudio = (props) => {
                         onDrop={handleDrop}
                         onClick={() => inputRef.current.click()}
                     >
-                        <h1>Drag & Drop Audio File</h1>
+                        <h1>Drag & Drop File</h1>
                         <h4>or</h4>
                         <input
                             type='file'
-                            accept="audio/*"
+                            accept="audio/*,video/*"
                             onChange={handleUploadFile}
                             hidden
                             ref={inputRef}
@@ -164,7 +166,7 @@ const TranslateAudio = (props) => {
                         </h4>
                         <input
                             type='file'
-                            accept="audio/*"
+                            accept="audio/*,video/*"
                             onChange={handleUploadFile}
                             hidden
                             ref={inputRef}
@@ -218,7 +220,7 @@ const TranslateAudio = (props) => {
             <div className="BodyWrapper">
                 {/* ALL MEETINGS HEADER */}
                 <div className="BuildNavigator">
-                    <div className={!audioTranscriptionDone ? "ActiveNav" : undefined}><span>1</span>Upload Audio</div>
+                    <div className={!audioTranscriptionDone ? "ActiveNav" : undefined}><span>1</span>Upload File</div>
                     <div className={audioTranscriptionDone ? "ActiveNav" : undefined}><span>2</span>Translated</div>
                 </div>
 

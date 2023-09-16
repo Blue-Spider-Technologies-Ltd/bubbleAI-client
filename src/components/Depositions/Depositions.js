@@ -103,12 +103,12 @@ const Depositions = () => {
                         )}
                         {transcribeButton && (
                             <Grid item lg={checkTranscribeBoolean() ? 12 : 4} md={checkTranscribeBoolean() ? 12 : 6} xs={12}>
-                                <ButtonCard icon="transcribe" title="Transcribe Audio File" width={checkTranscribeBoolean() && '350px'} onClick={() => toggleButtonCards('transcribe')} description="Import or upload an audio file to get a text output. Save or download output for later use" />
+                                <ButtonCard icon="transcribe" title="Transcribe Audio or Video File" width={checkTranscribeBoolean() && '350px'} onClick={() => toggleButtonCards('transcribe')} description="Import or upload an audio file to get a text output. Save or download output for later use" />
                             </Grid>
                         )}
                         {translateButton && (
                             <Grid item lg={checkTranslateBoolean() ? 12 : 4} md={12} xs={12}>
-                                <ButtonCard icon="translate" title="Translate Audio File" width={checkTranslateBoolean() && '350px'} onClick={() => toggleButtonCards('translate')} description="upload or record an audio file and translate it to a wide variety of languages I have available for you" />
+                                <ButtonCard icon="translate" title="Translate Audio or Video File" width={checkTranslateBoolean() && '350px'} onClick={() => toggleButtonCards('translate')} description="upload or record an audio file and translate it to a wide variety of languages I have available for you" />
                             </Grid>
                         )}
 
