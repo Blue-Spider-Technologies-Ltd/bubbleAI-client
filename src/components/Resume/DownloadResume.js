@@ -102,8 +102,8 @@ const DownloadResume = () => {
 
     return (
         <div className="auth-container">
-        {/* For SIDE MENU */}
-        <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} />
+            {/* For SIDE MENU */}
+            <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} />
 
             <div style={{ width: '100%', padding: '0' }}>
                 <div className="auth-bg-blob">

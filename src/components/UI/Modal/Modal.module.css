@@ -59,6 +59,17 @@
     -o-border-radius: 10px;
 }
 
+.Blinker {
+    animation: blinker 1.8s linear infinite;
+    width: 10rem;
+    height: 3.5rem;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
 
 /* Smaller Screens */
 @media (max-width: 900px)  {

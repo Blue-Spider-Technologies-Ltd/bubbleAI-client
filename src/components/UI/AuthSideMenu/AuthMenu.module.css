@@ -46,8 +46,9 @@
 }
 
 .Item {
-    background-color: white !important;
+    background-color: var(--navColor3) !important;
     border-radius: 5px;
+    color: white !important;
     cursor: pointer;
     height: 50px;
     margin-top: -3.2px;

@@ -78,13 +78,16 @@ const TranslateAudio = (props) => {
                 const formData = new FormData();
                 formData.append('language', language);
                 formData.append('audio', file, file.name);
-    
-                const response = await axios.post('/transcript/translate-file', formData, {
+                const config = {
                     headers: {
                         'x-access-token': isAuth,
                         'Content-Type': 'multipart/form-data'
-                    }
-                })
+                    },
+                    maxBodyLength: Infinity,
+                    maxContentLength: Infinity
+                };
+                
+                const response = await axios.post('/transcript/translate-file', formData, config);                
     
                 if(response.status === 500) {
                     throw new Error("Something went wrong, Try again")

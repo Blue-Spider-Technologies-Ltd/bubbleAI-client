@@ -33,7 +33,7 @@ const AuthSideMenu = (props) => {
                             <div key={index} className={authMenuCss.Item}>
                                 <h5>
                                     <span onClick={handleEdit}>{item.resumeStorageDetails.resumeName}</span>
-                                    <span onClick={handleEdit} style={{color: '#56A8AC', margin: '4px 4px 0 10px'}}><EditNoteIcon fontSize='medium' /></span>
+                                    <span onClick={handleEdit} style={{color: 'white', margin: '4px 4px 0 10px'}}><EditNoteIcon fontSize='medium' /></span>
                                     <span style={{color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px'}}><DeleteForeverIcon fontSize='small' /></span>
                                 </h5>
 

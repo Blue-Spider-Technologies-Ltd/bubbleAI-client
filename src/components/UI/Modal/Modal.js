@@ -2,6 +2,7 @@ import React from 'react';
 import modalCss from './Modal.module.css'
 import Blob from '../Blob/Blob';
 import bubbleBgAuthImg from '../../../images/bubblebg-auth.png'
+import logoImg from "../../../images/bubble-logo.png"
 import { Rings, Watch } from 'react-loader-spinner'
 const screenWidth = window.innerWidth
 
@@ -54,7 +55,7 @@ export const Fetching = (props) => {
 
             <div className={modalCss.ModalBodyTwo}>
                 <div className={modalCss.ModalBlobBg}>
-                    <Blob />
+                    <img src={logoImg} alt='Bubble Ai' className={modalCss.Blinker} />
                 </div>
             </div>
 
