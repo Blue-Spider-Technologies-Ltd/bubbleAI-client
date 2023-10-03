@@ -1,0 +1,51 @@
+.CardContainer {
+    box-sizing: border-box;
+    border-radius: 15px;
+    margin: 10px auto;
+    max-width: 250px;
+    width: 100%;
+    padding: 0;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+    box-shadow: -1px 1px 44px -3px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: -1px 1px 44px -3px rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: -1px 1px 44px -3px rgba(0, 0, 0, 0.16);
+    overflow: hidden;
+}
+
+.CardContainer:hover {
+    transform: scale(1.05);
+}
+
+.CardContainer hr {
+ border: 3px solid var(--navColor1);
+ margin: 0;
+}
+
+.CardTop {
+    background-color: #c0d1d4;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 100%;
+}
+
+.PriceTag {
+    background-color: var(--navColor1);
+    border-radius: 20px;
+    color: white;
+    font-weight: 500;
+    height: 40px;
+    width: 75%;
+    margin: -22px auto auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.CardBottom {
+    padding: 15px 5px;
+}

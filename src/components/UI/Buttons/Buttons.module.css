@@ -50,13 +50,22 @@
     -o-transition: all 0.3s ease-in-out;
 }
 
+.ButtonOutlineGreenWithDiffStyle {
+    background-color: white;
+    border: 1px solid var(--navColor1);
+    color: var(--navColor1);
+}
 
-.ButtonSubmitGreen {
+.ButtonOutlineGreenWithDiffStyle:hover {
+    box-shadow: none;
+    box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
+}
+
+.ButtonSubmitGreen, .ButtonOutlineGreenWithDiffStyle {
     border-radius: 8px;
-    border: none;
-    background-color: var(--navColor2);
     box-sizing: border-box;
-    color: white;
     cursor: pointer;
     font-size: .9rem;
     height: 45px;
@@ -73,6 +82,12 @@
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
+}
+
+.ButtonSubmitGreen {
+    background-color: var(--navColor2);
+    border: none;
+    color: white;
     box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
     -webkit-box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
     -moz-box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
@@ -120,6 +135,7 @@
     color: white;
     cursor: pointer;
     width: 70%;
+    min-width: 350px;
     margin: 20px auto;
     text-align: center;
     transition: all 0.3s ease-in;

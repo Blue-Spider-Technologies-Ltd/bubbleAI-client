@@ -8,6 +8,7 @@ import Verification from './components/Auth/Verification';
 import PwdRecovery from './components/Auth/PwdRecovery';
 import Resume from './components/Resume/Resume'
 import Depositions from './components/Depositions/Depositions';
+import Pricing from './components/Pricing/Pricing';
 import { ConfirmProvider } from "material-ui-confirm";
 
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
@@ -22,6 +23,7 @@ function App() {
         <Route path={'/verify'} element={ <Verification /> } />
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />
         <Route path={'/join-bubble'} element={<Register />} />
+        <Route path={'/pricing'} element={<Pricing />} />
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

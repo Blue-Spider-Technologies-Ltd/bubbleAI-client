@@ -1,9 +1,11 @@
 .container {
     box-sizing: border-box;
     margin: 20px 0 0 0;
+    min-width: 400px;
     width: 100vw;
     padding: 1.6rem 6rem;
 }
+
 
 .container-inner {
     box-sizing: border-box;
