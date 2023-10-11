@@ -58,6 +58,7 @@ const PwdRecovery = () => {
                 setError("passwords do not match")
             } else {
                 const response = await axios.post('/auth/new-password', recoveryData)
+                console.log(response.statusText);
                 //show success modal
                 setIsPwdChanged(true);
             }

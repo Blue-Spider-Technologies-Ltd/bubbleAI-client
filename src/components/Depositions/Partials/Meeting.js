@@ -3,8 +3,7 @@ import { Grid } from "@mui/material";
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
-import { setMeeting, setTranscriptActivityStarted } from '../../../redux/states';
-import { Fetching } from '../../UI/Modal/Modal';
+import { setMeeting, setTranscriptActivityStarted, setFetching } from '../../../redux/states';
 import AuthInput from '../../UI/Input/AuthInputs';
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -20,7 +19,6 @@ const Meeting = (props) => {
     const { meeting } = useSelector(state => state.stateData)
     const [error, setError] = useState(false);
     const [meetingTitle, setMeetingTitle] = useState("");
-    const [fetching, setFetching] = useState(false)
     const [meetingStarted, setMeetingStarted] = useState(false)
     const [participants, addParticipants] = useState([
         {
@@ -64,12 +62,12 @@ const Meeting = (props) => {
 
     
     const handleMeetingEnd = async () => {
-        setFetching(true)
+        dispatch(setFetching(true))
         try {
-            setFetching(false)
+            dispatch(setFetching(false))
             confirm({ title: "Save and End Meeting?", description: `Once you end the meeting, you will be able to view it again but not be able to alter it in form of additions.` })
             .then(async () => {
-                setFetching(true)
+                dispatch(setFetching(true))
                 const response = await axios.post('/transcript/finish-meeting', meeting, {
                     headers: {
                         'x-access-token': isAuth
@@ -77,7 +75,7 @@ const Meeting = (props) => {
                 });
                 //Session expired
                 if (response.data.status === 'unauthenticated') {
-                    setFetching(false)
+                    dispatch(setFetching(false));
                     confirm({ title: "Session Expired", description: `Click OK to login and continue from where you stopped` })
                     .then(async () => {
                         localStorage?.removeItem('token')
@@ -89,7 +87,7 @@ const Meeting = (props) => {
                     });
                 }
                 if (response.data.message === 'Meeting Ended') {
-                    setFetching(false)
+                    dispatch(setFetching(false))
                     confirm({ title: "Meeting Saved", description: `Click OK` })
                     .then(async () => {
                         window.location.reload();
@@ -103,7 +101,7 @@ const Meeting = (props) => {
 
         } catch (error) {
             console.log(error);
-            setFetching(false)
+            dispatch(setFetching(false))
             setError(error.response ? error.response.data.error : error.message);
         }
     }
@@ -113,7 +111,7 @@ const Meeting = (props) => {
         setError('')
         if (meetingTitle === '') return setError('Meeting must have a title');
         if (participants.length < 2) return setError('Meeting must have at least 2 Participants');
-        setFetching(true)
+        dispatch(setFetching(true))
 
         try {
             const newMeeting = {
@@ -128,16 +126,16 @@ const Meeting = (props) => {
             console.log(response);
             //Success but not yet created
             if (response.status === 200) {
-                setFetching(false)
+                dispatch(setFetching(false))
                 //prompt user about unfinished meeting session
                 if (response.data.message === 'You have an unfinished Meeting') {
-                    setFetching(false)
+                    dispatch(setFetching(false))
                     confirm({ title: "You have an unfinished Meeting", description: `Click OK to Continue Previous Session or Cancel to Start New Meeting` })
                     .then(async () => {
                         dispatch(setMeeting(response.data.meeting))
                         setMeetingStarted(true)
                         dispatch(setTranscriptActivityStarted(true))
-                        setFetching(false)
+                        dispatch(setFetching(false))
                     })
                     .catch(() => {
                         handleMeetingEnd()
@@ -147,10 +145,10 @@ const Meeting = (props) => {
                 dispatch(setMeeting(response.data))
                 setMeetingStarted(true)
                 dispatch(setTranscriptActivityStarted(true))
-                setFetching(false)
+                dispatch(setFetching(false))
             }
         } catch (error) {
-            setFetching(false)
+            dispatch(setFetching(false))
             console.log(error)
             setError(error.response.data.error)
 
@@ -267,7 +265,6 @@ const Meeting = (props) => {
                 {!meetingStarted ? setUpForm : meetingContainer}
                 
             </div>
-            {fetching ? <Fetching /> : undefined}
         </div>
 
     )

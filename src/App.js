@@ -10,10 +10,14 @@ import Resume from './components/Resume/Resume'
 import Depositions from './components/Depositions/Depositions';
 import Pricing from './components/Pricing/Pricing';
 import { ConfirmProvider } from "material-ui-confirm";
+import { useSelector } from "react-redux";
+import { Fetching } from './components/UI/Modal/Modal';
 
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
 
-function App() {
+const App = () => {
+  const { fetching } = useSelector(state => state.stateData)
+
   return (
     <ConfirmProvider>
       <Routes>
@@ -27,6 +31,8 @@ function App() {
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      
+      {fetching && <Fetching />}
     </ConfirmProvider>
   );
 }

@@ -5,10 +5,10 @@ import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
 import { useSelector, useDispatch } from "react-redux";
-import { setResume } from "../../redux/states";
+import { setResume, setFetching } from "../../redux/states";
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Modal, Fetching } from "../UI/Modal/Modal";
+import { Modal } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
@@ -21,7 +21,6 @@ const PreviewResume = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
 
   const isAuth = localStorage?.getItem("token");
@@ -51,7 +50,7 @@ const PreviewResume = () => {
   }, []);
 
   useEffect(() => {
-    setFetching(true);
+    dispatch(setFetching(true));
     const resumeLength = Object.keys(resume).length;
     const now = Date.now();
     const authUser = jwt_decode(isAuth);
@@ -98,7 +97,7 @@ const PreviewResume = () => {
             localResume.resumeData.publications &&
               localResume.resumeData.publications
           );
-          setFetching(false);
+          dispatch(setFetching(false));
           return;
         }
       }
@@ -111,7 +110,7 @@ const PreviewResume = () => {
       setWorkExpArray(resume.workExpInfo && resume.workExpInfo);
       setAwardArray(resume.awardInfo && resume.awardInfo);
       setPublications(resume.publications && resume.publications);
-      setFetching(false);
+      dispatch(setFetching(false));
     } else {
       localStorage?.removeItem("token");
       navigate("/popin");
@@ -769,7 +768,6 @@ const PreviewResume = () => {
           header3="Readying your Resume for download..."
         />
       )}
-      {fetching && <Fetching />}
     </div>
   );
 };

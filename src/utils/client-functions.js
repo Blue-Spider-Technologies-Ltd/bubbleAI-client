@@ -41,12 +41,12 @@ export const fetchPrice = async (category, usage) => {
             
             case 'transcribeFile':
                 comparativePriceOne_Africa = 1500;
-                comparativePriceTwo_Africa = 6000;
-                comparativePriceThree_Africa = 20000;
+                comparativePriceTwo_Africa = 5000;
+                comparativePriceThree_Africa = 15000;
 
                 comparativePriceOne_RestOfWorld = 3000;
-                comparativePriceTwo_RestOfWorld = 13000;
-                comparativePriceThree_RestOfWorld = 42000;
+                comparativePriceTwo_RestOfWorld = 8000;
+                comparativePriceThree_RestOfWorld = 22000;
                 break;
         
             default:

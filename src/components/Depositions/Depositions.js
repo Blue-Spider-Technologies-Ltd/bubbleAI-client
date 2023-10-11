@@ -3,14 +3,13 @@ import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import { ButtonCard } from '../UI/Buttons/Buttons';
 import { useSelector, useDispatch } from "react-redux";
-import { setHideCards } from '../../redux/states';
+import { setHideCards, setFetching } from '../../redux/states';
 import { Grid } from "@mui/material"
 import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 import Meeting from './Partials/Meeting';
 import TranscribeAudio from './Partials/TranscribeAudio';
 import TranslateAudio from './Partials/TranslateAudio';
-import { Fetching } from '../UI/Modal/Modal';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 
@@ -20,29 +19,28 @@ const Depositions = () => {
     const { hideCards, transcriptActivityStarted } = useSelector(state => state.stateData)
     const isAuth = localStorage?.getItem('token')
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
-    const [fetching, setFetching] = useState(false)
     const [meetingButton, showMeetingButton] = useState(true)
     const [transcribeButton, showTranscribeButton] = useState(true)
     const [translateButton, showTranslateButton] = useState(true)
 
     useEffect(() => {
-        setFetching(true)
+        dispatch(setFetching(true))
         const now = Date.now()
         if (isAuth) {              
             const authUser = jwt_decode(isAuth)
             //logout if token expired
             if (now >= authUser.expiration) {
-                setFetching(false)
+                dispatch(setFetching(false))
                 localStorage?.removeItem('token')
                 navigate('/popin')
             }
-            setFetching(false)
+            dispatch(setFetching(false))
         } else {
-            setFetching(false)
+            dispatch(setFetching(false))
             localStorage?.removeItem('token')
             navigate('/popin')
         }
-    }, [isAuth, navigate])
+    }, [isAuth, navigate, dispatch])
 
     const toggleOptions = () => {
         setAuthMenuOpen(!authMenuOpen)
@@ -122,7 +120,6 @@ const Depositions = () => {
 
             </div>
 
-            {fetching && <Fetching />}
         </div>
     )
 }

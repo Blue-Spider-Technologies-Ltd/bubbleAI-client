@@ -23,11 +23,11 @@ const TranslateAudio = (props) => {
     const printRef = useRef()
     const [audioTranscriptionDone, setAudioTranscriptionDone] = useState(false);
     const [translations, setTranslations] = useState([]);
+    const [translating, setTranslating] = useState(false);
     const [file, setFile] = useState(null);
     const [error, setError] = useState(false);
     const [languageSelectError, setLanguageSelectError] = useState(false);
     const [language, setLanguage] = useState('');
-    const [fetching, setFetching] = useState(false);
 
 
     const handleDrop = e => {
@@ -72,7 +72,7 @@ const TranslateAudio = (props) => {
                     setLanguageSelectError('Select a valid language');
                     return
                 }
-                setFetching(true)
+                setTranslating(true)
                 setError('')
         
                 const formData = new FormData();
@@ -97,12 +97,12 @@ const TranslateAudio = (props) => {
                     throw new Error("Something went wrong, Try again")
                 }
                 setTranslations(response.data)
-                setFetching(false)
+                setTranslating(false)
                 setAudioTranscriptionDone(true)
     
             } catch (error) {
                 console.error(error)
-                setFetching(false)
+                setTranslating(false)
                 setError(error.response.data.error)
             }
         } else {
@@ -233,7 +233,7 @@ const TranslateAudio = (props) => {
                 {!audioTranscriptionDone ? dragDropAudio : transcriptionDone}
 
             </div>
-            {fetching && <Modal 
+            {translating && <Modal 
                             header4='Just a moment'
                             header3='Translating your file...'
                         />}

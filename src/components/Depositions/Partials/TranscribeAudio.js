@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import depoCss from "../Depositions.module.css";
 import resumeTemplateCss from "../../Resume/Templates/Standard/Standard.module.css";
 import { useNavigate } from "react-router-dom";
-// import { useSelector, useDispatch } from "react-redux";
 import { Modal } from "../../UI/Modal/Modal";
 import { ButtonSubmitGreen } from "../../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -20,9 +19,9 @@ const TranscribeAudio = (props) => {
   const printRef = useRef();
   const [audioTranscriptionDone, setAudioTranscriptionDone] = useState(false);
   const [transcripts, setTranscripts] = useState([]);
+  const [transcribing, setTranscribing] = useState(false);
   const [file, setFile] = useState(null);
   const [error, setError] = useState(false);
-  const [fetching, setFetching] = useState(false);
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -63,7 +62,7 @@ const TranscribeAudio = (props) => {
           setError("No file audio selected");
           return;
         }
-        setFetching(true);
+        setTranscribing(true);
         setError("");
 
         const formData = new FormData();
@@ -90,10 +89,10 @@ const TranscribeAudio = (props) => {
           );
         }
         setTranscripts(response.data);
-        setFetching(false);
+        setTranscribing(false);
         setAudioTranscriptionDone(true);
       } catch (error) {
-        setFetching(false);
+        setTranscribing(false);
         setError(error.response.data.error);
       }
     } else {
@@ -234,7 +233,7 @@ const TranscribeAudio = (props) => {
 
         {!audioTranscriptionDone ? dragDropAudio : transcriptionDone}
       </div>
-      {fetching && (
+      {transcribing && (
         <Modal header4="Just a moment" header3="Transcribing your file..." />
       )}
     </div>

@@ -5,11 +5,11 @@ import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, setResume } from "../../redux/states";
+import { setUser, setResume, setFetching } from "../../redux/states";
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import axios from "axios";
-import { Modal, Fetching } from "../UI/Modal/Modal";
+import { Modal } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import jwt_decode from "jwt-decode";
@@ -23,7 +23,6 @@ const CustomizeResume = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
 
   const isAuth = localStorage?.getItem("token");
@@ -41,7 +40,7 @@ const CustomizeResume = () => {
     profSummary: "",
   });
   useEffect(() => {
-    setFetching(true);
+    dispatch(setFetching(true));
     const now = Date.now();
     const authUser = jwt_decode(isAuth);
     const isResumePresent = localStorage?.getItem(
@@ -88,19 +87,19 @@ const CustomizeResume = () => {
               profSummary: response.data.user.profSummary || "",
             });
             dispatch(setUser(response.data.user));
-            setFetching(false);
+            dispatch(setFetching(false));
           } catch (error) {
             console.log(error);
-            setFetching(false);
+            dispatch(setFetching(false));
             setError("Reload page to fetch data");
           }
         };
         populateUser();
       } else {
-        setFetching(false);
+        dispatch(setFetching(false));
       }
     } else {
-      setFetching(false);
+      dispatch(setFetching(false));
       localStorage?.removeItem("token");
       navigate("/popin");
     }
@@ -1110,7 +1109,6 @@ const CustomizeResume = () => {
         />
       )}
 
-      {fetching && <Fetching />}
     </div>
   );
 };
