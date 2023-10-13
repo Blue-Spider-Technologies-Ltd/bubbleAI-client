@@ -30,13 +30,13 @@ export const fetchPrice = async (category, usage) => {
                 break;
 
             case 'depositions':
-                comparativePriceOne_Africa = 4000;
-                comparativePriceTwo_Africa = 8000;
-                comparativePriceThree_Africa = 20000;
+                comparativePriceOne_Africa = 10000;
+                comparativePriceTwo_Africa = 30000;
+                comparativePriceThree_Africa = 100000;
 
-                comparativePriceOne_RestOfWorld = 5500;
-                comparativePriceTwo_RestOfWorld = 12000;
-                comparativePriceThree_RestOfWorld = 27000;
+                comparativePriceOne_RestOfWorld = 14000;
+                comparativePriceTwo_RestOfWorld = 50000;
+                comparativePriceThree_RestOfWorld = 170000;
                 break;
             
             case 'transcribeFile':
@@ -64,17 +64,17 @@ export const fetchPrice = async (category, usage) => {
         switch (continent) {
             case 'AF':
 
-                if (usage === "perUse") {
+                if (usage === "priceOne") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceOne_Africa}`)  
                     finalPrice = Math.round(rate.data.conversion_result)
                 }
-                if (usage === "perWeek") {
+                if (usage === "priceTwo") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceTwo_Africa}`)  
                     finalPrice = Math.round(rate.data.conversion_result)
                 }
-                if (usage === "perMonth") {
+                if (usage === "priceThree") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceThree_Africa}`)  
                     finalPrice = Math.round(rate.data.conversion_result)
@@ -82,17 +82,17 @@ export const fetchPrice = async (category, usage) => {
                 break;
         
             default:
-                if (usage === "perUse") {
+                if (usage === "priceOne") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceOne_RestOfWorld}`)  
                     finalPrice = Math.round(rate.data.conversion_result)
                 }
-                if (usage === "perWeek") {
+                if (usage === "priceTwo") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceTwo_RestOfWorld}`)  
                     finalPrice = Math.round(rate.data.conversion_result)
                 }
-                if (usage === "perMonth") {
+                if (usage === "priceThree") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceThree_RestOfWorld}`)  
                     finalPrice = Math.round(rate.data.conversion_result)
