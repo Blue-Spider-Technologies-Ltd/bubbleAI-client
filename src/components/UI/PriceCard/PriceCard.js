@@ -22,72 +22,83 @@ const PriceCard = ({details}) => {
             </div>
             <div className={cardCss.CardBottom}>
                 <Grid item xs={12}>
+
                     <List>
-                    
-                        <ListItem >
-                            <ListItemIcon>
-                                {features.downloadablePDF.available ? (
-                                    <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
-                                ) : (
-                                    <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
-                                )}
-                            </ListItemIcon>
-                            <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                {features.downloadablePDF.text}
-                            </Typography>
-                        </ListItem>  
-                        <ListItem >
-                            <ListItemIcon>
-                                {features.reAccessSaved.available ? (
-                                    <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
-                                ) : (
-                                    <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
-                                )}
-                            </ListItemIcon>
-                            <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                {features.reAccessSaved.text}
-                            </Typography>
-                        </ListItem>
+                        {features.downloadablePDF && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.downloadablePDF.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.downloadablePDF.text}
+                                </Typography>
+                            </ListItem> 
+                        )}
+ 
+                        {features.reAccessSaved && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.reAccessSaved.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.reAccessSaved.text}
+                                </Typography>
+                            </ListItem>
+                        )}
 
-                        <ListItem >
-                            <ListItemIcon>
-                                {features.editPrev.available ? (
-                                    <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
-                                ) : (
-                                    <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
-                                )}
-                            </ListItemIcon>
-                            <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                {features.editPrev.text}
-                            </Typography>
-                        </ListItem>  
+                        {features.editPrev && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.editPrev.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.editPrev.text}
+                                </Typography>
+                            </ListItem>  
+                        )}                
 
-                         <ListItem >
-                            <ListItemIcon>
-                                {features.sharableLink.available ? (
-                                    <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
-                                ) : (
-                                    <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
-                                )}
-                            </ListItemIcon>
-                            <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                {features.sharableLink.text}
-                            </Typography>
-                        </ListItem>   
-
-                        <ListItem >
-                            <ListItemIcon>
-                                {features.changeName.available ? (
-                                    <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
-                                ) : (
-                                    <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
-                                )}
-                            </ListItemIcon>
-                            <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                {features.changeName.text}
-                            </Typography>
-                        </ListItem>  
-
+                        {features.sharableLink && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.sharableLink.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.sharableLink.text}
+                                </Typography>
+                            </ListItem> 
+                        )}
+  
+                        {features.changeName && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.changeName.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.changeName.text}
+                                </Typography>
+                            </ListItem> 
+                        )}
+              
                     </List>
                 </Grid>
 

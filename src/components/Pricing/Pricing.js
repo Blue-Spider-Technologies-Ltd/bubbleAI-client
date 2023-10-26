@@ -4,6 +4,7 @@ import { Grid } from "@mui/material"
 import { ButtonLogOut } from '../UI/Buttons/Buttons';
 import ResumePricing from './ResumePricing';
 import DepositionPricing from './DepositionPricing';
+import FileTranscriptionPricing from './FileTranscriptionPricing';
 
 //////This page contains CSS from HOME.CSS and INDEX.CSS
 const Pricing = () => {
@@ -38,6 +39,7 @@ const pricingCategoryChoices = [ "Resume Pricing", "Proposal Pricing", "Depositi
 
             <ResumePricing />
             <DepositionPricing />
+            <FileTranscriptionPricing />
          
         </div>
     )

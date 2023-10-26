@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { setFetching } from '../../redux/states';
-import { Grid } from "@mui/material";
+import { Grid } from "@mui/material"
 import PriceCard from '../UI/PriceCard/PriceCard';
 import { fetchPrice, fetchCurrency } from '../../utils/client-functions';
 
 
 //////This page contains CSS from HOME.CSS and INDEX.CSS
-const DepositionPricing = () => {
+const FileTranscriptionPricing = () => {
     const dispatch = useDispatch()
+    const [pricePerUse, setPricePerUse] = useState(0)
     const [pricePerWeek, setPricePerWeek] = useState(0)
     const [pricePerMonth, setPricePerMonth] = useState(0)
-    const [pricePerQuarter, setPricePerQuarter] = useState(0)
     const [currency, setCurrency] = useState('')
     const [error, setError] = useState('')
 
@@ -20,39 +20,67 @@ const DepositionPricing = () => {
         dispatch(setFetching(true))
         const fetchData = async () => {
             try {
-                const pricePerWeek = await fetchPrice('depositions', 'priceOne')
-                const pricePerMonth = await fetchPrice('depositions', 'priceTwo')
-                const pricePerQuarter = await fetchPrice('depositions', 'priceThree')
+                const pricePerUse = await fetchPrice('transcribeFile', 'priceOne')
+                const pricePerWeek = await fetchPrice('transcribeFile', 'priceTwo')
+                const pricePerMonth = await fetchPrice('transcribeFile', 'priceThree')
                 const userCurrency = await fetchCurrency()
+                setPricePerUse(pricePerUse)
                 setPricePerWeek(pricePerWeek)
                 setPricePerMonth(pricePerMonth)
-                setPricePerQuarter(pricePerQuarter)
                 setCurrency(userCurrency)
     
                 dispatch(setFetching(false))
             } catch (error) {
                 setError('Error fetching country prices, please reload page')
             }
+
         }
         fetchData()
     }, [dispatch])
     
 
-const depositionsPricingDetails = [
+const fileTranscriptionPricingDetails = [
+    {
+        title: 'Per Use',
+        price: pricePerUse,
+        currency: currency,
+        popular: true,
+        features: {
+            reAccessSaved: {
+                available: false,
+                text: 'Reaccess Saved Resumes'
+            },
+            editPrev: {
+                available: false,
+                text: 'Edit Previous Resumes'
+            },
+            sharableLink: {
+                available: false,
+                text: 'Sharable Link to Resume'
+            },
+            changeName: {
+                available: false,
+                text: 'Change Names on Resume'
+            },
+            downloadablePDF: {
+                available: true,
+                text: 'Save Resume as PDF'
+            }
+        }
+    },
     {
         title: 'Per Week',
         price: pricePerWeek,
         currency: currency,
         popular: false,
         features: {
-            nineMBandAbove: {
+            reAccessSaved: {
                 available: false,
-                text: 'Record above 3 minutes per time',
-                descriptiion: 'Each recording can be more than 3 minutes if this option is available'
+                text: 'Reaccess Saved Resumes'
             },
-            duration: {
-                activeTime: true,
-                text: 'Expiry within a week'
+            editPrev: {
+                available: true,
+                text: 'Edit Previous Resumes'
             },
             sharableLink: {
                 available: false,
@@ -72,41 +100,11 @@ const depositionsPricingDetails = [
         title: 'Per Month',
         price: pricePerMonth,
         currency: currency,
-        popular: true,
-        features: {
-            nineMBandAbove: {
-                available: true,
-                text: 'Record above 3 minutes per time', 
-                descriptiion: 'Each recording can be more than 3 minutes if this option is available'
-            },
-            duration: {
-                activeTime: true,
-                text: 'Expiry within a week'
-            },
-            sharableLink: {
-                available: false,
-                text: 'Sharable Link to Resume'
-            },
-            changeName: {
-                available: false,
-                text: 'Change Names on Resume'
-            },
-            downloadablePDF: {
-                available: true,
-                text: 'Save Resume as PDF'
-            }
-        }
-    },
-    {
-        title: 'Per Quarter',
-        price: pricePerQuarter,
-        currency: currency,
         popular: false,
         features: {
-            nineMBandAbove: {
+            reAccessSaved: {
                 available: true,
-                text: 'Record above 3 minutes per time', 
-                descriptiion: 'Each recording can be more than 3 minutes if this option is available'
+                text: 'Reaccess Saved Resumes'
             },
             editPrev: {
                 available: true,
@@ -128,16 +126,17 @@ const depositionsPricingDetails = [
     }
 ]
 
+
     return (
 
         <section id="ask-me" className="container" style={{ marginTop: "-10px" }}>
             <div className="container-inner">
-                <h2 style={{color: "#56A8AC"}}>Deposition Plans</h2>
+                <h2 style={{color: "#56A8AC"}}>Transcription & Translation Plans</h2>
                 <div className="error">{error}</div>
 
                 <div className='Segment'>
                     <Grid container>
-                        {depositionsPricingDetails.map((detail, index) => {
+                        {fileTranscriptionPricingDetails.map((detail, index) => {
                             return (
                                 <Grid key={index} item xs={12} sm={6} md={4} px={1}>
                                     <PriceCard details={detail} />
@@ -151,4 +150,4 @@ const depositionsPricingDetails = [
     )
 }
 
-export default DepositionPricing;
+export default FileTranscriptionPricing;
