@@ -160,9 +160,9 @@ const MenuBarSmall = () => {
                         {location.pathname === "/popin" ? <li id="nav-1"><a href="/join-bubble">Register</a></li> 
                         : isAuth ? <li id="nav-1" className='logout' onClick={handleLogout}>Logout</li> : <li id="nav-1"><a href="/popin">Login</a></li>}
                         <li id="nav-2"><a href="/pricing">Pricing</a></li>
-                        <li id="nav-3"><a href="#skills">Business Plan Generator</a></li>
-                        <li id="nav-4"><a href="#project">Product Price Setter</a></li>
-                        <li id="nav-5"><a href="#contact">Fraud Detector</a></li>
+                        <li id="nav-3"><a href="/how-i-work">How I Work</a></li>
+                        <li id="nav-4"><a href="/faqs">FAQs</a></li>
+                        <li id="nav-5"><a href="/support">Support</a></li>
                     </ul>
                 </nav>
             </div>

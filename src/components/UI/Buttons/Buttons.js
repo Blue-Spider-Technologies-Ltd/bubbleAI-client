@@ -13,13 +13,16 @@ export const ButtonOutlineGreen = (props) => {
     )
 }
 
-export const ButtonLogOut = (props) => {
+export const ButtonLogOut = ({ to, type, clicked, children }) => {
     return (
-        <button type={props.type} onClick={props.clicked} className={buttonCss.LogOut}>
-            {props.children}
-        </button>
+        <a href={to}>
+            <button type={type} onClick={clicked} className={buttonCss.LogOut}>
+                {children}
+            </button>
+        </a>
     )
 }
+
 
 export const ButtonSubmitBlack = (props) => {
     return (

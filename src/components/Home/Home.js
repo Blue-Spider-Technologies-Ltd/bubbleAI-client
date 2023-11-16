@@ -268,7 +268,7 @@ const Home = () => {
 
       <section id="categories" className="container">
         <div className="container-inner">
-          <h2>I can help you with:</h2>
+          <h2>I can also help you with:</h2>
           <Grid container>
             {categoriesData.map((data, index) => {
               return (

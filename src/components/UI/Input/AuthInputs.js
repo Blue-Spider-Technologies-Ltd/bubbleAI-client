@@ -78,7 +78,7 @@ const AuthInput = props => {
         <Grid item md={props.inputGrid} xs={props.inputGridSm} px={1} mb={props.mb} sx={{boxSizing: "border-box"}}>
             {props.multiline ? 
                 <TextField
-                    id={"outlined-multiline-static" + props.label + props.placeholder}
+                    id={props.id}
                     label={props.label}
                     placeholder={props.placeholder}
                     multiline
@@ -95,7 +95,7 @@ const AuthInput = props => {
                 <FormControl variant="outlined" className={classes.root} required={props.required}>
                     
                     <OutlinedInput
-                        id={props.placeholder}
+                        id={props.id}
                         type={showPassword ? 'text' : 'password'}
                         onChange={props.onChange}
                         value={props.value}
@@ -120,7 +120,7 @@ const AuthInput = props => {
                 <FormControl className={classes.root} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
-                        id={props.label}
+                        id={props.id}
                         onChange={props.onChange}
                         name={props.name}
                         value={props.value}
@@ -140,7 +140,7 @@ const AuthInput = props => {
                 <FormControl className={classes.root} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
-                        id={props.label}
+                        id={props.id}
                         onChange={props.onChange}
                         name={props.name}
                         value={props.value}
@@ -184,7 +184,7 @@ const AuthInput = props => {
                 </Paper>
             :
                 <TextField 
-                    id={"outlined-basic" + props.label + props.placeholder}
+                    id={props.id}
                     placeholder={props.placeholder} 
                     label={props.label}
                     variant="outlined" 

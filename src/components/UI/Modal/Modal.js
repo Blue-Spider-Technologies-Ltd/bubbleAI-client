@@ -49,6 +49,17 @@ export const Modal = (props) => {
     )
 }
 
+export const PricingModal = (props) => {
+
+    return (
+        <div className={modalCss.ModalContainer}>
+            <div>
+                {props.children}
+            </div>
+        </div>
+    )
+}
+
 export const Fetching = (props) => {
     return (
         <div className={modalCss.ModalContainer}>

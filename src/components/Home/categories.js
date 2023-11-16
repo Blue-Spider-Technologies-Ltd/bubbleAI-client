@@ -18,7 +18,7 @@ const categoriesData = [
     },
     {
         title: "Business Proposals",
-        desc: "Enter for resources to capture that fine client",
+        desc: "Enter for a professional proposal, 100% conversion of potential clients",
         isAuthURL: '/user/dashboard/business-proposals',
         unAuthURL: '/popin?business-proposals',
         image: bizProposalImg
@@ -53,7 +53,7 @@ const categoriesData = [
     },
     {
         title: "Fraud Detector",
-        desc: "Pass me a suspicious file, link or message...",
+        desc: "Pass me a suspicious file, link or message before interacting with it",
         isAuthURL: '/user/dashboard/fraud-detector',
         unAuthURL: '/popin?fraud-detector',
         image: fraudImg

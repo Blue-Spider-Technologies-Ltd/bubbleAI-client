@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { useDispatch } from "react-redux";
 import { setFetching } from '../../redux/states';
 import { Grid } from "@mui/material";
@@ -130,7 +130,7 @@ const depositionsPricingDetails = [
 
     return (
 
-        <section id="ask-me" className="container" style={{ marginTop: "-10px" }}>
+        <section id="deposition" className="container" style={{ marginTop: "-10px" }}>
             <div className="container-inner">
                 <h2 style={{color: "#56A8AC"}}>Deposition Plans</h2>
                 <div className="error">{error}</div>
@@ -151,4 +151,4 @@ const depositionsPricingDetails = [
     )
 }
 
-export default DepositionPricing;
+export default memo(DepositionPricing);

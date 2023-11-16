@@ -39,6 +39,8 @@ const CustomizeResume = () => {
     country: "",
     profSummary: "",
   });
+
+
   useEffect(() => {
     dispatch(setFetching(true));
     const now = Date.now();
@@ -46,22 +48,34 @@ const CustomizeResume = () => {
     const isResumePresent = localStorage?.getItem(
       "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
     );
+
     const localResume = JSON.parse(isResumePresent);
+
     if (isAuth && now < authUser.expiration) {
       if (localResume) {
-        confirm({
-          description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume`,
-        })
-          .then(() => {
-            dispatch(setResume(localResume.resumeData));
-            navigate("/user/dashboard/resume?preview");
+        if (now > localResume.expiration) {
+          //remove previous resumes in local storage if expired
+          localStorage?.removeItem(
+            "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+          );
+          //reload page
+          window.location.reload()
+        } else {
+          confirm({
+            description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume`,
           })
-          .catch(() => setError("Not Deleted"));
-        //remove previous resumes in local storage
-        localStorage?.removeItem(
-          "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-        );
-      }
+            .then(() => {
+              dispatch(setResume(localResume.resumeData));
+              navigate("/user/dashboard/resume?preview");
+            })
+            .catch(() => setError("Not Deleted"));
+          //remove previous resumes in local storage
+          // localStorage?.removeItem(
+          //   "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+          // );
+        }
+
+      } 
       if (userLength <= 0) {
         const populateUser = async () => {
           try {
@@ -446,6 +460,7 @@ const CustomizeResume = () => {
       navigate("/user/dashboard/resume?preview");
     } catch (error) {
       console.log(error);
+      setLoading(false);
       setError("We are being throttled, try again after a while");
     }
   };
@@ -600,7 +615,7 @@ const CustomizeResume = () => {
                   return (
                     <AuthInput
                       key={index}
-                      label="Add a link e.g linkedin, github or your website"
+                      label="Add a link (ONLY ONE LINK PER FIELD) e.g linkedin, github or your website"
                       value={info}
                       inputType="text"
                       inputGridSm={8}
@@ -855,7 +870,7 @@ const CustomizeResume = () => {
                       <AuthInput
                         key={index}
                         value={skill}
-                        label="Add a Skill per Field"
+                        label="Add ONLY ONE Skill per Field"
                         inputType="text"
                         inputGridSm={12}
                         inputGrid={6}
@@ -895,7 +910,7 @@ const CustomizeResume = () => {
             </div>
 
             <div className="Segment">
-              <h4>Professional Certifications & Awards [If any]</h4>
+              <h4>Professional Certifications & Awards [Optional]</h4>
               <div>
                 <Grid
                   container
@@ -964,7 +979,7 @@ const CustomizeResume = () => {
               </div>
             </div>
             <div className="Segment">
-              <h4>Publications [If any]</h4>
+              <h4>Publications [Optional]</h4>
               <div>
                 <Grid
                   container
@@ -1040,9 +1055,10 @@ const CustomizeResume = () => {
                   {interests.map((interest, index) => {
                     return (
                       <AuthInput
+                        id={index}
                         key={index}
                         value={interest}
-                        label="Add one Interest per Field"
+                        label="Add ONLY ONE Interest per field"
                         inputType="text"
                         inputGridSm={12}
                         inputGrid={6}
