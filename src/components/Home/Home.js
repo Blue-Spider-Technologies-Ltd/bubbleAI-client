@@ -28,7 +28,7 @@ const Home = () => {
   const countItemJson = localStorage?.getItem("oats_3297");
   const item = JSON.parse(countItemJson);
   const useCount = item ? item.cu78tgGgivhcountJVGIbGguguGhgh : 0;
-  const expiration = item && item.UYiygc768FYexpUVIirationHi87f86DCCC;
+  const expiration = item?.UYiygc768FYexpUVIirationHi87f86DCCC;
 
 
   const askMeErrorObj = {
@@ -51,6 +51,7 @@ const Home = () => {
     }
   }, [expiration, now])
 
+  //fetch messages for auth user
   useEffect(() => {
     const populateUser = async () => {
       if (isAuth) {
@@ -178,7 +179,7 @@ const Home = () => {
         dispatch(setMessage(askMeErrorObj));
       }
     } else {
-      //prevent overuse when not registered/logged in
+      //prevent overuse when not logged in
       const useIndicator = {
         cu78tgGgivhcountJVGIbGguguGhgh: useCount + 1,
         UYiygc768FYexpUVIirationHi87f86DCCC: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds

@@ -1,10 +1,27 @@
 import React from 'react';
 import modalCss from './Modal.module.css'
 import Blob from '../Blob/Blob';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import bubbleBgAuthImg from '../../../images/bubblebg-auth.png'
 import logoImg from "../../../images/bubble-logo.png"
 import { Rings, Watch } from 'react-loader-spinner'
 const screenWidth = window.innerWidth
+
+//progress bar styling
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 10,
+    borderRadius: 15,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: '15px',
+      backgroundColor: '#99E1E4',
+      height: '10px'
+    },
+}));
 
 export const Modal = (props) => {
 
@@ -39,8 +56,10 @@ export const Modal = (props) => {
                             />
                         }
                     </div>                       
-
-                    <h3>{props.header3}</h3>
+                    <Box sx={{ width: '80%', margin: '20px auto', height: '10px', borderRadius: '15px'}}>
+                        <BorderLinearProgress variant="determinate" value={props.progress} />
+                    </Box>
+                    <h3>{props.header3} {props.progress}%</h3>
                 </div>
                 
             </div>

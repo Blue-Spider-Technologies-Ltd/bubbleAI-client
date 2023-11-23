@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import depoCss from '../Depositions.module.css';
 import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +28,19 @@ const TranslateAudio = (props) => {
     const [error, setError] = useState(false);
     const [languageSelectError, setLanguageSelectError] = useState(false);
     const [language, setLanguage] = useState('');
+    const [progressPercentage, setProgressPercentage] = useState(0);
+    const [progressStatus, setProgressStatus] = useState('Starting...');
+    
 
+    // useEffect(() => {
+    //     const eventSource = new EventSource('/transcript/progress');
+
+    //     eventSource.onmessage = (event) =>  {
+    //         console.log('Received event:', event.data);
+    //         // Handle the event data as needed
+    //     };
+
+    // }, []);
 
     const handleDrop = e => {
         e.preventDefault();
@@ -62,7 +74,15 @@ const TranslateAudio = (props) => {
         const now = new Date().getTime()
         const authUser =  jwt_decode(isAuth)
         if (isAuth && (now < authUser.expiration)) {
+            //get event progress
+            const eventSource = new EventSource('/transcript/progress');
 
+            eventSource.onmessage = (event) =>  {
+                const progressUpdate = JSON.parse(event.data)
+                setProgressPercentage(progressUpdate.percent);
+                setProgressStatus(progressUpdate.status)
+                // Handle the event data as needed
+            };
             try {
                 if (!file) {
                     setError('No file audio selected');
@@ -79,15 +99,18 @@ const TranslateAudio = (props) => {
                 formData.append('language', language);
                 formData.append('audio', file, file.name);
                 const config = {
+                    method: 'post',
+                    url: '/transcript/translate-file',
+                    data: formData,
                     headers: {
                         'x-access-token': isAuth,
                         'Content-Type': 'multipart/form-data'
                     },
                     maxBodyLength: Infinity,
                     maxContentLength: Infinity
-                };
-                
-                const response = await axios.post('/transcript/translate-file', formData, config);                
+                }
+                const response = await axios(config);
+                // const response = await axios.post('/transcript/translate-file', formData, config);                
     
                 if(response.status === 500) {
                     throw new Error("Something went wrong, Try again")
@@ -99,11 +122,13 @@ const TranslateAudio = (props) => {
                 setTranslations(response.data)
                 setTranslating(false)
                 setAudioTranscriptionDone(true)
+                eventSource.close();
     
             } catch (error) {
                 console.error(error)
                 setTranslating(false)
                 setError(error.response.data.error)
+                eventSource.close();
             }
         } else {
             localStorage?.removeItem('token')
@@ -235,7 +260,8 @@ const TranslateAudio = (props) => {
             </div>
             {translating && <Modal 
                             header4='Just a moment'
-                            header3='Translating your file...'
+                            header3={progressStatus}
+                            progress={progressPercentage}
                         />}
         </div>
 
