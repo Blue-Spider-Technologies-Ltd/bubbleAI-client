@@ -24,6 +24,8 @@ const CustomizeResume = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
+  const [progressPercentage, setProgressPercentage] = useState(0);
+  const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
 
   const isAuth = localStorage?.getItem("token");
   //resume data
@@ -435,6 +437,16 @@ const CustomizeResume = () => {
       publications: publications, //Array
     };
 
+    //get event progress
+    const eventSource = new EventSource('/transcript/progress');
+    //listen for SSE
+    eventSource.onmessage = (event) =>  {
+        const progressUpdate = JSON.parse(event.data)
+        setProgressPercentage(progressUpdate.percent);
+        setProgressStatus(progressUpdate.status)
+        // Handle the event data as needed
+    };
+
     try {
       const response = await axios.post("/user/customize-resume", resumeData, {
         headers: {
@@ -457,11 +469,13 @@ const CustomizeResume = () => {
         JSON.stringify(resumeObjforLocal)
       );
       setLoading(false);
+      eventSource.close();
       navigate("/user/dashboard/resume?preview");
     } catch (error) {
       console.log(error);
       setLoading(false);
       setError("We are being throttled, try again after a while");
+      eventSource.close();
     }
   };
 
@@ -1121,7 +1135,8 @@ const CustomizeResume = () => {
       {loading && (
         <Modal
           header4={`Hello ${user.firstName}`}
-          header3="Creating your Resume, I'll only take a minute or less"
+          header3={progressStatus}
+          progress={progressPercentage}
         />
       )}
 

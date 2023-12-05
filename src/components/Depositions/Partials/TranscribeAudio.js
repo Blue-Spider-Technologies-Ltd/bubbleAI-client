@@ -22,6 +22,8 @@ const TranscribeAudio = (props) => {
   const [transcribing, setTranscribing] = useState(false);
   const [file, setFile] = useState(null);
   const [error, setError] = useState(false);
+  const [progressPercentage, setProgressPercentage] = useState(0);
+  const [progressStatus, setProgressStatus] = useState('Starting...');
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -57,11 +59,20 @@ const TranscribeAudio = (props) => {
     const now = new Date().getTime();
     const authUser = jwt_decode(isAuth);
     if (isAuth && now < authUser.expiration) {
+      if (!file) {
+        setError("No file audio selected");
+        return;
+      }
+      //get event progress
+      const eventSource = new EventSource('/transcript/progress');
+      //listen for SSE
+      eventSource.onmessage = (event) =>  {
+          const progressUpdate = JSON.parse(event.data)
+          setProgressPercentage(progressUpdate.percent);
+          setProgressStatus(progressUpdate.status)
+          // Handle the event data as needed
+      };
       try {
-        if (!file) {
-          setError("No file audio selected");
-          return;
-        }
         setTranscribing(true);
         setError("");
 
@@ -91,9 +102,11 @@ const TranscribeAudio = (props) => {
         setTranscripts(response.data);
         setTranscribing(false);
         setAudioTranscriptionDone(true);
+        eventSource.close();
       } catch (error) {
         setTranscribing(false);
         setError(error.response.data.error);
+        eventSource.close();
       }
     } else {
       localStorage?.removeItem("token");
@@ -234,7 +247,11 @@ const TranscribeAudio = (props) => {
         {!audioTranscriptionDone ? dragDropAudio : transcriptionDone}
       </div>
       {transcribing && (
-        <Modal header4="Just a moment" header3="Transcribing your file..." />
+        <Modal
+          header4='Just a moment'
+          header3={progressStatus}
+          progress={progressPercentage}
+        />
       )}
     </div>
   );

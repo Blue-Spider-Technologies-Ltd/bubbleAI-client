@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import depoCss from '../Depositions.module.css';
 import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ import { useReactToPrint  } from 'react-to-print';
 import { useConfirm } from "material-ui-confirm";
 import AuthInput from '../../UI/Input/AuthInputs';
 import { LANGUAGES } from '../../../utils/languages';
+
+
 
 const TranslateAudio = (props) => {
     const confirm = useConfirm();
@@ -31,17 +33,6 @@ const TranslateAudio = (props) => {
     const [progressPercentage, setProgressPercentage] = useState(0);
     const [progressStatus, setProgressStatus] = useState('Starting...');
     
-
-    // useEffect(() => {
-    //     const eventSource = new EventSource('/transcript/progress');
-
-    //     eventSource.onmessage = (event) =>  {
-    //         console.log('Received event:', event.data);
-    //         // Handle the event data as needed
-    //     };
-
-    // }, []);
-
     const handleDrop = e => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
@@ -71,12 +62,21 @@ const TranslateAudio = (props) => {
     });
 
     const handleAudioTranslation = async () => {
+        setProgressPercentage(0)
         const now = new Date().getTime()
         const authUser =  jwt_decode(isAuth)
         if (isAuth && (now < authUser.expiration)) {
+            if (!file) {
+                setError('No file audio selected');
+                return
+            }
+            if (language === '' || language === undefined ) {
+                setLanguageSelectError('Select a valid language');
+                return
+            }
             //get event progress
             const eventSource = new EventSource('/transcript/progress');
-
+            //listen for SSE
             eventSource.onmessage = (event) =>  {
                 const progressUpdate = JSON.parse(event.data)
                 setProgressPercentage(progressUpdate.percent);
@@ -84,14 +84,7 @@ const TranslateAudio = (props) => {
                 // Handle the event data as needed
             };
             try {
-                if (!file) {
-                    setError('No file audio selected');
-                    return
-                }
-                if (language === '' || language === undefined ) {
-                    setLanguageSelectError('Select a valid language');
-                    return
-                }
+
                 setTranslating(true)
                 setError('')
         
@@ -109,8 +102,7 @@ const TranslateAudio = (props) => {
                     maxBodyLength: Infinity,
                     maxContentLength: Infinity
                 }
-                const response = await axios(config);
-                // const response = await axios.post('/transcript/translate-file', formData, config);                
+                const response = await axios(config);               
     
                 if(response.status === 500) {
                     throw new Error("Something went wrong, Try again")
@@ -125,7 +117,6 @@ const TranslateAudio = (props) => {
                 eventSource.close();
     
             } catch (error) {
-                console.error(error)
                 setTranslating(false)
                 setError(error.response.data.error)
                 eventSource.close();
