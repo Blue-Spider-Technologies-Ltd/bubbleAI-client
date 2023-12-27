@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from 'react';
 import { useDispatch } from "react-redux";
-import { setFetching } from '../../redux/states';
+import { setFetching, setShowCheckout } from '../../redux/states';
 import { Grid } from "@mui/material"
 import PriceCard from '../UI/PriceCard/PriceCard';
 import { fetchPrice, fetchCurrency } from '../../utils/client-functions';
@@ -41,7 +41,8 @@ const ResumePricing = () => {
 
 const resumePricingDetails = [
     {
-        title: 'Per Use',
+        product: "AI Resume",
+        duration: 'Per Use',
         price: pricePerUse,
         currency: currency,
         popular: true,
@@ -69,7 +70,8 @@ const resumePricingDetails = [
         }
     },
     {
-        title: 'Per Week',
+        product: "AI Resume",
+        duration: 'Per Week',
         price: pricePerWeek,
         currency: currency,
         popular: false,
@@ -97,7 +99,8 @@ const resumePricingDetails = [
         }
     },
     {
-        title: 'Per Month',
+        product: "AI Resume",
+        duration: 'Per Month',
         price: pricePerMonth,
         currency: currency,
         popular: false,

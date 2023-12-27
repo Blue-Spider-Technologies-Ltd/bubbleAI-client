@@ -23,7 +23,7 @@
 }
 
 .CardTop {
-    background-color: #c0d1d4;
+    background-color: var(--lightBlueGrey);
     color: black;
     display: flex;
     flex-direction: column;

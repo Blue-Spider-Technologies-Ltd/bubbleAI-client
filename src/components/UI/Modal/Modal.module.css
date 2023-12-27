@@ -59,6 +59,50 @@
     -o-border-radius: 10px;
 }
 
+.CheckoutContainer {
+    background-color: var(--snow);
+    box-sizing: border-box;
+    width: 600px;
+    padding: 20px 15px;
+    margin: 0 auto;
+    z-index: 9999;
+    border-radius: 5px;
+}
+
+.CheckoutContainer h2 {
+    text-align: center;
+    margin-top: -2px;
+}
+
+.CheckoutLogoWrapper {
+    width: 100px;
+    margin: 10px auto 0;
+    padding: 0;
+}
+
+.CheckoutInnerContainerGroup, .CheckoutInnerContainer {
+    background-color: var(--lighterBlueGrey);
+    display: flex;
+    font-size: .85rem;
+    width: 100%;
+}
+.CheckoutInnerContainerGroup {
+    flex-direction: column;
+}
+
+.CheckoutInnerContainer {
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+
+.CancelCheckout {
+    text-align: center;
+    font-size: .7rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .Blinker {
     animation: blinker 1.8s linear infinite;
     width: 10rem;
@@ -76,6 +120,10 @@
 
     .ModalBody {
         width: 75%;
+    }
+
+    .CheckoutContainer {
+        width: 370px;
     }
 
 }

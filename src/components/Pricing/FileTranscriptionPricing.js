@@ -41,7 +41,8 @@ const FileTranscriptionPricing = () => {
 
 const fileTranscriptionPricingDetails = [
     {
-        title: 'Per Use',
+        product: "Audio & Video Transcription AI",
+        duration: 'Per Use',
         price: pricePerUse,
         currency: currency,
         popular: true,
@@ -69,7 +70,8 @@ const fileTranscriptionPricingDetails = [
         }
     },
     {
-        title: 'Per Week',
+        product: "Audio & Video Transcription AI",
+        duration: 'Per Week',
         price: pricePerWeek,
         currency: currency,
         popular: false,
@@ -97,7 +99,8 @@ const fileTranscriptionPricingDetails = [
         }
     },
     {
-        title: 'Per Month',
+        product: "Audio & Video Transcription AI",
+        duration: 'Per Month',
         price: pricePerMonth,
         currency: currency,
         popular: false,

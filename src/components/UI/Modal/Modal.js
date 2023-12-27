@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import modalCss from './Modal.module.css'
 import Blob from '../Blob/Blob';
-import Box from '@mui/material/Box';
+import { Box, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import bubbleBgAuthImg from '../../../images/bubblebg-auth.png'
-import logoImg from "../../../images/bubble-logo.png"
-import { Rings, Watch } from 'react-loader-spinner'
-const screenWidth = window.innerWidth
+import bubbleBgAuthImg from '../../../images/bubblebg-auth.png';
+import logoImg from "../../../images/bubble-logo.png";
+import { Rings, Watch } from 'react-loader-spinner';
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setShowCheckout } from "../../../redux/states"
+import AuthInput from '../Input/AuthInputs';
+import { ButtonSubmitBlack, ButtonSubmitGreen } from '../Buttons/Buttons';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import { ThreeCircles } from 'react-loader-spinner';
+const screenWidth = window.innerWidth;
 
 //progress bar styling
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -23,7 +30,8 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     },
 }));
 
-export const Modal = (props) => {
+//This Modal is for Progress
+export const Modal = ({header3, header4, progress}) => {
 
     return (
         <div className={modalCss.ModalContainer}>
@@ -34,7 +42,7 @@ export const Modal = (props) => {
                     <Blob bgImage={bubbleBgAuthImg} />
                 </div>
                 <div className={modalCss.ModalInner}>
-                    <h4>{props.header4}</h4>
+                    <h4>{header4}</h4>
                     <div style={{marginTop: '15px'}}>
                         {screenWidth >= 900 ?
                             <Rings
@@ -57,9 +65,9 @@ export const Modal = (props) => {
                         }
                     </div>                       
                     <Box sx={{ width: '80%', margin: '20px auto', height: '10px', borderRadius: '15px'}}>
-                        <BorderLinearProgress variant="determinate" value={props.progress} />
+                        <BorderLinearProgress variant="determinate" value={progress} />
                     </Box>
-                    <h3>{props.header3} {props.progress}%</h3>
+                    <h3>{header3} {progress}%</h3>
                 </div>
                 
             </div>
@@ -68,27 +76,169 @@ export const Modal = (props) => {
     )
 }
 
-export const PricingModal = (props) => {
+
+export const CheckoutSummaryModal = () => {
+    const dispatch = useDispatch()
+    const { pricingDetails } = useSelector(state => state.stateData)
+    const [loading, setLoading] = useState(false)
+    const [discount, setDiscount] = useState(0.00)
+    const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    const formattedPrice = pricingDetails.price?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const vat = pricingDetails.price * 0.075
+    const formattedVat = vat?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const total = pricingDetails.price + vat - discount
+    const formattedTotal = total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    const hideCheckoutFunction = () => {
+        dispatch(setShowCheckout(false))
+    }
 
     return (
         <div className={modalCss.ModalContainer}>
-            <div>
-                {props.children}
+            <div className={modalCss.CheckoutContainer}>
+                <div className={modalCss.CheckoutLogoWrapper}>
+                    <img src={logoImg} alt='Bubble Ai' style={{width: '100%'}} />
+                </div>
+
+                <h2>Checkout</h2>
+
+                <Grid container>
+                    <Grid item xs={12} md={7}> 
+                        <div className='Segment'>
+                            <h5>Summary</h5>
+                            <div className={modalCss.CheckoutInnerContainerGroup}>
+                                <div className={modalCss.CheckoutInnerContainer}>
+                                    <div>
+                                        Product
+                                    </div>
+                                    <div>
+                                        -
+                                    </div>
+                                    <div className='align-right-bold'>
+                                        {pricingDetails.product}
+                                    </div>
+                                </div>
+
+                                <div className={modalCss.CheckoutInnerContainer}>
+                                    <div>
+                                        Duration
+                                    </div>
+                                    <div>
+                                        -
+                                    </div>
+                                    <div className='align-right-bold'>
+                                        {pricingDetails.duration}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p></p>
+
+                            <h5>Payment</h5>
+                            <div className={modalCss.CheckoutInnerContainerGroup}>
+                                <div className={modalCss.CheckoutInnerContainer}>
+                                    <div>
+                                        Price
+                                    </div>
+                                    <div>
+                                        -
+                                    </div>
+                                    <div className='align-right-bold'>
+                                        {pricingDetails.currency + " " + formattedPrice}
+                                    </div> 
+                                </div>
+                                <div className={modalCss.CheckoutInnerContainer}>
+                                    <div>
+                                        VAT
+                                    </div>
+                                    <div>
+                                        -
+                                    </div>
+                                    <div className='align-right-bold'>
+                                        {formattedVat}
+                                    </div> 
+                                </div>
+                                <div className={modalCss.CheckoutInnerContainer}>
+                                    <div>
+                                        Discount
+                                    </div>
+                                    <div>
+                                        -
+                                    </div>
+                                    <div className='align-right-bold'>
+                                        {pricingDetails.currency + " " + formattedDiscount}
+                                    </div> 
+                                </div>
+                                <div style={{width: '80%', padding: '0', margin: 'auto', border: 'none', borderBottom: '1px solid black'}}>
+                                </div>
+                                <div className={modalCss.CheckoutInnerContainer} style={{fontWeight: '700'}}>
+                                    <div>
+                                        Total
+                                    </div>
+                                    <div>
+                                        -
+                                    </div>
+                                    <div className='align-right-bold'>
+                                        {pricingDetails.currency + " " + formattedTotal}
+                                    </div> 
+                                </div>
+                            </div>
+                            <p></p>
+
+                            <h5>Coupon</h5>
+                            <div className={modalCss.CheckoutInnerContainer}>
+                                <div>
+                                    <AuthInput
+                                        value=''
+                                        inputType="text"
+                                        inputGridSm={12}
+                                        required={true}
+                                    />
+                                </div>
+                                <div className='align-right-bold'>
+                                    <ButtonSubmitBlack type="submit" height='30px'>{!loading ? "Add" : 
+                                        <ThreeCircles
+                                            height="15"
+                                            width="15"
+                                            color="#FFFFFF"
+                                            visible={true}
+                                            ariaLabel="three-circles-rotating"
+                                        />}
+                                    </ButtonSubmitBlack>
+                                </div>
+                            </div>
+                            <p></p>
+                            <ButtonSubmitGreen>
+                                <span style={{ marginRight: "5px", paddingTop: "1px" }}>
+                                   PROCEED TO PAY{" "}
+                                </span>{" "}
+                                <TrendingFlatIcon fontSize="inherit" />
+                            </ButtonSubmitGreen>
+                        </div>
+
+                    </Grid>
+
+                    <Grid item xs={12} md={5}>
+                        
+                    </Grid>
+                </Grid>
+
+                <div className={modalCss.CancelCheckout} onClick={hideCheckoutFunction} >
+                    Cancel
+                </div>
             </div>
         </div>
     )
 }
 
-export const Fetching = (props) => {
+export const Fetching = () => {
     return (
         <div className={modalCss.ModalContainer}>
-
             <div className={modalCss.ModalBodyTwo}>
                 <div className={modalCss.ModalBlobBg}>
                     <img src={logoImg} alt='Bubble Ai' className={modalCss.Blinker} />
                 </div>
             </div>
-
         </div>
     )
 }

@@ -6,9 +6,11 @@ const initialState = {
   resume: {},
   email: "",
   meeting: {},
+  pricingDetails: {},
   hideCards: false,
   transcriptActivityStarted: false,
-  fetching: false
+  fetching: false,
+  showCheckout: false
 }
 
 export const stateSlice = createSlice({
@@ -40,6 +42,9 @@ export const stateSlice = createSlice({
     setMeeting: (state, action) => {
       state.meeting = action.payload;
     },
+    setPricingDetails: (state, action) => {
+      state.pricingDetails = action.payload;
+    },
     setHideCards: (state, action) => {
       state.hideCards = action.payload;
     },
@@ -48,6 +53,9 @@ export const stateSlice = createSlice({
     },
     setTranscriptActivityStarted: (state, action) => {
       state.transcriptActivityStarted = action.payload;
+    },
+    setShowCheckout: (state, action) => {
+      state.showCheckout = action.payload
     }
   },
 })
@@ -61,9 +69,11 @@ export const {
   setResume,
   setEmail,
   setMeeting,
+  setPricingDetails,
   setHideCards,
   setFetching,
-  setTranscriptActivityStarted 
+  setTranscriptActivityStarted,
+  setShowCheckout 
 } = stateSlice.actions
 
 export default stateSlice.reducer

@@ -8,8 +8,10 @@
   --navColor3: #5fbec5;
   --navColor4: #7CC9CC;
   --navColor5: #99E1E4;
+  --snow: rgb(255, 250, 250);
   scroll-behavior: smooth;
-  --resumeColorLight: #c0d1d4;
+  --lightBlueGrey: #c0d1d4;
+  --lighterBlueGrey: #c0d1d457;
 }
 
 * {
@@ -144,7 +146,7 @@ h1 {
 .BodyWrapper {
   box-sizing: border-box;
   border-radius: 15px;
-  background-color: rgb(255, 250, 250);
+  background-color: var(--snow);
   margin-top: 20px;
   padding: 0;
   width: 100%;
@@ -241,6 +243,10 @@ h1 {
   position: relative;
   color: white;
   z-index: 999;
+}
+
+.align-right-bold {
+  font-weight: 600;
 }
 
 /* For webkit-based browsers */

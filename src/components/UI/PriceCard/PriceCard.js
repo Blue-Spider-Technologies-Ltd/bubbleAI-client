@@ -1,20 +1,34 @@
 import React from 'react';
 import cardCss from './PriceCard.module.css';
-import { Grid, List, ListItem, ListItemIcon, Typography } from "@mui/material"
+import { Grid, List, ListItem, ListItemIcon, Typography } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/Buttons';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useDispatch } from "react-redux";
+import { setShowCheckout, setPricingDetails } from "../../../redux/states";
 
 
 //////This page contains CSS from HOME.CSS and INDEX.CSS
 const PriceCard = ({details}) => {
-    const { title, price, currency, popular, features } = details;
-    const formattedPrice = price.toLocaleString('en-US');
+    const { product, duration, price, currency, popular, features } = details;
+    const formattedPrice = price?.toLocaleString('en-US');
+    const dispatch = useDispatch()
+
+    const pricingObject = {
+        product: product,
+        duration: duration,
+        price: price,
+        currency: currency
+    }
+    const showCheckoutFunction = () => {
+        dispatch(setPricingDetails(pricingObject))
+        dispatch(setShowCheckout(true))
+    }
 
     return (
         <div className={cardCss.CardContainer}>
             <div className={cardCss.CardTop}>
-                <h3>{title}</h3>
+                <h3>{duration}</h3>
             </div>
             <hr />
             <div className={cardCss.PriceTag}>
@@ -106,11 +120,11 @@ const PriceCard = ({details}) => {
                     <div style={{ width: "85%"}}>
 
                         {popular ? (
-                            <ButtonSubmitGreen>
+                            <ButtonSubmitGreen onClick={showCheckoutFunction}>
                                 <span style={{ marginRight: "5px", paddingTop: "1px" }}>Get Started </span>
                             </ButtonSubmitGreen>
                         ) : (
-                            <ButtonOutlineGreenWithDiffStyle>
+                            <ButtonOutlineGreenWithDiffStyle onClick={showCheckoutFunction}>
                                 <span style={{ marginRight: "5px", paddingTop: "1px" }}>Get Started </span>
                             </ButtonOutlineGreenWithDiffStyle>
                         )}

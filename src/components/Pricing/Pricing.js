@@ -5,33 +5,35 @@ import { ButtonLogOut } from '../UI/Buttons/Buttons';
 import ResumePricing from './ResumePricing';
 import DepositionPricing from './DepositionPricing';
 import FileTranscriptionPricing from './FileTranscriptionPricing';
+import { CheckoutSummaryModal } from '../UI/Modal/Modal';
+import { useSelector } from "react-redux";
 
 //////This page contains CSS from HOME.CSS and INDEX.CSS
 const Pricing = () => {
-
+    const { showCheckout } = useSelector(state => state.stateData)
     
-const pricingCategoryChoices = [ 
-    {
-        name: "Resume Pricing",
-        to: "/pricing#resume"
-    },
-    {
-        name: "Deposition Pricing",
-        to: "/pricing#deposition"
-    },
-    {
-        name: "Transcription & Translation",
-        to: "/pricing#transcription"
-    }
-]
+    const pricingCategoryChoices = [ 
+        {
+            name: "Resume Pricing",
+            to: "/pricing#resume"
+        },
+        {
+            name: "Deposition Pricing",
+            to: "/pricing#deposition"
+        },
+        {
+            name: "Transcription & Translation",
+            to: "/pricing#transcription"
+        }
+    ]
 
     return (
         <div>
             <MenuBar />
 
-            <section id="ask-me" className="container" style={{ marginTop: "100px" }}>
+            <section className="container" style={{ marginTop: "100px" }}>
                 <div className="container-inner">
-                    <h1 style={{color: "#56A8AC"}} className="ask-me-h2">Pricing</h1>
+                    <h1 style={{color: "#56A8AC"}}>Pricing</h1>
                     <h4>On this page</h4>
 
                     <Grid container>
@@ -54,6 +56,7 @@ const pricingCategoryChoices = [
             <DepositionPricing />
             <FileTranscriptionPricing />
          
+            {showCheckout && <CheckoutSummaryModal />}
         </div>
     )
 }

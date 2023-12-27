@@ -40,7 +40,8 @@ const DepositionPricing = () => {
 
 const depositionsPricingDetails = [
     {
-        title: 'Per Week',
+        product: "Deposition & Minutes Taking AI",
+        duration: 'Per Week',
         price: pricePerWeek,
         currency: currency,
         popular: false,
@@ -69,7 +70,8 @@ const depositionsPricingDetails = [
         }
     },
     {
-        title: 'Per Month',
+        product: "Deposition & Minutes Taking AI",
+        duration: 'Per Month',
         price: pricePerMonth,
         currency: currency,
         popular: true,
@@ -98,7 +100,8 @@ const depositionsPricingDetails = [
         }
     },
     {
-        title: 'Per Quarter',
+        product: "Deposition & Minutes Taking AI",
+        duration: 'Per Quarter',
         price: pricePerQuarter,
         currency: currency,
         popular: false,

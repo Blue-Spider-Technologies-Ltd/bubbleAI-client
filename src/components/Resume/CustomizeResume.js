@@ -70,7 +70,12 @@ const CustomizeResume = () => {
               dispatch(setResume(localResume.resumeData));
               navigate("/user/dashboard/resume?preview");
             })
-            .catch(() => setError("Not Deleted"));
+            .catch(() => {
+              //remove previous resumes in local storage if expired
+              localStorage?.removeItem(
+                "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+              );
+            });
           //remove previous resumes in local storage
           // localStorage?.removeItem(
           //   "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
@@ -169,10 +174,10 @@ const CustomizeResume = () => {
   const handleAddLinks = () => {
     setError("");
     const newLink = "";
-    if (linkInfo.length < 3) {
+    if (linkInfo.length < 5) {
       return setLinkInfo([...linkInfo, newLink]);
     }
-    setError("You can add a maximum of 3 links");
+    setError("You can add a maximum of 5 links");
   };
   const handleDeleteLinks = () => {
     setError("");
@@ -239,10 +244,10 @@ const CustomizeResume = () => {
       degree: "",
       date: "",
     };
-    if (eduArray.length < 3) {
+    if (eduArray.length < 5) {
       return addEduArray([...eduArray, newInfo]);
     }
-    setError("Only add 3 relevant backgrounds");
+    setError("Only add 5 relevant backgrounds");
   };
   const handleDeleteEduInfo = () => {
     setError("");
@@ -286,10 +291,10 @@ const CustomizeResume = () => {
       workLink: "",
       jobDesc: "",
     };
-    if (workExpArray.length < 3) {
+    if (workExpArray.length < 6) {
       return addWorkExpArray([...workExpArray, newInfo]);
     }
-    setError("Only add 3 Experiences");
+    setError("Only add 6 Experiences");
   };
   const handleDeleteExp = () => {
     setError("");
@@ -345,10 +350,10 @@ const CustomizeResume = () => {
       award: "",
       date: "",
     };
-    if (awardArray.length < 2) {
+    if (awardArray.length < 10) {
       return addAwardArray([...awardArray, newAward]);
     }
-    setError("Only add 2 Awards");
+    setError("Only add 10 Awards");
   };
   const handleDeleteAward = () => {
     setError("");
@@ -387,10 +392,10 @@ const CustomizeResume = () => {
       source: "",
       date: "",
     };
-    if (publications.length < 3) {
+    if (publications.length < 20) {
       return addPublications([...publications, newPub]);
     }
-    setError("Only add 2 Publications");
+    setError("Only add 20 Publications");
   };
   const handleDeletePublication = () => {
     setError("");
