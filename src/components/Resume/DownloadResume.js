@@ -140,7 +140,7 @@ const DownloadResume = () => {
                                     responsive={responsive}
                                     swipeable={true}
                                     draggable={true}
-                                    ssr={true} // means to render carousel on server-side.
+                                    ssr={true} // render carousel on server-side.
                                     infinite={true}
                                     keyBoardControl={true}
                                     customTransition="all .5 ease-in-out"

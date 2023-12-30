@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import modalCss from './Modal.module.css'
 import Blob from '../Blob/Blob';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Rating } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import bubbleBgAuthImg from '../../../images/bubblebg-auth.png';
@@ -14,6 +14,10 @@ import AuthInput from '../Input/AuthInputs';
 import { ButtonSubmitBlack, ButtonSubmitGreen } from '../Buttons/Buttons';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import { ThreeCircles } from 'react-loader-spinner';
+import refundImg from '../../../images/refund-stamp.png'
+import { reviewDetails } from '../../../utils/reviews';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 const screenWidth = window.innerWidth;
 
 //progress bar styling
@@ -29,6 +33,22 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
       height: '10px'
     },
 }));
+
+//Option for carousel in template section
+const responsive = {
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 1
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 700 },
+        items: 1
+    },
+    mobile: {
+        breakpoint: { max: 700, min: 0 },
+        items: 1
+    }
+};
 
 //This Modal is for Progress
 export const Modal = ({header3, header4, progress}) => {
@@ -80,7 +100,7 @@ export const Modal = ({header3, header4, progress}) => {
 export const CheckoutSummaryModal = () => {
     const dispatch = useDispatch()
     const { pricingDetails } = useSelector(state => state.stateData)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [discount, setDiscount] = useState(0.00)
     const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     const formattedPrice = pricingDetails.price?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -155,7 +175,7 @@ export const CheckoutSummaryModal = () => {
                                         -
                                     </div>
                                     <div className='align-right-bold'>
-                                        {formattedVat}
+                                        {pricingDetails.currency + " " + formattedVat}
                                     </div> 
                                 </div>
                                 <div className={modalCss.CheckoutInnerContainer}>
@@ -219,6 +239,66 @@ export const CheckoutSummaryModal = () => {
                     </Grid>
 
                     <Grid item xs={12} md={5}>
+                        <div style={{padding: '20px 10px', width: '100%', textAlign: 'center'}}>
+                            <img src={refundImg} alt='Refund Guaranteed' style={{width: '100px', borderRadius: '50%'}} />
+
+                            <div>
+                                <h5>100% Refund</h5>
+                                <h2>GUARANTEED</h2>
+                                <a 
+                                    href='/terms-and-conditions' 
+                                    style={{fontSize: '.65rem', color: '#3E8F93', position: 'relative', top: '-20px'}}
+                                >
+                                    See Terms & Conditions
+                                </a>
+
+                                <div className='Segment'>
+                                    <Carousel
+                                        autoPlay={true}
+                                        autoPlaySpeed={3000}
+                                        arrows={false}
+                                        responsive={responsive}
+                                        swipeable={true}
+                                        draggable={true}
+                                        ssr={true} // render carousel on server-side.
+                                        infinite={true}
+                                        keyBoardControl={true}
+                                        customTransition="all .5"
+                                        containerClass="carousel-container"
+                                        dotListClass="custom-dot-list-style"
+                                        itemClass="carousel-item-padding-40-px"
+                                        focusOnSelect={true}
+                                    >
+
+                                        {reviewDetails?.map((detail, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <div style={{fontSize: '.7rem', display: 'flex', justifyContent: 'left', width: '100%'}}>
+                                                        <div style={{width: '40px', borderRadius: '50%', overflow: 'hidden'}}>
+                                                            <img src={detail?.img} alt={detail?.name} width='100%' />
+                                                        </div>
+                                                        <div style={{marginLeft: '10px'}}>
+                                                            <div style={{fontSize: '.67rem', fontWeight: '700', color: '#5fbec5'}}>
+                                                                {detail?.name}
+                                                            </div>
+                                                            <div>
+                                                                <Rating name="read-only" value={detail?.rating} size="small" readOnly />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className={modalCss.reviewCarousel}>
+                                                        <p>
+                                                            {detail?.review}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </Carousel>
+                                </div>
+                            </div>
+                        </div>
                         
                     </Grid>
                 </Grid>

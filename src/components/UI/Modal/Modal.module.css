@@ -1,13 +1,12 @@
 .ModalContainer {
     background-color: #000000c6;
     position: fixed;
-    display: flex;
-    align-items: center;
     top: 0;
     bottom: 0;
-    height: 100%;
     width: 100%;
     z-index: 999999;
+    padding: 100px 0 50px;
+    overflow-y: scroll;
 }
 
 .ModalBody, .ModalBodyTwo {
@@ -95,12 +94,22 @@
     padding: 5px 10px;
 }
 
-
 .CancelCheckout {
     text-align: center;
     font-size: .7rem;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.reviewCarousel {
+    width: 100%;
+    overflow-y: scroll;
+    height: 90px;
+    text-align: left;
+    font-size: .67rem;
+    border: 1px solid var(--lighterBlueGrey);
+    border-radius: 10px;
+    padding: 0 5px;
 }
 
 .Blinker {
