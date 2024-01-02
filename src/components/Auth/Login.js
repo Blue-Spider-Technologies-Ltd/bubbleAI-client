@@ -11,6 +11,7 @@ import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import { useDispatch } from "react-redux";
 import { setEmail } from "../../redux/states";
+import { checkAuthenticatedUser } from "../../utils/client-functions";
 
 
 const screenWidth = window.innerWidth
@@ -19,7 +20,6 @@ const Login = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const isAuth = localStorage?.getItem('token')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [pwdRec, setPwdRec] = useState(false)
@@ -32,14 +32,26 @@ const Login = () => {
     const queryString = location.search.slice(1)
 
     useEffect(() => {
-        if(isAuth) {
-            if (queryString.length >= 1)  {
-                navigate(`/user/dashboard/${queryString}`)
-            } else {
-                navigate('/')
+        const isUserAuthenticated = async () => {
+            try {
+                await checkAuthenticatedUser()
+                if (queryString.length >= 1)  {
+                    if (queryString === 'pricing') {
+                        navigate(`/pricing`)
+                    } else {
+                        navigate(`/user/dashboard/${queryString}`)
+                    }
+                } else {
+                    navigate('/')
+                }
+            } catch (error) {
+                navigate('/popin')
+                return
             }
         }
-    }, [isAuth, navigate, queryString])
+
+        isUserAuthenticated()
+    }, [navigate, queryString])
 
     //Login submit handler
     const handleFormSubmitLogin = async (e) => {
@@ -58,7 +70,13 @@ const Login = () => {
             setLoading(false)
             //If user was redirected to login from a page because of a service request to a protected route
             if (queryString.length >= 1)  {
-                navigate(`/user/dashboard/${queryString}`)
+                
+                if (queryString === 'pricing') {
+                    navigate(`/pricing`)
+                } else {
+                    navigate(`/user/dashboard/${queryString}`)
+                }
+                
             } else {
                 navigate('/')
             }

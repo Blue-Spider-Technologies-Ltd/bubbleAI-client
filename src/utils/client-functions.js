@@ -1,4 +1,26 @@
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+
+
+
+export const checkAuthenticatedUser = async () => {
+    try {
+        const isAuth = localStorage?.getItem('token');
+        const authUser = jwt_decode(isAuth);
+        const now = Date.now();
+        if (isAuth && now < authUser.expiration) {
+            console.log("authentic")
+            return true
+        } else {
+            localStorage?.removeItem('token');
+            throw new Error('Session Expired');
+        }
+    } catch (error) {
+        localStorage?.removeItem('token');
+        throw new Error("Invalid Session")
+    }
+
+}
 
 export const fetchPrice = async (category, usage) => {
     try {

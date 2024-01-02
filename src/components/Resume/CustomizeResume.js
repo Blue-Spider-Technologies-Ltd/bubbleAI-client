@@ -428,6 +428,7 @@ const CustomizeResume = () => {
   };
 
   const handleFormSubmit = async (e) => {
+
     e.preventDefault();
     setLoading(true);
     dispatch(setResume({}));
@@ -528,6 +529,7 @@ const CustomizeResume = () => {
               <span>3</span>Download
             </div>
           </div>
+          
           <form method="post" onSubmit={handleFormSubmit}>
             <div className="error">{error}</div>
             <div className="Segment">

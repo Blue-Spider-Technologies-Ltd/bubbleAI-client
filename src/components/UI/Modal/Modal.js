@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import modalCss from './Modal.module.css'
 import Blob from '../Blob/Blob';
 import { Box, Grid, Rating } from '@mui/material';
@@ -8,16 +9,19 @@ import bubbleBgAuthImg from '../../../images/bubblebg-auth.png';
 import logoImg from "../../../images/bubble-logo.png";
 import { Rings, Watch } from 'react-loader-spinner';
 import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { setShowCheckout } from "../../../redux/states"
 import AuthInput from '../Input/AuthInputs';
 import { ButtonSubmitBlack, ButtonSubmitGreen } from '../Buttons/Buttons';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import { ThreeCircles } from 'react-loader-spinner';
-import refundImg from '../../../images/refund-stamp.png'
+import refundImg from '../../../images/refund-stamp.png';
 import { reviewDetails } from '../../../utils/reviews';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { checkAuthenticatedUser } from '../../../utils/client-functions';
+import { setFetching } from '../../../redux/states';
 const screenWidth = window.innerWidth;
 
 //progress bar styling
@@ -99,18 +103,52 @@ export const Modal = ({header3, header4, progress}) => {
 
 export const CheckoutSummaryModal = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { pricingDetails } = useSelector(state => state.stateData)
-    const [loading, setLoading] = useState(true)
-    const [discount, setDiscount] = useState(0.00)
-    const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    const [loading, setLoading] = useState(false)
+    const [discount, setDiscount] = useState(0)
+    const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const formattedPrice = pricingDetails.price?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    const vat = pricingDetails.price * 0.075
+    const vat = pricingDetails.price * 0.075;
     const formattedVat = vat?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const total = pricingDetails.price + vat - discount
     const formattedTotal = total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     const hideCheckoutFunction = () => {
         dispatch(setShowCheckout(false))
+    }
+
+    const handleProceedToPay = async () => {
+        try {
+            //must await
+            await checkAuthenticatedUser()
+        } catch (error) {
+            navigate('/popin?pricing')
+            return
+        }
+        try {
+            // dispatch(setFetching(true))
+            const isAuth = localStorage?.getItem('token');
+            const priceData = {
+                currency: pricingDetails.currency,
+                amount: total,
+                customizations: {
+                    title: pricingDetails.product,
+                    logo: logoImg
+                },
+            }
+            const response = await axios.post("/pricing/start-payment", priceData, {
+                headers: {
+                  "x-access-token": isAuth,
+                },
+            });
+        
+
+            // dispatch(setShowCheckout(false))
+        } catch (error) {
+            console.log(error.message);
+        }
+
     }
 
     return (
@@ -169,7 +207,7 @@ export const CheckoutSummaryModal = () => {
                                 </div>
                                 <div className={modalCss.CheckoutInnerContainer}>
                                     <div>
-                                        VAT
+                                        VAT @ 7.5%
                                     </div>
                                     <div>
                                         -
@@ -205,7 +243,7 @@ export const CheckoutSummaryModal = () => {
                             </div>
                             <p></p>
 
-                            <h5>Coupon</h5>
+                            <h5>Coupon/Discount Code</h5>
                             <div className={modalCss.CheckoutInnerContainer}>
                                 <div>
                                     <AuthInput
@@ -216,7 +254,7 @@ export const CheckoutSummaryModal = () => {
                                     />
                                 </div>
                                 <div className='align-right-bold'>
-                                    <ButtonSubmitBlack type="submit" height='30px'>{!loading ? "Add" : 
+                                    <ButtonSubmitBlack type="submit" height='30px'>{!loading ? "Apply" : 
                                         <ThreeCircles
                                             height="15"
                                             width="15"
@@ -228,7 +266,7 @@ export const CheckoutSummaryModal = () => {
                                 </div>
                             </div>
                             <p></p>
-                            <ButtonSubmitGreen>
+                            <ButtonSubmitGreen onClick={handleProceedToPay}>
                                 <span style={{ marginRight: "5px", paddingTop: "1px" }}>
                                    PROCEED TO PAY{" "}
                                 </span>{" "}
@@ -239,7 +277,7 @@ export const CheckoutSummaryModal = () => {
                     </Grid>
 
                     <Grid item xs={12} md={5}>
-                        <div style={{padding: '20px 10px', width: '100%', textAlign: 'center'}}>
+                        <div style={{padding: '20px 0 20px 10px', width: '100%', textAlign: 'center'}}>
                             <img src={refundImg} alt='Refund Guaranteed' style={{width: '100px', borderRadius: '50%'}} />
 
                             <div>
