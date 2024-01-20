@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from 'react';
 import { useDispatch } from "react-redux";
-import { setFetching, setShowCheckout } from '../../redux/states';
+import { setFetching } from '../../redux/states';
 import { Grid } from "@mui/material"
 import PriceCard from '../UI/PriceCard/PriceCard';
 import { fetchPrice, fetchCurrency } from '../../utils/client-functions';

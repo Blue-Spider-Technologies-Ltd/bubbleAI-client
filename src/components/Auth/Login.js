@@ -32,6 +32,7 @@ const Login = () => {
     const queryString = location.search.slice(1)
 
     useEffect(() => {
+
         const isUserAuthenticated = async () => {
             try {
                 await checkAuthenticatedUser()
@@ -45,7 +46,7 @@ const Login = () => {
                     navigate('/')
                 }
             } catch (error) {
-                navigate('/popin')
+                navigate(`/popin?${queryString}`)
                 return
             }
         }
@@ -64,7 +65,7 @@ const Login = () => {
         }
         try {
             const response = await axios.post('/auth/login', userData)
-            let userDetails = response.data.user
+            let userDetails = response?.data?.user
             localStorage.setItem('token', userDetails)
             setError("")
             setLoading(false)
@@ -82,8 +83,8 @@ const Login = () => {
             }
         } catch (error) {
             setLoading(false)
-            console.log(error.response.data.mesage);
-            setError(error.response.data.message)
+            console.log(error?.response?.data?.mesage);
+            setError(error?.response?.data?.message);
         }
 
     }
@@ -122,7 +123,6 @@ const Login = () => {
         <div>
             <MenuBar />
             <div className={authCss.authContainer}>
-
                 <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginRight: '100px'}}>
                     <Blob bgImage={bubbleBgAuthImg} altText="POP back in" />
                 </div>
@@ -130,7 +130,6 @@ const Login = () => {
                 <div style={{marginTop: screenWidth > 900 ? '350px' : '', marginLeft: '100px'}} >
                     <Blob bgImage={bubbleBgAuthImg} altText="POP back in" />
                 </div>
-
             </div>
 
             <div className={authCss.formContainer}>

@@ -8,15 +8,16 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import bubbleBgAuthImg from '../../../images/bubblebg-auth.png';
 import logoImg from "../../../images/bubble-logo.png";
 import { Rings, Watch } from 'react-loader-spinner';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from "react-redux";
 import { setShowCheckout } from "../../../redux/states"
 import AuthInput from '../Input/AuthInputs';
-import { ButtonSubmitBlack, ButtonSubmitGreen } from '../Buttons/Buttons';
+import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/Buttons';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import { ThreeCircles } from 'react-loader-spinner';
 import refundImg from '../../../images/refund-stamp.png';
+import successImg from '../../../images/success.gif';
+import failedImg from '../../../images/failed.gif';
 import { reviewDetails } from '../../../utils/reviews';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -101,6 +102,44 @@ export const Modal = ({header3, header4, progress}) => {
 }
 
 
+export const SuccessFailureModal = ({ success, fullName }) => {
+
+    const navigate = useNavigate()
+
+    const handleSuccess = () => {
+        if (!success) {
+            navigate('/pricing')
+        } else {
+            navigate('/')
+        }
+    }
+
+    return (
+        <div className={modalCss.ModalContainer}>
+            <div style={{textAlign: 'center', backgroundColor: 'white'}} className={modalCss.CheckoutContainer}>
+                <div className={modalCss.CheckoutLogoWrapper}>
+                    <img src={success ? successImg : failedImg} alt='Bubble Ai' style={{width: '100%'}} />
+                </div>
+
+                <div>
+                    <h3>Hey, {fullName}</h3>
+                </div>
+
+                <h1>{success ? "Your Payment was Successful!" : "Your Payment Failed"}</h1>
+
+                <p>{success ? "We will send a payment confirmation email to your registered email. well done!" : "We will send more details on this failure to your registered email. Use button below to try again."}</p>
+
+                <div>
+                    <ButtonOutlineGreenWithDiffStyle borderColor={!success && "#D00000"} onClick={handleSuccess}>
+                        {success ? "Continue to Bubble" : "Try Again"}
+                    </ButtonOutlineGreenWithDiffStyle>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
 export const CheckoutSummaryModal = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -119,10 +158,12 @@ export const CheckoutSummaryModal = () => {
     }
 
     const handleProceedToPay = async () => {
+        dispatch(setFetching(true))
         try {
             //must await
             await checkAuthenticatedUser()
         } catch (error) {
+            dispatch(setFetching(false))
             navigate('/popin?pricing')
             return
         }
@@ -131,10 +172,12 @@ export const CheckoutSummaryModal = () => {
             const isAuth = localStorage?.getItem('token');
             const priceData = {
                 currency: pricingDetails.currency,
+                duration: pricingDetails.duration,
                 amount: total,
+                product: pricingDetails.product,
                 customizations: {
-                    title: pricingDetails.product,
-                    logo: logoImg
+                    title: `Bubble ${pricingDetails.product} (${pricingDetails?.duration})`,
+                    logo: logoImg,
                 },
             }
             const response = await axios.post("/pricing/start-payment", priceData, {
@@ -142,10 +185,10 @@ export const CheckoutSummaryModal = () => {
                   "x-access-token": isAuth,
                 },
             });
-        
-
-            // dispatch(setShowCheckout(false))
+            
+            window.location.href = response.data.data.link
         } catch (error) {
+            dispatch(setFetching(false))
             console.log(error.message);
         }
 

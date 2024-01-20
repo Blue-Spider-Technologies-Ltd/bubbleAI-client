@@ -101,7 +101,7 @@ const depositionsPricingDetails = [
     },
     {
         product: "Deposition & Minutes Taking AI",
-        duration: 'Per Quarter',
+        duration: 'Per Month',
         price: pricePerQuarter,
         currency: currency,
         popular: false,

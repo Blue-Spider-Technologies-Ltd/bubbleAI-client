@@ -42,7 +42,7 @@ export const ButtonSubmitGreen = (props) => {
 
 export const ButtonOutlineGreenWithDiffStyle = (props) => {
     return (
-        <button type={props.type} onClick={props.onClick} className={buttonCss.ButtonOutlineGreenWithDiffStyle}>
+        <button type={props.type} style={{border : `1px solid ${props.borderColor && props.borderColor}`, color: `${props.borderColor && props.borderColor}`}} onClick={props.onClick} className={buttonCss.ButtonOutlineGreenWithDiffStyle}>
             {props.children}
         </button>
     )

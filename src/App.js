@@ -9,6 +9,7 @@ import PwdRecovery from './components/Auth/PwdRecovery';
 import Resume from './components/Resume/Resume'
 import Depositions from './components/Depositions/Depositions';
 import Pricing from './components/Pricing/Pricing';
+import TransactionDone from './components/TransactionDone/TransactionDone';
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
@@ -28,6 +29,7 @@ const App = () => {
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />
         <Route path={'/join-bubble'} element={<Register />} />
         <Route path={'/pricing'} element={<Pricing />} />
+        <Route path={'/transaction'} element={<TransactionDone />} />
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

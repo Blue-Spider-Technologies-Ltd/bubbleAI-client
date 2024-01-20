@@ -73,6 +73,12 @@
     margin-top: -2px;
 }
 
+.SuccessFailureLogoWrap {
+    width: 150px;
+    margin: 20px auto 0;
+    padding: 0; 
+}
+
 .CheckoutLogoWrapper {
     width: 100px;
     margin: 10px auto 0;
