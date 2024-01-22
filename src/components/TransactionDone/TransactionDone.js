@@ -35,12 +35,12 @@ const TransactionDone = () => {
                           "x-access-token": localStorage?.getItem('token'),
                         },
                     });
-                    console.log(response);
-                    setIsCompleted(true)
+
                     
                     if(response?.data?.status === "successful") {
                         setTransaction(response.data)
                         setIsSuccessful(true)
+                        setIsCompleted(true)
                     } else {
                         setTransaction(response.data)
                         setIsCompleted(true)
@@ -60,7 +60,14 @@ const TransactionDone = () => {
 
     return (
         <div>
-            {isCompleted ? <SuccessFailureModal success={isSuccessful} fullName={transaction?.customer?.fullName} /> : <Fetching />}
+            {isCompleted ? 
+                <SuccessFailureModal 
+                    success={isSuccessful} 
+                    fullName={transaction?.customer?.fullName} 
+                /> 
+            : 
+                <Fetching />
+            }
         </div>
     )
 }

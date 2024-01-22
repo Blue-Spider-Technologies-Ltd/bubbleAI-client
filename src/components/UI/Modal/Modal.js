@@ -146,6 +146,7 @@ export const CheckoutSummaryModal = () => {
     const { pricingDetails } = useSelector(state => state.stateData)
     const [loading, setLoading] = useState(false)
     const [discount, setDiscount] = useState(0)
+    const [error, setError] = useState('')
     const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const formattedPrice = pricingDetails.price?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const vat = pricingDetails.price * 0.075;
@@ -158,6 +159,7 @@ export const CheckoutSummaryModal = () => {
     }
 
     const handleProceedToPay = async () => {
+        setError("")
         dispatch(setFetching(true))
         try {
             //must await
@@ -185,11 +187,15 @@ export const CheckoutSummaryModal = () => {
                   "x-access-token": isAuth,
                 },
             });
+
+            if (response.data === "Subscription Already Exists") {
+                throw new Error(response.data)
+            }
             
             window.location.href = response.data.data.link
         } catch (error) {
+            setError(error.response.data)
             dispatch(setFetching(false))
-            console.log(error.message);
         }
 
     }
@@ -203,6 +209,7 @@ export const CheckoutSummaryModal = () => {
 
                 <h2>Checkout</h2>
 
+                <div className="error">{error}</div>
                 <Grid container>
                     <Grid item xs={12} md={7}> 
                         <div className='Segment'>
