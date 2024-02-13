@@ -39,7 +39,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     },
 }));
 
-//Option for carousel in template section
+//Option for carousel in resume template section
 const responsive = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
@@ -97,6 +97,14 @@ export const Modal = ({header3, header4, progress}) => {
                 
             </div>
 
+        </div>
+    )
+}
+
+export const Overlay = (props) => {
+    return (
+        <div className={modalCss.ModalContainer}>
+            {props.children}
         </div>
     )
 }

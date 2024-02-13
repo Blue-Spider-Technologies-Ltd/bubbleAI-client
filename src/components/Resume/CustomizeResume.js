@@ -4,21 +4,25 @@ import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
+import { checkAuthenticatedUser } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, setResume, setFetching } from "../../redux/states";
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import axios from "axios";
-import { Modal } from "../UI/Modal/Modal";
+import { Modal, Overlay, CheckoutSummaryModal } from "../UI/Modal/Modal";
+import ResumePricing from "../Pricing/ResumePricing"
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import jwt_decode from "jwt-decode";
 import { useConfirm } from "material-ui-confirm";
 
+
+
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user } = useSelector((state) => state.stateData);
+  const { user, showCheckout } = useSelector((state) => state.stateData);
   const userLength = Object.keys(user).length;
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -26,6 +30,7 @@ const CustomizeResume = () => {
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
+  const [isSubscribed, setIsSubscribed] = useState(true);
 
   const isAuth = localStorage?.getItem("token");
   //resume data
@@ -46,92 +51,104 @@ const CustomizeResume = () => {
   useEffect(() => {
     dispatch(setFetching(true));
     const now = Date.now();
-    const authUser = jwt_decode(isAuth);
     const isResumePresent = localStorage?.getItem(
       "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
     );
-
     const localResume = JSON.parse(isResumePresent);
 
-    if (isAuth && now < authUser.expiration) {
-      if (localResume) {
-        if (now > localResume.expiration) {
-          //remove previous resumes in local storage if expired
-          localStorage?.removeItem(
-            "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-          );
-          //reload page
-          window.location.reload()
-        } else {
-          confirm({
-            description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume`,
-          })
-            .then(() => {
-              dispatch(setResume(localResume.resumeData));
-              navigate("/user/dashboard/resume?preview");
-            })
-            .catch(() => {
-              //remove previous resumes in local storage if expired
-              localStorage?.removeItem(
-                "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-              );
-            });
-          //remove previous resumes in local storage
-          // localStorage?.removeItem(
-          //   "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-          // );
+    const populateUser = async () => {
+      try {
+        //must await
+        await checkAuthenticatedUser()
+      } catch (error) {
+        dispatch(setFetching(false));
+        return navigate("/popin");      
+      }
+      try {
+        const response = await axios.get("/user/resume", {
+          headers: {
+            "x-access-token": isAuth,
+          },
+        });
+
+        if (response?.data?.status === "unauthenticated") {
+          localStorage?.removeItem("token");
+          return navigate("/popin");
         }
 
-      } 
-      if (userLength <= 0) {
-        const populateUser = async () => {
-          try {
-            const response = await axios.get("/user/user", {
-              headers: {
-                "x-access-token": isAuth,
-              },
-            });
-            if (response.data.status === "unauthenticated") {
-              localStorage?.removeItem("token");
-              return navigate("/popin");
-            }
-            setBasicInfo({
-              firstName: response.data.user.firstName,
-              lastName: response.data.user.lastName,
-              email: response.data.user.email,
-              dob: response.data.user.dob || "",
-              mobile: response.data.user.mobile || "",
-              jobPosition: response.data.user.jobPosition || "",
-              street: response.data.user.street || "",
-              city: response.data.user.city || "",
-              country: response.data.user.country || "",
-              profSummary: response.data.user.profSummary || "",
-            });
-            dispatch(setUser(response.data.user));
-            dispatch(setFetching(false));
-          } catch (error) {
-            console.log(error);
-            dispatch(setFetching(false));
-            setError("Reload page to fetch data");
-          }
-        };
-        populateUser();
-      } else {
+        const {
+          firstName, 
+          lastName, 
+          email, 
+          dob, 
+          mobile, 
+          jobPosition, 
+          street, 
+          city, 
+          country, 
+          profSummary
+        } = response?.data?.user
+
+        setBasicInfo({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          dob: dob || "",
+          mobile: mobile || "",
+          jobPosition: jobPosition || "",
+          street: street || "",
+          city: city || "",
+          country: country || "",
+          profSummary: profSummary || "",
+        });
+
+        setIsSubscribed(response?.data?.user?.subscriptions?.subscribed)
+        dispatch(setUser(response.data.user));
         dispatch(setFetching(false));
+
+      } catch (error) {
+        console.log(error);
+        dispatch(setFetching(false));
+        setError("Reload page to fetch data");
       }
-    } else {
-      dispatch(setFetching(false));
-      localStorage?.removeItem("token");
-      navigate("/popin");
-    }
+    };
+
+    populateUser();
+
+
+    if (localResume) {
+      if (now > localResume.expiration) {
+        // if expired, remove previous resumes in local storage
+        localStorage?.removeItem(
+          "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+        );
+        //reload page
+        window.location.reload()
+      } else {
+        confirm({
+          description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume`,
+        })
+          .then(() => {
+            console.log(localResume.resumeData);
+            dispatch(setResume(localResume.resumeData));
+            navigate("/user/dashboard/resume?preview");
+          })
+          .catch(() => {
+            //remove previous resumes in local storage if expired
+            localStorage?.removeItem(
+              "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+            );
+          });
+      }
+
+    } 
+      
+
   }, [navigate, dispatch, userLength, isAuth, confirm]);
 
   const [linkInfo, setLinkInfo] = useState([""]);
-
   const [skills, addSkills] = useState([""]);
-
   const [interests, addInterests] = useState([""]);
-
   const [eduArray, addEduArray] = useState([
     {
       institution: "",
@@ -1146,6 +1163,16 @@ const CustomizeResume = () => {
           progress={progressPercentage}
         />
       )}
+
+      {!isSubscribed && (
+        <Overlay>
+          <ResumePricing />
+        </Overlay>
+      )}
+
+      {showCheckout && <CheckoutSummaryModal />}
+
+
 
     </div>
   );

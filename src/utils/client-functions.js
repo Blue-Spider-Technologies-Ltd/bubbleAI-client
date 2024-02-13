@@ -9,7 +9,6 @@ export const checkAuthenticatedUser = async () => {
         const authUser = jwt_decode(isAuth);
         const now = Date.now();
         if (isAuth && now < authUser.expiration) {
-            console.log("authentic")
             return true
         } else {
             localStorage?.removeItem('token');
@@ -42,33 +41,33 @@ export const fetchPrice = async (category, usage) => {
 
         switch (category) {
             case 'resume':
-                comparativePriceOne_Africa = 2500;
-                comparativePriceTwo_Africa = 10000;
-                comparativePriceThree_Africa = 30000;
+                comparativePriceOne_Africa = 1000;
+                comparativePriceTwo_Africa = 4000;
+                comparativePriceThree_Africa = 15000;
 
-                comparativePriceOne_RestOfWorld = 3000;
-                comparativePriceTwo_RestOfWorld = 13000;
-                comparativePriceThree_RestOfWorld = 42000;
+                comparativePriceOne_RestOfWorld = 2000;
+                comparativePriceTwo_RestOfWorld = 7000;
+                comparativePriceThree_RestOfWorld = 24000;
                 break;
 
             case 'depositions':
-                comparativePriceOne_Africa = 10000;
-                comparativePriceTwo_Africa = 30000;
-                comparativePriceThree_Africa = 100000;
+                comparativePriceOne_Africa = 4000;
+                comparativePriceTwo_Africa = 10000;
+                comparativePriceThree_Africa = 30000;
 
-                comparativePriceOne_RestOfWorld = 14000;
-                comparativePriceTwo_RestOfWorld = 50000;
-                comparativePriceThree_RestOfWorld = 170000;
+                comparativePriceOne_RestOfWorld = 6000;
+                comparativePriceTwo_RestOfWorld = 14000;
+                comparativePriceThree_RestOfWorld = 50000;
                 break;
             
             case 'transcribeFile':
                 comparativePriceOne_Africa = 1500;
-                comparativePriceTwo_Africa = 5000;
-                comparativePriceThree_Africa = 15000;
+                comparativePriceTwo_Africa = 8000;
+                comparativePriceThree_Africa = 24000;
 
                 comparativePriceOne_RestOfWorld = 3000;
-                comparativePriceTwo_RestOfWorld = 8000;
-                comparativePriceThree_RestOfWorld = 22000;
+                comparativePriceTwo_RestOfWorld = 10000;
+                comparativePriceThree_RestOfWorld = 35000;
                 break;
         
             default:
@@ -89,17 +88,17 @@ export const fetchPrice = async (category, usage) => {
                 if (usage === "priceOne") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceOne_Africa}`)  
-                    finalPrice = Math.round(rate.data.conversion_result)
+                    finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 if (usage === "priceTwo") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceTwo_Africa}`)  
-                    finalPrice = Math.round(rate.data.conversion_result)
+                    finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 if (usage === "priceThree") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceThree_Africa}`)  
-                    finalPrice = Math.round(rate.data.conversion_result)
+                    finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 break;
         
@@ -107,17 +106,17 @@ export const fetchPrice = async (category, usage) => {
                 if (usage === "priceOne") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceOne_RestOfWorld}`)  
-                    finalPrice = Math.round(rate.data.conversion_result)
+                    finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 if (usage === "priceTwo") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceTwo_RestOfWorld}`)  
-                    finalPrice = Math.round(rate.data.conversion_result)
+                    finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 if (usage === "priceThree") {
                     //convert naira to user currency
                     const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceThree_RestOfWorld}`)  
-                    finalPrice = Math.round(rate.data.conversion_result)
+                    finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 break;
         }

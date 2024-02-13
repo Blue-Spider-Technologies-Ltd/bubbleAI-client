@@ -22,7 +22,6 @@ const TransactionDone = () => {
                     const status = params.get("status");
                     const txRef = params.get("tx_ref");
                     const transactionId = params.get("transaction_id");
-        
                   
                     const payload = {
                         status : status,

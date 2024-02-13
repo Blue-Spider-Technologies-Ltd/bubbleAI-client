@@ -12,6 +12,7 @@ import categoriesData from "./categories";
 import { useSelector, useDispatch } from "react-redux";
 import { setMessages, setMessage, setUser, deleteLastMessage } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
+import { checkAuthenticatedUser } from "../../utils/client-functions";
 import { ThreeDots } from 'react-loader-spinner'
 import axios from "axios";
 
@@ -38,9 +39,8 @@ const Home = () => {
 
   const isAuth = localStorage?.getItem("token");
 
-  
+  // Scroll to bottom on new message
   useEffect(() => {
-    // Scroll to bottom on new message
     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
   }, [messages]);
 
@@ -55,19 +55,27 @@ const Home = () => {
   useEffect(() => {
     const populateUser = async () => {
       if (isAuth) {
+        //only try this if isAuth present in local Storage, meaning user had previously logged into browser
+        try {
+          //must await
+          await checkAuthenticatedUser()
+        } catch (error) {
+          return navigate("/popin");      
+        }
         //Check if user and messages set for authenticated user, if not, set
         if (Object.keys(user).length > 0) {
-          dispatch(setMessages(user.messages));
+          dispatch(setMessages(user?.messages));
         } else {
           try {
             const headers = {
               "x-access-token": isAuth,
             };
             const response = await axios.get("/user/user", { headers });
-            if (response.data.status === "unauthenticated") {
+            if (response.data.status === "unauthenticated" || response.data.status === "Unauthorized") {
               localStorage?.removeItem("token");
               return navigate("/popin");
             }
+            
             dispatch(setMessages(response.data.user.messages));
             dispatch(setUser(response.data.user));
           } catch (error) {
@@ -79,6 +87,8 @@ const Home = () => {
         //console.log("unauthenticated");
       }
     };
+
+
     populateUser();
   }, [dispatch, user, navigate, isAuth]);
 
