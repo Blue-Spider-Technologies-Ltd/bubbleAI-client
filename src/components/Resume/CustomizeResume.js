@@ -50,11 +50,6 @@ const CustomizeResume = () => {
 
   useEffect(() => {
     dispatch(setFetching(true));
-    const now = Date.now();
-    const isResumePresent = localStorage?.getItem(
-      "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-    );
-    const localResume = JSON.parse(isResumePresent);
 
     const populateUser = async () => {
       try {
@@ -64,6 +59,8 @@ const CustomizeResume = () => {
         dispatch(setFetching(false));
         return navigate("/popin");      
       }
+
+      //Get Data if User is Authorized by subscription
       try {
         const response = await axios.get("/user/resume", {
           headers: {
@@ -107,7 +104,11 @@ const CustomizeResume = () => {
         dispatch(setFetching(false));
 
       } catch (error) {
-        console.log(error);
+        //Check if User is Authorized for this resource
+        if(error.response.status === 401) {
+          setIsSubscribed(false)
+          console.log(error.response.status);
+        }
         dispatch(setFetching(false));
         setError("Reload page to fetch data");
       }
@@ -115,6 +116,11 @@ const CustomizeResume = () => {
 
     populateUser();
 
+    const now = Date.now();
+    const isResumePresent = localStorage?.getItem(
+      "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+    );
+    const localResume = JSON.parse(isResumePresent);
 
     if (localResume) {
       if (now > localResume.expiration) {
