@@ -28,7 +28,7 @@
     -o-border-radius: 10px;
 }
 
-.ButtonSubmitBlack, .ButtonTransparent, .ButtonTransparentRed  {
+.ButtonSubmitBlack, .ButtonTransparent  {
     padding: 0 1.7rem;
     border: 1px solid black;
     border-radius: 10px;
@@ -115,17 +115,35 @@
     background-color: rgb(255, 255, 255);
 }
 
-.ButtonTransparentRed  {
-    background-color: #fff;
-    border: 2px solid rgba(216, 7, 7, 0.829);
-    color: rgb(160, 0, 0);
-    font-weight: 600 !important;
+.ButtonTransparentSquare  {
+    border: none;
+    background: #f3f0f1;
+    position: relative;
+    background: #f3f0f1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    box-shadow: -6px 0px 10px rgba(255, 255, 255, 0.8),
+                    6px 0px 10px rgba(0, 0, 0, 0.2);
+    
+} 
+
+.ButtonTransparentSquare:hover  {
+    opacity: 0.3;
+    box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8),
+      6px 6px 10px rgba(0, 0, 0, 0.2);
 }
 
-.ButtonTransparentRed:hover  {
-    background-color: rgba(255, 255, 255, 0.329);
-    color: rgba(216, 7, 7, 0.651);
-    border: 2px solid rgba(216, 7, 7, 0.493);
+.ButtonTransparentSquare:active  {
+    opacity: 1;
+    box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5),
+      inset 8px 8px 16px rgba(0, 0, 0, 0.1); 
 }
 
 .ButtonCard {

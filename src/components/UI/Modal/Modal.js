@@ -169,6 +169,7 @@ export const CheckoutSummaryModal = () => {
     const handleProceedToPay = async () => {
         setError("")
         dispatch(setFetching(true))
+        if(total <= 0) return setError('Reload Page to fix amount')
         try {
             //must await
             await checkAuthenticatedUser()
@@ -180,6 +181,7 @@ export const CheckoutSummaryModal = () => {
         try {
             // dispatch(setFetching(true))
             const isAuth = localStorage?.getItem('token');
+            
             const priceData = {
                 currency: pricingDetails.currency,
                 duration: pricingDetails.duration,

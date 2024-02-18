@@ -22,6 +22,7 @@ const PreviewResume = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
+  const [userResumes, setUserResumes] = useState([])
 
   const isAuth = localStorage?.getItem("token");
   //resume data
@@ -204,11 +205,11 @@ const PreviewResume = () => {
   return (
     <div className="auth-container">
       {/* For SIDE MENU */}
-      <AuthSideMenu
+      {/* <AuthSideMenu
         opened={authMenuOpen}
         seacrhBarPlaceholder="Search by resume name"
         hidden={!authMenuOpen}
-      />
+      /> */}
 
       <div style={{ width: "100%", padding: "0" }}>
         <div className="auth-bg-blob"></div>

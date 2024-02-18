@@ -25,8 +25,8 @@ const DownloadResume = () => {
     const componentRef = useRef();
     const [error, setError] = useState("")
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
-    const [resumeStorageDetails, setResumeStorageDetails] = useState({
-        resumeName: "",
+    const [storageDetails, setStorageDetails] = useState({
+        name: "",
         desc: ""
     })
     const isAuth = localStorage?.getItem('token')
@@ -57,7 +57,7 @@ const DownloadResume = () => {
         const resumeLength = Object.keys(resume).length        
         const now = new Date().getTime()
         const authUser =  jwt_decode(isAuth)
-        console.log(resume);
+
         if (isAuth && (now < authUser.expiration)) {
             if (resumeLength <= 0) {
                 navigate('/user/dashboard/resume?customize')
@@ -71,16 +71,18 @@ const DownloadResume = () => {
 
 
     const handleResumeSave = async () => {
-        const completeResume = { ...resume, resumeStorageDetails }
+        const completeResume = { ...resume, storageDetails }
         try {
             const response = await axios.post('/user/save-resume', completeResume, {
                 headers: {
                     'x-access-token': isAuth
                 }
             })
-            console.log(response);
+            localStorage?.removeItem(
+                "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+            );
+            navigate('/')
         } catch (error) {
-            console.log(error)
             setError("Try again")
         }
     }
@@ -88,7 +90,7 @@ const DownloadResume = () => {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
         onAfterPrint: () => handleResumeSave(),
-        documentTitle: resumeStorageDetails.resumeName
+        documentTitle: storageDetails.name
     });
     
     const toggleResumes = () => {
@@ -96,14 +98,14 @@ const DownloadResume = () => {
     }
 
     const handleInputChange = (prop) => (event) => {
-        // console.log(resumeStorageDetails);
-        setResumeStorageDetails({ ...resumeStorageDetails, [prop]: event.target.value });
+        // console.log(storageDetails);
+        setStorageDetails({ ...storageDetails, [prop]: event.target.value });
     };
 
     return (
         <div className="auth-container">
             {/* For SIDE MENU */}
-            <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} />
+            {/* <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} /> */}
 
             <div style={{ width: '100%', padding: '0' }}>
                 <div className="auth-bg-blob">
@@ -127,8 +129,8 @@ const DownloadResume = () => {
                             <h4>Save Resume Details</h4>
                             <div>
                                 <Grid container>
-                                    <AuthInput name="resumeName" value={resumeStorageDetails.resumeName} label="Resume Name" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={true} onChange={handleInputChange('resumeName')} />
-                                    <AuthInput name="desc" value={resumeStorageDetails.desc} label="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
+                                    <AuthInput name="resumeName" value={storageDetails.name} label="Resume Name" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={true} onChange={handleInputChange('name')} />
+                                    <AuthInput name="desc" value={storageDetails.desc} label="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
                                 </Grid>
                             </div>
                         </div>
@@ -182,7 +184,7 @@ const DownloadResume = () => {
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "150px" }}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
-                                        if(resumeStorageDetails.resumeName === "") {
+                                        if(storageDetails.name === "") {
                                             window.scrollTo(0, 0);
                                             return setError('Resume must have a name')
                                         }

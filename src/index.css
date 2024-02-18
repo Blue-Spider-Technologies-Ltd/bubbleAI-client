@@ -285,3 +285,6 @@ audio::-webkit-media-controls-download-button {
     width: 100px !important;
   }
 }
+
+/* ResizeObserver loop completed with undelivered notifications ERROR FIX */
+iframe#webpack-dev-server-client-overlay{display:none!important}

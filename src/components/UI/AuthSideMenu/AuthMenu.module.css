@@ -46,9 +46,9 @@
 }
 
 .Item {
-    background-color: var(--navColor3) !important;
+    background-color: #c0d1d4 !important;
     border-radius: 5px;
-    color: white !important;
+    color: var(--navColor1) !important;
     cursor: pointer;
     height: 50px;
     margin-top: -3.2px;
@@ -66,6 +66,7 @@
     font-size: .85rem !important;
     height: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 

@@ -14,7 +14,6 @@ import { Modal, Overlay, CheckoutSummaryModal } from "../UI/Modal/Modal";
 import ResumePricing from "../Pricing/ResumePricing"
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
-import jwt_decode from "jwt-decode";
 import { useConfirm } from "material-ui-confirm";
 
 
@@ -23,7 +22,6 @@ const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
   const { user, showCheckout } = useSelector((state) => state.stateData);
-  const userLength = Object.keys(user).length;
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,6 +29,7 @@ const CustomizeResume = () => {
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
   const [isSubscribed, setIsSubscribed] = useState(true);
+  const [userResumes, setUserResumes] = useState([])
 
   const isAuth = localStorage?.getItem("token");
   //resume data
@@ -83,7 +82,9 @@ const CustomizeResume = () => {
           street, 
           city, 
           country, 
-          profSummary
+          profSummary,
+          subscriptions,
+          resumes
         } = response?.data?.user
 
         setBasicInfo({
@@ -99,7 +100,8 @@ const CustomizeResume = () => {
           profSummary: profSummary || "",
         });
 
-        setIsSubscribed(response?.data?.user?.subscriptions?.subscribed)
+        setUserResumes(resumes)
+        setIsSubscribed(subscriptions?.subscribed)
         dispatch(setUser(response.data.user));
         dispatch(setFetching(false));
 
@@ -107,7 +109,6 @@ const CustomizeResume = () => {
         //Check if User is Authorized for this resource
         if(error.response.status === 401) {
           setIsSubscribed(false)
-          console.log(error.response.status);
         }
         dispatch(setFetching(false));
         setError("Reload page to fetch data");
@@ -116,6 +117,11 @@ const CustomizeResume = () => {
 
     populateUser();
 
+
+      
+  }, [navigate, dispatch, isAuth]);
+
+  useEffect(() => {
     const now = Date.now();
     const isResumePresent = localStorage?.getItem(
       "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
@@ -148,9 +154,7 @@ const CustomizeResume = () => {
       }
 
     } 
-      
-
-  }, [navigate, dispatch, userLength, isAuth, confirm]);
+  }, [confirm, dispatch, navigate])
 
   const [linkInfo, setLinkInfo] = useState([""]);
   const [skills, addSkills] = useState([""]);
@@ -526,6 +530,7 @@ const CustomizeResume = () => {
         opened={authMenuOpen}
         seacrhBarPlaceholder="Search by resume name"
         hidden={!authMenuOpen}
+        arrayDetails={userResumes}
       />
 
       <div style={{ width: "100%", padding: "0" }}>

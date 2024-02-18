@@ -56,12 +56,25 @@ export const ButtonTransparent = (props) => {
     )
 }
 
-export const ButtonTransparentRed = (props) => {
+export const ButtonTransparentSquare = ({ type, onClick, color, width, height, children }) => { 
+
+    const buttonStyle = {
+        color: color,
+        width: width,
+        height: height
+    };
+
     return (
-        <button type={props.type} className={buttonCss.ButtonTransparentRed} onClick={props.onClick}>
-            {props.children}
+        <button 
+            type={type} 
+            className={buttonCss.ButtonTransparentSquare} 
+            onClick={onClick}
+            style={buttonStyle}
+        >
+            {children}
         </button>
-    )
+    );
+
 }
 
 export const ButtonCard = props => {
