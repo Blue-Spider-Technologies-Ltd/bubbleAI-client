@@ -14,6 +14,7 @@ import { setShowCheckout } from "../../../redux/states"
 import AuthInput from '../Input/AuthInputs';
 import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/Buttons';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { ThreeCircles } from 'react-loader-spinner';
 import refundImg from '../../../images/refund-stamp.png';
 import successImg from '../../../images/success.gif';
@@ -102,8 +103,19 @@ export const Modal = ({header3, header4, progress}) => {
 }
 
 export const Overlay = (props) => {
+    const navigate = useNavigate()
+
+    const handleClick = () => {
+        navigate("/")
+    }
     return (
         <div className={modalCss.ModalContainer}>
+            <div 
+                style={{zIndex: "999999999", position: "absolute", top: "1.3rem", left: "1.3rem", cursor: "pointer", color: "white"}}
+                onClick={handleClick}
+            >
+                <CancelIcon fontSize="large"/>
+            </div>
             {props.children}
         </div>
     )
@@ -169,7 +181,11 @@ export const CheckoutSummaryModal = () => {
     const handleProceedToPay = async () => {
         setError("")
         dispatch(setFetching(true))
-        if(total <= 0) return setError('Reload Page to fix amount')
+        if(total <= 0) {
+            setError('Reload Page to fix amount')
+            dispatch(setFetching(false))
+            return
+        }
         try {
             //must await
             await checkAuthenticatedUser()
