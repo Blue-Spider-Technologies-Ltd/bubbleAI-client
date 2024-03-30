@@ -45,7 +45,7 @@ const categoriesData = [
         image: productImg
     },
     {
-        title: "Relationship Fixer",
+        title: "Personal Councellor",
         desc: "Simulate with me to calm the tone",
         isAuthURL: '/user/dashboard/relationship',
         unAuthURL: '/popin?relationship',
