@@ -233,6 +233,26 @@ h1 {
   -moz-box-shadow: -1px 1px 44px -3px rgba(0, 0, 0, 0.16);
 }
 
+.Faded {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: -1;
+  transform: scale(0.4);
+  transition: all 0.3s ease-out;
+}
+
+.Faded-in {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1000;
+  height: auto;
+  transition: all 0.8s ease-in;
+}
+
+
 .explanation-points {
   margin: 0;
   font-size: .8rem !important;

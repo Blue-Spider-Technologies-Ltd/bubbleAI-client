@@ -24,10 +24,10 @@ export const ButtonLogOut = ({ to, type, clicked, children }) => {
 }
 
 
-export const ButtonSubmitBlack = (props) => {
+export const ButtonSubmitBlack = ({disabled, type, height, children}) => {
     return (
-        <button type={props.type} style={{ height: props.height && props.height }} className={buttonCss.ButtonSubmitBlack}>
-            {props.children}
+        <button type={type} disabled={disabled} style={{ height: height && height }} className={buttonCss.ButtonSubmitBlack}>
+            {children}
         </button>
     )
 }

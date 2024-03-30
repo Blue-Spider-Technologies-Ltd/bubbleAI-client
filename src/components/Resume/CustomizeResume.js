@@ -7,8 +7,9 @@ import { COUNTRIES } from "../../utils/countries";
 import { checkAuthenticatedUser } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, setResume, setFetching } from "../../redux/states";
-import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
+import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import axios from "axios";
 import { Modal, Overlay, CheckoutSummaryModal } from "../UI/Modal/Modal";
 import ResumePricing from "../Pricing/ResumePricing"
@@ -30,6 +31,13 @@ const CustomizeResume = () => {
   const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
   const [isSubscribed, setIsSubscribed] = useState(true);
   const [userResumes, setUserResumes] = useState([])
+  const [basicFaded, setBasicFaded] = useState(false)
+  const [eduFaded, setEduFaded] = useState(true)
+  const [workFaded, setWorkFaded] = useState(true)
+  const [skillFaded, setSkillFaded] = useState(true)
+  const [certFaded, setCertFaded] = useState(true)
+  const [pubFaded, setPubFaded] = useState(true)
+  const [interestFaded, setInterestFaded] = useState(true)
 
   const isAuth = localStorage?.getItem("token");
   //resume data
@@ -370,6 +378,7 @@ const CustomizeResume = () => {
     }
   };
 
+    /////AWARD HANDLERS
   const handleAddAward = () => {
     setError("");
     const newAward = {
@@ -412,6 +421,7 @@ const CustomizeResume = () => {
     }
   };
 
+    /////PUBLICATION HANDLERS
   const handleAddPublication = () => {
     setError("");
     const newPub = {
@@ -477,7 +487,6 @@ const CustomizeResume = () => {
         const progressUpdate = JSON.parse(event.data)
         setProgressPercentage(progressUpdate.percent);
         setProgressStatus(progressUpdate.status)
-        // Handle the event data as needed
     };
 
     try {
@@ -523,6 +532,112 @@ const CustomizeResume = () => {
     });
   };
 
+
+  ////SEGMENT VISIBILITY
+  const basicInfoForward = (arg) => {
+    setBasicFaded(true)
+    switch (arg) {
+      case "forward":
+        setEduFaded(false)
+        break;
+    
+      default:
+        setEduFaded(false)
+        break;
+    }
+  }
+
+  const eduInfoForwardOrBackward = (arg) => {       
+    setEduFaded(true)
+    switch (arg) {
+      case "forward":
+        setWorkFaded(false)
+        break;
+      case "backward":
+        setBasicFaded(false);
+        break;
+    
+      default:
+        
+        break;
+    }
+  }
+
+  const workExpForwardOrBackward = (arg) => {
+    setWorkFaded(true)
+    switch (arg) {
+      case "forward":
+        setSkillFaded(false)
+        break;
+      case "backward":
+        setEduFaded(false)
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  const skillsForwardOrBackward = (arg) => {
+    setSkillFaded(true)
+    switch (arg) {
+      case "forward":
+        setCertFaded(false)
+        break;
+      case "backward":
+        setWorkFaded(false)
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  const certsForwardOrBackward = (arg) => {
+    setCertFaded(true)
+    switch (arg) {
+      case "forward":
+        setPubFaded(false)
+        // document.getElementById("submit-button").style.display = "none"
+        break;
+      case "backward":
+        setSkillFaded(false)
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  const pubForwardOrBackward = (arg) => {
+    setPubFaded(true)
+    switch (arg) {
+      case "forward":
+        setInterestFaded(false)
+        document.getElementById("submit-button").style.display = ""
+        break;
+      case "backward":
+        setCertFaded(false)
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  const interestsBackward = (arg) => {
+    setInterestFaded(true)
+    switch (arg) {
+      case "backward":
+        setPubFaded(false)
+        document.getElementById("submit-button").style.display = "none"
+        break;
+    
+      default:
+        break;
+    }
+  }
+
   return (
     <div className="auth-container">
       {/* For SIDE MENU */}
@@ -560,7 +675,9 @@ const CustomizeResume = () => {
           
           <form method="post" onSubmit={handleFormSubmit}>
             <div className="error">{error}</div>
-            <div className="Segment">
+
+            {/* BASIC INFO */}
+            <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
               <h4>Basic Info</h4>
               <Grid container>
                 <AuthInput
@@ -708,8 +825,29 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("profSummary")}
                 />
               </Grid>
+
+
+              {/* Visibility Buttons */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                </div>
+                <div style={{ width: "150px"}}>
+                  <ButtonSubmitGreen type="button" onClick={() => basicInfoForward("forward")}>
+                    Add Education Info{" "}
+                  </ButtonSubmitGreen>
+                </div>
+              </div>
             </div>
-            <div className="Segment">
+
+            {/* EDUCATION INFO */}
+            <div id="edu-info" className={`Segment ${eduFaded ? "Faded" : "Faded-in"}`}>
               <h4>Education Info</h4>
               <div>
                 {eduArray.map((info, index) => {
@@ -771,8 +909,39 @@ const CustomizeResume = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Visibility Buttons */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                    eduInfoForwardOrBackward('backward')
+                  }}>
+                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
+                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
+                      Basic Info
+                    </span>
+                    
+                  </ButtonOutlineGreenWithDiffStyle>
+                </div>
+                <div style={{ width: "150px"}}>
+                  <ButtonSubmitGreen type="button" onClick={() => {
+                    eduInfoForwardOrBackward('forward')
+                  }}>
+                    Add Work Experiences{" "}
+                  </ButtonSubmitGreen>
+                </div>
+              </div>
             </div>
-            <div className="Segment">
+
+            {/* WORK EXPERIENCE */}
+            <div id="work-exp" className={`Segment ${workFaded ? "Faded" : "Faded-in"}`}>
               <h4>Work & Volunteering Experience</h4>
               <div>
                 {workExpArray.map((info, index) => {
@@ -909,8 +1078,39 @@ const CustomizeResume = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Visibility Buttons */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                    workExpForwardOrBackward('backward')
+                  }}>
+                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
+                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
+                      Education Info
+                    </span>
+                    
+                  </ButtonOutlineGreenWithDiffStyle>
+                </div>
+                <div style={{ width: "150px"}}>
+                  <ButtonSubmitGreen type="button" onClick={() => {
+                    workExpForwardOrBackward('forward')
+                  }}>
+                    Add Skills{" "}
+                  </ButtonSubmitGreen>
+                </div>
+              </div>
             </div>
-            <div className="Segment">
+
+            {/* RELEVANT SKILLS */}
+            <div id="skills" className={`Segment ${skillFaded ? "Faded" : "Faded-in"}`}>
               <h4>Relevant Skills</h4>
               <Grid container>
                 <Grid container item xs={9}>
@@ -956,9 +1156,39 @@ const CustomizeResume = () => {
                   </div>
                 </Grid>
               </Grid>
+
+              {/* Visibility Buttons */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                    skillsForwardOrBackward('backward')
+                  }}>
+                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
+                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
+                      Work Experience
+                    </span>
+                    
+                  </ButtonOutlineGreenWithDiffStyle>
+                </div>
+                <div style={{ width: "150px"}}>
+                  <ButtonSubmitGreen type="button" onClick={() => {
+                    skillsForwardOrBackward('forward')
+                  }}>
+                    Add Certifications{" "}
+                  </ButtonSubmitGreen>
+                </div>
+              </div>
             </div>
 
-            <div className="Segment">
+            {/* CERT AND AWARDS */}
+            <div id="certs" className={`Segment ${certFaded ? "Faded" : "Faded-in"}`}>
               <h4>Professional Certifications & Awards [Optional]</h4>
               <div>
                 <Grid
@@ -1026,8 +1256,38 @@ const CustomizeResume = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Visibility Buttons */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                    certsForwardOrBackward('backward')
+                  }}>
+                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
+                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
+                      Skills
+                    </span>
+                  </ButtonOutlineGreenWithDiffStyle>
+                </div>
+                <div style={{ width: "150px"}}>
+                  <ButtonSubmitGreen type="button" onClick={() => {
+                    certsForwardOrBackward('forward')
+                  }}>
+                    Add Publications{" "}
+                  </ButtonSubmitGreen>
+                </div>
+              </div>
             </div>
-            <div className="Segment">
+
+            {/* PUBLICATIONS */}
+            <div id="publications" className={`Segment ${pubFaded ? "Faded" : "Faded-in"}`}>
               <h4>Publications [Optional]</h4>
               <div>
                 <Grid
@@ -1095,9 +1355,38 @@ const CustomizeResume = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Visibility Buttons */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                    pubForwardOrBackward('backward')
+                  }}>
+                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
+                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
+                      Certs & Awards
+                    </span>
+                  </ButtonOutlineGreenWithDiffStyle>
+                </div>
+                <div style={{ width: "150px"}}>
+                  <ButtonSubmitGreen type="button" onClick={() => {
+                    pubForwardOrBackward('forward')
+                  }}>
+                    Add Hobbies{" "}
+                  </ButtonSubmitGreen>
+                </div>
+              </div>
             </div>
 
-            <div className="Segment">
+            {/* INTERESTS */}
+            <div id="interests" className={`Segment ${interestFaded ? "Faded" : "Faded-in"}`}>
               <h4>Interests [Optional]</h4>
               <Grid container>
                 <Grid container item xs={9}>
@@ -1144,8 +1433,30 @@ const CustomizeResume = () => {
                   </div>
                 </Grid>
               </Grid>
+
+              {/* Visibility Buttons */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "left",
+                  marginBottom: "20px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                    interestsBackward('backward')
+                  }}>
+                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
+                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
+                      Publications
+                    </span>
+                  </ButtonOutlineGreenWithDiffStyle>
+                </div>
+              </div>
             </div>
 
+            {/* SUBMIT BUTTON */}
             <div
               style={{
                 width: "100%",
@@ -1154,10 +1465,10 @@ const CustomizeResume = () => {
                 marginBottom: "20px",
               }}
             >
-              <div style={{ width: "150px" }}>
+              <div id="submit-button" style={{ width: "150px", display: "none" }}>
                 <ButtonSubmitGreen>
                   <span style={{ marginRight: "5px", paddingTop: "1px" }}>
-                    Preview{" "}
+                    Build & Preview{" "}
                   </span>{" "}
                   <ArrowForwardIosIcon fontSize="inherit" />
                 </ButtonSubmitGreen>

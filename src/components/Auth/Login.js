@@ -59,6 +59,7 @@ const Login = () => {
         e.preventDefault()
         setError("")
         setLoading(true)
+        
         const userData = {
             email: data.email,
             password: data.password
@@ -68,6 +69,8 @@ const Login = () => {
             let userDetails = response?.data?.user
             localStorage.setItem('token', userDetails)
             setError("")
+            
+        console.log(loading);
             setLoading(false)
             //If user was redirected to login from a page because of a service request to a protected route
             if (queryString.length >= 1)  {
@@ -145,8 +148,8 @@ const Login = () => {
                                 <div className={authCss.pwdRec} onClick={() => setPwdRec(true)}>forgot password?</div>
                             </div>
                         }
-                        <div>
-                            <ButtonSubmitBlack type="submit">{!loading ? <Send /> : 
+                        <div> 
+                            <ButtonSubmitBlack disabled={loading} type="submit">{!loading ? <Send /> : 
                                 <ThreeCircles
                                     height="25"
                                     width="25"
