@@ -21,6 +21,44 @@ export const checkAuthenticatedUser = async () => {
 
 }
 
+//CHECK for EMPTY STRINGS 
+export const checkEmptyStringsInObj = (arr, exemptKey1, exemptKey2) => {
+    for (let i = 0; i < arr.length; i++) {
+      const obj = arr[i];
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key) && ((exemptKey1 && key !== exemptKey1) && (exemptKey2 && key !== exemptKey2)) && obj[key] === "") {
+          return false;
+        }
+      }
+    }
+    return true;
+}
+
+export const checkEmptyStringsInObjNoExempt = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      const obj = arr[i];
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key] === '') {
+          return false;
+        }
+      }
+    }
+    return true;
+}
+  
+
+export const checkEmptyStrings = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === '') {
+        return false;
+      }
+    }
+    return true;
+}
+  
+  
+  
+
 export const fetchPrice = async (category, usage) => {
     try {
         const getIPData = await axios.get('https://api.ipify.org')

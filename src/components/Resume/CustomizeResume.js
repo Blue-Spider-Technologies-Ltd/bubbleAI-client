@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
-import { checkAuthenticatedUser } from "../../utils/client-functions";
+import { checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, setResume, setFetching } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
@@ -421,7 +421,7 @@ const CustomizeResume = () => {
     }
   };
 
-    /////PUBLICATION HANDLERS
+  /////PUBLICATION HANDLERS
   const handleAddPublication = () => {
     setError("");
     const newPub = {
@@ -533,8 +533,15 @@ const CustomizeResume = () => {
   };
 
 
-  ////SEGMENT VISIBILITY
+  ////SEGMENT VISIBILITY/ANIMATION HANDLERS
   const basicInfoForward = (arg) => {
+    //check if required fields are filled
+    const { dob, mobile, jobPosition, street, city, country } = basicInfo
+    if (dob === "" || mobile === "" || jobPosition === "" || street === "" || city === "" || country === "" ) {
+      setError("Complete required fields in this section to continue");
+      return;
+    }
+    setError("")
     setBasicFaded(true)
     switch (arg) {
       case "forward":
@@ -547,7 +554,13 @@ const CustomizeResume = () => {
     }
   }
 
-  const eduInfoForwardOrBackward = (arg) => {       
+  const eduInfoForwardOrBackward = (arg) => {  
+    //check if required fields are filled
+    if (checkEmptyStringsInObjNoExempt(eduArray) === false ) {
+      setError("Complete required fields in this section to continue");
+      return;
+    }
+    setError("")
     setEduFaded(true)
     switch (arg) {
       case "forward":
@@ -564,6 +577,12 @@ const CustomizeResume = () => {
   }
 
   const workExpForwardOrBackward = (arg) => {
+    //check if required fields are filled, exempting two keys
+    if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink") === false ) {
+      setError("Complete required fields in this section to continue");
+      return;
+    }
+    setError("")
     setWorkFaded(true)
     switch (arg) {
       case "forward":
@@ -579,6 +598,12 @@ const CustomizeResume = () => {
   }
 
   const skillsForwardOrBackward = (arg) => {
+    //check if required fields are filled, exempting two keys
+    if (checkEmptyStrings(skills) === false ) {
+      setError("Complete required fields in this section to continue");
+      return;
+    }
+    setError("")
     setSkillFaded(true)
     switch (arg) {
       case "forward":
@@ -840,7 +865,7 @@ const CustomizeResume = () => {
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => basicInfoForward("forward")}>
-                    Add Education Info{" "}
+                    NEXT: Education Info{" "}
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -934,7 +959,7 @@ const CustomizeResume = () => {
                   <ButtonSubmitGreen type="button" onClick={() => {
                     eduInfoForwardOrBackward('forward')
                   }}>
-                    Add Work Experiences{" "}
+                    NEXT: Work Experiences{" "}
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1103,7 +1128,7 @@ const CustomizeResume = () => {
                   <ButtonSubmitGreen type="button" onClick={() => {
                     workExpForwardOrBackward('forward')
                   }}>
-                    Add Skills{" "}
+                    NEXT: Skills{" "}
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1181,7 +1206,7 @@ const CustomizeResume = () => {
                   <ButtonSubmitGreen type="button" onClick={() => {
                     skillsForwardOrBackward('forward')
                   }}>
-                    Add Certifications{" "}
+                    NEXT: Certifications{" "}
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1280,7 +1305,7 @@ const CustomizeResume = () => {
                   <ButtonSubmitGreen type="button" onClick={() => {
                     certsForwardOrBackward('forward')
                   }}>
-                    Add Publications{" "}
+                    NEXT: Publications{" "}
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1379,7 +1404,7 @@ const CustomizeResume = () => {
                   <ButtonSubmitGreen type="button" onClick={() => {
                     pubForwardOrBackward('forward')
                   }}>
-                    Add Hobbies{" "}
+                    NEXT: Hobbies{" "}
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1493,8 +1518,6 @@ const CustomizeResume = () => {
       )}
 
       {showCheckout && <CheckoutSummaryModal />}
-
-
 
     </div>
   );
