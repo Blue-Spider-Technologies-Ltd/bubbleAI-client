@@ -36,7 +36,7 @@ const DownloadResume = () => {
     const errorSetter = (string) => {
         setError(string)
         errorAnimation()
-      }
+    }
     //Option for carousel in template section
     const responsive = {
       desktop: {
