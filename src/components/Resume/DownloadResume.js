@@ -9,6 +9,7 @@ import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
+import { errorAnimation } from "../../utils/client-functions";
 import standardTempImg from "../../images/resume-standard.png";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
@@ -30,6 +31,12 @@ const DownloadResume = () => {
         desc: ""
     })
     const isAuth = localStorage?.getItem('token')
+
+
+    const errorSetter = (string) => {
+        setError(string)
+        errorAnimation()
+      }
     //Option for carousel in template section
     const responsive = {
       desktop: {
@@ -83,7 +90,7 @@ const DownloadResume = () => {
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
         } catch (error) {
-            setError("Try again")
+            errorSetter("Try again")
         }
     }
     
@@ -186,7 +193,7 @@ const DownloadResume = () => {
                                     <ButtonSubmitGreen type="button" onClick={() => {
                                         if(storageDetails.name === "") {
                                             window.scrollTo(0, 0);
-                                            return setError('Resume must have a name')
+                                            return errorSetter('Resume must have a name')
                                         }
                                         handlePrint()
                                     }}>
