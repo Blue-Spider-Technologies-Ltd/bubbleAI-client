@@ -73,7 +73,7 @@ export const {
   setHideCards,
   setFetching,
   setTranscriptActivityStarted,
-  setShowCheckout 
+  setShowCheckout
 } = stateSlice.actions
 
 export default stateSlice.reducer

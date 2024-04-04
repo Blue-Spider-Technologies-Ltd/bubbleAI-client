@@ -48,10 +48,10 @@ export const ButtonOutlineGreenWithDiffStyle = (props) => {
     )
 }
 
-export const ButtonTransparent = (props) => {
+export const ButtonTransparent = ({type, children}) => {
     return (
-        <button type={props.type} className={buttonCss.ButtonTransparent}>
-            {props.children}
+        <button type={type} className={buttonCss.ButtonTransparent}>
+            {children}
         </button>
     )
 }

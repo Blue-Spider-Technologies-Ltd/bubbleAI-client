@@ -2,7 +2,6 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 
-
 export const checkAuthenticatedUser = async () => {
     try {
         const isAuth = localStorage?.getItem('token');
@@ -19,6 +18,16 @@ export const checkAuthenticatedUser = async () => {
         throw new Error("Invalid Session")
     }
 
+}
+
+//call AFTER EVERY setError that is NOT an empty string to animate
+export const errorAnimation = async () => {
+    const element = document.querySelector('.error');
+    element.classList.add('error-in');
+
+    setTimeout(() => {
+    element.classList.remove('error-in');
+    }, 5000);
 }
 
 //CHECK for EMPTY STRINGS 
@@ -170,8 +179,8 @@ export const fetchCurrency = async () => {
         const getIPData = await axios.get('https://api.ipify.org')
         const userIP = getIPData.data || ""
         const countryDataRaw = await axios.get(`https://ipapi.co/${userIP}/json/`)
-        const countryData = countryDataRaw.data
-        const userCurrency = countryData.currency || 'USD'
+        const countryData = countryDataRaw?.data
+        const userCurrency = countryData?.currency || 'USD'
         
         return userCurrency
     } catch (error) {

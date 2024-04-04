@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
+import { errorAnimation } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setResume, setFetching } from "../../redux/states";
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Modal } from "../UI/Modal/Modal";
-import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
+// import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
 import jwt_decode from "jwt-decode";
@@ -22,7 +23,11 @@ const PreviewResume = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
-  const [userResumes, setUserResumes] = useState([])
+
+  const errorSetter = (string) => {
+    setError(string)
+    errorAnimation()
+  }
 
   const isAuth = localStorage?.getItem("token");
   //resume data
@@ -59,7 +64,6 @@ const PreviewResume = () => {
       "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
     );
 
-    // console.log(resume);
     if (isAuth && now < authUser.expiration) {
       const localResume = JSON.parse(isResumePresent);
       //When user returning from download page
@@ -119,7 +123,7 @@ const PreviewResume = () => {
   }, [isAuth, navigate, dispatch, resume]);
 
   useEffect(() => {
-    if (!eduArray) setError("Reload page to get complete data");
+    if (!eduArray) errorSetter("Reload page to get complete data");
   }, [eduArray]);
 
   //////LINK HANDLERS
@@ -130,7 +134,7 @@ const PreviewResume = () => {
         prevLinks.splice(index, 1);
         setLinkInfo(prevLinks);
       })
-      .catch(() => setError("Not Deleted"));
+      .catch(() => errorSetter("Not Deleted"));
   };
 
   const handleDeleteSkills = (index) => {
@@ -140,7 +144,7 @@ const PreviewResume = () => {
         prevSkills.splice(index, 1);
         setSkills(prevSkills);
       })
-      .catch(() => setError("Not Deleted"));
+      .catch(() => errorSetter("Not Deleted"));
   };
 
   const handleDeleteInterests = (index) => {
@@ -150,7 +154,7 @@ const PreviewResume = () => {
         prevInterests.splice(index, 1);
         setInterests(prevInterests);
       })
-      .catch(() => setError("Not Deleted"));
+      .catch(() => errorSetter("Not Deleted"));
   };
 
   //     /////WORK EXP HANDLERS
@@ -190,7 +194,7 @@ const PreviewResume = () => {
       navigate("/user/dashboard/resume?download");
     } catch (error) {
       console.log(error);
-      setError("Try again");
+      errorSetter("Try again");
     }
   };
 

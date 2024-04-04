@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
-import { checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
+import { errorAnimation, checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, setResume, setFetching } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
@@ -40,6 +40,12 @@ const CustomizeResume = () => {
   const [interestFaded, setInterestFaded] = useState(true)
 
   const isAuth = localStorage?.getItem("token");
+
+  const errorSetter = (string) => {
+    setError(string)
+    errorAnimation()
+  }
+
   //resume data
   const [basicInfo, setBasicInfo] = useState({
     firstName: "",
@@ -119,7 +125,7 @@ const CustomizeResume = () => {
           setIsSubscribed(false)
         }
         dispatch(setFetching(false));
-        setError("Reload page to fetch data");
+        errorSetter("Reload page to fetch data")
       }
     };
 
@@ -207,21 +213,19 @@ const CustomizeResume = () => {
 
   //////LINK HANDLERS
   const handleAddLinks = () => {
-    setError("");
     const newLink = "";
     if (linkInfo.length < 5) {
       return setLinkInfo([...linkInfo, newLink]);
     }
-    setError("You can add a maximum of 5 links");
+    errorSetter("You can add a maximum of 5 links")
   };
   const handleDeleteLinks = () => {
-    setError("");
     if (linkInfo.length > 1) {
       const prevLinks = [...linkInfo];
       prevLinks.pop();
       return setLinkInfo([...prevLinks]);
     }
-    setError("Leave blank, don't delete");
+    errorSetter("Leave blank, don't delete");
   };
   const handleLinkChange = (event, index) => {
     const prevLinkInfo = [...linkInfo];
@@ -231,18 +235,16 @@ const CustomizeResume = () => {
 
   /////////////SKILL HANDLERS
   const handleAddSkill = () => {
-    setError("");
     const newSkill = "";
     addSkills([...skills, newSkill]);
   };
   const handleDeleteSkill = () => {
-    setError("");
     if (skills.length > 1) {
       const prevSkills = [...skills];
       prevSkills.pop();
       return addSkills([...prevSkills]);
     }
-    setError("Leave blank, don't delete");
+    errorSetter("Leave blank, don't delete");
   };
   const handleSkillChange = (event, index) => {
     const prevSkills = [...skills];
@@ -252,18 +254,16 @@ const CustomizeResume = () => {
 
   /////////////SKILL HANDLERS
   const handleAddInterests = () => {
-    setError("");
     const newInterest = "";
     addInterests([...interests, newInterest]);
   };
   const handleDeleteInterests = () => {
-    setError("");
     if (interests.length > 1) {
       const prevInterests = [...interests];
       prevInterests.pop();
       return addInterests([...prevInterests]);
     }
-    setError("Leave blank, don't delete");
+    errorSetter("Leave blank, don't delete");
   };
   const handleInterestChange = (event, index) => {
     const prevInterests = [...interests];
@@ -273,7 +273,6 @@ const CustomizeResume = () => {
 
   ///EDUCATION INFO HANDLERS
   const handleAddEduInfo = () => {
-    setError("");
     const newInfo = {
       institution: "",
       degree: "",
@@ -282,16 +281,15 @@ const CustomizeResume = () => {
     if (eduArray.length < 5) {
       return addEduArray([...eduArray, newInfo]);
     }
-    setError("Only add 5 relevant backgrounds");
+    errorSetter("Only add 5 relevant backgrounds");
   };
   const handleDeleteEduInfo = () => {
-    setError("");
     if (eduArray.length > 1) {
       const prevInfo = [...eduArray];
       prevInfo.pop();
       return addEduArray([...prevInfo]);
     }
-    setError("Leave blank, don't delete");
+    errorSetter("Leave blank, don't delete");
   };
   const handleEduExpChange = (event, index) => {
     const prevEduExp = [...eduArray];
@@ -316,7 +314,6 @@ const CustomizeResume = () => {
 
   /////WORK EXP HANDLERS
   const handleAddExp = () => {
-    setError("");
     const newInfo = {
       company: "",
       position: "",
@@ -329,16 +326,15 @@ const CustomizeResume = () => {
     if (workExpArray.length < 6) {
       return addWorkExpArray([...workExpArray, newInfo]);
     }
-    setError("Only add 6 Experiences");
+    errorSetter("Only add 6 Experiences");
   };
   const handleDeleteExp = () => {
-    setError("");
     if (workExpArray.length > 1) {
       const prevInfo = [...workExpArray];
       prevInfo.pop();
       return addWorkExpArray([...prevInfo]);
     }
-    setError("Leave blank, don't delete");
+    errorSetter("Leave blank, don't delete");
   };
   const handleWorkExpChange = (event, index) => {
     const prevWorkExp = [...workExpArray];
@@ -380,7 +376,6 @@ const CustomizeResume = () => {
 
     /////AWARD HANDLERS
   const handleAddAward = () => {
-    setError("");
     const newAward = {
       org: "",
       award: "",
@@ -389,16 +384,15 @@ const CustomizeResume = () => {
     if (awardArray.length < 10) {
       return addAwardArray([...awardArray, newAward]);
     }
-    setError("Only add 10 Awards");
+    errorSetter("Only add 10 Awards");
   };
   const handleDeleteAward = () => {
-    setError("");
     if (awardArray.length > 1) {
       const prevAward = [...awardArray];
       prevAward.pop();
       return addAwardArray([...prevAward]);
     }
-    setError("Leave blank, don't delete");
+    errorSetter("Leave blank, don't delete");
   };
   const handleAwardChange = (event, index) => {
     const prevAwards = [...awardArray];
@@ -423,7 +417,6 @@ const CustomizeResume = () => {
 
   /////PUBLICATION HANDLERS
   const handleAddPublication = () => {
-    setError("");
     const newPub = {
       title: "",
       source: "",
@@ -432,16 +425,15 @@ const CustomizeResume = () => {
     if (publications.length < 20) {
       return addPublications([...publications, newPub]);
     }
-    setError("Only add 20 Publications");
+    errorSetter("Only add 20 Publications");
   };
   const handleDeletePublication = () => {
-    setError("");
     if (publications.length > 1) {
       const prevPub = [...publications];
       prevPub.pop();
       return addPublications([...prevPub]);
     }
-    setError("Leave blank, don't delete");
+    errorSetter("Leave blank, don't delete");
   };
   const handlePubChange = (event, index) => {
     const prevPub = [...publications];
@@ -497,7 +489,8 @@ const CustomizeResume = () => {
       });
       if (response.status === 500) {
         setLoading(false);
-        return setError("We are being throttled, try again after a while");
+        errorSetter("We are being throttled, try again after a while");
+        return
       }
       dispatch(setResume(response.data.resumeData));
       const now = new Date().getTime();
@@ -516,7 +509,7 @@ const CustomizeResume = () => {
     } catch (error) {
       console.log(error);
       setLoading(false);
-      setError("We are being throttled, try again after a while");
+      errorSetter("We are being throttled, try again after a while");
       eventSource.close();
     }
   };
@@ -538,10 +531,9 @@ const CustomizeResume = () => {
     //check if required fields are filled
     const { dob, mobile, jobPosition, street, city, country } = basicInfo
     if (dob === "" || mobile === "" || jobPosition === "" || street === "" || city === "" || country === "" ) {
-      setError("Complete required fields in this section to continue");
+      errorSetter("Complete required fields in this section to continue");
       return;
     }
-    setError("")
     setBasicFaded(true)
     switch (arg) {
       case "forward":
@@ -557,10 +549,9 @@ const CustomizeResume = () => {
   const eduInfoForwardOrBackward = (arg) => {  
     //check if required fields are filled
     if (checkEmptyStringsInObjNoExempt(eduArray) === false ) {
-      setError("Complete required fields in this section to continue");
+      errorSetter("Complete required fields in this section to continue");
       return;
     }
-    setError("")
     setEduFaded(true)
     switch (arg) {
       case "forward":
@@ -579,10 +570,9 @@ const CustomizeResume = () => {
   const workExpForwardOrBackward = (arg) => {
     //check if required fields are filled, exempting two keys
     if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink") === false ) {
-      setError("Complete required fields in this section to continue");
+      errorSetter("Complete required fields in this section to continue");
       return;
     }
-    setError("")
     setWorkFaded(true)
     switch (arg) {
       case "forward":
@@ -600,10 +590,9 @@ const CustomizeResume = () => {
   const skillsForwardOrBackward = (arg) => {
     //check if required fields are filled, exempting two keys
     if (checkEmptyStrings(skills) === false ) {
-      setError("Complete required fields in this section to continue");
+      errorSetter("Complete required fields in this section to continue");
       return;
     }
-    setError("")
     setSkillFaded(true)
     switch (arg) {
       case "forward":
@@ -772,7 +761,7 @@ const CustomizeResume = () => {
                 />
                 <AuthInput
                   value={basicInfo.street}
-                  label="Apt No. & Street"
+                  label="Apt No., Street & City"
                   inputType="text"
                   inputGridSm={7}
                   inputGrid={4}
@@ -782,7 +771,7 @@ const CustomizeResume = () => {
                 />
                 <AuthInput
                   value={basicInfo.city}
-                  label="City/State/Region"
+                  label="State/Region"
                   inputType="text"
                   inputGridSm={5}
                   inputGrid={4}
@@ -892,7 +881,7 @@ const CustomizeResume = () => {
                       <AuthInput
                         name="degree"
                         value={info.degree}
-                        label="Degree Obtained"
+                        label="Degree Obtained & Course"
                         inputType="text"
                         inputGridSm={12}
                         inputGrid={4}

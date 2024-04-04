@@ -34,6 +34,29 @@ h1 {
 }
 
 .error {
+  background-color: rgba(255, 255, 255, 0.796);
+  border-radius: 5px;
+  font-size: .8rem;
+  color: rgb(216, 7, 7);
+  text-align: center;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100px;
+  max-width: 300px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  padding: 10px;
+  z-index: 999;
+  box-shadow: -2px 0px 10px rgba(132, 129, 129, 0.5), 
+  6px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error-in {
+  opacity: 1;
+}
+
+.success {
   font-size: .8rem;
   color: rgb(216, 7, 7);
   margin: 10px auto;

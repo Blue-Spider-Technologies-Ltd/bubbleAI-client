@@ -11,7 +11,7 @@ import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
 import standardTempImg from "../../images/resume-standard.png";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
+// import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
@@ -78,10 +78,10 @@ const DownloadResume = () => {
                     'x-access-token': isAuth
                 }
             })
+            ////run a CHECK HERE
             localStorage?.removeItem(
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
-            navigate('/')
         } catch (error) {
             setError("Try again")
         }
