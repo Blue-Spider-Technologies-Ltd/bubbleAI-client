@@ -6,8 +6,10 @@ import Person4Icon from '@mui/icons-material/Person4';
 export const Assistant = (props) => {
     return (
         <div className={chatBoxCss.assistantOuter}>
-            <SmartToyIcon /><div className={chatBoxCss.Assistant}>{props.children}
-        </div>
+            <SmartToyIcon />
+            <div className={chatBoxCss.Assistant}>
+                {props.children}
+            </div>
         </div>
     )
 }
@@ -15,7 +17,8 @@ export const Assistant = (props) => {
 export const User = (props) => {
     return (
         <div className={chatBoxCss.userOutter}>
-            <div className={chatBoxCss.User}>{props.children}</div><Person4Icon />
+            <div className={chatBoxCss.User}>{props.children}</div>
+            <Person4Icon />
         </div>
     )
 }

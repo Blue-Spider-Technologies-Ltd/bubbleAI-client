@@ -13,6 +13,7 @@ import { ThreeCircles } from 'react-loader-spinner'
 import PasswordChecklist from "react-multiple-password-validator"
 import { useDispatch } from "react-redux";
 import { setEmail } from "../../redux/states";
+import { errorAnimation } from "../../utils/client-functions";
 
 
 const screenWidth = window.innerWidth
@@ -35,12 +36,17 @@ const Register = () => {
     const numberLength = 1
     const capitalLength = 1
 
+    const errorSetter = (string) => {
+        setError(string)
+        errorAnimation()
+    }
+
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
 
         if (user.password.length < 8) {
-            setError('password too short')
+            errorSetter('password too short')
             return
         }
 
@@ -62,11 +68,11 @@ const Register = () => {
             } catch (error) {
                 console.log(error)
                 setLoading(false)
-                setError(error.response.data.message)
+                errorSetter(error.response.data.message)
             }
 
         } else {
-            setError('password strings do not match')
+            errorSetter('password strings do not match')
         }
     }
 

@@ -692,7 +692,7 @@ const CustomizeResume = () => {
 
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Basic Info</h4>
+              <h4>Let's start with some BASIC INFO...</h4>
               <Grid container>
                 <AuthInput
                   value={basicInfo.firstName}

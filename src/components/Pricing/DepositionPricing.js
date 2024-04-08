@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setFetching } from '../../redux/states';
 import { Grid } from "@mui/material";
 import PriceCard from '../UI/PriceCard/PriceCard';
-import { fetchPrice, fetchCurrency } from '../../utils/client-functions';
+import { fetchPrice, fetchCurrency, errorAnimation } from '../../utils/client-functions';
 
 
 //////This page contains CSS from HOME.CSS and INDEX.CSS
@@ -14,6 +14,11 @@ const DepositionPricing = () => {
     const [pricePerQuarter, setPricePerQuarter] = useState(0)
     const [currency, setCurrency] = useState('')
     const [error, setError] = useState('')
+
+    const errorSetter = (string) => {
+        setError(string)
+        errorAnimation()
+    }
 
     useEffect(() => {
         setError('')
@@ -31,7 +36,7 @@ const DepositionPricing = () => {
     
                 dispatch(setFetching(false))
             } catch (error) {
-                setError('Error fetching country prices, please reload page')
+                errorSetter('Error fetching country prices, please reload page')
             }
         }
         fetchData()

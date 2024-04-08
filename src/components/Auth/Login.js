@@ -11,7 +11,7 @@ import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import { useDispatch } from "react-redux";
 import { setEmail } from "../../redux/states";
-import { checkAuthenticatedUser } from "../../utils/client-functions";
+import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 
 
 const screenWidth = window.innerWidth
@@ -27,6 +27,11 @@ const Login = () => {
         email: '',
         password: ''
     })
+
+    const errorSetter = (string) => {
+        setError(string)
+        errorAnimation()
+    }
 
     //get query string and remove question mark
     const queryString = location.search.slice(1)
@@ -87,7 +92,7 @@ const Login = () => {
         } catch (error) {
             setLoading(false)
             console.log(error?.response?.data?.mesage);
-            setError(error?.response?.data?.message);
+            errorSetter(error?.response?.data?.message);
         }
 
     }
@@ -112,7 +117,7 @@ const Login = () => {
         } catch (error) {
             setLoading(false)
             console.log(error.response.data.mesage);
-            setError(error.response.data.message);
+            errorSetter(error.response.data.message);
         }
 
     }

@@ -22,11 +22,11 @@ export const checkAuthenticatedUser = async () => {
 
 //call AFTER EVERY setError that is NOT an empty string to animate
 export const errorAnimation = async () => {
-    const element = document.querySelector('.error');
-    element.classList.add('error-in');
+    const error = document.querySelector('.error');
+    error.classList.add('error-in');
 
     setTimeout(() => {
-    element.classList.remove('error-in');
+        error.classList.remove('error-in');
     }, 5000);
 }
 

@@ -12,6 +12,7 @@ import { ThreeCircles } from 'react-loader-spinner';
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import PasswordChecklist from "react-multiple-password-validator"
+import { errorAnimation } from "../../utils/client-functions";
 
 
 const screenWidth = window.innerWidth
@@ -34,6 +35,11 @@ const PwdRecovery = () => {
     const minLength = 8
     const numberLength = 1
     const capitalLength = 1
+
+    const errorSetter = (string) => {
+        setError(string)
+        errorAnimation()
+    }
     
     //If email is not set for reset
     useEffect(() => {
@@ -55,7 +61,7 @@ const PwdRecovery = () => {
         try {
             //Alert user if paswords do not match
             if (data.newPassword !== data.confirmNewPassword) {
-                setError("passwords do not match")
+                errorSetter("passwords do not match")
             } else {
                 const response = await axios.post('/auth/new-password', recoveryData)
                 console.log(response.statusText);
@@ -66,7 +72,7 @@ const PwdRecovery = () => {
         } catch (error) {
             setLoading(false)
             console.log(error.response.data.mesage);
-            setError(error.response.data.message)
+            errorSetter(error.response.data.message)
         }
 
     }

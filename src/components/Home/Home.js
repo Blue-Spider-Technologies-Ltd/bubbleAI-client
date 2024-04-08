@@ -12,7 +12,7 @@ import categoriesData from "./categories";
 import { useSelector, useDispatch } from "react-redux";
 import { setMessages, setMessage, setUser, deleteLastMessage } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
-import { checkAuthenticatedUser } from "../../utils/client-functions";
+import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 import { ThreeDots } from 'react-loader-spinner'
 import axios from "axios";
 
@@ -31,6 +31,10 @@ const Home = () => {
   const useCount = item ? item.cu78tgGgivhcountJVGIbGguguGhgh : 0;
   const expiration = item?.UYiygc768FYexpUVIirationHi87f86DCCC;
 
+  const errorSetter = (string) => {
+    setError(string)
+    errorAnimation()
+  }
 
   const askMeErrorObj = {
             role: 'assistant',
@@ -80,7 +84,7 @@ const Home = () => {
             dispatch(setUser(response.data.user));
           } catch (error) {
             console.log(error);
-            setError("Reload page to fetch data");
+            errorSetter("Reload page to fetch data");
           }
         }
       } else {

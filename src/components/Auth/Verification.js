@@ -12,6 +12,7 @@ import { ThreeCircles } from 'react-loader-spinner';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
+import { errorAnimation } from "../../utils/client-functions";
 
 
 const screenWidth = window.innerWidth
@@ -28,6 +29,11 @@ const Verification = () => {
     const [verified, setVerified] = useState(false);
     const [count, setCount] = useState(60);
     const [isZero, setIsZero] = useState(false);
+
+    const errorSetter = (string) => {
+        setError(string)
+        errorAnimation()
+    }
 
     //If email is not set for verification
     useEffect(() => {
@@ -56,7 +62,7 @@ const Verification = () => {
             console.log(response);
             //check for predefined errors that might not be caught by error handler
             if (response.data.status === "error") {
-                setError(response.data.message)
+                errorSetter(response.data.message)
                 return
             }
             //if no error, set verification status
@@ -65,7 +71,7 @@ const Verification = () => {
         } catch (error) {
             setLoading(false)
             console.log(error.response.data.mesage);
-            setError(error.response.data.message)
+            errorSetter(error.response.data.message)
         }
 
     }
