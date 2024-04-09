@@ -12,7 +12,7 @@ import reportWebVitals from './reportWebVitals';
 const handleSubdomain = () => { 
   const fullDomain = window.location.hostname; 
   const subDomains = fullDomain.split("."); 
-  if (subDomains[0] === "origin") { 
+  if (subDomains[0].includes("origin")) { 
     return <Origin />; 
   } else { 
     return <App />; 
