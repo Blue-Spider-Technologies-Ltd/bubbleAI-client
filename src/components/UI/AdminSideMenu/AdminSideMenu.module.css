@@ -1,0 +1,71 @@
+.AdminSideMenu {
+    background-color: aliceblue;
+    border-radius: 12px;
+    position: fixed;
+    top: 20px;
+    bottom: 20px;
+    padding: 20px 10px;
+    width: 250px;   
+    transition: all 0.1s ease-in; 
+    margin-right: 20px;
+    border: 2px solid var(--lighterBlueGrey);
+}
+
+.Logo {
+    width: 50%;
+    height: 50px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.SideMenuItems {
+    margin: 0;
+    padding-left: 0;
+}
+
+.SideMenuItems li {
+    box-sizing: border-box;
+    border-radius: 30px;
+    list-style-type: none;
+    height: 3rem;
+    margin: 2px 0;
+    font-size: .8rem;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+.SideMenuItems li:hover {
+    background-color: rgb(51, 49, 49);
+}
+
+.Active {
+    background-color: rgb(51, 49, 49);
+}
+
+.Active > a {
+    color: white !important;
+}
+
+.SideMenuItems li:hover > a {
+    color: white !important;
+}
+
+.SideMenuItems li > a > span {
+    margin-left: 20px;
+}
+
+.SideMenuItems li > a {
+    color: rgb(51, 49, 49);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-left: 7px;
+}
+
+.side-menu-minimized {
+    transition: all 0.1s ease-out;
+    width: 60px;
+    overflow-x: hidden;
+}

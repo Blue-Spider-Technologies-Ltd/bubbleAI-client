@@ -27,10 +27,6 @@ const MenuBarLarge = () => {
         }
     }
 
-    const handleHowIWork = async () => {
-        console.log("how I work clicked")
-    }
-
     return (
 
         <nav className="BigMenu">
@@ -42,9 +38,9 @@ const MenuBarLarge = () => {
 
             <div>
                 <div className='MenuItems'>
-                    <div onClick={handleHowIWork} className="ListItem">
+                    <Link href='/how-i-work' className="ListItem">
                         <div>How I Work</div>
-                    </div>
+                    </Link>
                     <Link href='/pricing' className="ListItem">
                         <div>Pricing</div>
                     </Link>

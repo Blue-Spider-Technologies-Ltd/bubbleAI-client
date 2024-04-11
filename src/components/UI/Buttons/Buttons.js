@@ -4,6 +4,14 @@ import { Link } from "@mui/material"
 import Groups3Icon from '@mui/icons-material/Groups3';
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import TranslateIcon from '@mui/icons-material/Translate';
+import { 
+    Dashboard, 
+    Redeem, 
+    NotificationsActive, 
+    Group, 
+    AdminPanelSettings,
+    ReceiptLong 
+} from '@mui/icons-material';
 
 export const ButtonOutlineGreen = (props) => {
     return (
@@ -72,6 +80,59 @@ export const ButtonTransparentSquare = ({ type, onClick, color, width, height, c
             style={buttonStyle}
         >
             {children}
+        </button>
+    );
+
+}
+
+export const AdminButtonCard = ({ type, onClick, color, width, height, iconText, total }) => { 
+
+    const buttonStyle = {
+        color: color,
+        width: width,
+        height: height
+    };
+
+    const cardIcon = () => {
+        let cardIcon;
+        switch (iconText) {
+            case "Dashboard":
+                cardIcon = <Dashboard />
+                break;
+            case "Coupons":
+                cardIcon = <Redeem />
+                break;
+            case "Notifications":
+                cardIcon = <NotificationsActive />
+                break;
+            case "Users":
+                cardIcon = <Group />
+                break;
+            case "Admin":
+                cardIcon = <AdminPanelSettings />
+                break;
+            case "Transactions":
+                cardIcon = <ReceiptLong />
+                break;
+        
+            default:
+                break;
+        }
+        return cardIcon
+    }
+
+    return (
+        <button 
+            type={type} 
+            className={buttonCss.AdminButtonCard} 
+            onClick={onClick}
+            style={buttonStyle}
+        >
+            <div>
+                {cardIcon()}
+            </div>
+            <h4 style={{color: "#3E8F93"}}>{iconText}</h4>
+            <h1>{total}</h1>
         </button>
     );
 

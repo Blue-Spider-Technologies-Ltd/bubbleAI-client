@@ -155,7 +155,6 @@ const CustomizeResume = () => {
           description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume`,
         })
           .then(() => {
-            console.log(localResume.resumeData);
             dispatch(setResume(localResume.resumeData));
             navigate("/user/dashboard/resume?preview");
           })
@@ -492,7 +491,7 @@ const CustomizeResume = () => {
         errorSetter("We are being throttled, try again after a while");
         return
       }
-      dispatch(setResume(response.data.resumeData));
+      // dispatch(setResume(response.data.resumeData));
       const now = new Date().getTime();
       //save a copy for later incase user doesn't finish now
       let resumeObjforLocal = {

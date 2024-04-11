@@ -52,9 +52,8 @@ const AdminLogin = () => {
     // }, [navigate, queryString])
 
     //Login submit handler
-    const handleFormSubmitLogin = async (e) => {
+    const handleAdminLogin = async (e) => {
         e.preventDefault()
-        setError("")
         setLoading(true)
         
         const admData = {
@@ -62,17 +61,17 @@ const AdminLogin = () => {
             password: data.password
         }
         try {
-            const response = await axios.post('auth/admin/login', admData)
-            let userDetails = response?.data?.admin
-            localStorage.setItem('token', userDetails)
-            setError("")
+            const response = await axios.post('origin/adm-login', admData)
+            let adminDetails = response?.data?.afd8TvhsdjwiuuvsgjhsAfgsUhjs
+            sessionStorage.setItem('afd8TvhsdjwiuuvsgjhsAfgsUhjs', adminDetails)
+
+            navigate("/origin/dashboard")
 
             setLoading(false)
             //If user was redirected to login from a page because of a service request to a protected route
             
         } catch (error) {
             setLoading(false)
-            console.log(error?.response?.data?.mesage);
             errorSetter(error?.response?.data?.message);
         }
 
@@ -88,10 +87,10 @@ const AdminLogin = () => {
         <div>
 
             <div className={authCss.formContainer}>
-                <div className={authCss.formInner} style={{marginTop: '200px'}}>
+                <div className={authCss.formInner} style={{marginTop: '-100px'}}>
                     <h2>Controller Pop in</h2>
                     <div className="error">{error}</div>
-                    <form onSubmit={handleFormSubmitLogin}>
+                    <form onSubmit={handleAdminLogin}>
                         <Input placeholder="Email..." inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
                         
                     

@@ -20,6 +20,24 @@ export const checkAuthenticatedUser = async () => {
 
 }
 
+export const checkAuthenticatedAdmin = async () => {
+    try {
+        const isAdminAuth = sessionStorage?.getItem('afd8TvhsdjwiuuvsgjhsAfgsUhjs');
+        const authAdmin = jwt_decode(isAdminAuth);
+        const now = Date.now();
+        if (isAdminAuth && now < authAdmin.expiration) {
+            return true
+        } else {
+            sessionStorage?.removeItem('afd8TvhsdjwiuuvsgjhsAfgsUhjs');
+            throw new Error('Session Expired');
+        }
+    } catch (error) {
+        sessionStorage?.removeItem('afd8TvhsdjwiuuvsgjhsAfgsUhjs');
+        throw new Error("Invalid Session")
+    }
+
+}
+
 //call AFTER EVERY setError that is NOT an empty string to animate
 export const errorAnimation = async () => {
     const error = document.querySelector('.error');

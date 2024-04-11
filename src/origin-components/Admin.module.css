@@ -1,0 +1,30 @@
+.AdminDashboard {
+    box-sizing: border-box;
+    padding: 20px 40px;
+    background-color: var(--lightBlueGrey);
+    width: 100vw;
+    display: flex;
+    min-height: 100vh;
+}
+
+.OtherWrapper {
+    width: 100%;
+    padding-left: 16.25rem;
+}
+
+.TopContainer {
+    background-color: aliceblue;
+    border-radius: 12px;
+    padding: 20px 10px; 
+    height: 3rem;
+    width: 100%;
+    flex: 1;
+    transition: all 0.1s ease-in; 
+}
+
+
+@media (max-width: 900px) {
+    .OtherWrapper {
+        padding-left: 70px;
+    }
+}

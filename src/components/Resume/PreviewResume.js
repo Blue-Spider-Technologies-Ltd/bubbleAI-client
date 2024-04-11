@@ -51,13 +51,9 @@ const PreviewResume = () => {
   const [awardArray, setAwardArray] = useState([]);
   const [publications, setPublications] = useState([]);
   //scroll to page top on render
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   useEffect(() => {
     dispatch(setFetching(true));
-    const resumeLength = Object.keys(resume).length;
     const now = Date.now();
     const authUser = jwt_decode(isAuth);
     const isResumePresent = localStorage?.getItem(
@@ -66,65 +62,40 @@ const PreviewResume = () => {
 
     if (isAuth && now < authUser.expiration) {
       const localResume = JSON.parse(isResumePresent);
-      //When user returning from download page
-      if (resumeLength <= 0) {
-        if (!localResume) {
-          localStorage?.removeItem(
-            "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-          );
-          navigate("/user/dashboard/resume?customize");
-        } else {
-          //if resume is found in local storage
-          dispatch(setResume(localResume.resumeData));
-          setBasicInfo(
-            localResume.resumeData.basicInfo && localResume.resumeData.basicInfo
-          );
-          setLinkInfo(
-            localResume.resumeData.linkInfo && localResume.resumeData.linkInfo
-          );
-          setSkills(
-            localResume.resumeData.skills && localResume.resumeData.skills
-          );
-          setInterests(
-            localResume.resumeData.interests && localResume.resumeData.interests
-          );
-          setEduArray(
-            localResume.resumeData.eduInfo && localResume.resumeData.eduInfo
-          );
-          setWorkExpArray(
-            localResume.resumeData.workExpInfo &&
-              localResume.resumeData.workExpInfo
-          );
-          setAwardArray(
-            localResume.resumeData.awardInfo && localResume.resumeData.awardInfo
-          );
-          setPublications(
-            localResume.resumeData.publications &&
-              localResume.resumeData.publications
-          );
-          dispatch(setFetching(false));
-          return;
-        }
+
+      if (!localResume) {
+        localStorage?.removeItem(
+          "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+        );
+        navigate("/user/dashboard/resume?customize");
+      } else {
+        // if resume is found in local storage
+        dispatch(setResume(localResume.resumeData));
       }
-      //when user coming from customize page
-      setBasicInfo(resume.basicInfo && resume.basicInfo);
-      setLinkInfo(resume.linkInfo && resume.linkInfo);
-      setSkills(resume.skills && resume.skills);
-      setInterests(resume.interests && resume.interests);
-      setEduArray(resume.eduInfo && resume.eduInfo);
-      setWorkExpArray(resume.workExpInfo && resume.workExpInfo);
-      setAwardArray(resume.awardInfo && resume.awardInfo);
-      setPublications(resume.publications && resume.publications);
-      dispatch(setFetching(false));
     } else {
       localStorage?.removeItem("token");
       navigate("/popin");
     }
-  }, [isAuth, navigate, dispatch, resume]);
+  }, [isAuth, navigate, dispatch]);
 
   useEffect(() => {
-    if (!eduArray) errorSetter("Reload page to get complete data");
-  }, [eduArray]);
+    // when user coming from customize page
+    setBasicInfo(resume.basicInfo && resume.basicInfo);
+    setLinkInfo(resume.linkInfo && resume.linkInfo);
+    setSkills(resume.skills && resume.skills);
+    setInterests(resume.interests && resume.interests);
+    setEduArray(resume.eduArray && resume.eduArray);
+    setWorkExpArray(resume.workExpArray && resume.workExpArray);
+    setAwardArray(resume.awardArray && resume.awardArray);
+    setPublications(resume.publications && resume.publications);
+    dispatch(setFetching(false));
+  }, [dispatch, resume]);
+
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
 
   //////LINK HANDLERS
   const handleDeleteLinks = (index) => {
@@ -546,7 +517,7 @@ const PreviewResume = () => {
                             </label>
                             <AuthInput
                               name="dateFrom"
-                              value={info.DateFrom}
+                              value={info.dateFrom}
                               placeholder="Start Date"
                               inputType="date"
                               inputGridSm={12}
