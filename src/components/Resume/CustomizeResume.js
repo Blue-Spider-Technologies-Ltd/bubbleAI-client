@@ -30,6 +30,7 @@ const CustomizeResume = () => {
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
   const [isSubscribed, setIsSubscribed] = useState(true);
+  const [subDuration, setSubDuration] = useState("");
   const [userResumes, setUserResumes] = useState([])
   const [basicFaded, setBasicFaded] = useState(false)
   const [eduFaded, setEduFaded] = useState(true)
@@ -97,7 +98,7 @@ const CustomizeResume = () => {
           city, 
           country, 
           profSummary,
-          subscriptions,
+          resumeSubscriptions,
           resumes
         } = response?.data?.user
 
@@ -115,7 +116,8 @@ const CustomizeResume = () => {
         });
 
         setUserResumes(resumes)
-        setIsSubscribed(subscriptions?.subscribed)
+        setIsSubscribed(resumeSubscriptions?.subscribed)
+        setSubDuration(resumeSubscriptions?.duration)
         dispatch(setUser(response.data.user));
         dispatch(setFetching(false));
 
@@ -152,6 +154,7 @@ const CustomizeResume = () => {
         window.location.reload()
       } else {
         confirm({
+          title: "Continue Unfinished Resume?",
           description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume`,
         })
           .then(() => {
@@ -658,6 +661,7 @@ const CustomizeResume = () => {
         opened={authMenuOpen}
         seacrhBarPlaceholder="Search by resume name"
         hidden={!authMenuOpen}
+        resumeSubDuration={subDuration}
         arrayDetails={userResumes}
       />
 
@@ -700,7 +704,7 @@ const CustomizeResume = () => {
                   inputGrid={4}
                   mb={2}
                   required={true}
-                  disabled={true}
+                  disabled={subDuration !== "Per Month" ? true : false}
                   onChange={handleInputChange("firstName")}
                 />
                 <AuthInput
@@ -710,7 +714,7 @@ const CustomizeResume = () => {
                   inputGrid={4}
                   mb={2}
                   required={true}
-                  disabled={true}
+                  disabled={subDuration !== "Per Month" ? true : false}
                   onChange={handleInputChange("lastName")}
                 />
                 <AuthInput

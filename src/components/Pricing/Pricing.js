@@ -3,8 +3,8 @@ import MenuBar from "../UI/Menu/Menu";
 import { Grid } from "@mui/material"
 import { ButtonLogOut } from '../UI/Buttons/Buttons';
 import ResumePricing from './ResumePricing';
-import DepositionPricing from './DepositionPricing';
-import FileTranscriptionPricing from './FileTranscriptionPricing';
+// import DepositionPricing from './DepositionPricing';
+// import FileTranscriptionPricing from './FileTranscriptionPricing';
 import { CheckoutSummaryModal } from '../UI/Modal/Modal';
 import { useSelector } from "react-redux";
 
@@ -53,8 +53,8 @@ const Pricing = () => {
             </section>
 
             <ResumePricing />
-            <DepositionPricing />
-            <FileTranscriptionPricing />
+            {/* <DepositionPricing />
+            <FileTranscriptionPricing /> */}
          
             {showCheckout && <CheckoutSummaryModal />}
         </div>

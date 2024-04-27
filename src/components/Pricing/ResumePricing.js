@@ -50,15 +50,15 @@ const resumePricingDetails = [
         duration: 'Per Use',
         price: pricePerUse,
         currency: currency,
-        popular: true,
+        popular: false,
         features: {
             reAccessSaved: {
                 available: false,
                 text: 'Reaccess Saved Resumes'
             },
-            editPrev: {
+            createSeveral: {
                 available: false,
-                text: 'Edit Previous Resumes'
+                text: 'Create More than one'
             },
             sharableLink: {
                 available: false,
@@ -79,15 +79,15 @@ const resumePricingDetails = [
         duration: 'Per Week',
         price: pricePerWeek,
         currency: currency,
-        popular: false,
+        popular: true,
         features: {
             reAccessSaved: {
                 available: false,
                 text: 'Reaccess Saved Resumes'
             },
-            editPrev: {
+            createSeveral: {
                 available: true,
-                text: 'Edit Previous Resumes'
+                text: 'Create More than one'
             },
             sharableLink: {
                 available: false,
@@ -114,9 +114,9 @@ const resumePricingDetails = [
                 available: true,
                 text: 'Reaccess Saved Resumes'
             },
-            editPrev: {
+            createSeveral: {
                 available: true,
-                text: 'Edit Previous Resumes'
+                text: 'Create More than one'
             },
             sharableLink: {
                 available: true,

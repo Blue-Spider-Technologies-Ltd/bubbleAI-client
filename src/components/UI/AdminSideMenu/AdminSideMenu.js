@@ -10,8 +10,7 @@ import {
     NotificationsActive, 
     Group, 
     AdminPanelSettings,
-    ReceiptLong, 
-    NavigateBefore
+    ReceiptLong
 } from '@mui/icons-material';
 const screenWidth = window.innerWidth
 

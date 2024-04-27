@@ -70,4 +70,22 @@
     align-items: center;
 }
 
+.UnavailableImg {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+}
+
+.NonMonthlySubDisplay {
+    width: 100%;
+    color: #3E8F93;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+}
+
 

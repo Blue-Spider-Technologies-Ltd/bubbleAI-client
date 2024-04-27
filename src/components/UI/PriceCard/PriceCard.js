@@ -68,17 +68,17 @@ const PriceCard = ({details}) => {
                             </ListItem>
                         )}
 
-                        {features.editPrev && (
+                        {features.createSeveral && (
                             <ListItem >
                                 <ListItemIcon>
-                                    {features.editPrev.available ? (
+                                    {features.createSeveral.available ? (
                                         <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
                                     ) : (
                                         <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
                                     )}
                                 </ListItemIcon>
                                 <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                    {features.editPrev.text}
+                                    {features.createSeveral.text}
                                 </Typography>
                             </ListItem>  
                         )}                

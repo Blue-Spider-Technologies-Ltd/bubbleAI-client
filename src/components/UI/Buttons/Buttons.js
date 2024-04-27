@@ -13,10 +13,10 @@ import {
     ReceiptLong 
 } from '@mui/icons-material';
 
-export const ButtonOutlineGreen = (props) => {
+export const ButtonOutlineGreen = ({ link, target, children }) => {
     return (
-        <Link href={props.link} className={buttonCss.OulineGreen}>
-            {props.children}
+        <Link href={link} target={target} className={buttonCss.OulineGreen}>
+            {children}
         </Link>
     )
 }
