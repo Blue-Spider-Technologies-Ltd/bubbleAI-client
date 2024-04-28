@@ -40,6 +40,8 @@ const CustomizeResume = () => {
   const [pubFaded, setPubFaded] = useState(true)
   const [interestFaded, setInterestFaded] = useState(true)
 
+
+
   const isAuth = localStorage?.getItem("token");
 
   const errorSetter = (string) => {
@@ -157,16 +159,16 @@ const CustomizeResume = () => {
           title: "Continue Unfinished Resume?",
           description: `You have a previously unfinished Resume, Click Proceed to Continue Editting it or cancel to start new Resume`,
         })
-          .then(() => {
-            dispatch(setResume(localResume.resumeData));
-            navigate("/user/dashboard/resume?preview");
-          })
-          .catch(() => {
-            //remove previous resumes in local storage if expired
-            localStorage?.removeItem(
-              "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-            );
-          });
+        .then(() => {
+          dispatch(setResume(localResume.resumeData));
+          navigate("/user/dashboard/resume?preview");
+        })
+        .catch(() => {
+          //remove previous resumes in local storage if expired
+          localStorage?.removeItem(
+            "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+          );
+        });
       }
 
     } 

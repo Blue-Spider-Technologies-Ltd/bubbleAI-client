@@ -58,7 +58,7 @@ const resumePricingDetails = [
             },
             createSeveral: {
                 available: false,
-                text: 'Create More than one'
+                text: 'Create More Than One'
             },
             sharableLink: {
                 available: false,
@@ -66,7 +66,7 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: false,
-                text: 'Change Names on Resume'
+                text: 'Change Names During Customzation'
             },
             downloadablePDF: {
                 available: true,
@@ -87,7 +87,7 @@ const resumePricingDetails = [
             },
             createSeveral: {
                 available: true,
-                text: 'Create More than one'
+                text: 'Create More Than One'
             },
             sharableLink: {
                 available: false,
@@ -95,7 +95,7 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: false,
-                text: 'Change Names on Resume'
+                text: 'Change Names During Customzation'
             },
             downloadablePDF: {
                 available: true,
@@ -116,7 +116,7 @@ const resumePricingDetails = [
             },
             createSeveral: {
                 available: true,
-                text: 'Create More than one'
+                text: 'Create More Than One'
             },
             sharableLink: {
                 available: true,
@@ -124,7 +124,7 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: true,
-                text: 'Change Names on Resume'
+                text: 'Change Names During Customzation'
             },
             downloadablePDF: {
                 available: true,

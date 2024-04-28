@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import authMenuCss from './AuthMenu.module.css'
 import AuthInputs from '../Input/AuthInputs';
 import { Grid } from "@mui/material";
@@ -10,19 +10,37 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
 import unavailableImg from "../../../images/unavailable.png";
+import { setResume } from '../../../redux/states';
+import { useDispatch } from "react-redux";
+import { useConfirm } from "material-ui-confirm";
+import { useNavigate } from "react-router-dom";
 
 
 
 const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration}) => {
-
+    const dispatch = useDispatch();
+    const confirm = useConfirm();
+    const navigate = useNavigate();
+    // const [trueOpened, setTrueOpened] = useState(opened)
 
 
     const handleLogOut = () => {
 
     }    
     
-    const handleEdit = () => {
-
+    const handleReDownload = (index) => {
+        // setTrueOpened(true)
+        confirm({
+            title: `Download "${arrayDetails[index].storageDetails.name}" Resume?`,
+            description: `Click OK to continue to download preview`,
+          })
+          .then(() => {
+            dispatch(setResume(arrayDetails[index]))
+            navigate("/user/dashboard/resume?download");
+          })
+          .catch(() => {
+            return    
+          });
     }
 
     const NonMonthlySubDisplay = () => {
@@ -54,9 +72,9 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                     return (
                         <div key={index} className={authMenuCss.Item}>
                             <h5>
-                                <span onClick={handleEdit}>{item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}</span>
+                                <span onClick={() => handleReDownload (index)}>{item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}</span>
                                 <span>
-                                    <span onClick={handleEdit} style={{color: 'white', margin: '4px 4px 0 10px'}}><EditNoteIcon fontSize='medium' /></span>
+                                    <span style={{color: 'white', margin: '4px 4px 0 10px'}}><EditNoteIcon fontSize='medium' /></span>
                                     <span style={{color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px'}}><DeleteForeverIcon fontSize='small' /></span>
                                 </span>
                             </h5>
