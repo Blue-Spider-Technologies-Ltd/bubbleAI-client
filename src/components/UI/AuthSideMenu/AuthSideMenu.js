@@ -1,19 +1,21 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 import authMenuCss from './AuthMenu.module.css'
 import AuthInputs from '../Input/AuthInputs';
 import { Grid } from "@mui/material";
 import { ButtonTransparentSquare, ButtonOutlineGreen } from '../Buttons/Buttons';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import DownloadIcon from '@mui/icons-material/Download';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
 import unavailableImg from "../../../images/unavailable.png";
-import { setResume } from '../../../redux/states';
+import { setResume, setFetching, setUserResumesAll } from '../../../redux/states';
 import { useDispatch } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import { useNavigate } from "react-router-dom";
+import { checkAuthenticatedUser, errorAnimation } from '../../../utils/client-functions';
 
 
 
@@ -21,27 +23,72 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const navigate = useNavigate();
+    const isAuth = localStorage?.getItem("token")
+    const [error, setError] = useState("")
     // const [trueOpened, setTrueOpened] = useState(opened)
+
+    const errorSetter = (string) => {
+        setError(string)
+        errorAnimation()
+    }
 
 
     const handleLogOut = () => {
 
     }    
-    
+
+    const handleDeleteResume = async (index) => {
+        try {
+            //must await
+            await checkAuthenticatedUser()
+        } catch (error) {
+            dispatch(setFetching(false));
+            return navigate("/popin?resume");      
+        }
+        confirm({
+            title: `Delete "${arrayDetails[index].storageDetails.name}" Resume?`,
+            description: `Click OK to delete the selected resume forever`,
+        })
+        .then(async () => {
+            dispatch(setFetching(true))
+            const body = {
+                indexOfResume: index
+            }
+            try {
+                const response = await axios.post("/user/delete-resume", body, {
+                    headers: {
+                        "x-access-token": isAuth,
+                    },
+                });
+                dispatch(setUserResumesAll(response.data.resume))
+                dispatch(setFetching(false))
+            } catch (error) {
+                dispatch(setFetching(false))
+                errorSetter(error.response.data.error)
+            }
+        })
+        .catch(() => {
+            return    
+        });
+    }
+
+        
     const handleReDownload = (index) => {
         // setTrueOpened(true)
         confirm({
             title: `Download "${arrayDetails[index].storageDetails.name}" Resume?`,
             description: `Click OK to continue to download preview`,
-          })
-          .then(() => {
+        })
+        .then(() => {
+            //set only one resume to download
             dispatch(setResume(arrayDetails[index]))
             navigate("/user/dashboard/resume?download");
-          })
-          .catch(() => {
+        })
+        .catch(() => {
             return    
-          });
+        });
     }
+
 
     const NonMonthlySubDisplay = () => {
         return (
@@ -66,20 +113,27 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
     }
 
     const ItemsNamesArray = () => {
+
         return (
             <div className={authMenuCss.Items}>
                 {arrayDetails.map((item, index) => {
                     return (
                         <div key={index} className={authMenuCss.Item}>
-                            <h5>
-                                <span onClick={() => handleReDownload (index)}>{item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}</span>
-                                <span>
-                                    <span style={{color: 'white', margin: '4px 4px 0 10px'}}><EditNoteIcon fontSize='medium' /></span>
-                                    <span style={{color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px'}}><DeleteForeverIcon fontSize='small' /></span>
+                            <div onClick={() => handleReDownload (index)} style={{width: "90%"}}>
+                                <span style={{position: "relative", top: ".6rem", fontWeight: "700"}}>{item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}</span>
+                                <span style={{color: 'white', margin: '4px 4px 0 10px', float: "right"}}><DownloadIcon fontSize='medium' /></span>
+                            </div>
+                            <div>
+                                <span 
+                                    onClick={() => handleDeleteResume(index)} 
+                                    style={{color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px'}}
+                                >
+                                    <DeleteForeverIcon fontSize='small' />
                                 </span>
-                            </h5>
+                            </div>
 
                         </div>
+
                     )
                     
                 })}
@@ -89,6 +143,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
 
     return (
         <div className={opened ? authMenuCss.ContainerOpen : authMenuCss.ContainerClose}>
+            <div className="error">{error}</div>
             <AuthInputs placeholder={seacrhBarPlaceholder} hidden={hidden} inputType="search" inputGridSm={12} inputGrid={4} mb={2} required={true} />
             
             <div className={authMenuCss.InnerContainer}>

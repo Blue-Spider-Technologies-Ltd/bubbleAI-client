@@ -75,7 +75,6 @@ const Login = () => {
             localStorage.setItem('token', userDetails)
             setError("")
             
-        console.log(loading);
             setLoading(false)
             //If user was redirected to login from a page because of a service request to a protected route
             if (queryString.length >= 1)  {

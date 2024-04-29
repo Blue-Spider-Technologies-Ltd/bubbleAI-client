@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
 import { errorAnimation, checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, setResume, setFetching } from "../../redux/states";
+import { setUser, setResume, setFetching, setUserResumesAll } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -22,7 +22,7 @@ import { useConfirm } from "material-ui-confirm";
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, showCheckout } = useSelector((state) => state.stateData);
+  const { user, showCheckout, userResumesAll } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,6 @@ const CustomizeResume = () => {
   const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
   const [isSubscribed, setIsSubscribed] = useState(true);
   const [subDuration, setSubDuration] = useState("");
-  const [userResumes, setUserResumes] = useState([])
   const [basicFaded, setBasicFaded] = useState(false)
   const [eduFaded, setEduFaded] = useState(true)
   const [workFaded, setWorkFaded] = useState(true)
@@ -39,7 +38,6 @@ const CustomizeResume = () => {
   const [certFaded, setCertFaded] = useState(true)
   const [pubFaded, setPubFaded] = useState(true)
   const [interestFaded, setInterestFaded] = useState(true)
-
 
 
   const isAuth = localStorage?.getItem("token");
@@ -73,7 +71,7 @@ const CustomizeResume = () => {
         await checkAuthenticatedUser()
       } catch (error) {
         dispatch(setFetching(false));
-        return navigate("/popin");      
+        return navigate("/popin?resume");      
       }
 
       //Get Data if User is Authorized by subscription
@@ -86,7 +84,7 @@ const CustomizeResume = () => {
 
         if (response?.data?.status === "unauthenticated") {
           localStorage?.removeItem("token");
-          return navigate("/popin");
+          return navigate("/popin?resume");
         }
 
         const {
@@ -117,7 +115,7 @@ const CustomizeResume = () => {
           profSummary: profSummary || "",
         });
 
-        setUserResumes(resumes)
+        dispatch(setUserResumesAll(resumes))
         setIsSubscribed(resumeSubscriptions?.subscribed)
         setSubDuration(resumeSubscriptions?.duration)
         dispatch(setUser(response.data.user));
@@ -134,8 +132,6 @@ const CustomizeResume = () => {
     };
 
     populateUser();
-
-
       
   }, [navigate, dispatch, isAuth]);
 
@@ -496,7 +492,7 @@ const CustomizeResume = () => {
         errorSetter("We are being throttled, try again after a while");
         return
       }
-      // dispatch(setResume(response.data.resumeData));
+
       const now = new Date().getTime();
       //save a copy for later incase user doesn't finish now
       let resumeObjforLocal = {
@@ -664,7 +660,7 @@ const CustomizeResume = () => {
         seacrhBarPlaceholder="Search by resume name"
         hidden={!authMenuOpen}
         resumeSubDuration={subDuration}
-        arrayDetails={userResumes}
+        arrayDetails={userResumesAll}
       />
 
       <div style={{ width: "100%", padding: "0" }}>
@@ -700,6 +696,7 @@ const CustomizeResume = () => {
               <h4>Let's start with some BASIC INFO...</h4>
               <Grid container>
                 <AuthInput
+                  id={basicInfo.firstName}
                   value={basicInfo.firstName}
                   inputType="text"
                   inputGridSm={12}
@@ -710,6 +707,7 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("firstName")}
                 />
                 <AuthInput
+                  id={basicInfo.lastName}
                   value={basicInfo.lastName}
                   inputType="text"
                   inputGridSm={12}
@@ -720,6 +718,7 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("lastName")}
                 />
                 <AuthInput
+                  id={basicInfo.email}
                   value={basicInfo.email}
                   inputType="email"
                   inputGridSm={12}
@@ -735,6 +734,7 @@ const CustomizeResume = () => {
                   </div>
                 </div>
                 <AuthInput
+                  id={basicInfo.dob}
                   value={basicInfo.dob}
                   placeholder="Date of Birth"
                   inputType="date"
@@ -745,6 +745,7 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("dob")}
                 />
                 <AuthInput
+                  id={basicInfo.mobile}
                   value={basicInfo.mobile}
                   label="Mobile"
                   inputType="mobile"
@@ -755,6 +756,7 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("mobile")}
                 />
                 <AuthInput
+                  id={basicInfo.jobPosition}
                   value={basicInfo.jobPosition}
                   label="Job Position"
                   inputType="text"
@@ -765,6 +767,7 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("jobPosition")}
                 />
                 <AuthInput
+                  id={basicInfo.street}
                   value={basicInfo.street}
                   label="Apt No., Street & City"
                   inputType="text"
@@ -775,6 +778,7 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("street")}
                 />
                 <AuthInput
+                  id={basicInfo.city}
                   value={basicInfo.city}
                   label="State/Region"
                   inputType="text"
@@ -785,6 +789,7 @@ const CustomizeResume = () => {
                   onChange={handleInputChange("city")}
                 />
                 <AuthInput
+                  id={basicInfo.country}
                   value={basicInfo.country}
                   label="Country"
                   inputType="select2"
@@ -801,6 +806,7 @@ const CustomizeResume = () => {
                     <AuthInput
                       key={index}
                       label="Add a link (ONLY ONE LINK PER FIELD) e.g linkedin, github or your website"
+                      id={info}
                       value={info}
                       inputType="text"
                       inputGridSm={8}
@@ -835,10 +841,12 @@ const CustomizeResume = () => {
                 </Grid>
                 
                 <AuthInput
+                  id={basicInfo.profSummary}
                   value={basicInfo.profSummary}
                   placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful"
                   multiline={true}
-                  rows={2}
+                  minRows={1}
+                  maxRows={3}
                   inputGridSm={12}
                   mb={2}
                   onChange={handleInputChange("profSummary")}
@@ -874,6 +882,7 @@ const CustomizeResume = () => {
                     <Grid container key={index} className="segment">
                       <AuthInput
                         name="institution"
+                        id={info.institution}
                         value={info.institution}
                         label="Name of Institution"
                         inputType="text"
@@ -885,6 +894,7 @@ const CustomizeResume = () => {
                       />
                       <AuthInput
                         name="degree"
+                        id={info.degree}
                         value={info.degree}
                         label="Degree Obtained & Course"
                         inputType="text"
@@ -899,6 +909,7 @@ const CustomizeResume = () => {
                       </label>
                       <AuthInput
                         name="date"
+                        id={info.date}
                         value={info.date}
                         placeholder="Graduation Date"
                         inputType="date"
@@ -968,6 +979,7 @@ const CustomizeResume = () => {
                     <Grid container className="segment" key={index}>
                       <AuthInput
                         name="company"
+                        id={info.company}
                         value={info.company}
                         label="Company/Org. Name"
                         inputType="text"
@@ -979,6 +991,7 @@ const CustomizeResume = () => {
                       />
                       <AuthInput
                         name="position"
+                        id={info.position}
                         value={info.position}
                         label="Position Held"
                         inputType="text"
@@ -990,6 +1003,7 @@ const CustomizeResume = () => {
                       />
                       <AuthInput
                         name="industry"
+                        id={info.industry}
                         value={info.industry}
                         label="Industry e.g IT"
                         inputType="text"
@@ -1001,6 +1015,7 @@ const CustomizeResume = () => {
                       />
                       <AuthInput
                         name="workLink"
+                        id={info.workLink}
                         value={info.workLink}
                         label="Related Link"
                         inputType="text"
@@ -1029,6 +1044,7 @@ const CustomizeResume = () => {
                           </label>
                           <AuthInput
                             name="dateFrom"
+                            id={info.DateFrom}
                             value={info.DateFrom}
                             placeholder="Start Date"
                             inputType="date"
@@ -1055,6 +1071,7 @@ const CustomizeResume = () => {
                           </label>
                           <AuthInput
                             name="dateTo"
+                            id={info.dateTo}
                             value={info.dateTo}
                             placeholder="End Date"
                             inputType="date"
@@ -1068,11 +1085,13 @@ const CustomizeResume = () => {
                         </div>
                       </div>
                       <AuthInput
+                        id={info.jobDesc}
                         name="jobDesc"
                         value={info.jobDesc}
                         placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful"
                         multiline={true}
-                        rows={2}
+                        minRows={1}
+                        maxRows={3}
                         inputGridSm={12}
                         onChange={(event) => handleWorkExpChange(event, index)}
                       />
@@ -1137,6 +1156,7 @@ const CustomizeResume = () => {
                     return (
                       <AuthInput
                         key={index}
+                        id={skill}
                         value={skill}
                         label="Add ONLY ONE Skill per Field"
                         inputType="text"
@@ -1226,6 +1246,7 @@ const CustomizeResume = () => {
                       >
                         <AuthInput
                           name="org"
+                          id={info.org}
                           value={info.org}
                           label="Awarding Organization"
                           inputGridSm={12}
@@ -1235,6 +1256,7 @@ const CustomizeResume = () => {
                         />
                         <AuthInput
                           name="award"
+                          id={info.award}
                           value={info.award}
                           label="Award Received"
                           inputGridSm={12}
@@ -1247,6 +1269,7 @@ const CustomizeResume = () => {
                         </label>
                         <AuthInput
                           name="date"
+                          id={info.date}
                           value={info.date}
                           placeholder="Date Awarded"
                           inputGridSm={12}
@@ -1325,6 +1348,7 @@ const CustomizeResume = () => {
                       >
                         <AuthInput
                           name="title"
+                          id={info.title}
                           value={info.title}
                           label="Publication Title"
                           inputGridSm={12}
@@ -1334,6 +1358,7 @@ const CustomizeResume = () => {
                         />
                         <AuthInput
                           name="source"
+                          id={info.source}
                           value={info.source}
                           label="Source"
                           inputGridSm={12}
@@ -1347,6 +1372,7 @@ const CustomizeResume = () => {
                         <AuthInput
                           name="date"
                           value={info.date}
+                          id={info.date}
                           placeholder="Date Awarded"
                           inputGridSm={12}
                           inputType="date"
@@ -1412,7 +1438,7 @@ const CustomizeResume = () => {
                   {interests.map((interest, index) => {
                     return (
                       <AuthInput
-                        id={index}
+                        id={interest}
                         key={index}
                         value={interest}
                         label="Add ONLY ONE Interest per field"

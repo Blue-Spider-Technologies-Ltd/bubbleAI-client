@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   messages: [],
+  userResumesAll: [],
   user: {},
   resume: {},
   email: "",
@@ -21,6 +22,10 @@ export const stateSlice = createSlice({
     setMessages: (state, action) => {
       const newArray = [...action.payload];
       state.messages = newArray
+    },
+    setUserResumesAll: (state, action) => {
+      const newArray = action.payload;
+      state.userResumesAll = newArray
     },
     setUser: (state, action) => {
       state.user = action.payload;
@@ -63,6 +68,7 @@ export const stateSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { 
   setMessages, 
+  setUserResumesAll,
   setUser, 
   setMessage, 
   deleteLastMessage,

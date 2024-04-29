@@ -82,7 +82,9 @@ const AuthInput = props => {
                     label={props.label}
                     placeholder={props.placeholder}
                     multiline
-                    rows={props.rows}
+                    rows={props?.rows}
+                    minRows={props.minRows}
+                    maxRows={props.maxRows}
                     className={classes.root} 
                     onChange={props.onChange}
                     autoComplete="off"
