@@ -58,7 +58,7 @@
     -o-border-radius: 10px;
 }
 
-.CheckoutContainer {
+.CheckoutContainer, .PlainModalOverlay {
     background-color: var(--snow);
     box-sizing: border-box;
     width: 600px;
@@ -71,6 +71,19 @@
 .CheckoutContainer h2 {
     text-align: center;
     margin-top: -2px;
+}
+
+.PlainModalOverlay {
+    text-align: center;
+    width: 500px;
+}
+
+.PlainModalOverlay h2 {
+    color: var(--navColor2);
+}
+
+.PlainModalOverlay p {
+    font-size: .85rem;
 }
 
 .SuccessFailureLogoWrap {

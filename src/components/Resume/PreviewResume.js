@@ -9,11 +9,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { setResume, setFetching } from "../../redux/states";
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Modal } from "../UI/Modal/Modal";
+import { Modal, Overlay } from "../UI/Modal/Modal";
+import ResumePricing from "../Pricing/ResumePricing"
 // import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 const PreviewResume = () => {
   const dispatch = useDispatch();
@@ -50,7 +52,7 @@ const PreviewResume = () => {
   const [workExpArray, setWorkExpArray] = useState([]);
   const [awardArray, setAwardArray] = useState([]);
   const [publications, setPublications] = useState([]);
-  //scroll to page top on render
+  const [isSubscribed, setIsSubscribed] = useState(true);
 
   useEffect(() => {
     dispatch(setFetching(true));
@@ -94,6 +96,38 @@ const PreviewResume = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY || window.pageYOffset;
+      const viewHeight = window.innerHeight || document.documentElement.clientHeight;
+
+      if (scrollPosition > (0.4 * viewHeight)) {
+        dispatch(setFetching(true));
+        axios.get('/user/get-subscription', {
+          headers: {
+            "x-access-token": isAuth,
+          },
+        })
+          .then(response => {
+            setIsSubscribed(response.data?.resumeSubscriptions);
+            dispatch(setFetching(false));
+          })
+          .catch(error => {
+            errorSetter("Looks Like you are not subscribed or an error occured, try again")
+            setIsSubscribed(false);
+            dispatch(setFetching(false));
+            console.error('Error:', error);
+          });
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
 
@@ -743,6 +777,13 @@ const PreviewResume = () => {
           header4={`Hello ${basicInfo.firstName}`}
           header3="Readying your Resume for download..."
         />
+      )}
+
+      
+      {!isSubscribed && (
+        <Overlay>
+          <ResumePricing />
+        </Overlay>
       )}
     </div>
   );

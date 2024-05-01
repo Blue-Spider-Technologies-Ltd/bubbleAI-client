@@ -11,8 +11,7 @@ import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Button
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import axios from "axios";
-import { Modal, Overlay, CheckoutSummaryModal } from "../UI/Modal/Modal";
-import ResumePricing from "../Pricing/ResumePricing"
+import { Modal, CheckoutSummaryModal, PlainModalOverlay } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
@@ -30,6 +29,9 @@ const CustomizeResume = () => {
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
   const [isSubscribed, setIsSubscribed] = useState(true);
+  const [isFirstTimeUserPopUp, setIsFirstTimeUserPopUp] = useState(false)
+  const [dobFirstUser, setDobFirstUser] = useState("")
+  const [mobileFirstUser, setMobileFirstUser] = useState("")
   const [subDuration, setSubDuration] = useState("");
   const [basicFaded, setBasicFaded] = useState(false)
   const [eduFaded, setEduFaded] = useState(true)
@@ -42,9 +44,9 @@ const CustomizeResume = () => {
 
   const isAuth = localStorage?.getItem("token");
 
-  const errorSetter = (string) => {
+  const errorSetter = async (string) => {
     setError(string)
-    errorAnimation()
+    await errorAnimation()
   }
 
   //resume data
@@ -92,7 +94,8 @@ const CustomizeResume = () => {
           lastName, 
           email, 
           dob, 
-          mobile, 
+          mobile,
+          isFirstTimeUser, 
           jobPosition, 
           street, 
           city, 
@@ -116,16 +119,12 @@ const CustomizeResume = () => {
         });
 
         dispatch(setUserResumesAll(resumes))
-        setIsSubscribed(resumeSubscriptions?.subscribed)
+        setIsFirstTimeUserPopUp(isFirstTimeUser)
         setSubDuration(resumeSubscriptions?.duration)
         dispatch(setUser(response.data.user));
         dispatch(setFetching(false));
 
       } catch (error) {
-        //Check if User is Authorized for this resource
-        if(error.response.status === 401) {
-          setIsSubscribed(false)
-        }
         dispatch(setFetching(false));
         errorSetter("Reload page to fetch data")
       }
@@ -170,6 +169,7 @@ const CustomizeResume = () => {
     } 
   }, [confirm, dispatch, navigate])
 
+
   const [linkInfo, setLinkInfo] = useState([""]);
   const [skills, addSkills] = useState([""]);
   const [interests, addInterests] = useState([""]);
@@ -206,6 +206,61 @@ const CustomizeResume = () => {
       date: "",
     },
   ]);
+
+
+/////////////////FIRST USER FUNCTIONS////////////////////////////////
+  const handleDobFirstUserInputChange = event => {
+    setDobFirstUser(event.target.value)
+  }
+
+  const handleMobileFirstUserInputChange = event => {
+    setMobileFirstUser(event)
+  }
+
+  const chengeFirstTimeUserStatus = async () => {
+    if (dobFirstUser === "" || mobileFirstUser === "") {
+      return errorSetter("Complete DoB and Mobile details")
+    }
+    try {
+      //must await
+      await checkAuthenticatedUser()
+    } catch (error) {
+        dispatch(setFetching(false));
+        return navigate("/popin?resume");      
+    }
+    dispatch(setFetching(true))
+
+    const body = {
+      dob: dobFirstUser,
+      mobile: mobileFirstUser
+    }
+    try {
+      const response = await axios.post("/user/update-first-user", body, {
+          headers: {
+              "x-access-token": isAuth,
+          },
+      });
+      if (response.status === 200) {
+        setIsFirstTimeUserPopUp(false)
+        const { dob, mobile } = response?.data; 
+        setBasicInfo(prevState => ({ 
+          ...prevState, 
+          dob: dob, 
+          mobile: mobile }))
+      } else {
+        errorSetter("Something went wrong, try again")
+      }
+      dispatch(setFetching(false))
+      console.log(basicInfo.dob)
+      return
+    } catch (error) {
+      dispatch(setFetching(false))
+      console.log(error.response)
+      errorSetter("Something went wrong")
+    }
+  }
+
+
 
   const toggleResumes = () => {
     setAuthMenuOpen(!authMenuOpen);
@@ -549,8 +604,7 @@ const CustomizeResume = () => {
   const eduInfoForwardOrBackward = (arg) => {  
     //check if required fields are filled
     if (checkEmptyStringsInObjNoExempt(eduArray) === false ) {
-      errorSetter("Complete required fields in this section to continue");
-      return;
+      return errorSetter("Complete required fields in this section to continue");    
     }
     setEduFaded(true)
     switch (arg) {
@@ -845,8 +899,7 @@ const CustomizeResume = () => {
                   value={basicInfo.profSummary}
                   placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful"
                   multiline={true}
-                  minRows={1}
-                  maxRows={3}
+                  rows={2}
                   inputGridSm={12}
                   mb={2}
                   onChange={handleInputChange("profSummary")}
@@ -1090,8 +1143,7 @@ const CustomizeResume = () => {
                         value={info.jobDesc}
                         placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful"
                         multiline={true}
-                        minRows={1}
-                        maxRows={3}
+                        rows={2}
                         inputGridSm={12}
                         onChange={(event) => handleWorkExpChange(event, index)}
                       />
@@ -1531,11 +1583,52 @@ const CustomizeResume = () => {
         />
       )}
 
-      {!isSubscribed && (
-        <Overlay>
-          <ResumePricing />
-        </Overlay>
+
+      {isFirstTimeUserPopUp  && (
+          <PlainModalOverlay>
+            <h2>Hey {basicInfo.firstName}, I am enthused to have you here!</h2>
+            <p>Kindly fill out the following information for regulatory purposes, and then I'll get you started</p>
+            <div style={{ width: "100%" }}>
+              <div className={resumeCss.DetachedLabels}>
+                Date of Birth *
+              </div>
+            </div>
+            <AuthInput
+              id={dobFirstUser}
+              value={dobFirstUser}
+              placeholder="Date of Birth"
+              inputType="date"
+              inputGridSm={12}
+              inputGrid={3}
+              mb={2}
+              required={true}
+              onChange={event => handleDobFirstUserInputChange(event)}
+            />
+
+            <div style={{ width: "100%" }}>
+              <div className={resumeCss.DetachedLabels}>
+                Your Phone Number *
+              </div>
+            </div>
+            <AuthInput
+              id={mobileFirstUser}
+              value={mobileFirstUser}
+              label="Mobile"
+              inputType="mobile"
+              inputGridSm={12}
+              inputGrid={4}
+              mb={2}
+              required={true}
+              onChange={event => handleMobileFirstUserInputChange(event)}
+            /> 
+            <div style={{width: "100%", padding: "0 30%", marginTop: "2rem"}}>
+              <ButtonSubmitGreen type="button" onClick={() => chengeFirstTimeUserStatus()}>
+                Continue
+              </ButtonSubmitGreen>  
+            </div>        
+          </PlainModalOverlay>
       )}
+
 
       {showCheckout && <CheckoutSummaryModal />}
 

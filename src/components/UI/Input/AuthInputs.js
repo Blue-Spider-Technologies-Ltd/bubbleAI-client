@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react"
-import { Grid, TextField, OutlinedInput, InputAdornment, IconButton, FormControl, InputLabel, MenuItem } from "@mui/material"
+import { Grid, TextField, TextareaAutosize, OutlinedInput, InputAdornment, IconButton, FormControl, InputLabel, MenuItem } from "@mui/material"
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { makeStyles } from "@mui/styles";
@@ -77,14 +77,11 @@ const AuthInput = props => {
     return (
         <Grid item md={props.inputGrid} xs={props.inputGridSm} px={1} mb={props.mb} sx={{boxSizing: "border-box"}}>
             {props.multiline ? 
-                <TextField
+                <TextareaAutosize 
                     id={props.id}
                     label={props.label}
                     placeholder={props.placeholder}
-                    multiline
-                    rows={props?.rows}
-                    minRows={props.minRows}
-                    maxRows={props.maxRows}
+                    rows={props.rows}
                     className={classes.root} 
                     onChange={props.onChange}
                     autoComplete="off"

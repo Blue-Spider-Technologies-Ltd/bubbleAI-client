@@ -122,6 +122,31 @@ export const Overlay = (props) => {
 }
 
 
+export const Fetching = () => {
+    return (
+        <div className={modalCss.ModalContainer}>
+            <div className={modalCss.ModalBodyTwo}>
+                <div className={modalCss.ModalBlobBg}>
+                    <img src={logoImg} alt='Bubble Ai' className={modalCss.Blinker} />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export const PlainModalOverlay = (props) => {
+
+
+    return (
+        <div className={modalCss.ModalContainer}>
+            <div className={modalCss.PlainModalOverlay}>
+                {props.children}
+            </div>
+        </div>
+    )
+}
+
+
 export const SuccessFailureModal = ({ success, fullName }) => {
 
     const navigate = useNavigate()
@@ -419,18 +444,6 @@ export const CheckoutSummaryModal = () => {
 
                 <div className={modalCss.CancelCheckout} onClick={hideCheckoutFunction} >
                     Cancel
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export const Fetching = () => {
-    return (
-        <div className={modalCss.ModalContainer}>
-            <div className={modalCss.ModalBodyTwo}>
-                <div className={modalCss.ModalBlobBg}>
-                    <img src={logoImg} alt='Bubble Ai' className={modalCss.Blinker} />
                 </div>
             </div>
         </div>
