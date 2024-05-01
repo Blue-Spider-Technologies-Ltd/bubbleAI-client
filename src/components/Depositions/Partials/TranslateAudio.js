@@ -3,7 +3,7 @@ import depoCss from '../Depositions.module.css';
 import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from "@mui/material";
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Modal } from '../../UI/Modal/Modal';
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -14,12 +14,16 @@ import { useReactToPrint  } from 'react-to-print';
 import { useConfirm } from "material-ui-confirm";
 import AuthInput from '../../UI/Input/AuthInputs';
 import { LANGUAGES } from '../../../utils/languages';
+import { setError } from '../../../redux/states';
+import { errorAnimation } from '../../../utils/client-functions';
 
 
 
 const TranslateAudio = (props) => {
     const confirm = useConfirm();
     const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const { error } = useSelector(state => state.stateData)
     const isAuth = localStorage?.getItem('token')
     const inputRef = useRef()
     const printRef = useRef()
@@ -27,11 +31,15 @@ const TranslateAudio = (props) => {
     const [translations, setTranslations] = useState([]);
     const [translating, setTranslating] = useState(false);
     const [file, setFile] = useState(null);
-    const [error, setError] = useState(false);
     const [languageSelectError, setLanguageSelectError] = useState(false);
     const [language, setLanguage] = useState('');
     const [progressPercentage, setProgressPercentage] = useState(0);
     const [progressStatus, setProgressStatus] = useState('Starting...');
+
+    const errorSetter = (string) => {
+        dispatch(setError(string))
+        errorAnimation()
+    }
     
     const handleDrop = e => {
         e.preventDefault();
@@ -67,7 +75,7 @@ const TranslateAudio = (props) => {
         const authUser =  jwt_decode(isAuth)
         if (isAuth && (now < authUser.expiration)) {
             if (!file) {
-                setError('No file audio selected');
+                errorSetter('No file/audio selected');
                 return
             }
             if (language === '' || language === undefined ) {
@@ -86,7 +94,6 @@ const TranslateAudio = (props) => {
             try {
 
                 setTranslating(true)
-                setError('')
         
                 const formData = new FormData();
                 formData.append('language', language);
@@ -118,7 +125,7 @@ const TranslateAudio = (props) => {
     
             } catch (error) {
                 setTranslating(false)
-                setError(error.response.data.error)
+                errorSetter(error.response.data.error)
                 eventSource.close();
             }
         } else {

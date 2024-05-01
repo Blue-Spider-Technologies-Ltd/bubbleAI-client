@@ -4,17 +4,19 @@ import { Input } from "../components/UI/Input/Input";
 import { ButtonSubmitBlack } from "../components/UI/Buttons/Buttons";
 import { Send } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import { errorAnimation } from "../utils/client-functions";
-// import { checkAuthenticatedUser } from "../../utils/client-functions";
+import { setError } from "../redux/states";
 
 
 // const screenWidth = window.innerWidth
 
 const AdminLogin = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState('')
+    const dispatch = useDispatch();
+    const { error } = useSelector(state => state.stateData)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState({
         email: '',
@@ -23,7 +25,7 @@ const AdminLogin = () => {
 
     
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
 
@@ -78,7 +80,6 @@ const AdminLogin = () => {
     }
 
     const handleInputChange = (prop) => (event) => {
-        setError("")
         setData({ ...data, [prop]: event.target.value});
     };
 

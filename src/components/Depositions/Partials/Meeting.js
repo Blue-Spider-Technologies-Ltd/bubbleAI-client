@@ -3,12 +3,13 @@ import { Grid } from "@mui/material";
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
-import { setMeeting, setTranscriptActivityStarted, setFetching } from '../../../redux/states';
+import { setMeeting, setTranscriptActivityStarted, setFetching, setError } from '../../../redux/states';
 import AuthInput from '../../UI/Input/AuthInputs';
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Alert from '@mui/material/Alert';
 import CustomizedAccordions from '../../UI/CustomizedAccordions/CustomizedAccordions';
+import { errorAnimation } from '../../../utils/client-functions';
 import axios from 'axios'
 
 const Meeting = (props) => {
@@ -16,8 +17,7 @@ const Meeting = (props) => {
     const confirm = useConfirm();
     const navigate = useNavigate()
     const isAuth = localStorage?.getItem('token')
-    const { meeting } = useSelector(state => state.stateData)
-    const [error, setError] = useState(false);
+    const { meeting, error } = useSelector(state => state.stateData)
     const [meetingTitle, setMeetingTitle] = useState("");
     const [meetingStarted, setMeetingStarted] = useState(false)
     const [participants, addParticipants] = useState([
@@ -26,10 +26,14 @@ const Meeting = (props) => {
             transcripts : []
         }
     ]);
+
+    const errorSetter = (string) => {
+        dispatch(setError(string))
+        errorAnimation()
+    }
     
     //////Participants HANDLERS
     const handleAddParticipant = () => {
-        setError("")
         const newPartcipant = {
             name: "",
             transcripts: []
@@ -37,16 +41,15 @@ const Meeting = (props) => {
         if(participants.length < 10) {
             return addParticipants([...participants, newPartcipant])
         }
-        setError("You can add a maximum of 10 participants")
+        errorSetter("You can add a maximum of 10 participants")
     }
     const handleDeleteParticipant = () => {
-        setError("")
         if(participants.length > 1) {
             const prevParticipants = [...participants]
             prevParticipants.pop()
             return addParticipants([...prevParticipants])
         }
-        setError("Meeting must have participants")
+        errorSetter("Meeting must have participants")
     }
     const handleParticipantChange = (event, index) => {
         const prevParticipants = [...participants];
@@ -102,15 +105,14 @@ const Meeting = (props) => {
         } catch (error) {
             console.log(error);
             dispatch(setFetching(false))
-            setError(error.response ? error.response.data.error : error.message);
+            errorSetter(error.response ? error.response.data.error : error.message);
         }
     }
 
     const handleMeetingStart = async (e) => {
         e.preventDefault()
-        setError('')
-        if (meetingTitle === '') return setError('Meeting must have a title');
-        if (participants.length < 2) return setError('Meeting must have at least 2 Participants');
+        if (meetingTitle === '') return errorSetter('Meeting must have a title');
+        if (participants.length < 2) return errorSetter('Meeting must have at least 2 Participants');
         dispatch(setFetching(true))
 
         try {
@@ -149,8 +151,7 @@ const Meeting = (props) => {
             }
         } catch (error) {
             dispatch(setFetching(false))
-            console.log(error)
-            setError(error.response.data.error)
+            errorSetter(error.response.data.error)
 
         }
     }

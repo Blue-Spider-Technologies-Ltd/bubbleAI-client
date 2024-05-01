@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
 import { errorAnimation, checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, setResume, setFetching, setUserResumesAll } from "../../redux/states";
+import { setUser, setResume, setFetching, setUserResumesAll, setError } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -21,14 +21,12 @@ import { useConfirm } from "material-ui-confirm";
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, showCheckout, userResumesAll } = useSelector((state) => state.stateData);
+  const { user, showCheckout, userResumesAll, error } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [progressStatus, setProgressStatus] = useState('Creating your Resume...');
-  const [isSubscribed, setIsSubscribed] = useState(true);
   const [isFirstTimeUserPopUp, setIsFirstTimeUserPopUp] = useState(false)
   const [dobFirstUser, setDobFirstUser] = useState("")
   const [mobileFirstUser, setMobileFirstUser] = useState("")
@@ -44,9 +42,9 @@ const CustomizeResume = () => {
 
   const isAuth = localStorage?.getItem("token");
 
-  const errorSetter = async (string) => {
-    setError(string)
-    await errorAnimation()
+  const errorSetter = (string) => {
+    dispatch(setError(string))
+    errorAnimation()
   }
 
   //resume data
@@ -75,7 +73,6 @@ const CustomizeResume = () => {
         dispatch(setFetching(false));
         return navigate("/popin?resume");      
       }
-
       //Get Data if User is Authorized by subscription
       try {
         const response = await axios.get("/user/resume", {
@@ -117,6 +114,7 @@ const CustomizeResume = () => {
           country: country || "",
           profSummary: profSummary || "",
         });
+        
 
         dispatch(setUserResumesAll(resumes))
         setIsFirstTimeUserPopUp(isFirstTimeUser)
@@ -168,7 +166,6 @@ const CustomizeResume = () => {
 
     } 
   }, [confirm, dispatch, navigate])
-
 
   const [linkInfo, setLinkInfo] = useState([""]);
   const [skills, addSkills] = useState([""]);
@@ -255,11 +252,9 @@ const CustomizeResume = () => {
       return
     } catch (error) {
       dispatch(setFetching(false))
-      console.log(error.response)
       errorSetter("Something went wrong")
     }
   }
-
 
 
   const toggleResumes = () => {
@@ -562,7 +557,6 @@ const CustomizeResume = () => {
       eventSource.close();
       navigate("/user/dashboard/resume?preview");
     } catch (error) {
-      console.log(error);
       setLoading(false);
       errorSetter("We are being throttled, try again after a while");
       eventSource.close();
@@ -741,9 +735,9 @@ const CustomizeResume = () => {
               <span>3</span>Download
             </div>
           </div>
-          
+
           <form method="post" onSubmit={handleFormSubmit}>
-            <div className="error">{error}</div>
+          <div className="error">{error}</div>
 
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>

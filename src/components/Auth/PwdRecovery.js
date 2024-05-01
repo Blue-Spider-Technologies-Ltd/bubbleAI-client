@@ -9,18 +9,19 @@ import { Link } from "@mui/material";
 import { Send, CheckCircle } from '@mui/icons-material';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import PasswordChecklist from "react-multiple-password-validator"
 import { errorAnimation } from "../../utils/client-functions";
+import { setError } from "../../redux/states";
 
 
 const screenWidth = window.innerWidth
 
 const PwdRecovery = () => {
-    const { email } = useSelector(state => state.stateData)
+    const dispatch = useDispatch();
+    const { email, error } = useSelector(state => state.stateData)
     const navigate = useNavigate();
-    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [pwdChecklist, showPwdChecklist] = useState(false)
     const [isPwdChanged, setIsPwdChanged] = useState(false)
@@ -37,7 +38,7 @@ const PwdRecovery = () => {
     const capitalLength = 1
 
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
     
@@ -51,7 +52,6 @@ const PwdRecovery = () => {
     //Login submit handler
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        setError("")
         setLoading(true)
         const recoveryData = {
             email: data.email,
@@ -82,7 +82,6 @@ const PwdRecovery = () => {
     };
 
     const handleInputChange = (prop) => (event) => {
-        setError("")
         setData({ ...data, [prop]: event.target.value});
     };
     return (

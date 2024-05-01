@@ -3,7 +3,7 @@ import resumeCss from './Resume.module.css'
 import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
@@ -18,13 +18,14 @@ import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
+import { setError } from "../../redux/states";
 const screenWidth = window.innerWidth
 
 const DownloadResume = () => {
-    const { resume } = useSelector(state => state.stateData)
+    const { resume, error } = useSelector(state => state.stateData)
+    const dispatch = useDispatch();
     const navigate = useNavigate()
     const componentRef = useRef();
-    const [error, setError] = useState("")
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
     const [storageDetails, setStorageDetails] = useState({
         name: "",
@@ -32,9 +33,8 @@ const DownloadResume = () => {
     })
     const isAuth = localStorage?.getItem('token')
 
-
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
     //Option for carousel in template section

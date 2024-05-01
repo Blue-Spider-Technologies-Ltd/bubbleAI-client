@@ -13,6 +13,7 @@ import { useAudioRecorder, AudioRecorder } from 'react-audio-voice-recorder';
 import axios from 'axios'
 import { setMeeting } from '../../../redux/states';
 import { useDispatch } from "react-redux";
+import { errorAnimation } from '../../../utils/client-functions';
 import { ButtonThin } from '../Buttons/Buttons';
 import ReactAudioPlayer from 'react-audio-player';
 import { Puff } from 'react-loader-spinner';
@@ -96,11 +97,15 @@ export default React.memo(function CustomizedAccordions(props) {
   const [expanded, setExpanded] = React.useState(null);
   const [expandedInner, setExpandedInner] = React.useState(null);
   const [errorRec, setErrorRec] = React.useState('');
-  const [error, setError] = React.useState('');
   const [selectedParticipant, setSelectedParticipant] = React.useState(null);
   const [audioSrc, setAudioSrc] = React.useState(null)
   const [isGettingAudioSrc, setIsGettingAudioSrc] = React.useState(false)
   const [isFetchingTranscript, setIsFetchingTranscript] = React.useState(false)
+
+  const errorSetter = (string) => {
+    setErrorRec(string)
+    errorAnimation()
+}
 
   const getParticipantFirstName = (str) => {
     const index = str.indexOf(" ");
@@ -114,8 +119,7 @@ export default React.memo(function CustomizedAccordions(props) {
       echoCancellation: true,
     },
     (err) => {
-      console.error(err)
-      setErrorRec(err.message)
+      errorSetter(err.message)
     } // onNotAllowedOrFound
   );
 
@@ -123,7 +127,6 @@ export default React.memo(function CustomizedAccordions(props) {
 
     try {
       setIsFetchingTranscript(true)
-      setErrorRec('')
 
       const formData = new FormData();
       formData.append('audio', blob, 'audio.mp3');
@@ -145,7 +148,7 @@ export default React.memo(function CustomizedAccordions(props) {
     } catch (error) {
         console.error(error)
         setIsFetchingTranscript(false)
-        setError("We are being throttled, try again after a while")
+        errorSetter("We are being throttled, try again after a while")
     }
 
   };
@@ -155,8 +158,6 @@ export default React.memo(function CustomizedAccordions(props) {
   const handlePlay = async (index, audioId) => {
     try {
       setIsGettingAudioSrc(true)
-      setErrorRec('')
-      setError('')
       const data = {
         participant: props.participants[selectedParticipant].name,
         audioId: audioId,
@@ -176,13 +177,12 @@ export default React.memo(function CustomizedAccordions(props) {
       setAudioSrc(audioURL);
       setIsGettingAudioSrc(false)
       if(response.status === 500) {
-        setErrorRec("We are being throttled, try again after a while")
+        errorSetter("We are being throttled, try again after a while")
       }
 
     } catch (error) {
-        console.error(error)
-        setErrorRec("Oops. Please Try Again")
-        setIsGettingAudioSrc(false)
+      errorSetter("Oops. Please Try Again")
+      setIsGettingAudioSrc(false)
     }
   };
 

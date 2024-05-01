@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Grid } from "@mui/material";
 import { AdminButtonCard } from "../components/UI/Buttons/Buttons";
 import { errorAnimation, checkAuthenticatedAdmin } from "../utils/client-functions";
+import { useSelector, useDispatch } from "react-redux";
+import { setError } from "../redux/states";
 import AdminSideMenu from "../components/UI/AdminSideMenu/AdminSideMenu";
 const isAdminAuth = sessionStorage?.getItem("afd8TvhsdjwiuuvsgjhsAfgsUhjs")
 // import { checkAuthenticatedUser } from "../../utils/client-functions";
@@ -14,7 +16,8 @@ const isAdminAuth = sessionStorage?.getItem("afd8TvhsdjwiuuvsgjhsAfgsUhjs")
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState('')
+    const dispatch = useDispatch();
+    const { error } = useSelector(state => state.stateData)
     const [usersCount, setUsersCount] = useState(0)
     const [transactionsCount, setTransactionsCount] = useState(0)
     const [adminCount, setAdminCount] = useState(0)
@@ -22,7 +25,7 @@ const AdminDashboard = () => {
 
     
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
 
@@ -99,7 +102,7 @@ const AdminDashboard = () => {
         fetchTransactionsCount()
         fetchAdminCount()
         fetchCouponCount()
-    }, [navigate])
+    }, [])
 
 
     return (

@@ -10,17 +10,18 @@ import { Link } from "@mui/material";
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { errorAnimation } from "../../utils/client-functions";
+import { setError } from "../../redux/states";
 
 
 const screenWidth = window.innerWidth
 
 const Verification = () => {
-    const { email } = useSelector(state => state.stateData)
+    const { email, error } = useSelector(state => state.stateData)
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
         email: email || "",
@@ -31,7 +32,7 @@ const Verification = () => {
     const [isZero, setIsZero] = useState(false);
 
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
 
@@ -54,12 +55,10 @@ const Verification = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        setError("")
         setLoading(true)
         try {
             const response = await axios.post('/auth/verify', data)
             setLoading(false)
-            console.log(response);
             //check for predefined errors that might not be caught by error handler
             if (response.data.status === "error") {
                 errorSetter(response.data.message)
@@ -70,7 +69,6 @@ const Verification = () => {
 
         } catch (error) {
             setLoading(false)
-            console.log(error.response.data.mesage);
             errorSetter(error.response.data.message)
         }
 
@@ -84,12 +82,11 @@ const Verification = () => {
             const response = await axios.post('/auth/resend-email-code', data)
             console.log(response);
         } catch (error) {
-            
+            errorSetter(error.response.message)
         }
     };
 
     const handleInputChange = (prop) => (event) => {
-        setError("")
         setData({ ...data, [prop]: event.target.value});
     };
     return (

@@ -10,10 +10,15 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useReactToPrint } from "react-to-print";
 import { useConfirm } from "material-ui-confirm";
+import { useSelector, useDispatch } from "react-redux";
+import { setError } from "../../../redux/states";
+import { errorAnimation } from "../../../utils/client-functions";
 
 const TranscribeAudio = (props) => {
   const confirm = useConfirm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error } = useSelector(state => state.stateData)
   const isAuth = localStorage?.getItem("token");
   const inputRef = useRef();
   const printRef = useRef();
@@ -21,9 +26,13 @@ const TranscribeAudio = (props) => {
   const [transcripts, setTranscripts] = useState([]);
   const [transcribing, setTranscribing] = useState(false);
   const [file, setFile] = useState(null);
-  const [error, setError] = useState(false);
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [progressStatus, setProgressStatus] = useState('Starting...');
+  
+  const errorSetter = (string) => {
+    dispatch(setError(string))
+    errorAnimation()
+}
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -60,7 +69,7 @@ const TranscribeAudio = (props) => {
     const authUser = jwt_decode(isAuth);
     if (isAuth && now < authUser.expiration) {
       if (!file) {
-        setError("No file audio selected");
+        errorSetter("No file/audio selected");
         return;
       }
       //get event progress
@@ -74,7 +83,6 @@ const TranscribeAudio = (props) => {
       };
       try {
         setTranscribing(true);
-        setError("");
 
         const formData = new FormData();
         formData.append("audio", file, file.name);
@@ -105,7 +113,7 @@ const TranscribeAudio = (props) => {
         eventSource.close();
       } catch (error) {
         setTranscribing(false);
-        setError(error.response.data.error);
+        errorSetter(error.response.data.error);
         eventSource.close();
       }
     } else {

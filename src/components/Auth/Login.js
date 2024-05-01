@@ -9,8 +9,8 @@ import { Send, Google, Apple } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
-import { useDispatch } from "react-redux";
-import { setEmail } from "../../redux/states";
+import { useDispatch, useSelector } from "react-redux";
+import { setEmail, setError } from "../../redux/states";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 
 
@@ -18,9 +18,9 @@ const screenWidth = window.innerWidth
 
 const Login = () => {
     const dispatch = useDispatch();
+    const { error } = useSelector(state => state.stateData)
     const location = useLocation();
     const navigate = useNavigate();
-    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [pwdRec, setPwdRec] = useState(false)
     const [data, setData] = useState({
@@ -29,7 +29,7 @@ const Login = () => {
     })
 
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
 
@@ -62,7 +62,6 @@ const Login = () => {
     //Login submit handler
     const handleFormSubmitLogin = async (e) => {
         e.preventDefault()
-        setError("")
         setLoading(true)
         
         const userData = {
@@ -73,7 +72,6 @@ const Login = () => {
             const response = await axios.post('/auth/login', userData)
             let userDetails = response?.data?.user
             localStorage.setItem('token', userDetails)
-            setError("")
             
             setLoading(false)
             //If user was redirected to login from a page because of a service request to a protected route
@@ -90,7 +88,6 @@ const Login = () => {
             }
         } catch (error) {
             setLoading(false)
-            console.log(error?.response?.data?.mesage);
             errorSetter(error?.response?.data?.message);
         }
 
@@ -99,7 +96,6 @@ const Login = () => {
     //password recovery handler
     const handleFormSubmitPwdRecovery= async (e) => {
         e.preventDefault()
-        setError("")
         setLoading(true)
         const email = {
             email: data.email
@@ -107,7 +103,6 @@ const Login = () => {
         try {
             const response = await axios.post('/auth/pwd-recover', email)
             console.log(response);
-            setError("");
             setLoading(false)
             dispatch(setEmail(data.email))
             //navigate to reset password
@@ -115,7 +110,6 @@ const Login = () => {
 
         } catch (error) {
             setLoading(false)
-            console.log(error.response.data.mesage);
             errorSetter(error.response.data.message);
         }
 
@@ -123,7 +117,6 @@ const Login = () => {
 
 
     const handleInputChange = (prop) => (event) => {
-        setError("")
         setData({ ...data, [prop]: event.target.value});
     };
     return (

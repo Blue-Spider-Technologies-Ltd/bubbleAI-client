@@ -10,7 +10,7 @@ import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import categoriesData from "./categories";
 import { useSelector, useDispatch } from "react-redux";
-import { setMessages, setMessage, setUser, deleteLastMessage } from "../../redux/states";
+import { setMessages, setMessage, setUser, deleteLastMessage, setError } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 import { ThreeDots } from 'react-loader-spinner'
@@ -20,8 +20,7 @@ import axios from "axios";
 const Home = () => {
   const [isFocused, setFocused] = useState(false);
   const [chatBgFocused, setChatBgFocused] = useState(false);
-  const [error, setError] = useState("");
-  const { messages, user } = useSelector((state) => state.stateData);
+  const { messages, user, error } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ const Home = () => {
   const expiration = item?.UYiygc768FYexpUVIirationHi87f86DCCC;
 
   const errorSetter = (string) => {
-    setError(string)
+    dispatch(setError(string))
     errorAnimation()
   }
 
@@ -83,7 +82,6 @@ const Home = () => {
             dispatch(setMessages(response.data.user.messages));
             dispatch(setUser(response.data.user));
           } catch (error) {
-            console.log(error);
             errorSetter("Reload page to fetch data");
           }
         }
@@ -91,8 +89,6 @@ const Home = () => {
         //console.log("unauthenticated");
       }
     };
-
-
     populateUser();
   }, [dispatch, user, navigate, isAuth]);
 

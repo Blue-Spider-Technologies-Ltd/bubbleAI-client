@@ -35,7 +35,6 @@ export const checkAuthenticatedAdmin = async () => {
         sessionStorage?.removeItem('afd8TvhsdjwiuuvsgjhsAfgsUhjs');
         throw new Error("Invalid Session")
     }
-
 }
 
 //call AFTER EVERY setError that is NOT an empty string to animate

@@ -22,8 +22,8 @@ import failedImg from '../../../images/failed.gif';
 import { reviewDetails } from '../../../utils/reviews';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { checkAuthenticatedUser } from '../../../utils/client-functions';
-import { setFetching } from '../../../redux/states';
+import { checkAuthenticatedUser, errorAnimation } from '../../../utils/client-functions';
+import { setFetching, setError } from '../../../redux/states';
 const screenWidth = window.innerWidth;
 
 //progress bar styling
@@ -188,10 +188,9 @@ export const SuccessFailureModal = ({ success, fullName }) => {
 export const CheckoutSummaryModal = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { pricingDetails } = useSelector(state => state.stateData)
+    const { pricingDetails, error } = useSelector(state => state.stateData)
     const [loading, setLoading] = useState(false)
     const [discount, setDiscount] = useState(0)
-    const [error, setError] = useState('')
     const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const formattedPrice = pricingDetails.price?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const vat = pricingDetails.price * 0.075;
@@ -199,15 +198,19 @@ export const CheckoutSummaryModal = () => {
     const total = pricingDetails.price + vat - discount
     const formattedTotal = total?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+    const errorSetter = (string) => {
+        dispatch(setError(string))
+        errorAnimation()
+    }
+
     const hideCheckoutFunction = () => {
         dispatch(setShowCheckout(false))
     }
 
     const handleProceedToPay = async () => {
-        setError("")
         dispatch(setFetching(true))
         if(total <= 0) {
-            setError('Reload Page to fix amount')
+            errorSetter('Reload Page to fix amount')
             dispatch(setFetching(false))
             return
         }
@@ -245,7 +248,7 @@ export const CheckoutSummaryModal = () => {
             
             window.location.href = response.data.data.link
         } catch (error) {
-            setError(error.response.data)
+            errorSetter(error.response.data)
             dispatch(setFetching(false))
         }
 

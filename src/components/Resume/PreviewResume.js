@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
 import { errorAnimation } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
-import { setResume, setFetching } from "../../redux/states";
+import { setResume, setFetching, setError } from "../../redux/states";
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Modal, Overlay } from "../UI/Modal/Modal";
@@ -20,14 +20,13 @@ import axios from "axios";
 const PreviewResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { resume } = useSelector((state) => state.stateData);
+  const { resume, error } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
 
   const errorSetter = (string) => {
-    setError(string)
+    dispatch(setError(string))
     errorAnimation()
   }
 
@@ -118,7 +117,6 @@ const PreviewResume = () => {
             errorSetter("Looks Like you are not subscribed or an error occured, try again")
             setIsSubscribed(false);
             dispatch(setFetching(false));
-            console.error('Error:', error);
           });
         window.removeEventListener('scroll', handleScroll);
       }
@@ -198,7 +196,6 @@ const PreviewResume = () => {
       setLoading(false);
       navigate("/user/dashboard/resume?download");
     } catch (error) {
-      console.log(error);
       errorSetter("Try again");
     }
   };

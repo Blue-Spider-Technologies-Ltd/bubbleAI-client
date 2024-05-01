@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from 'react';
-import { useDispatch } from "react-redux";
-import { setFetching } from '../../redux/states';
+import { useDispatch, useSelector } from "react-redux";
+import { setFetching, setError } from '../../redux/states';
 import { Grid } from "@mui/material"
 import PriceCard from '../UI/PriceCard/PriceCard';
 import { fetchPrice, fetchCurrency, errorAnimation } from '../../utils/client-functions';
@@ -9,19 +9,18 @@ import { fetchPrice, fetchCurrency, errorAnimation } from '../../utils/client-fu
 //////This page contains CSS from HOME.CSS and INDEX.CSS
 const FileTranscriptionPricing = () => {
     const dispatch = useDispatch()
+    const { error } = useSelector(state => state.stateData)
     const [pricePerUse, setPricePerUse] = useState(0)
     const [pricePerWeek, setPricePerWeek] = useState(0)
     const [pricePerMonth, setPricePerMonth] = useState(0)
     const [currency, setCurrency] = useState('')
-    const [error, setError] = useState('')
 
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
 
     useEffect(() => {
-        setError('')
         dispatch(setFetching(true))
         const fetchData = async () => {
             try {

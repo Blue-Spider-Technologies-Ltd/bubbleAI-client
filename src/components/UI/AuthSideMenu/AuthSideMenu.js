@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import axios from 'axios';
 import authMenuCss from './AuthMenu.module.css'
 import AuthInputs from '../Input/AuthInputs';
@@ -11,7 +11,7 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
 import unavailableImg from "../../../images/unavailable.png";
-import { setResume, setFetching, setUserResumesAll } from '../../../redux/states';
+import { setResume, setFetching, setUserResumesAll, setError } from '../../../redux/states';
 import { useDispatch } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import { useNavigate } from "react-router-dom";
@@ -24,11 +24,8 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
     const confirm = useConfirm();
     const navigate = useNavigate();
     const isAuth = localStorage?.getItem("token")
-    const [error, setError] = useState("")
-    // const [trueOpened, setTrueOpened] = useState(opened)
-
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
 
@@ -112,38 +109,35 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         )
     }
 
-    const ItemsNamesArray = () => {
-
-        return (
+    const ItemsNamesArray = () => { 
+        return ( 
             <div className={authMenuCss.Items}>
-                {arrayDetails.map((item, index) => {
-                    return (
-                        <div key={index} className={authMenuCss.Item}>
-                            <div onClick={() => handleReDownload (index)} style={{width: "90%"}}>
-                                <span style={{position: "relative", top: ".6rem", fontWeight: "700"}}>{item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}</span>
-                                <span style={{color: 'white', margin: '4px 4px 0 10px', float: "right"}}><DownloadIcon fontSize='medium' /></span>
-                            </div>
-                            <div>
-                                <span 
-                                    onClick={() => handleDeleteResume(index)} 
-                                    style={{color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px'}}
-                                >
-                                    <DeleteForeverIcon fontSize='small' />
-                                </span>
-                            </div>
-
-                        </div>
-
+                {arrayDetails.length < 1 ? ( 
+                    <div className={authMenuCss.NonMonthlySubDisplay}> 
+                        <p>You have no resumes to display. Please create one.</p> 
+                    </div> 
+                ) : ( 
+                    arrayDetails.map((item, index) => ( 
+                        <div key={index} className={authMenuCss.Item}> 
+                            <div onClick={() => handleReDownload(index)} style={{ width: "90%" }}> 
+                                <span style={{ position: "relative", top: ".6rem", fontWeight: "700" }}> {item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"} </span> 
+                                <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}> <DownloadIcon fontSize='medium' /> </span> 
+                            </div> 
+                            <div> 
+                                <span onClick={() => handleDeleteResume(index)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }} > 
+                                    <DeleteForeverIcon fontSize='small' /> 
+                                </span> 
+                            </div> 
+                        </div> )) 
                     )
-                    
-                })}
-            </div>
-        )
-    }
+                } 
+            </div> 
+        ); 
+    };
 
     return (
         <div className={opened ? authMenuCss.ContainerOpen : authMenuCss.ContainerClose}>
-            <div className="error">{error}</div>
+
             <AuthInputs placeholder={seacrhBarPlaceholder} hidden={hidden} inputType="search" inputGridSm={12} inputGrid={4} mb={2} required={true} />
             
             <div className={authMenuCss.InnerContainer}>

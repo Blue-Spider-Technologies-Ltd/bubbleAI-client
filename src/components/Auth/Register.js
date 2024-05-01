@@ -11,8 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner'
 import PasswordChecklist from "react-multiple-password-validator"
-import { useDispatch } from "react-redux";
-import { setEmail } from "../../redux/states";
+import { useDispatch, useSelector } from "react-redux";
+import { setEmail, setError } from "../../redux/states";
 import { errorAnimation } from "../../utils/client-functions";
 
 
@@ -21,6 +21,7 @@ const screenWidth = window.innerWidth
 const Register = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { error } = useSelector(state => state.stateData)
     const [user, setUser] = useState({
         firstName: '',
         lastName: '',
@@ -28,7 +29,6 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     })
-    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [pwdChecklist, showPwdChecklist] = useState(false)
     //Set password rules parameters
@@ -37,7 +37,7 @@ const Register = () => {
     const capitalLength = 1
 
     const errorSetter = (string) => {
-        setError(string)
+        dispatch(setError(string))
         errorAnimation()
     }
 
@@ -66,13 +66,13 @@ const Register = () => {
                 navigate("/verify")
 
             } catch (error) {
-                console.log(error)
                 setLoading(false)
                 errorSetter(error.response.data.message)
             }
 
         } else {
             errorSetter('password strings do not match')
+            setLoading(false)
         }
     }
 
