@@ -94,8 +94,8 @@ const CustomizeResume = () => {
           mobile,
           isFirstTimeUser, 
           jobPosition, 
-          street, 
-          city, 
+          streetCity, 
+          stateRegion, 
           country, 
           profSummary,
           resumeSubscriptions,
@@ -109,8 +109,8 @@ const CustomizeResume = () => {
           dob: dob || "",
           mobile: mobile || "",
           jobPosition: jobPosition || "",
-          street: street || "",
-          city: city || "",
+          street: streetCity || "",
+          city: stateRegion || "",
           country: country || "",
           profSummary: profSummary || "",
         });
@@ -166,6 +166,11 @@ const CustomizeResume = () => {
 
     } 
   }, [confirm, dispatch, navigate])
+
+    
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [linkInfo, setLinkInfo] = useState([""]);
   const [skills, addSkills] = useState([""]);
@@ -487,7 +492,7 @@ const CustomizeResume = () => {
   };
   const handlePubChange = (event, index) => {
     const prevPub = [...publications];
-    switch (event.target.name) {
+      switch (event.target.name) {
       case "title":
         prevPub[index].title = event.target.value;
         addPublications(prevPub);

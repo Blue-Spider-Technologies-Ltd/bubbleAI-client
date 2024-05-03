@@ -143,6 +143,11 @@ const AuthInput = props => {
                         onChange={props.onChange}
                         name={props.name}
                         value={props.value}
+                        MenuProps={{
+                            style: {
+                                zIndex: 1000000, // Increase the zIndex value to make it appear above all modals
+                            }
+                        }}
                     >
                         <MenuItem>
                             <em>{props.label}</em>

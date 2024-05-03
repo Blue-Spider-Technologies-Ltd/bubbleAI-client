@@ -47,7 +47,6 @@ const TransactionDone = () => {
                 } catch (error) {
                     setTransaction(error?.response?.data)
                     setIsCompleted(true)
-                    console.log(error?.response?.data);
                 }
             }
             completeTransaction()

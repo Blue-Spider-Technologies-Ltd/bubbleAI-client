@@ -14,7 +14,7 @@ import unavailableImg from "../../../images/unavailable.png";
 import { setResume, setFetching, setUserResumesAll, setError } from '../../../redux/states';
 import { useDispatch } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { checkAuthenticatedUser, errorAnimation } from '../../../utils/client-functions';
 
 
@@ -23,6 +23,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const navigate = useNavigate();
+    const location = useLocation();
     const isAuth = localStorage?.getItem("token")
     const errorSetter = (string) => {
         dispatch(setError(string))
@@ -31,8 +32,15 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
 
 
     const handleLogOut = () => {
-
+        localStorage?.removeItem("token");
+        navigate("/")
     }    
+
+    const handleNavigateProfile = () => {
+        const prevPath = location.pathname
+        localStorage?.setItem("prevPath", prevPath)
+        navigate("/user/dashboard/profile")
+    }
 
     const handleDeleteResume = async (index) => {
         try {
@@ -151,7 +159,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                         color="black"
                         width="90%"
                         height="100%"
-                        onClick={handleLogOut}
+                        onClick={handleNavigateProfile}
                     >
                         <ManageAccountsIcon 
                             fontSize='small' 

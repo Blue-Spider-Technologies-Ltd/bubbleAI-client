@@ -18,7 +18,7 @@ import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
-import { setError } from "../../redux/states";
+import { setError, setFetching } from "../../redux/states";
 const screenWidth = window.innerWidth
 
 const DownloadResume = () => {
@@ -81,6 +81,7 @@ const DownloadResume = () => {
     const handleResumeSave = async () => {
         const completeResume = { ...resume, storageDetails }
         try {
+            dispatch(setFetching(true));
             const response = await axios.post('/user/save-resume', completeResume, {
                 headers: {
                     'x-access-token': isAuth
@@ -90,6 +91,8 @@ const DownloadResume = () => {
             localStorage?.removeItem(
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
+            dispatch(setFetching(false));
+            navigate("/user/dashboard/resume")
         } catch (error) {
             errorSetter("Try again")
         }

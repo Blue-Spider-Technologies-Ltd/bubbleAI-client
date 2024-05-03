@@ -104,10 +104,15 @@ export const Modal = ({header3, header4, progress}) => {
 
 export const Overlay = (props) => {
     const navigate = useNavigate()
-
     const handleClick = () => {
-        navigate("/")
+        if(props.prevPath) {
+            navigate(props.prevPath)
+        } else {
+            navigate("/")
+
+        }
     }
+
     return (
         <div className={modalCss.ModalContainer}>
             <div 
