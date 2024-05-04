@@ -70,7 +70,7 @@ const Profile = () => {
                 dispatch(setFetching(false))
             } catch (error) {
                 if(error?.response?.status === 401) {
-                    localStorage.setItem("prevPath", "/dashboard/get-profile")
+                    localStorage.setItem("prevPath", "/user/dashboard/profile")
                     dispatch(setFetching(false))
                     return navigate("/popin"); 
                 }
@@ -82,7 +82,7 @@ const Profile = () => {
         populateProfile()
     }, [navigate])
    
-    
+
     const handleProfileSave = async () => {
         const isAuth = localStorage?.getItem("token");
         try {

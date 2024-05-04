@@ -7,7 +7,7 @@ import { ButtonTransparentSquare, ButtonOutlineGreen } from '../Buttons/Buttons'
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import LockResetIcon from '@mui/icons-material/LockReset';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
 import unavailableImg from "../../../images/unavailable.png";
@@ -40,6 +40,12 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         const prevPath = location.pathname
         localStorage?.setItem("prevPath", prevPath)
         navigate("/user/dashboard/profile")
+    }
+
+    const handleChangePass = () => {
+        const prevPath = location.pathname
+        localStorage?.setItem("prevPath", prevPath)
+        navigate("/user/dashboard/reset-pass")
     }
 
     const handleDeleteResume = async (index) => {
@@ -174,12 +180,12 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                         color="black" 
                         width="90%"
                         height="100%"
-                        onClick={handleLogOut}
+                        onClick={handleChangePass}
                     >
-                        <ShoppingBasketIcon 
+                        <LockResetIcon 
                             fontSize='small' 
                         /> 
-                        ORDERS
+                        RESET
                     </ButtonTransparentSquare>
                 </Grid>
 

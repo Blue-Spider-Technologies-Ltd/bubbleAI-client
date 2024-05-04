@@ -96,8 +96,11 @@ const AuthInput = props => {
                     <OutlinedInput
                         id={props.id}
                         type={showPassword ? 'text' : 'password'}
+                        label={props.label}
+                        placeholder={props.label}
                         onChange={props.onChange}
                         value={props.value}
+                        onFocus={props.onFocus}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
@@ -111,7 +114,6 @@ const AuthInput = props => {
                                 </IconButton>
                             </InputAdornment>
                         }
-                        placeholder={props.placeholder}
                     />
                 </FormControl>
             :
