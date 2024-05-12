@@ -155,7 +155,7 @@ const DashSupport = (props) => {
         setSearchString(e.target.value)
     }
 
-const searchDisplay = (
+    const searchDisplay = (
         <Grid container>
             {searchArray.map(({ title, description, onClick }, index) => (
                 <Grid item xs={12} md={4} key={index}>
@@ -170,22 +170,22 @@ const searchDisplay = (
         </Grid>
     );
 
-const normalDisplay = (
-    <Grid container>
-        {mockTests.map((test, index) => {
-            return(
-                <Grid item xs={12} md={4} key={index}>
-                    <ButtonCard 
-                        iconImg={examIconImg}
-                        title={test.title}
-                        description={test.description}
-                        onClick={test.onClick}
-                    />
-                </Grid>
-            )
-        })}
-    </Grid>
-)
+    const normalDisplay = (
+        <Grid container>
+            {mockTests.map((test, index) => {
+                return(
+                    <Grid item xs={12} md={4} key={index}>
+                        <ButtonCard 
+                            iconImg={examIconImg}
+                            title={test.title}
+                            description={test.description}
+                            onClick={test.onClick}
+                        />
+                    </Grid>
+                )
+            })}
+        </Grid>
+    )
     
 
 

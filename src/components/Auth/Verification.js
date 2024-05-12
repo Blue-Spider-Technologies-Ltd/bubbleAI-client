@@ -11,9 +11,10 @@ import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { errorAnimation } from "../../utils/client-functions";
 import { setError } from "../../redux/states";
+import { setEmail } from "../../redux/states";
 
 
 const screenWidth = window.innerWidth
@@ -22,6 +23,7 @@ const Verification = () => {
     const { email, error } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
         email: email || "",
@@ -38,10 +40,17 @@ const Verification = () => {
 
     //If email is not set for verification
     useEffect(() => {
-        if (email === "") {
+        console.log(location.search.slice(6));
+        if (email === "" && location.search.slice(6) === "") {
             navigate('/join-bubble')
         } 
-    }, [email, navigate]);
+        if (location.search.slice(6) !== "") {
+            setData({
+                ...data,
+                email: location.search.slice(6)
+            })
+        }
+    }, [email, navigate, location]);
 
     //set email verification countdown
     useEffect(() => {

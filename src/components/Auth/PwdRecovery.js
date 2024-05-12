@@ -41,6 +41,18 @@ const PwdRecovery = () => {
         dispatch(setError(string))
         errorAnimation()
     }
+
+    let isValid = false;
+    const checkPassword = (password) => {
+        const specialChars = /[!#$%&'()*+,-./:;<=>?@[\]^_{|}~]/;
+        const numbers = /[0-9]/;
+    
+        if (password.length >= 8 && specialChars.test(password) && numbers.test(password)) {
+            isValid = true;
+        } else {
+            isValid = false;
+        }
+    };
     
     //If email is not set for reset
     useEffect(() => {
@@ -53,6 +65,12 @@ const PwdRecovery = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
+        checkPassword(data.newPassword)
+        
+        if(!isValid) {
+            setLoading(false)
+            return errorSetter("Password too weak")
+        }
         const recoveryData = {
             email: data.email,
             code: data.code,
@@ -78,7 +96,7 @@ const PwdRecovery = () => {
     }
 
     const handleBlur = () => {
-        showPwdChecklist(!pwdChecklist);
+        showPwdChecklist(true);
     };
 
     const handleInputChange = (prop) => (event) => {
@@ -108,8 +126,8 @@ const PwdRecovery = () => {
                         <form onSubmit={handleFormSubmit}>
                             <Input placeholder="Code..." value={data.code} inputType="text" inputGridSm={12} onChange={handleInputChange('code')} /> 
                             <h2>Set new password</h2>
-                            <Input placeholder="New password..." value={data.newPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('newPassword')} onFocus={handleBlur} onBlur={handleBlur} />
-                            <Input placeholder="Confirm password..." value={data.confirmNewPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmNewPassword')} onFocus={handleBlur} onBlur={handleBlur} />
+                            <Input placeholder="New password..." value={data.newPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('newPassword')} onFocus={handleBlur} />
+                            <Input placeholder="Confirm password..." value={data.confirmNewPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmNewPassword')} onFocus={handleBlur} />
 
                             {pwdChecklist &&
                                 (

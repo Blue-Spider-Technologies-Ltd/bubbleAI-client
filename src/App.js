@@ -18,8 +18,12 @@ import ResetPass from './components/Dashboard/ResetPass';
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
+import logoImg from "./images/bubble-logo.png"
 
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
+const Image = () => {
+  return <img src={logoImg} alt="Logo" width={"100px"}/>;
+};
 
 const App = () => {
   const { fetching } = useSelector(state => state.stateData)
@@ -38,6 +42,7 @@ const App = () => {
         <Route path={'/user/dashboard/councellor'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/fraud-detector'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/generate-report'} element={ <UnderConstruction /> } />
+        <Route path={'/images/logo'} element={<Image />} />
         <Route path={'/popin'} element={ <Login /> } />
         <Route path={'/verify'} element={ <Verification /> } />
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />
