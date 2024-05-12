@@ -9,13 +9,15 @@ const AuthHeader = (props) => {
     return (
         <div className={authHeaderCss.ResumeInnerHeader}>
             <div className={!props.authMenuOpen ? authHeaderCss.showOptions : authHeaderCss.hideOptions} onClick={props.onClick}>
-                {!props.authMenuOpen ? 
-                    <ArrowCircleRightIcon fontSize='large' sx={{transform: "rotate(45deg)"}} />
-                 :
-                    <ArrowCircleLeftIcon fontSize='large' sx={{transform: "rotate(45deg)"}} />
+                {!props.noAuthMenu ?
+                    !props.authMenuOpen ? 
+                        <ArrowCircleRightIcon fontSize='large' sx={{transform: "rotate(45deg)"}} />
+                    :
+                        <ArrowCircleLeftIcon fontSize='large' sx={{transform: "rotate(45deg)"}} />
+                : ""
                 }
             </div>
-            <h3>{props.headerText}</h3>
+            <h3 style={{marginLeft: "80px"}}>{props.headerText}</h3>
             <Link to='/'>
                 <img src={logoImg} alt='Bubble Ai' className="Logo" />
             </Link>

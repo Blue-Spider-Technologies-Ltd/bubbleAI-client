@@ -47,6 +47,11 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         localStorage?.setItem("prevPath", prevPath)
         navigate("/user/dashboard/reset-pass")
     }
+    const handleDashSupport = () => {
+        const prevPath = location.pathname
+        localStorage?.setItem("prevPath", prevPath)
+        navigate("/user/dashboard/dash-support")
+    }
 
     const handleDeleteResume = async (index) => {
         try {
@@ -110,7 +115,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                 </div>
 
                 <h5>This feature is unavailable for your subscription tier. 
-                Upgrate to view all resumes you've ever created. Plus much more!</h5>
+                Upgrate to view all items in this category you've ever created. Plus much more!</h5>
 
                 <div style={{marginTop: "50px"}}>
                     <ButtonOutlineGreen link="/pricing" target="_blank">
@@ -195,7 +200,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                         color="black" 
                         width="90%"
                         height="100%"
-                        onClick={handleLogOut}
+                        onClick={handleDashSupport}
                     >
                         <HelpIcon 
                             fontSize='small' 

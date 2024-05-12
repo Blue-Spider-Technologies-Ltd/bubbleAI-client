@@ -125,7 +125,8 @@ const TranslateAudio = (props) => {
     
             } catch (error) {
                 setTranslating(false)
-                errorSetter(error.response.data.error)
+                const errorMessage = typeof(error.message) === "string" ? error.message : "Unauthorized"
+                errorSetter(errorMessage);
                 eventSource.close();
             }
         } else {

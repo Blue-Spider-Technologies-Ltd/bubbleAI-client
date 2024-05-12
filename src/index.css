@@ -64,7 +64,7 @@ h1 {
 }
 
 .authLogo {
-  width: 100px;
+  width: 90px;
 }
 
 .add, .delete {
@@ -332,7 +332,7 @@ audio::-webkit-media-controls-download-button {
 
 @media (max-width: 1024px) {
   .Logo {
-    width: 100px !important;
+    width: 90px !important;
   }
 }
 

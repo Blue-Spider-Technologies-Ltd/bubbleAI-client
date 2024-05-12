@@ -64,12 +64,13 @@ export const ButtonTransparent = ({type, children}) => {
     )
 }
 
-export const ButtonTransparentSquare = ({ type, onClick, color, width, height, children }) => { 
+export const ButtonTransparentSquare = ({ type, onClick, color, width, height, bgColor, children }) => { 
 
     const buttonStyle = {
         color: color,
         width: width,
-        height: height
+        height: height,
+        backgroundColor: bgColor && bgColor
     };
 
     return (
@@ -141,20 +142,25 @@ export const AdminButtonCard = ({ type, onClick, color, width, height, iconText,
 export const ButtonCard = props => {
 
     let iconImg
-    switch (props.icon) {
-        case 'meeting':
-            iconImg = <Groups3Icon sx={{fontSize: '4rem'}} />
-            break;
-        case 'transcribe':
-            iconImg = <GraphicEqIcon sx={{fontSize: '4rem'}} />
-            break;
-        case 'translate':
-            iconImg = <TranslateIcon sx={{fontSize: '4rem'}} />
-            break;        
-        default:
-            iconImg = <Groups3Icon sx={{fontSize: '4rem'}} />
-            break;
+    if (props.iconImg) {
+        iconImg = props.iconImg
+    } else {
+        switch (props.icon) {
+            case 'meeting':
+                iconImg = <Groups3Icon sx={{fontSize: '4rem'}} />
+                break;
+            case 'transcribe':
+                iconImg = <GraphicEqIcon sx={{fontSize: '4rem'}} />
+                break;
+            case 'translate':
+                iconImg = <TranslateIcon sx={{fontSize: '4rem'}} />
+                break;        
+            default:
+                iconImg = <Groups3Icon sx={{fontSize: '4rem'}} />
+                break;
+        }
     }
+
 
     return (
         <div className={buttonCss.ButtonCard} name={props.name} onClick={props.onClick} style={{width: props.width && props.width}}>

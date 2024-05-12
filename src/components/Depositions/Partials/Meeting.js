@@ -151,8 +151,12 @@ const Meeting = (props) => {
             }
         } catch (error) {
             dispatch(setFetching(false))
-            errorSetter(error.response.data.error)
-
+            if (error?.response?.data?.status) {
+                errorSetter(error.response.data.status);
+                return;
+            }
+            const errorMessage = typeof(error.message) === "string" ? error.message : "Something went wrong"
+            errorSetter(errorMessage);
         }
     }
 

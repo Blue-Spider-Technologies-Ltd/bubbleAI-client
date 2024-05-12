@@ -3,6 +3,7 @@ import resumeImg from "../../images/resume.png"
 import businessPlanImg from "../../images/business-plan.jpg";
 import productImg from "../../images/product.jpg"
 import fraudImg from "../../images/fraud-detector.jpg"
+import examImg from "../../images/exam.jpg"
 import reportImg from "../../images/report.jpg"
 import relationshipImg from "../../images/relationship.jpg"
 import sttImg from "../../images/stt2.jpg"
@@ -17,11 +18,11 @@ const categoriesData = [
         image: resumeImg
     },
     {
-        title: "Business Proposals",
-        desc: "Enter for a professional proposal, 100% conversion of potential clients",
-        isAuthURL: '/user/dashboard/business-proposals',
-        unAuthURL: '/popin?business-proposals',
-        image: bizProposalImg
+        title: "Mock Exams and Tutor",
+        desc: "Take standard time-based CBT mock: JAMB, IELTS etc. and get tutored on weak areas",
+        isAuthURL: '/user/dashboard/mock',
+        unAuthURL: '/popin?mock',
+        image: examImg
     },
     {
         title: "Depositions",
@@ -29,6 +30,13 @@ const categoriesData = [
         isAuthURL: '/user/dashboard/depositions',
         unAuthURL: '/popin?depositions',
         image: sttImg
+    },
+    {
+        title: "Business Proposals",
+        desc: "Enter for a professional proposal, 100% conversion of potential clients",
+        isAuthURL: '/user/dashboard/business-proposals',
+        unAuthURL: '/popin?business-proposals',
+        image: bizProposalImg
     },
     {
         title: "Business Plan",
@@ -45,10 +53,10 @@ const categoriesData = [
         image: productImg
     },
     {
-        title: "Personal Councellor",
-        desc: "Simulate with me to calm the tone",
-        isAuthURL: '/user/dashboard/relationship',
-        unAuthURL: '/popin?relationship',
+        title: "Professional/Career Councellor",
+        desc: "Get career and professional pointers, tailored to your needs",
+        isAuthURL: '/user/dashboard/councellor',
+        unAuthURL: '/popin?councellor',
         image: relationshipImg
     },
     {

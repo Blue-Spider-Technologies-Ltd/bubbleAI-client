@@ -41,13 +41,26 @@ const Register = () => {
         errorAnimation()
     }
 
+    let isValid = false;
+    const checkPassword = (password) => {
+        const specialChars = /[!#$%&'()*+,-./:;<=>?@[\]^_{|}~]/;
+        const numbers = /[0-9]/;
+    
+        if (password.length >= 8 && specialChars.test(password) && numbers.test(password)) {
+            isValid = true;
+        } else {
+            isValid = false;
+        }
+    };
+
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
 
-        if (user.password.length < 8) {
-            errorSetter('password too short')
-            return
+        checkPassword(user.password)
+        
+        if(!isValid) {
+            return errorSetter("Password too weak")
         }
 
         if (user.password === user.confirmPassword){
@@ -81,7 +94,7 @@ const Register = () => {
     };
 
     const handleBlur = () => {
-        showPwdChecklist(!pwdChecklist);
+        showPwdChecklist(true);
     };
       
       // Usage:
@@ -112,8 +125,8 @@ const Register = () => {
                             <Input placeholder="Last name..." value={user.lastName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('lastName')} /> 
                         </Grid>
                         <Input placeholder="Email..." value={user.email} inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
-                        <Input placeholder="Password..." value={user.password} inputType="password" inputGridSm={12} onChange={handleInputChange('password')} onFocus={handleBlur} onBlur={handleBlur} />
-                        <Input placeholder="Confirm password..." value={user.confirmPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmPassword')} onFocus={handleBlur} onBlur={handleBlur} />
+                        <Input placeholder="Password..." value={user.password} inputType="password" inputGridSm={12} onChange={handleInputChange('password')} onFocus={handleBlur} />
+                        <Input placeholder="Confirm password..." value={user.confirmPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmPassword')} onFocus={handleBlur} />
                         <Link href="/popin" className={authCss.pwdRec}>Login?</Link>
                         {pwdChecklist &&
                             (

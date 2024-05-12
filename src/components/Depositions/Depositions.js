@@ -23,6 +23,13 @@ const Depositions = () => {
     const [transcribeButton, showTranscribeButton] = useState(true)
     const [translateButton, showTranslateButton] = useState(true)
 
+    const resetButtonCardBoleans = () => {
+        dispatch(setHideCards(false))
+        showMeetingButton(true);
+        showTranscribeButton(true);
+        showTranslateButton(true);
+    }
+
     useEffect(() => {
         dispatch(setFetching(true))
         const now = Date.now()
@@ -42,6 +49,10 @@ const Depositions = () => {
         }
     }, [isAuth, navigate, dispatch])
 
+    useEffect(() => {
+        resetButtonCardBoleans()
+    }, [])
+
     const toggleOptions = () => {
         setAuthMenuOpen(!authMenuOpen)
     }
@@ -54,12 +65,6 @@ const Depositions = () => {
         showTranslateButton(prop === "translate");
     };
 
-    const resetButtonCardBoleans = () => {
-        dispatch(setHideCards(false))
-        showMeetingButton(true);
-        showTranscribeButton(true);
-        showTranslateButton(true);
-    }
 
     //CHECK WHEN A PARTICULAR BUTTONCARD IS SELECTED OVER OTHERS
     const checkMeetingBoolean = () => meetingButton &&!transcribeButton &&!translateButton;
