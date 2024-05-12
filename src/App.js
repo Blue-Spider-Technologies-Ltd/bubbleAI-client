@@ -14,6 +14,20 @@ import Pricing from './components/Pricing/Pricing';
 import TransactionDone from './components/TransactionDone/TransactionDone';
 import Profile from './components/Dashboard/Profile';
 import DashSupport from './components/Dashboard/DashSupport';
+import Acca from "./components/MockTests/Exams/Acca"
+import Cee from "./components/MockTests/Exams/Cee"
+import Ceh from "./components/MockTests/Exams/Ceh"
+import Cfa from "./components/MockTests/Exams/Cfa"
+import Cima from "./components/MockTests/Exams/Cima"
+import Cissp from "./components/MockTests/Exams/Cissp"
+import Frm from "./components/MockTests/Exams/Frm"
+import Gre from "./components/MockTests/Exams/Gre"
+import Ielts from "./components/MockTests/Exams/Ielts"
+import Neco from "./components/MockTests/Exams/Neco"
+import Pmp from "./components/MockTests/Exams/Pmp"
+import Toefl from "./components/MockTests/Exams/Toefl"
+import Utme from "./components/MockTests/Exams/Utme"
+import Wassce from "./components/MockTests/Exams/Wassce"
 import ResetPass from './components/Dashboard/ResetPass';
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
@@ -21,9 +35,6 @@ import { Fetching } from './components/UI/Modal/Modal';
 import logoImg from "./images/bubble-logo.png"
 
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
-const Image = () => {
-  return <img src={logoImg} alt="Logo" width={"100px"}/>;
-};
 
 const App = () => {
   const { fetching } = useSelector(state => state.stateData)
@@ -31,6 +42,20 @@ const App = () => {
   return (
     <ConfirmProvider>
       <Routes>
+        <Route path={'/user/dashboard/mock/acca'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/cee'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/ceh'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/cfa'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/cima'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/cissp'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/frm'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/gre'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/ielts'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/neco'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/pmp'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/toefl'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/utme'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/mock/wassce'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
         <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />
         <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
@@ -42,7 +67,7 @@ const App = () => {
         <Route path={'/user/dashboard/councellor'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/fraud-detector'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/generate-report'} element={ <UnderConstruction /> } />
-        <Route path={'/images/logo'} element={<Image />} />
+        <Route path={'/images/logo'} element={<img src={logoImg} alt="Logo" width={"100px"}/>} />
         <Route path={'/popin'} element={ <Login /> } />
         <Route path={'/verify'} element={ <Verification /> } />
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />

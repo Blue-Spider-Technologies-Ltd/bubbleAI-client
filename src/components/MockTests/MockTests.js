@@ -10,6 +10,8 @@ import { ButtonCard } from "../UI/Buttons/Buttons";
 import { Grid } from "@mui/material";
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import AuthInputs from "../UI/Input/AuthInputs";
+import { checkAuthenticatedUser } from "../../utils/client-functions";
+
 
 const DashSupport = (props) => {
     const navigate = useNavigate();
@@ -18,6 +20,8 @@ const DashSupport = (props) => {
     const [searchString, setSearchString] = useState("");
     const [searchArray, setSearchArray] = useState([]);
     const [searching, setSearching] = useState(false);
+    const screenWidth = window.innerWidth
+    const searchBarWidth = screenWidth >= 900 ? '40%' : '80%';
     
   
     const errorSetter = (string) => {
@@ -151,6 +155,20 @@ const DashSupport = (props) => {
 
     }, [searchString])
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        const checkIfAuthenticated = async () => {
+            try {
+                //must await
+                await checkAuthenticatedUser()
+            } catch (error) {
+                return navigate("/popin?mock");      
+            }
+        }
+
+        checkIfAuthenticated()
+    }, []);
+
     const handleSearchInput = (e) => {
         setSearchString(e.target.value)
     }
@@ -197,7 +215,7 @@ const DashSupport = (props) => {
             seacrhBarPlaceholder="Search already taken Exams"
             hidden={!menuOpen}
         />
-        <div style={{ width: "100%", padding: "0" }}>
+        <div style={{ width: `${searchBarWidth}`, padding: "0" }}>
             <div className="auth-bg-blob"></div>
         </div>
 
@@ -214,7 +232,7 @@ const DashSupport = (props) => {
                 10 years of randomized past questions and get tutored by Bubble Ai on your weaknesses after each mock.
             </div>
 
-            <div style={{width: "40%", margin: "auto"}}>
+            <div style={{width: searchBarWidth, margin: "auto"}}>
                 <AuthInputs 
                     value={searchString} 
                     onChange={handleSearchInput} 
