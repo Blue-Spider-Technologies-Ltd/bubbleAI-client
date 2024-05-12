@@ -17,7 +17,7 @@ const AuthHeader = (props) => {
                 : ""
                 }
             </div>
-            <h3 style={{marginLeft: "80px"}}>{props.headerText}</h3>
+            <h3 style={{marginLeft: "60px"}}>{props.headerText}</h3>
             <Link to='/'>
                 <img src={logoImg} alt='Bubble Ai' className="Logo" />
             </Link>

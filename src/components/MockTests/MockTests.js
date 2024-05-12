@@ -215,7 +215,14 @@ const normalDisplay = (
             </div>
 
             <div style={{width: "40%", margin: "auto"}}>
-                <AuthInputs value={searchString} onChange={handleSearchInput} placeholder=" Search for Exam" inputType="search" mb={2} required={true} />
+                <AuthInputs 
+                    value={searchString} 
+                    onChange={handleSearchInput} 
+                    placeholder=" Search for Exam" 
+                    inputType="search" 
+                    mb={3} 
+                    required={true} 
+                />
             </div>
 
             {!searching ? normalDisplay : searchDisplay}
