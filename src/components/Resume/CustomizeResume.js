@@ -11,7 +11,7 @@ import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Button
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import axios from "axios";
-import { Modal, CheckoutSummaryModal, PlainModalOverlay } from "../UI/Modal/Modal";
+import { Modal, PlainModalOverlay } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
@@ -21,7 +21,7 @@ import { useConfirm } from "material-ui-confirm";
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, showCheckout, userResumesAll, error } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -528,7 +528,7 @@ const CustomizeResume = () => {
     };
 
     //get event progress
-    const eventSource = new EventSource('/transcript/progress');
+    const eventSource = new EventSource('/user/progress');
     //listen for SSE
     eventSource.onmessage = (event) =>  {
         const progressUpdate = JSON.parse(event.data)
@@ -1628,8 +1628,6 @@ const CustomizeResume = () => {
           </PlainModalOverlay>
       )}
 
-
-      {showCheckout && <CheckoutSummaryModal />}
 
     </div>
   );

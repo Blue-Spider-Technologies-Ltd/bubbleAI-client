@@ -16,8 +16,8 @@ const UnderConstruction = () => {
         <div className="container-inner">
           <div className="not-found">
             <PrecisionManufacturingIcon sx={{fontSize: '3rem'}} />
-            <div style={{fontSize: '2.5rem', fontWeight: '700'}}>UNDER</div>
-            <div style={{fontSize: '5rem', fontWeight: '800'}}>CONSTRUCTION</div>
+            <div style={{fontSize: '2rem', fontWeight: '700'}}>UNDER</div>
+            <div style={{fontSize: '3.5rem', fontWeight: '800'}}>CONSTRUCTION</div>
           </div>
         </div>
       </section>

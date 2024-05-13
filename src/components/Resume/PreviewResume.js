@@ -11,7 +11,7 @@ import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Modal, Overlay } from "../UI/Modal/Modal";
 import ResumePricing from "../Pricing/ResumePricing"
-// import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
+import { CheckoutSummaryModal } from "../UI/Modal/Modal";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
 import jwt_decode from "jwt-decode";
@@ -20,7 +20,7 @@ import axios from "axios";
 const PreviewResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { resume, error } = useSelector((state) => state.stateData);
+  const { resume, error, showCheckout } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -114,7 +114,7 @@ const PreviewResume = () => {
             dispatch(setFetching(false));
           })
           .catch(error => {
-            errorSetter("Looks Like you are not subscribed or an error occured, try again")
+            errorSetter("Looks like you are not subscribe")
             setIsSubscribed(false);
             dispatch(setFetching(false));
           });
@@ -782,6 +782,9 @@ const PreviewResume = () => {
           <ResumePricing />
         </Overlay>
       )}
+
+      
+      {showCheckout && <CheckoutSummaryModal />}
     </div>
   );
 };

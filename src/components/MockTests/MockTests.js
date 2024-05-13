@@ -229,7 +229,7 @@ const DashSupport = (props) => {
 
             <div className={mockCss.DescritionCont}>
                 ACE your Professional Exams with Bubble AI's simulated time-based mock tests with over 
-                10 years of randomized past questions and get tutored by Bubble Ai on your weaknesses after each mock.
+                10 years of randomized past questions. Get tutored by Bubble Ai on your weaknesses after each mock.
             </div>
 
             <div style={{width: searchBarWidth, margin: "auto"}}>
@@ -238,8 +238,8 @@ const DashSupport = (props) => {
                     onChange={handleSearchInput} 
                     placeholder=" Search for Exam" 
                     inputType="search" 
-                    mb={3} 
-                    required={true} 
+                    mb={5} 
+                    required={true}
                 />
             </div>
 

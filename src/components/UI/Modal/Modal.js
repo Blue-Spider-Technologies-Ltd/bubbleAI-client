@@ -9,7 +9,7 @@ import bubbleBgAuthImg from '../../../images/bubblebg-auth.png';
 import logoImg from "../../../images/bubble-logo.png";
 import { Rings, Watch } from 'react-loader-spinner';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { setShowCheckout } from "../../../redux/states"
 import AuthInput from '../Input/AuthInputs';
 import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/Buttons';
@@ -155,12 +155,13 @@ export const PlainModalOverlay = (props) => {
 export const SuccessFailureModal = ({ success, fullName }) => {
 
     const navigate = useNavigate()
+    const prevPath = localStorage?.getItem("prevPath")
 
     const handleSuccess = () => {
         if (!success) {
             navigate('/pricing')
         } else {
-            navigate('/')
+            navigate(prevPath)
         }
     }
 
@@ -193,6 +194,7 @@ export const SuccessFailureModal = ({ success, fullName }) => {
 export const CheckoutSummaryModal = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
     const { pricingDetails, error } = useSelector(state => state.stateData)
     const [loading, setLoading] = useState(false)
     const [discount, setDiscount] = useState(0)
@@ -214,6 +216,8 @@ export const CheckoutSummaryModal = () => {
 
     const handleProceedToPay = async () => {
         dispatch(setFetching(true))
+        const prevPath = location.pathname
+        localStorage?.setItem("prevPath", prevPath)
         if(total <= 0) {
             errorSetter('Reload Page to fix amount')
             dispatch(setFetching(false))
