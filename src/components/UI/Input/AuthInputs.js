@@ -86,6 +86,7 @@ const AuthInput = props => {
                     onChange={props.onChange}
                     autoComplete="off"
                     required={props.required}
+                    disabled={props.disabled}
                     value={props.value}
                     name={props.name}
                 />

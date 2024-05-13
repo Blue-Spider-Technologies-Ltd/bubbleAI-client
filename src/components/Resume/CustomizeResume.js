@@ -15,6 +15,7 @@ import { Modal, PlainModalOverlay } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
+import Alert from '@mui/material/Alert';
 
 
 
@@ -424,7 +425,7 @@ const CustomizeResume = () => {
         addWorkExpArray(prevWorkExp);
         break;
       default:
-        addEduArray(prevWorkExp);
+        addWorkExpArray(prevWorkExp);
         break;
     }
   };
@@ -743,7 +744,9 @@ const CustomizeResume = () => {
 
           <form method="post" onSubmit={handleFormSubmit}>
           <div className="error">{error}</div>
-
+            <div className='explanation-points'>
+                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">The + and - buttons are to add and delete applicable fields or sections</Alert>
+            </div>
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
               <h4>Let's start with some BASIC INFO...</h4>
@@ -1140,9 +1143,10 @@ const CustomizeResume = () => {
                         id={info.jobDesc}
                         name="jobDesc"
                         value={info.jobDesc}
-                        placeholder="[Optionally] write a job description and see how I optimise it for you. Leave blank to allow me craft something beautiful"
+                        placeholder="I will craft out 7 job descriptions after careful analysis of your provided work info. You can edit it in the Preview section."
                         multiline={true}
                         rows={2}
+                        disabled={true}
                         inputGridSm={12}
                         onChange={(event) => handleWorkExpChange(event, index)}
                       />
@@ -1483,7 +1487,7 @@ const CustomizeResume = () => {
 
             {/* INTERESTS */}
             <div id="interests" className={`Segment ${interestFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Interests [Optional]</h4>
+              <h4>Interests</h4>
               <Grid container>
                 <Grid container item xs={9}>
                   {interests.map((interest, index) => {

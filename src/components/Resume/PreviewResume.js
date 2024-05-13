@@ -162,9 +162,17 @@ const PreviewResume = () => {
 
   //     /////WORK EXP HANDLERS
   const handleWorkExpChange = (event, index) => {
-    const prevWorkExp = [...workExpArray];
-    prevWorkExp[index].jobDesc = event.target.value;
-    setWorkExpArray(prevWorkExp);
+    const updatedWorkExpArray = workExpArray.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          [event.target.name]: event.target.value,
+        };
+      }
+      return item;
+    });
+  
+    setWorkExpArray(updatedWorkExpArray);
   };
 
   const handleFormSubmit = async (e) => {
@@ -509,6 +517,7 @@ const PreviewResume = () => {
                           inputType="text"
                           inputGridSm={12}
                           inputGrid={3}
+                          disabled={true}
                           mb={2}
                           required={true}
                           onChange={(event) =>

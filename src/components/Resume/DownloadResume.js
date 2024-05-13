@@ -141,7 +141,7 @@ const DownloadResume = () => {
                             <div>
                                 <Grid container>
                                     <AuthInput name="resumeName" value={storageDetails.name} label="Resume Name" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={true} onChange={handleInputChange('name')} />
-                                    <AuthInput name="desc" value={storageDetails.desc} label="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
+                                    <AuthInput name="desc" value={storageDetails.desc} placeholder="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
                                 </Grid>
                             </div>
                         </div>
