@@ -89,6 +89,16 @@ const Register = () => {
         }
     }
 
+    // const handleGoogleLogin = async () => {
+    //     try {
+    //         console.log("clicked");
+    //         const response = await axios.get('/auth/google-register');
+    //         window.location.href = response.data.authUrl;
+    //     } catch (error) {
+    //         console.error('Error initiating Google OAuth:', error);
+    //     }
+    // };
+
     const handleInputChange = (prop) => (event) => {
         setUser({ ...user, [prop]: event.target.value});
     };
@@ -165,9 +175,9 @@ const Register = () => {
                         </div>
                     </form>
                     <p><strong>Or</strong></p>
-                    <ButtonTransparent><span style={{ color: "#940101" }}><Google /></span><span>et with Google</span></ButtonTransparent>
+                    {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#940101" }}><Google /></span><span>et with Google</span></ButtonTransparent> */}
                     <p></p>
-                    <ButtonTransparent><span style={{ color: "#333333" }}><Apple /></span><span>et with Apple</span></ButtonTransparent>
+                    {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#333333" }}><Apple /></span><span>et with Apple</span></ButtonTransparent> */}
                 </div>
             </div>
         </div>        

@@ -159,10 +159,10 @@ const Login = () => {
                     </form>
                     {!pwdRec && (
                         <div>
-                            <p><strong>Or</strong></p>
-                            <ButtonTransparent><span style={{ color: "#940101"}}><Google /></span><span> Login with Google</span></ButtonTransparent>
+                            {/* <p><strong>Or</strong></p> */}
+                            {/* <ButtonTransparent><span style={{ color: "#940101"}}><Google /></span><span> Login with Google</span></ButtonTransparent> */}
                             <p></p>
-                            <ButtonTransparent><span style={{ color: "#333333"}}><Apple /></span><span> Login with Apple</span></ButtonTransparent>
+                            {/* <ButtonTransparent><span style={{ color: "#333333"}}><Apple /></span><span> Login with Apple</span></ButtonTransparent> */}
                         </div>
                     )}
 

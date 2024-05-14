@@ -745,7 +745,8 @@ const CustomizeResume = () => {
           <form method="post" onSubmit={handleFormSubmit}>
           <div className="error">{error}</div>
             <div className='explanation-points'>
-                <Alert sx={{padding: '0 5px', fontSize: '.8rem'}} severity="info">The + and - buttons are to add and delete applicable fields or sections</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">The + and - buttons are to add and delete applicable fields or sections</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>
             </div>
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>

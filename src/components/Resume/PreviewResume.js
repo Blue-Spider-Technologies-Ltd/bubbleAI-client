@@ -12,7 +12,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Modal, Overlay } from "../UI/Modal/Modal";
 import ResumePricing from "../Pricing/ResumePricing"
 import { CheckoutSummaryModal } from "../UI/Modal/Modal";
-import AuthHeader from "../UI/AuthHeader/AuthHeader";
+// import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
@@ -231,11 +231,11 @@ const PreviewResume = () => {
 
       <div className="auth-container-inner">
         {/* for TOP MENU */}
-        <AuthHeader
+        {/* <AuthHeader
           authMenuOpen={authMenuOpen}
           onClick={toggleResumes}
           headerText="Create My Resume"
-        />
+        /> */}
 
         <div className="BodyWrapper">
           <div className="BuildNavigator">

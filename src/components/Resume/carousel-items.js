@@ -10,7 +10,7 @@ const carouselData = [
         image: comingSoonImg
     },
     {
-        title: "Fullmoon",
+        title: "Radiant Moon",
         image: comingSoonImg
     },
     {

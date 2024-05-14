@@ -56,9 +56,9 @@ export const ButtonOutlineGreenWithDiffStyle = (props) => {
     )
 }
 
-export const ButtonTransparent = ({type, children}) => {
+export const ButtonTransparent = ({type, children, onClick}) => {
     return (
-        <button type={type} className={buttonCss.ButtonTransparent}>
+        <button type={type} className={buttonCss.ButtonTransparent} onClick={onClick}>
             {children}
         </button>
     )

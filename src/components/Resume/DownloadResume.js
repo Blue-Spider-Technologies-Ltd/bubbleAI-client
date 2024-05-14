@@ -13,7 +13,7 @@ import { errorAnimation } from "../../utils/client-functions";
 import standardTempImg from "../../images/resume-standard.png";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
-import AuthHeader from '../UI/AuthHeader/AuthHeader';
+// import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import Standard from './Templates/Standard/Standard';
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
@@ -125,7 +125,7 @@ const DownloadResume = () => {
 
             <div className="auth-container-inner">
                 {/* for TOP MENU */}
-                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" />
+                {/* <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" /> */}
 
                 <div className="BodyWrapper">
                     <div className="BuildNavigator">

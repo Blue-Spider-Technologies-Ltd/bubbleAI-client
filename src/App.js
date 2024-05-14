@@ -29,6 +29,7 @@ import Toefl from "./components/MockTests/Exams/Toefl"
 import Utme from "./components/MockTests/Exams/Utme"
 import Wassce from "./components/MockTests/Exams/Wassce"
 import ResetPass from './components/Dashboard/ResetPass';
+import GoogleCallback from './components/Auth/GoogleCallback';
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
@@ -36,12 +37,14 @@ import logoImg from "./images/bubble-logo.png"
 
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
 
+
 const App = () => {
   const { fetching } = useSelector(state => state.stateData)
 
   return (
     <ConfirmProvider>
       <Routes>
+        <Route path={'/auth/google/callback'} element={ <GoogleCallback /> } />
         <Route path={'/user/dashboard/mock/acca'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/mock/cee'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/mock/ceh'} element={ <UnderConstruction /> } />
@@ -73,6 +76,7 @@ const App = () => {
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />
         <Route path={'/join-bubble'} element={<Register />} />
         <Route path={'/pricing'} element={<Pricing />} />
+        {/* <Route path={'/terms'} element={<Pricing />} /> */}
         <Route path={'/transaction'} element={<TransactionDone />} />
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
