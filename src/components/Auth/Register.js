@@ -174,7 +174,7 @@ const Register = () => {
                             </ButtonSubmitBlack>
                         </div>
                     </form>
-                    <p><strong>Or</strong></p>
+                    {/* <p><strong>Or</strong></p> */}
                     {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#940101" }}><Google /></span><span>et with Google</span></ButtonTransparent> */}
                     <p></p>
                     {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#333333" }}><Apple /></span><span>et with Apple</span></ButtonTransparent> */}
