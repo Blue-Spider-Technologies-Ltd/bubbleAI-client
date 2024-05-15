@@ -747,6 +747,7 @@ const CustomizeResume = () => {
             <div className='explanation-points'>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">The + and - buttons are to add and delete applicable fields or sections</Alert>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">All fields with * are required</Alert>
             </div>
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>

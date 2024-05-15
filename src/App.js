@@ -30,6 +30,8 @@ import Utme from "./components/MockTests/Exams/Utme"
 import Wassce from "./components/MockTests/Exams/Wassce"
 import ResetPass from './components/Dashboard/ResetPass';
 import GoogleCallback from './components/Auth/GoogleCallback';
+import Terms from './components/Home/Terms';
+import HowIWork from './components/Home/HowIWork';
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
@@ -76,7 +78,8 @@ const App = () => {
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />
         <Route path={'/join-bubble'} element={<Register />} />
         <Route path={'/pricing'} element={<Pricing />} />
-        {/* <Route path={'/terms'} element={<Pricing />} /> */}
+        <Route path={'/terms'} element={<Terms />} />
+        <Route path={'/how-i-work'} element={<HowIWork />} />
         <Route path={'/transaction'} element={<TransactionDone />} />
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />

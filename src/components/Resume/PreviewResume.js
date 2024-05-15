@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setResume, setFetching, setError } from "../../redux/states";
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Alert from '@mui/material/Alert';
 import { Modal, Overlay } from "../UI/Modal/Modal";
 import ResumePricing from "../Pricing/ResumePricing"
 import { CheckoutSummaryModal } from "../UI/Modal/Modal";
@@ -16,6 +17,7 @@ import { CheckoutSummaryModal } from "../UI/Modal/Modal";
 import { useConfirm } from "material-ui-confirm";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+
 
 const PreviewResume = () => {
   const dispatch = useDispatch();
@@ -208,9 +210,9 @@ const PreviewResume = () => {
     }
   };
 
-  const toggleResumes = () => {
-    setAuthMenuOpen(!authMenuOpen);
-  };
+  // const toggleResumes = () => {
+  //   setAuthMenuOpen(!authMenuOpen);
+  // };
 
   const handleInputChange = (prop) => (event) => {
     setBasicInfo({ ...basicInfo, [prop]: event.target.value });
@@ -251,6 +253,9 @@ const PreviewResume = () => {
           </div>
           <form method="post" onSubmit={handleFormSubmit}>
             <div className="error">{error}</div>
+            <div className='explanation-points'>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">On the job description field, make sure each point is separated by a semi colon (if you decide to edit it) to enable proper formatting on the download page.</Alert>
+            </div>
             <div className="Segment">
               <h4>Basic Info</h4>
               <Grid container>

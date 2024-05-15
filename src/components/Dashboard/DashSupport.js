@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setError } from "../../redux/states";
-import { errorAnimation } from "../../utils/client-functions";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { ButtonCard } from "../UI/Buttons/Buttons";
@@ -14,17 +11,16 @@ import DialpadIcon from '@mui/icons-material/Dialpad';
 
 const DashSupport = (props) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  
-    const errorSetter = (string) => {
-        dispatch(setError(string))
-        errorAnimation()
-    }
+
 
     const goBackPrevPage = () => {
         const prevPath = localStorage?.getItem("prevPath")
         navigate(prevPath)
     }
+
+    const openNewTab = (url) => {
+        window.open(url, '_blank');
+    };
 
     const faqIconImg = (<QuizIcon sx={{fontSize: '4rem'}} /> )
     const howIWorkIcon = (<EngineeringIcon sx={{fontSize: '4rem'}} /> )
@@ -58,6 +54,7 @@ const DashSupport = (props) => {
                         iconImg={faqIconImg}
                         title="FAQs"
                         description="Most of your questions are likely already answered here"
+                        onClick={() => openNewTab("/faqs")}
                     />
                 </Grid>
 
@@ -66,6 +63,7 @@ const DashSupport = (props) => {
                         iconImg={howIWorkIcon}
                         title="How Bubble Works"
                         description="Learn how to use different AI solutions that Bubble AI offers"
+                        onClick={() => openNewTab("/how-i-work")}
                     />
                 </Grid>
 
@@ -74,6 +72,7 @@ const DashSupport = (props) => {
                         iconImg={termsIcon}
                         title="Terms & Conditions"
                         description="Understand all legally binding agreements for the usage of Bubble AI"
+                        onClick={() => openNewTab("/terms")}
                     />
                 </Grid>
                                 
@@ -82,6 +81,7 @@ const DashSupport = (props) => {
                         iconImg={contactIcon}
                         title="Talk to us Directly"
                         description="Contains all platforms to reach us directly. We are here to help"
+                        onClick={() => openNewTab("/contact")}
                     />
                 </Grid>
             </Grid>
