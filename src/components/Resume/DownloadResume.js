@@ -21,6 +21,7 @@ import { SuccessFailureModal } from '../UI/Modal/Modal';
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
 import { setError, setFetching } from "../../redux/states";
+import { checkAuthenticatedUser } from '../../utils/client-functions';
 const screenWidth = window.innerWidth
 
 const DownloadResume = () => {
@@ -63,19 +64,22 @@ const DownloadResume = () => {
     };
 
     useEffect(() => {
-        const resumeLength = Object.keys(resume).length        
-        const now = new Date().getTime()
-
-        if (isAuth && (now < authUser.expiration)) {
-            if (resumeLength <= 0) {
-                navigate('/user/dashboard/resume?customize')
+        const resumeLength = Object.keys(resume).length   
+        const checkIfAuthUser = async () => {
+            try {
+                //must await
+                await checkAuthenticatedUser()
+            } catch (error) {
+                dispatch(setFetching(false));
+                localStorage?.removeItem('token')
+                return navigate("/popin?resume");      
             }
-
-        } else {
-            localStorage?.removeItem('token')
-            navigate('/popin')
+        } 
+        checkIfAuthUser()
+        if (resumeLength <= 0) {
+            navigate('/user/dashboard/resume?customize')
         }
-    }, [isAuth, navigate, resume])
+    }, [])
 
     //scroll to page top on render
     useEffect(() => {

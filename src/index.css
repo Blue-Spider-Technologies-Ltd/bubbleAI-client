@@ -29,12 +29,6 @@ body {
   scroll-behavior: smooth;
 }
 
-a {
-  color: var(--lightModeGreen) !important;
-  cursor: pointer;
-  font-size: .9rem !important;
-  font-weight: 700 !important;
-}
 
 h1 {
   font-size: 2.2rem;
@@ -172,6 +166,12 @@ h1 {
   padding: 10px 20px;
 }
 
+.container-inner a, .chatbg-overlay a {
+  color: var(--lightModeGreen) !important;
+  cursor: pointer;
+  font-size: .9rem !important;
+  font-weight: 700 !important;
+} 
 
 .BodyWrapper {
   box-sizing: border-box;
