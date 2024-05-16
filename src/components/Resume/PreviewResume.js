@@ -104,7 +104,7 @@ const PreviewResume = () => {
       const scrollPosition = window.scrollY || window.pageYOffset;
       const viewHeight = window.innerHeight || document.documentElement.clientHeight;
 
-      if (scrollPosition > (0.4 * viewHeight)) {
+      if (scrollPosition > (0.6 * viewHeight)) {
         dispatch(setFetching(true));
         axios.get('/user/get-subscription', {
           headers: {
@@ -116,7 +116,7 @@ const PreviewResume = () => {
             dispatch(setFetching(false));
           })
           .catch(error => {
-            errorSetter("Looks like you are not subscribe")
+            errorSetter("Looks like you are not subscribed. Choose a plan to download your CV")
             setIsSubscribed(false);
             dispatch(setFetching(false));
           });

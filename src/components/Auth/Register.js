@@ -138,6 +138,7 @@ const Register = () => {
                         <Input placeholder="Password..." value={user.password} inputType="password" inputGridSm={12} onChange={handleInputChange('password')} onFocus={handleBlur} />
                         <Input placeholder="Confirm password..." value={user.confirmPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmPassword')} onFocus={handleBlur} />
                         <Link href="/popin" className={authCss.pwdRec}>Login?</Link>
+                        <p style={{fontSize: ".75rem",  fontWeight: "500", textAlign: "left", marginLeft: "10px"}}>By proceeding with the registration, you agree to Bubble <a href="/terms" target="_blank">User Agreement</a></p>
                         {pwdChecklist &&
                             (
                                 <div style={{width: '90%', padding: '5px', margin: '0 20px 20px', fontSize: '.7rem', backgroundColor: '#c0d1d413', borderRadius: '3px'}}>

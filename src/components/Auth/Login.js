@@ -116,6 +116,10 @@ const Login = () => {
     }
 
 
+    const goToRegister = () => {
+        navigate("/join-bubble")
+    }
+
     const handleInputChange = (prop) => (event) => {
         setData({ ...data, [prop]: event.target.value});
     };
@@ -143,6 +147,7 @@ const Login = () => {
                             <div>
                                 <Input placeholder="Password..." inputType="password" inputGridSm={12} onChange={handleInputChange('password')} />
                                 <div className={authCss.pwdRec} onClick={() => setPwdRec(true)}>forgot password?</div>
+                                <div className={authCss.regOnLoginPage} onClick={goToRegister}>join Bubble?</div>
                             </div>
                         }
                         <div> 

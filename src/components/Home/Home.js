@@ -131,8 +131,22 @@ const Home = () => {
   }, [isFocused, chatBgFocused]);
 
   const chatExchange = messages.map((message, index) => {
+    const OverUseMessage = () => {
+      const overUseMessage = {
+        content:
+          `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble" >Register here</a> to enjoy more for FREE`,
+      };
+    
+      return (
+        <div>
+          <span dangerouslySetInnerHTML={{ __html: overUseMessage.content }} />
+        </div>
+      );
+    };
     const isAssistant = message.role === "assistant";
-    const contentTrim = message.content.trim()
+    let contentTrim = message.content.trim()
+    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content
+
     const content = isAssistant? (
       <Assistant>{contentTrim === "" ?        
       <ThreeDots 
@@ -142,7 +156,7 @@ const Home = () => {
         color="#000" 
         ariaLabel="three-dots-loading"
         visible={true}
-      /> : message.content
+      /> : assistantMessage
     }
       </Assistant>
     ) : (
@@ -196,17 +210,19 @@ const Home = () => {
       };
       const useIndicatorJson = JSON.stringify(useIndicator);
 
-      if (useCount > 1) {
+      if (useCount > 2) {
+        //set user message
         dispatch(setMessage(newMessage));
         dispatch(setMessage(emptyMessage));
+
         const overUseMessage = {
           role: "assistant",
-          content:
-            "You have used up your free interactions for the day, kindly register to enjoy more",
+          content: "OverUse",
         };
         dispatch(deleteLastMessage());
         dispatch(setMessage(overUseMessage));
         e.target.elements[0].value = "";
+        return
       } else {
         //THIS BLOCK WORKS FOR unauthenticated users below 3 usage within the day
         dispatch(setMessage(newMessage));

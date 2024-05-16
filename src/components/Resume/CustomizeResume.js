@@ -602,16 +602,18 @@ const CustomizeResume = () => {
   }
 
   const eduInfoForwardOrBackward = (arg) => {  
-    //check if required fields are filled
-    if (checkEmptyStringsInObjNoExempt(eduArray) === false ) {
-      return errorSetter("Complete required fields in this section to continue");    
-    }
-    setEduFaded(true)
+
     switch (arg) {
       case "forward":
+        //check if required fields are filled
+        if (checkEmptyStringsInObjNoExempt(eduArray) === false ) {
+          return errorSetter("Complete required fields in this section to continue");    
+        }
+        setEduFaded(true)
         setWorkFaded(false)
         break;
       case "backward":
+        setEduFaded(true)
         setBasicFaded(false);
         break;
     
@@ -622,17 +624,18 @@ const CustomizeResume = () => {
   }
 
   const workExpForwardOrBackward = (arg) => {
-    //check if required fields are filled, exempting two keys
-    if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink") === false ) {
-      errorSetter("Complete required fields in this section to continue");
-      return;
-    }
-    setWorkFaded(true)
     switch (arg) {
       case "forward":
+        //check if required fields are filled, exempting two keys
+        if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink") === false ) {
+          errorSetter("Complete required fields in this section to continue");
+          return;
+        }
+        setWorkFaded(true)
         setSkillFaded(false)
         break;
       case "backward":
+        setWorkFaded(true)
         setEduFaded(false)
         break;
     
@@ -642,17 +645,19 @@ const CustomizeResume = () => {
   }
 
   const skillsForwardOrBackward = (arg) => {
-    //check if required fields are filled, exempting two keys
-    if (checkEmptyStrings(skills) === false ) {
-      errorSetter("Complete required fields in this section to continue");
-      return;
-    }
-    setSkillFaded(true)
+
     switch (arg) {
       case "forward":
+        //check if required fields are filled, exempting two keys
+        if (checkEmptyStrings(skills) === false ) {
+          errorSetter("Complete required fields in this section to continue");
+          return;
+        }
+        setSkillFaded(true)
         setCertFaded(false)
         break;
       case "backward":
+        setSkillFaded(true)
         setWorkFaded(false)
         break;
     
@@ -666,7 +671,6 @@ const CustomizeResume = () => {
     switch (arg) {
       case "forward":
         setPubFaded(false)
-        // document.getElementById("submit-button").style.display = "none"
         break;
       case "backward":
         setSkillFaded(false)
@@ -745,7 +749,7 @@ const CustomizeResume = () => {
           <form method="post" onSubmit={handleFormSubmit}>
           <div className="error">{error}</div>
             <div className='explanation-points'>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">The + and - buttons are to add and delete applicable fields or sections</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">The + and - buttons are to add and delete applicable input fields or sections</Alert>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">All fields with * are required</Alert>
             </div>
@@ -829,22 +833,11 @@ const CustomizeResume = () => {
                   value={basicInfo.street}
                   label="Apt No., Street & City"
                   inputType="text"
-                  inputGridSm={7}
+                  inputGridSm={12}
                   inputGrid={4}
                   mb={2}
                   required={true}
                   onChange={handleInputChange("street")}
-                />
-                <AuthInput
-                  id={basicInfo.city}
-                  value={basicInfo.city}
-                  label="State/Region"
-                  inputType="text"
-                  inputGridSm={5}
-                  inputGrid={4}
-                  mb={2}
-                  required={true}
-                  onChange={handleInputChange("city")}
                 />
                 <AuthInput
                   id={basicInfo.country}
@@ -858,12 +851,23 @@ const CustomizeResume = () => {
                   required={true}
                   onChange={handleInputChange("country")}
                 />
+                <AuthInput
+                  id={basicInfo.city}
+                  value={basicInfo.city}
+                  label="State/Region"
+                  inputType="text"
+                  inputGridSm={12}
+                  inputGrid={4}
+                  mb={2}
+                  required={true}
+                  onChange={handleInputChange("city")}
+                />
 
                 {linkInfo.map((info, index) => {
                   return (
                     <AuthInput
                       key={index}
-                      label="Add a link (ONLY ONE LINK PER FIELD) e.g linkedin, github or your website"
+                      label="Add a link e.g linkedin, github or your website"
                       id={info}
                       value={info}
                       inputType="text"
@@ -1215,7 +1219,7 @@ const CustomizeResume = () => {
                         key={index}
                         id={skill}
                         value={skill}
-                        label="Add ONLY ONE Skill per Field"
+                        label="Add a Skill"
                         inputType="text"
                         inputGridSm={12}
                         inputGrid={6}
@@ -1498,7 +1502,7 @@ const CustomizeResume = () => {
                         id={interest}
                         key={index}
                         value={interest}
-                        label="Add ONLY ONE Interest per field"
+                        label="Add an Interest"
                         inputType="text"
                         inputGridSm={12}
                         inputGrid={6}

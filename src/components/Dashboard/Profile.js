@@ -226,14 +226,6 @@ const Profile = () => {
                                     onChange={handleStreetCityChange}
                                 />
                                 <AuthInput
-                                    value={stateRegion}
-                                    label="State/Region"
-                                    inputType="text"
-                                    inputGridSm={12}
-                                    mb={2}
-                                    onChange={handleStateRegionChange}
-                                />
-                                <AuthInput
                                     value={country}
                                     label="Country"
                                     inputType="select2"
@@ -241,6 +233,14 @@ const Profile = () => {
                                     mb={2}
                                     list={COUNTRIES}
                                     onChange={handleCountryChange}
+                                />
+                                <AuthInput
+                                    value={stateRegion}
+                                    label="State/Region"
+                                    inputType="text"
+                                    inputGridSm={12}
+                                    mb={2}
+                                    onChange={handleStateRegionChange}
                                 />
 
                                 <div style={{marginBottom: "22px", marginLeft: "10px", textAlign: "left"}}>

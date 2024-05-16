@@ -13,9 +13,11 @@ import { errorAnimation } from "../../utils/client-functions";
 import standardTempImg from "../../images/resume-standard.png";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
-// import AuthHeader from '../UI/AuthHeader/AuthHeader';
+import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import Standard from './Templates/Standard/Standard';
+import Feedback from '../Dashboard/Feedback';
 import jwt_decode from "jwt-decode";
+import { SuccessFailureModal } from '../UI/Modal/Modal';
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
 import { setError, setFetching } from "../../redux/states";
@@ -24,14 +26,18 @@ const screenWidth = window.innerWidth
 const DownloadResume = () => {
     const { resume, error } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
+    const [completed, setCompleted] = useState(false)
+    const [isFeedbackTime, setIsFeedbackTime] = useState(false)
     const [storageDetails, setStorageDetails] = useState({
         name: "",
         desc: ""
     })
     const isAuth = localStorage?.getItem('token')
+    const authUser =  jwt_decode(isAuth)
+    const hasDroppedFeedback = authUser.rated
 
     const errorSetter = (string) => {
         dispatch(setError(string))
@@ -59,7 +65,6 @@ const DownloadResume = () => {
     useEffect(() => {
         const resumeLength = Object.keys(resume).length        
         const now = new Date().getTime()
-        const authUser =  jwt_decode(isAuth)
 
         if (isAuth && (now < authUser.expiration)) {
             if (resumeLength <= 0) {
@@ -92,9 +97,15 @@ const DownloadResume = () => {
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
             dispatch(setFetching(false));
-            navigate("/user/dashboard/resume")
+            
+            if(hasDroppedFeedback) {
+                setCompleted(true)
+            } else {
+                setIsFeedbackTime(true)
+            }
         } catch (error) {
-            errorSetter("Try again")
+            dispatch(setFetching(false));
+            errorSetter("Not saved to database, Try again")
         }
     }
     
@@ -125,7 +136,7 @@ const DownloadResume = () => {
 
             <div className="auth-container-inner">
                 {/* for TOP MENU */}
-                {/* <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Create My Resume" /> */}
+                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Download My Resume" />
 
                 <div className="BodyWrapper">
                     <div className="BuildNavigator">
@@ -212,6 +223,17 @@ const DownloadResume = () => {
                 </div>
 
             </div>
+            
+            {!hasDroppedFeedback && isFeedbackTime && <Feedback notApaymentTextPositive="Resume Creation Completed!"/>}
+            {completed &&  (                
+                <SuccessFailureModal 
+                    success={true} 
+                    notApaymentTextPositive="Resume Creation Completed!"
+                    notApayment={true}
+                />
+            )}
+                            
+            
 
         </div>
     )

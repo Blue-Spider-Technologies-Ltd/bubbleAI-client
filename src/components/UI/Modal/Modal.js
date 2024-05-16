@@ -152,7 +152,7 @@ export const PlainModalOverlay = (props) => {
 }
 
 
-export const SuccessFailureModal = ({ success, fullName }) => {
+export const SuccessFailureModal = ({ success, fullName, notApayment, notApaymentTextPositive, notApaymentTextNegative }) => {
 
     const navigate = useNavigate()
     const prevPath = localStorage?.getItem("prevPath")
@@ -172,19 +172,28 @@ export const SuccessFailureModal = ({ success, fullName }) => {
                     <img src={success ? successImg : failedImg} alt='Bubble Ai' style={{width: '100%'}} />
                 </div>
 
-                <div>
-                    <h3>Hey, {fullName}</h3>
-                </div>
+                    {!notApayment ? (
+                        <div>               
+                            <div>
+                                <h3>Hey, {fullName}</h3>
+                            </div>
 
-                <h1>{success ? "Your Payment was Successful!" : "Your Payment Failed"}</h1>
+                            <h1>{success ? "Your Payment was Successful!" : "Your Payment Failed"}</h1>
 
-                <p>{success ? "We will send a payment confirmation email to your registered email. well done!" : "We will send more details on this failure to your registered email. Use button below to try again."}</p>
+                            <p>{success ? "We will send a payment confirmation email to your registered email. Well done!" : "We will send more details on this failure to your registered email. Use button below to try again."}</p>
+                        </div>
+                    ) : (
+                        <div>
+                            <h1>{success ? notApaymentTextPositive : notApaymentTextNegative}</h1>
+                        </div>
+                    )}
+                    
+                    <div>
+                        <ButtonOutlineGreenWithDiffStyle borderColor={!success && "#D00000"} onClick={handleSuccess}>
+                            {success ? "Continue to Bubble" : "Try Again"}
+                        </ButtonOutlineGreenWithDiffStyle>
+                    </div>
 
-                <div>
-                    <ButtonOutlineGreenWithDiffStyle borderColor={!success && "#D00000"} onClick={handleSuccess}>
-                        {success ? "Continue to Bubble" : "Try Again"}
-                    </ButtonOutlineGreenWithDiffStyle>
-                </div>
             </div>
         </div>
     )
@@ -397,7 +406,7 @@ export const CheckoutSummaryModal = () => {
                                 <h5>100% Refund</h5>
                                 <h2>GUARANTEED</h2>
                                 <a 
-                                    href='/terms-and-conditions' 
+                                    href='/terms' 
                                     style={{fontSize: '.65rem', color: '#3E8F93', position: 'relative', top: '-20px'}}
                                 >
                                     See Terms & Conditions
@@ -433,7 +442,7 @@ export const CheckoutSummaryModal = () => {
                                                                 {detail?.name}
                                                             </div>
                                                             <div>
-                                                                <Rating name="read-only" value={detail?.rating} size="small" readOnly />
+                                                                <Rating name="read-only" value={detail?.rating} size="small" precision={0.5} readOnly />
                                                             </div>
                                                         </div>
                                                     </div>
