@@ -77,7 +77,7 @@ const PreviewResume = () => {
       }
     } else {
       localStorage?.removeItem("token");
-      navigate("/popin");
+      navigate("/popin?resume");
     }
   }, [isAuth, navigate, dispatch]);
 
@@ -245,7 +245,7 @@ const PreviewResume = () => {
               <span>1</span>Customise
             </div>
             <div className="ActiveNav">
-              <span>2</span>Preview AI Build
+              <span>2</span>Preview
             </div>
             <div>
               <span>3</span>Download
@@ -601,6 +601,21 @@ const PreviewResume = () => {
                               disabled={true}
                             />
                           </div>
+                        </div>
+                        <div style={{width: "100%", textAlign: "center"}}>
+                          <AuthInput
+                            name="currently"
+                            id={info.currently}
+                            value={info.currently}
+                            label="I currently work here"
+                            inputType="checkbox"
+                            inputGridSm={12}
+                            disabled={true}
+                            mb={2}
+                            onChange={(event) =>
+                              handleWorkExpChange(event, index)
+                            }
+                          />
                         </div>
                         <AuthInput
                           name="jobDesc"

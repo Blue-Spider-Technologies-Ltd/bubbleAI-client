@@ -48,17 +48,17 @@ export const errorAnimation = async () => {
 }
 
 //CHECK for EMPTY STRINGS 
-export const checkEmptyStringsInObj = (arr, exemptKey1, exemptKey2) => {
-    for (let i = 0; i < arr.length; i++) {
-      const obj = arr[i];
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key) && ((exemptKey1 && key !== exemptKey1) && (exemptKey2 && key !== exemptKey2)) && obj[key] === "") {
-          return false;
-        }
+export const checkEmptyStringsInObj = (arr, ...exemptKeys) => {
+  for (const obj of arr) {
+    for (const [key, value] of Object.entries(obj)) {
+      if (value === "" && !exemptKeys.includes(key)) {
+        return false;
       }
     }
-    return true;
-}
+  }
+  return true;
+};
+
 
 export const checkEmptyStringsInObjNoExempt = (arr) => {
     for (let i = 0; i < arr.length; i++) {
@@ -109,9 +109,9 @@ export const fetchPrice = async (category, usage) => {
                 comparativePriceTwo_Africa = 4000;
                 comparativePriceThree_Africa = 15000;
 
-                comparativePriceOne_RestOfWorld = 2000;
-                comparativePriceTwo_RestOfWorld = 7000;
-                comparativePriceThree_RestOfWorld = 24000;
+                comparativePriceOne_RestOfWorld = 6000;
+                comparativePriceTwo_RestOfWorld = 18000;
+                comparativePriceThree_RestOfWorld = 50000;
                 break;
 
             case 'depositions':

@@ -3,7 +3,6 @@ import resumeCss from "./Resume.module.css";
 import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
-import { COUNTRIES } from "../../utils/countries";
 import { errorAnimation, checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, setResume, setFetching, setUserResumesAll, setError } from "../../redux/states";
@@ -39,6 +38,7 @@ const CustomizeResume = () => {
   const [certFaded, setCertFaded] = useState(true)
   const [pubFaded, setPubFaded] = useState(true)
   const [interestFaded, setInterestFaded] = useState(true)
+  const [countryid, setCountryid] = useState(0);
 
 
   const isAuth = localStorage?.getItem("token");
@@ -133,6 +133,7 @@ const CustomizeResume = () => {
       
   }, [navigate, dispatch, isAuth]);
 
+  //to redirect useer if previously unfinished resume
   useEffect(() => {
     const now = Date.now();
     const isResumePresent = localStorage?.getItem(
@@ -189,6 +190,7 @@ const CustomizeResume = () => {
       position: "",
       dateFrom: "",
       dateTo: "",
+      currently: false,
       industry: "",
       workLink: "",
       jobDesc: "",
@@ -254,7 +256,6 @@ const CustomizeResume = () => {
         errorSetter("Something went wrong, try again")
       }
       dispatch(setFetching(false))
-      console.log(basicInfo.dob)
       return
     } catch (error) {
       dispatch(setFetching(false))
@@ -375,6 +376,7 @@ const CustomizeResume = () => {
       position: "",
       dateFrom: "",
       dateTo: "",
+      currently: false,
       industry: "",
       workLink: "",
       jobDesc: "",
@@ -390,7 +392,7 @@ const CustomizeResume = () => {
       prevInfo.pop();
       return addWorkExpArray([...prevInfo]);
     }
-    errorSetter("Leave blank, don't delete");
+    errorSetter("Add an Experience, Can't delete");
   };
   const handleWorkExpChange = (event, index) => {
     const prevWorkExp = [...workExpArray];
@@ -418,6 +420,10 @@ const CustomizeResume = () => {
         break;
       case "dateTo":
         prevWorkExp[index].dateTo = event.target.value;
+        addWorkExpArray(prevWorkExp);
+        break;      
+      case "currently":
+        prevWorkExp[index].currently = !prevWorkExp[index].currently;
         addWorkExpArray(prevWorkExp);
         break;
       case "jobDesc":
@@ -574,6 +580,21 @@ const CustomizeResume = () => {
     if (prop === "mobile") {
       return setBasicInfo({ ...basicInfo, [prop]: "+" + event });
     }
+    if (prop === "country") {
+      setCountryid(event.id)
+          setBasicInfo({
+        ...basicInfo,
+        [prop]: event.name,
+      });
+      return
+    }
+    if (prop === "city") {
+      setBasicInfo({
+        ...basicInfo,
+        [prop]: event.name,
+      });
+      return
+    }
     setBasicInfo({
       ...basicInfo,
       [prop]: event.target.value,
@@ -585,7 +606,7 @@ const CustomizeResume = () => {
   const basicInfoForward = (arg) => {
     //check if required fields are filled
     const { dob, mobile, jobPosition, street, city, country } = basicInfo
-    if (dob === "" || mobile === "" || jobPosition === "" || street === "" || city === "" || country === "" ) {
+    if (dob === "" || mobile === "" || jobPosition === "" || street === "" || city === "" || city === "State/Region" || country === "" || country === "Country") {
       errorSetter("Complete required fields in this section to continue");
       return;
     }
@@ -627,7 +648,7 @@ const CustomizeResume = () => {
     switch (arg) {
       case "forward":
         //check if required fields are filled, exempting two keys
-        if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink") === false ) {
+        if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink", "dateTo", "currently") === false ) {
           errorSetter("Complete required fields in this section to continue");
           return;
         }
@@ -739,7 +760,7 @@ const CustomizeResume = () => {
               <span>1</span>Customise
             </div>
             <div>
-              <span>2</span>Preview AI Build
+              <span>2</span>Preview
             </div>
             <div>
               <span>3</span>Download
@@ -842,20 +863,20 @@ const CustomizeResume = () => {
                 <AuthInput
                   id={basicInfo.country}
                   value={basicInfo.country}
-                  label="Country"
-                  inputType="select2"
+                  placeholder={basicInfo.country ? basicInfo.country : "Country"}
+                  inputType="country-select"
                   inputGridSm={12}
                   inputGrid={4}
                   mb={2}
-                  list={COUNTRIES}
                   required={true}
                   onChange={handleInputChange("country")}
                 />
                 <AuthInput
                   id={basicInfo.city}
                   value={basicInfo.city}
-                  label="State/Region"
-                  inputType="text"
+                  countryid={countryid}
+                  placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
+                  inputType="state-select"
                   inputGridSm={12}
                   inputGrid={4}
                   mb={2}
@@ -1137,13 +1158,28 @@ const CustomizeResume = () => {
                             placeholder="End Date"
                             inputType="date"
                             inputGridSm={12}
+                            disabled={info.currently}
                             inputGrid={12}
-                            required={true}
                             onChange={(event) =>
                               handleWorkExpChange(event, index)
                             }
                           />
+
                         </div>
+                      </div>
+                      <div style={{width: "100%", textAlign: "center"}}>
+                        <AuthInput
+                          name="currently"
+                          id={info.currently}
+                          value={info.currently}
+                          label="I currently work here"
+                          inputType="checkbox"
+                          inputGridSm={12}
+                          mb={2}
+                          onChange={(event) =>
+                            handleWorkExpChange(event, index)
+                          }
+                        />
                       </div>
                       <AuthInput
                         id={info.jobDesc}

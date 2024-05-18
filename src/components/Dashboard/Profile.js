@@ -31,6 +31,7 @@ const Profile = () => {
     //page where cancel icon would lead to
     const prevPath = localStorage.getItem("prevPath")
     const resumeSub = isResumeSubscribed ? resumeDuration : "Unsubscribed"; 
+    const [countryid, setCountryid] = useState(0);
 
 
     const errorSetter = (string) => {
@@ -144,10 +145,11 @@ const Profile = () => {
         setStreetCity(event.target.value)
     };
     const handleStateRegionChange = (event) => {
-        setStateRegion(event.target.value)
+        setStateRegion(event.name)
     };
     const handleCountryChange = (event) => {
-        setCountry(event.target.value)
+        setCountryid(event.id)
+        setCountry(event.name)
     };
     
 
@@ -226,20 +228,24 @@ const Profile = () => {
                                     onChange={handleStreetCityChange}
                                 />
                                 <AuthInput
+                                    id={country}
                                     value={country}
-                                    label="Country"
-                                    inputType="select2"
+                                    placeholder={country ? country : "Country"}
+                                    inputType="country-select"
                                     inputGridSm={12}
                                     mb={2}
-                                    list={COUNTRIES}
+                                    required={true}
                                     onChange={handleCountryChange}
-                                />
+                                 />
                                 <AuthInput
+                                    id={stateRegion}
                                     value={stateRegion}
-                                    label="State/Region"
-                                    inputType="text"
+                                    countryid={countryid}
+                                    placeholder={stateRegion ? stateRegion : "State/Region"}
+                                    inputType="state-select"
                                     inputGridSm={12}
                                     mb={2}
+                                    required={true}
                                     onChange={handleStateRegionChange}
                                 />
 

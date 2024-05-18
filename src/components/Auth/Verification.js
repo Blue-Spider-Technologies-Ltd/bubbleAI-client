@@ -122,6 +122,7 @@ const Verification = () => {
                             <div className="error">{error}</div>
                             <div style={{fontSize: '.8rem', color: '#56A8AC', marginBottom: '10px'}}>{data.email}</div>
                                 <div style={{margin: '10px 0', fontSize: '.8rem'}}>
+                                    <p style={{textAlign: "center"}}>Didn't receive a code?</p>
                                     <span>
                                         <button disabled={!isZero} className={isZero ? authCss.enabledResendBtn :  authCss.disabledResendBtn} onClick={handleReset}>Resend</button>
                                         {!isZero && <span>code in <span style={{backgroundColor: '#c0d1d453', padding: '3px', borderRadius: '5px', color: '#3E8F93'}}>{count}</span> seconds</span>}

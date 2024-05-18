@@ -134,7 +134,7 @@ const Home = () => {
     const OverUseMessage = () => {
       const overUseMessage = {
         content:
-          `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble" >Register here</a> to enjoy more for FREE`,
+          `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble" >Register here</a> or <a href="/popin" >Log in</a> to enjoy more for FREE`,
       };
     
       return (

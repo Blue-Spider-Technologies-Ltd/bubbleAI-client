@@ -145,7 +145,7 @@ const DownloadResume = () => {
                 <div className="BodyWrapper">
                     <div className="BuildNavigator">
                         <div><span>1</span>Customise</div>
-                        <div><span>2</span>Preview AI Build</div>
+                        <div><span>2</span>Preview</div>
                         <div className="ActiveNav"><span>3</span>Download</div>
                     </div>
                     <form>

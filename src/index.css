@@ -187,7 +187,6 @@ h1 {
   box-shadow: 0px 12px 11px -7px rgba(0,0,0,0.29);
   -webkit-box-shadow: 0px 12px 11px -7px rgba(0,0,0,0.29);
   -moz-box-shadow: 0px 12px 11px -7px rgba(0,0,0,0.29);
-
 }
 
 .BodyWrapper form, .BodyWrapper .content {
@@ -304,6 +303,27 @@ h1 {
   margin-top: -10px;
   text-align: left;
   margin-left: 10px
+}
+
+
+.custom-checkbox {
+  font-size: .6rem;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  font-size: .6rem;
+}
+
+.custom-checkbox .MuiCheckbox-root {
+  font-size: .6rem;
+}
+
+.custom-checkbox .MuiCheckbox-colorPrimary.Mui-checked {
+  color: var(--navColor2);
+}
+
+.custom-checkbox .MuiTypography-root {
+  font-size: .6rem;
 }
 
 /* For webkit-based browsers */

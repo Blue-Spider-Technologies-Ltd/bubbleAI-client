@@ -1,5 +1,17 @@
 import React, { useState, memo } from "react"
-import { Grid, TextField, TextareaAutosize, OutlinedInput, InputAdornment, IconButton, FormControl, InputLabel, MenuItem } from "@mui/material"
+import { 
+    Grid, 
+    TextField, 
+    TextareaAutosize, 
+    OutlinedInput, 
+    InputAdornment, 
+    IconButton, 
+    FormControl, 
+    InputLabel, 
+    MenuItem, 
+    Checkbox, 
+    FormControlLabel 
+} from "@mui/material"
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { makeStyles } from "@mui/styles";
@@ -10,6 +22,14 @@ import allInputCss from "./Allinputs.module.css"
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import {
+    CountrySelect,
+    StateSelect
+  } from "react-country-state-city";
+  
+import "react-country-state-city/dist/react-country-state-city.css";
+
+
 
 
 const useStyles = makeStyles({
@@ -61,6 +81,18 @@ const useStyles = makeStyles({
             color: "white"
         }
     },
+    customCheckbox: {
+        '& .MuiCheckbox-root': {
+          width: "25px",
+          height: "25px"
+        },
+        '& .MuiTypography-root': {
+          fontSize: '.85rem', // Example: Change label font weight
+        },
+        '& .MuiCheckbox-colorSecondary.Mui-checked': {
+            color: '#56A8AC'
+        },
+    },
 
 });
 
@@ -91,6 +123,22 @@ const AuthInput = props => {
                     name={props.name}
                 />
             :
+            props.inputType === "checkbox" ? 
+                <FormControlLabel
+                    value="end"
+                    className={classes.customCheckbox} 
+                    control={<Checkbox 
+                                name={props.name}
+                                checked={props.value}
+                                onChange={props.onChange}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                                color="secondary"
+                                disabled={props.disabled}
+                            />}
+                    label={props.label}
+                    labelPlacement="end"
+                />
+            :
             props.inputType === "password" ?
                 <FormControl variant="outlined" className={classes.root} required={props.required}>
                     
@@ -117,6 +165,27 @@ const AuthInput = props => {
                         }
                     />
                 </FormControl>
+            :
+            props.inputType === "country-select" ?
+                <CountrySelect
+                    name={props.name}
+                    onChange={props.onChange}
+                    placeHolder={props.placeholder}
+                    className={classes.root}
+                    value={props.value}
+                    required={props.required}
+                />
+            :
+            props.inputType === "state-select" ?
+                <StateSelect
+                    name={props.name}
+                    countryid={props.countryid}
+                    onChange={props.onChange}
+                    placeHolder={props.placeholder}
+                    className={classes.root}
+                    value={props.value}
+                    required={props.required}
+                />
             :
             props.inputType === "select" ?
                 <FormControl className={classes.root} required={props.required}>
