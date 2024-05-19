@@ -104,7 +104,7 @@ const PreviewResume = () => {
       const scrollPosition = window.scrollY || window.pageYOffset;
       const viewHeight = window.innerHeight || document.documentElement.clientHeight;
 
-      if (scrollPosition > (0.6 * viewHeight)) {
+      if (scrollPosition > (0.9 * viewHeight)) {
         dispatch(setFetching(true));
         axios.get('/user/get-subscription', {
           headers: {

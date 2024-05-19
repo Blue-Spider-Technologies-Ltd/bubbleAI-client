@@ -6,6 +6,7 @@ import { Grid } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import { Input } from "../UI/Input/Input";
+import AuthInput from "../UI/Input/AuthInputs";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import categoriesData from "./categories";
@@ -272,12 +273,24 @@ const Home = () => {
           <div className="error">{error}</div>
           <form onSubmit={handleAskMeAnything} className="form-ask-anything">
             <Grid container>
-              <Input
+              {/* <Input
                 placeholder="Ask a Question..."
                 inputType="text"
                 name="askMe"
                 inputGrid={10}
                 inputGridSm={10}
+              /> */}
+              <AuthInput
+                name="askMe"
+                // value={info.industry}
+                label="Ask a Question..."
+                placeholder="Ask a Question..."
+                multiline={true}
+                inputGridSm={10}
+                mt={1}
+                rows={2}
+                maxRows={2}
+                required={true}
               />
               <Grid
                 item

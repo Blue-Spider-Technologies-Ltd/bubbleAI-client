@@ -786,7 +786,7 @@ const CustomizeResume = () => {
                   inputGrid={4}
                   mb={2}
                   required={true}
-                  disabled={subDuration !== "Per Month" ? true : false}
+                  disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
                   onChange={handleInputChange("firstName")}
                 />
                 <AuthInput
@@ -797,7 +797,7 @@ const CustomizeResume = () => {
                   inputGrid={4}
                   mb={2}
                   required={true}
-                  disabled={subDuration !== "Per Month" ? true : false}
+                  disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
                   onChange={handleInputChange("lastName")}
                 />
                 <AuthInput
@@ -1529,7 +1529,7 @@ const CustomizeResume = () => {
 
             {/* INTERESTS */}
             <div id="interests" className={`Segment ${interestFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Interests</h4>
+              <h4>Interests/Hobbies</h4>
               <Grid container>
                 <Grid container item xs={9}>
                   {interests.map((interest, index) => {

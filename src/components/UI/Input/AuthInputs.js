@@ -107,13 +107,15 @@ const AuthInput = props => {
     };
 
     return (
-        <Grid item md={props.inputGrid} xs={props.inputGridSm} px={1} mb={props.mb} sx={{boxSizing: "border-box"}}>
+        <Grid item md={props.inputGrid} xs={props.inputGridSm} px={1} mt={props.mt} mb={props.mb} sx={{boxSizing: "border-box"}}>
             {props.multiline ? 
                 <TextareaAutosize 
                     id={props.id}
                     label={props.label}
                     placeholder={props.placeholder}
-                    rows={props.rows}
+                    // rows={props.rows}
+                    minRows={props.rows}
+                    maxRows={props.maxRows}
                     className={classes.root} 
                     onChange={props.onChange}
                     autoComplete="off"

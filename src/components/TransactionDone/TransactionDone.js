@@ -29,7 +29,7 @@ const TransactionDone = () => {
                         transactionId: transactionId
                     }
         
-                    const response = await axios.post("/pricing/complete-trasaction", payload, {
+                    const response = await axios.post("/pricing/complete-transaction", payload, {
                         headers: {
                           "x-access-token": localStorage?.getItem('token'),
                         },
@@ -45,6 +45,7 @@ const TransactionDone = () => {
                         setIsCompleted(true)
                     }
                 } catch (error) {
+                    console.log(error);
                     setTransaction(error?.response?.data)
                     setIsCompleted(true)
                 }

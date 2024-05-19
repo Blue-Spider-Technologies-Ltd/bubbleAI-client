@@ -64,7 +64,7 @@ const resumePricingDetails = [
                 text: 'Sharable Link to Resume'
             },
             changeName: {
-                available: false,
+                available: true,
                 text: 'Change Names During Customzation'
             },
             downloadablePDF: {
