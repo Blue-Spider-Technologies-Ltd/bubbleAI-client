@@ -37,16 +37,17 @@ const useStyles = makeStyles({
         width: '100%',
         margin: '0 auto',
         borderRadius: "5px",
+        fontSize: "16px",
         "& .MuiOutlinedInput-input": {
             backgroundColor: "#F5F5F5",
             borderRadius: "5px",
             paddingTop: ".35rem",
             paddingBottom: ".35rem",
-            fontSize: ".8rem"
+            fontSize: "16px"
         },
         "& .MuiInputLabel-root": {
             color: "#14225188",
-            fontSize: '.7rem',   
+            fontSize: '16px',   
             marginTop: "-.4rem"
         },
         "& .MuiOutlinedInput-root": {
@@ -73,7 +74,7 @@ const useStyles = makeStyles({
             borderRadius: '4px',
             padding: '2px 10px',
             backgroundColor: "#6FCBD1",
-            fontSize: '.9rem',
+            fontSize: '16px',
             fontWeight: '600'
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
@@ -240,6 +241,7 @@ const AuthInput = props => {
                     inputClass={allInputCss.Mobile}
                     onChange={props.onChange}
                     required={props.required}
+                    className={classes.root}
                     value={props.value}
                     disabled={props.disabled}
                     enableSearch={true}

@@ -96,7 +96,7 @@ const Home = () => {
                 placeholder="Ask a Question..."
                 multiline={true}
                 inputGridSm={10}
-                mt={1}
+                // mt={1}
                 rows={2}
                 maxRows={2}
                 required={true}

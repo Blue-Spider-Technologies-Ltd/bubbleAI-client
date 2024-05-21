@@ -59,7 +59,7 @@
     background-color: black;
     border-radius: 10px;
     position: absolute;
-    bottom: 0;
+    bottom: 10px;
 }
 
 
@@ -123,6 +123,10 @@
     }
     .chatbg-overlay {
         padding-bottom: 15%;
+    }
+
+    .ask-me-form {
+        bottom: 0;
     }
 
 }

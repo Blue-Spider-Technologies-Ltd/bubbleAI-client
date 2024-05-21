@@ -215,7 +215,7 @@ const Home = () => {
                 <Grid
                     item
                     xs={2}
-                    sx={{ textAlign: "center" }}
+                    sx={{ textAlign: "right", marginTop: "5px" }}
                 >
                     <ButtonSubmitBlack type="submit">
                         <SendIcon />
