@@ -107,7 +107,7 @@ const AuthInput = props => {
     };
 
     return (
-        <Grid item md={props.inputGrid} xs={props.inputGridSm} px={1} mt={props.mt} mb={props.mb} sx={{boxSizing: "border-box"}}>
+        <Grid item md={props.inputGrid} inputRef={props.inputRef} onKeyDown={props.onKeyDown} xs={props.inputGridSm} px={1} mt={props.mt} mb={props.mb} sx={{boxSizing: "border-box"}}>
             {props.multiline ? 
                 <TextareaAutosize 
                     id={props.id}

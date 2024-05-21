@@ -32,6 +32,7 @@ import ResetPass from './components/Dashboard/ResetPass';
 import GoogleCallback from './components/Auth/GoogleCallback';
 import Terms from './components/Home/Terms';
 import HowIWork from './components/Home/HowIWork';
+import AskMe from "./components/Home/AskMe"
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
@@ -81,6 +82,7 @@ const App = () => {
         <Route path={'/terms'} element={<Terms />} />
         <Route path={'/how-i-work'} element={<HowIWork />} />
         <Route path={'/transaction'} element={<TransactionDone />} />
+        <Route path={'/chat'} element={<AskMe />} />
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
