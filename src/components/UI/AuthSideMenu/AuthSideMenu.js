@@ -119,7 +119,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                 </div>
 
                 <h5>This feature is unavailable for your subscription tier. 
-                Upgrate to view all items in this category you've ever created. Plus much more!</h5>
+                Upgrade to view all items in this category you've ever created. Plus much more!</h5>
 
                 <div style={{marginTop: "50px"}}>
                     <ButtonOutlineGreen link="/pricing" target="_blank">

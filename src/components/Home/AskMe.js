@@ -16,8 +16,8 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import axios from "axios";
 
 
-const Home = () => {
-  const { messages } = useSelector((state) => state.stateData);
+const AskMe = () => {
+  const { messages, error } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
   const inputRef = useRef();
@@ -29,6 +29,7 @@ const Home = () => {
   const expiration = item?.UYiygc768FYexpUVIirationHi87f86DCCC;
 
   const [authMenuOpen, setAuthMenuOpen] = useState(false)
+
 
 
   const askMeErrorObj = {
@@ -68,12 +69,12 @@ const Home = () => {
     };
     const isAssistant = message.role === "assistant";
     let contentTrim = message.content.trim()
-    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("<p>").map(paragraph => {
+    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("\n").map(paragraph => {
         return <p>{paragraph}</p>
     })
 
     const content = isAssistant? (
-      <Assistant>{contentTrim === "" ?        
+      <Assistant contentTrim={contentTrim === ""}>{contentTrim === "" ?        
         <ThreeDots 
             height="25" 
             width="25" 
@@ -254,4 +255,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default AskMe;

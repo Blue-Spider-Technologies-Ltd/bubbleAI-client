@@ -2,7 +2,8 @@
     background: transparent;
     display: flex;
     padding: 10px;
-    width: 97%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .assistantOuter {
@@ -16,7 +17,7 @@
 .Assistant {
     color: black;
     margin-left: 3px;
-    padding: 8px;
+    padding: 0 8px;
     border-radius: 8px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -26,7 +27,23 @@
     background-color: beige;
     max-width: 75%;
     position: relative;
+    word-wrap: break-word;
     top: 15px;
+}
+
+.AssistantCopyIcon, .UserCopyIcon {
+    cursor: pointer;
+}
+
+.AssistantCopyIcon {
+    color: var(--navColor1);
+    float: right;
+}
+
+.UserCopyIcon {
+    margin-top: 8px;
+    color: beige;
+    float: left;
 }
 
 .User {
@@ -38,9 +55,11 @@
     -ms-border-radius: 8px;
     -o-border-radius: 8px;
     border-top-right-radius: 0;
-    background-color: #3E8F93;
+    background-color: var(--navColor1);
     max-width: 75%;
     position: relative;
+    word-wrap: break-word;
     top: 15px;
+    box-sizing: border-box;
 }
 

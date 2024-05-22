@@ -34,11 +34,10 @@ h1 {
   font-size: 2.2rem;
 }
 
-.error {
+.error, .success-mini {
   background-color: rgba(255, 255, 255, 0.796);
   border-radius: 5px;
   font-size: .8rem;
-  color: rgb(216, 7, 7);
   text-align: center;
   position: fixed;
   left: 50%;
@@ -51,6 +50,14 @@ h1 {
   z-index: 10000000;
   box-shadow: -2px 0px 10px rgba(132, 129, 129, 0.5), 
   6px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  color: rgb(216, 7, 7);
+}
+
+.success-mini {
+  color: var(--navColor1);
 }
 
 .error-in {

@@ -47,6 +47,15 @@ export const errorAnimation = async () => {
     }, 5000);
 }
 
+export const successMiniAnimation = async () => {
+    const error = document.querySelector('.success-mini');
+    error.classList.add('error-in');
+
+    setTimeout(() => {
+        error.classList.remove('error-in');
+    }, 5000);
+}
+
 //CHECK for EMPTY STRINGS 
 export const checkEmptyStringsInObj = (arr, ...exemptKeys) => {
   for (const obj of arr) {

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   error: "",
+  successMini: "",
   messages: [],
   userResumesAll: [],
   user: {},
@@ -21,6 +22,9 @@ export const stateSlice = createSlice({
   reducers: {
     setError: (state, action) => {
       state.error = action.payload;
+    },
+    setSuccessMini: (state, action) => {
+      state.successMini = action.payload;
     },
     //For when user logs in, set messages from server
     setMessages: (state, action) => {
@@ -72,6 +76,7 @@ export const stateSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { 
   setError,
+  setSuccessMini,
   setMessages, 
   setUserResumesAll,
   setUser, 
