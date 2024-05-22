@@ -68,18 +68,20 @@ const Home = () => {
     };
     const isAssistant = message.role === "assistant";
     let contentTrim = message.content.trim()
-    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content
+    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("<p>").map(paragraph => {
+        return <p>{paragraph}</p>
+    })
 
     const content = isAssistant? (
       <Assistant>{contentTrim === "" ?        
-      <ThreeDots 
-        height="25" 
-        width="25" 
-        radius="9"
-        color="#000" 
-        ariaLabel="three-dots-loading"
-        visible={true}
-      /> : assistantMessage
+        <ThreeDots 
+            height="25" 
+            width="25" 
+            radius="9"
+            color="#000" 
+            ariaLabel="three-dots-loading"
+            visible={true}
+        /> : assistantMessage
     }
       </Assistant>
     ) : (
@@ -120,7 +122,6 @@ const Home = () => {
         dispatch(deleteLastMessage());
         dispatch(setMessage(response.data));
       } catch (error) {
-        console.log(error);
         dispatch(deleteLastMessage());
         dispatch(setMessage(askMeErrorObj));
       }
