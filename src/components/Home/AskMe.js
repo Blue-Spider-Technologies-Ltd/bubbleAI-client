@@ -1,6 +1,7 @@
-import React, {  useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import { Grid } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,6 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMessage, deleteLastMessage } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots } from 'react-loader-spinner'
+import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import axios from "axios";
 
 
@@ -24,6 +27,8 @@ const Home = () => {
   const item = JSON.parse(countItemJson);
   const useCount = item ? item.cu78tgGgivhcountJVGIbGguguGhgh : 0;
   const expiration = item?.UYiygc768FYexpUVIirationHi87f86DCCC;
+
+  const [authMenuOpen, setAuthMenuOpen] = useState(false)
 
 
   const askMeErrorObj = {
@@ -173,25 +178,44 @@ const Home = () => {
     navigate("/")
   }
 
+  const handleMenuToggle = () => {
+    setAuthMenuOpen(!authMenuOpen)
+  }
+
 
   return (
     <div id="askme-bg" className="askme-bg">
+        <AuthSideMenu
+            opened={authMenuOpen}
+            seacrhBarPlaceholder=""
+            hidden={!authMenuOpen}
+            // resumeSubDuration={subDuration}
+            // arrayDetails={userResumesAll}
+        />
 
         <div className="chat-header">
+            <div className="chat-menu-icon" onClick={handleMenuToggle}>
+              
+                {!authMenuOpen ? 
+                    <ArrowCircleRightIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} />
+                :
+                    <ArrowCircleLeftIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} />}
+                
+            </div>
             <div
                 className="close-icon"
                 title="Close Chat"
                 onClick={toHomePage}
             >
                 <CloseIcon 
-                    sx={{ fontSize: "1.5rem" }} 
+                    fontSize='medium'
                 />
             </div>
         </div>
        
 
 
-        <div className="chatbg-overlay">
+        <div className="chatbg-overlay" onClick={() => setAuthMenuOpen(false)}>
             <div className="chat-ex" ref={chatBoxRef}>
                 {chatExchange}
             </div>
@@ -224,11 +248,6 @@ const Home = () => {
                 </Grid>
             </form>
         </div>
-
-        <section id="ask-me" className="askme-input">
-
-
-        </section>
 
     </div>
   );

@@ -36,6 +36,10 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         navigate("/")
     }    
 
+    const handleLogIn = () => {
+        navigate("/popin")
+    }
+
     const handleNavigateProfile = () => {
         const prevPath = location.pathname
         localStorage?.setItem("prevPath", prevPath)
@@ -190,7 +194,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                         <LockResetIcon 
                             fontSize='small' 
                         /> 
-                        RESET
+                        CHANGE
                     </ButtonTransparentSquare>
                 </Grid>
 
@@ -212,15 +216,15 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                 <Grid item xs={3}>
                     <ButtonTransparentSquare 
                         type='button'
-                        color="rgba(158, 9, 9, 0.733)" 
+                        color={isAuth ? "rgba(158, 9, 9, 0.733)" : "#7CC9CC"}
                         width="90%"
                         height="100%"
-                        onClick={handleLogOut}
+                        onClick={isAuth ? handleLogOut : handleLogIn}
                     >
                         <LogoutIcon 
                             fontSize='small' 
                         /> 
-                        LOGOUT
+                        {isAuth ? "LOGOUT" : "LOGIN"}
                     </ButtonTransparentSquare>
                 </Grid>
 

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { Overlay } from '../UI/Modal/Modal';
 import AuthInput from '../UI/Input/AuthInputs';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
 import LockResetIcon from '@mui/icons-material/LockReset';
 import { setError, setFetching } from '../../redux/states';
@@ -34,6 +33,20 @@ const ResetPass = () => {
       dispatch(setError(string))
       errorAnimation()
     }
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                //must await
+                await checkAuthenticatedUser()
+            } catch (error) {
+                localStorage.setItem("prevPath", "/user/dashboard/reset-pass")
+                return navigate("/popin");      
+            }
+        }
+        checkAuth()
+    }, [navigate])
+
     let isValid = false;
     const checkPassword = (password) => {
         const specialChars = /[!#$%&'()*+,-./:;<=>?@[\]^_{|}~]/;
@@ -53,7 +66,7 @@ const ResetPass = () => {
             //must await
             await checkAuthenticatedUser()
         } catch (error) {
-            localStorage.setItem("prevPath", "/user/dashboard/profile")
+            localStorage.setItem("prevPath", "/user/dashboard/reset-pass")
             return navigate("/popin");      
         }
 

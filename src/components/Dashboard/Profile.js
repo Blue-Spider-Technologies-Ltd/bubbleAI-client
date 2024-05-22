@@ -46,7 +46,7 @@ const Profile = () => {
                 //must await
                 await checkAuthenticatedUser()
             } catch (error) {
-                localStorage.setItem("prevPath", "/dashboard/get-profile")
+                localStorage.setItem("prevPath", "/user/dashboard/profile")
                 return navigate("/popin");      
             }
             try {

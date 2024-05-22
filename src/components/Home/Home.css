@@ -32,15 +32,15 @@
     background-size: contain;
     background-repeat: repeat;
     box-sizing: border-box;
-    max-height: 90vh;
-    height: 90vh;
+    max-height: 100vh;
+    height: 100vh;
     width: 100vw;   
     max-width: 100vw;   
 }
 
 .chat-ex {
     width: 100%;
-    height: 100%;
+    height: 90%;
     padding-top: 3.5rem;
     padding-bottom: 10%;
     overflow-y: scroll;
@@ -55,11 +55,13 @@
 }
 
 .ask-me-form {
+    border-top: 1px solid #99E1E4;
     width: 100%;
     background-color: black;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
 }
 
 
@@ -69,27 +71,38 @@
 
 .chat-header {
     background-color: black;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 0 15px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     margin: auto;
-    border-bottom: 2px solid rgb(200, 200, 200);
+    border-bottom: 1px solid #99E1E4;
     position: fixed;
     top: 0;
     z-index: 9999;
 }
 
+.chat-menu-icon {
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+}
+
 .close-icon {
     background-color: rgba(255, 255, 255, 0.972);
     border-radius: 50%;
-    color: var(--lightModeGreen);
+    color: black;
     cursor: pointer;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
     margin: 10px;
-    width: 2rem;
-    height: 2rem;
+    width: 1.6rem;
+    height: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -117,16 +130,13 @@
     }
 
     .askme-bg {
-        height: 100vh;
+        max-height: 89vh;
         background-size: cover;
         background-image: url('../../images/chatbgone.png');
     }
-    .chatbg-overlay {
-        padding-bottom: 15%;
-    }
 
     .ask-me-form {
-        bottom: 0;
+        bottom: -11px;
     }
 
 }
