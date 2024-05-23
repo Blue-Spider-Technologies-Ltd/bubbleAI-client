@@ -120,7 +120,6 @@ const AskMe = () => {
 
 
 
-
   const handleAskMeAnything = async (e) => {
 
     if (askMeVal === "") {
@@ -293,7 +292,7 @@ const AskMe = () => {
                     inputGridSm={10}
                     mt={1}
                     rows={2}
-                    maxRows={4}
+                    maxRows={6}
                     required={true}
                     inputRef={inputRef}
                     onKeyDown={handleKeyPress}
