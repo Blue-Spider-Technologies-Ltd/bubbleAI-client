@@ -124,7 +124,7 @@
     position: fixed;
     text-align: center;
     top: 35px;
-    transition: opacity 0.5s ease-in-out;
+    transition: all 2s ease-in-out;
     z-index: 1;
 }
 
@@ -134,7 +134,7 @@
 
 .suggestion-out {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transition: all 2s ease-in-out;
     transform: translateY(-200px);
 }
 
