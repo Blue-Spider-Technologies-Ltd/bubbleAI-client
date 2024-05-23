@@ -14,10 +14,29 @@ import { ThreeDots } from 'react-loader-spinner'
 import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import axios from "axios";
+import { setError } from "../../redux/states";
+import { errorAnimation } from "../../utils/client-functions";
+
+const screenWidth = window.innerWidth
+
+const suggestions = [
+    {
+        title: "Write professional email",
+        description: "Write a sample professional follow up email to a prospective client listing out why our products [mention products] are the best for them"
+    },
+    {
+        title: "Quicken monotonous tasks",
+        description: "How can Bubble AI's Resume Builder streamline and display my skills and profile more efficiently?"
+    },
+    {
+      title: "Create video content",
+      description: "You are an expert content creator at a business development firm, create a social media video script of 1 minute 30 seconds on the importance of digital marketing with catchy illustrations"
+    },
+]
 
 
 const AskMe = () => {
-  const { messages, error } = useSelector((state) => state.stateData);
+  const { messages } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
   const inputRef = useRef();
@@ -29,6 +48,13 @@ const AskMe = () => {
   const expiration = item?.UYiygc768FYexpUVIirationHi87f86DCCC;
 
   const [authMenuOpen, setAuthMenuOpen] = useState(false)
+  const [askMeVal, setAskMeVal] = useState("")
+  const [suggestionDisplay, setSuggestionDisplay] = useState(true)
+
+  const errorSetter = (string) => {
+    dispatch(setError(string))
+    errorAnimation()
+  }
 
 
 
@@ -96,11 +122,13 @@ const AskMe = () => {
 
 
   const handleAskMeAnything = async (e) => {
-    e.preventDefault();
 
+    if (askMeVal === "") {
+      return errorSetter("Empty question detected")
+    }
     const newMessage = {
       role: "user",
-      content: e.target.elements[0].value,
+      content: askMeVal,
     };
 
     //Dispatch with empty content to enable thinking algo
@@ -112,7 +140,7 @@ const AskMe = () => {
       //save authenticated user message
       dispatch(setMessage(newMessage));
       dispatch(setMessage(emptyMessage));
-      e.target.elements[0].value = "";
+      setAskMeVal("");
       try {
         let response = await axios.post("/askme", newMessage, {
           headers: {
@@ -151,7 +179,7 @@ const AskMe = () => {
         //THIS BLOCK WORKS FOR unauthenticated users below 3 usage within the day
         dispatch(setMessage(newMessage));
         dispatch(setMessage(emptyMessage));
-        e.target.elements[0].value = "";
+        setAskMeVal("");
 
         try {
           let response = await axios.post("/askme", newMessage);
@@ -169,12 +197,18 @@ const AskMe = () => {
 
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      e.target.form.requestSubmit();
+    if (screenWidth > 900 ) {
+      if (e.key === "Enter" && !e.shiftKey) { 
+        e.preventDefault();
+        handleAskMeAnything();
+      }
     }
   };
 
+
+  const handleValChange = (e) => {
+    setAskMeVal(e.target.value)
+  }
 
   const toHomePage = () => {
     navigate("/")
@@ -182,6 +216,10 @@ const AskMe = () => {
 
   const handleMenuToggle = () => {
     setAuthMenuOpen(!authMenuOpen)
+  }
+
+  const handleFocus = () => {
+    setSuggestionDisplay(false)
   }
 
 
@@ -218,15 +256,37 @@ const AskMe = () => {
 
 
         <div className="chatbg-overlay" onClick={() => setAuthMenuOpen(false)}>
+
+
             <div className="chat-ex" ref={chatBoxRef}>
-                {chatExchange}
+              <div style={{ padding: "0", width: "92vw", margin: "auto" }}>
+                <div className={suggestionDisplay ? "suggestion-container" : "suggestion-out"}>
+                  <h5>How to?</h5>
+                  {suggestions.map(suggestion => {
+                    return (
+                      <button 
+                        className="suggestion-buttons" 
+                        onClick={() => {
+                          setSuggestionDisplay(false)
+                          setAskMeVal(suggestion.description)}
+                        }
+                      >
+                        {suggestion.title}
+                      </button>
+                    )
+                  })}
+
+                </div>
+              </div>
+
+              {chatExchange}
             </div>
 
-            <form onSubmit={handleAskMeAnything} className="ask-me-form">
+            <div className="ask-me-form">
                 <Grid container>
                 <AuthInput
                     name="askMe"
-                    // value={info.industry}
+                    value={askMeVal}
                     label="Ask a Question..."
                     placeholder="Ask a Question..."
                     multiline={true}
@@ -237,18 +297,20 @@ const AskMe = () => {
                     required={true}
                     inputRef={inputRef}
                     onKeyDown={handleKeyPress}
+                    onChange={handleValChange}
+                    onFocus={handleFocus}
                 />
                 <Grid
                     item
                     xs={2}
                     sx={{ textAlign: "right", marginTop: "5px" }}
                 >
-                    <ButtonSubmitBlack type="submit">
+                    <ButtonSubmitBlack type="button" onClick={handleAskMeAnything}>
                         <SendIcon />
                     </ButtonSubmitBlack>
                 </Grid>
                 </Grid>
-            </form>
+            </div>
         </div>
 
     </div>

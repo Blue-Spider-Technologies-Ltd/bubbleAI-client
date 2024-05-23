@@ -44,7 +44,7 @@
     height: 90%;
     padding-right: 0;
     padding-top: 3.5rem;
-    padding-bottom: 10%;
+    padding-bottom: 5%;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -111,6 +111,58 @@
     justify-content: center;
 }
 
+.suggestion-container {
+    box-sizing: border-box;
+    border: none;
+    background: rgba(0, 0, 0, 0.646);
+    box-shadow: -6px 0px 10px rgba(255, 255, 255, 0.8),
+                    6px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    margin-top: 15px;
+    width: 91%;
+    padding: 5px;
+    position: fixed;
+    text-align: center;
+    top: 35px;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 1;
+}
+
+.suggestion-container h5 {
+    color: aliceblue;
+}
+
+.suggestion-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transform: translateY(-200px);
+}
+
+.suggestion-buttons {
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 33%;
+    background-color: rgba(0, 0, 0, 0.78);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+    padding: 5px;
+    margin: 5px 0 0;
+}
+
+.suggestion-buttons:hover {
+    background-color: black;
+    box-shadow: none;
+}
+
+.suggestion-buttons:nth-child(even) {
+    float: right;
+    margin-bottom: 5px;
+}
+
 .not-found {
     color: var(--navColor3) !important;
     width: 100%;
@@ -140,6 +192,10 @@
 
     .ask-me-form {
         bottom: -11px;
+    }
+
+    .suggestion-buttons {
+        width: 70%;
     }
 
 }

@@ -124,6 +124,7 @@ const AuthInput = props => {
                     disabled={props.disabled}
                     value={props.value}
                     name={props.name}
+                    onFocus={props.onFocus}
                 />
             :
             props.inputType === "checkbox" ? 

@@ -218,8 +218,7 @@
     font-size: .8rem;
     font-weight: 500;
     white-space: nowrap;
-    width: 110px;
-    max-height: 22px;
+    max-width: 22px;
 }
 
 /* Smaller Screens */

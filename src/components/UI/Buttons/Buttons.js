@@ -32,9 +32,9 @@ export const ButtonLogOut = ({ to, type, clicked, children }) => {
 }
 
 
-export const ButtonSubmitBlack = ({disabled, type, height, children}) => {
+export const ButtonSubmitBlack = ({disabled, type, height, children, onClick}) => {
     return (
-        <button type={type} disabled={disabled} style={{ height: height && height }} className={buttonCss.ButtonSubmitBlack}>
+        <button onClick={onClick} type={type} disabled={disabled} style={{ height: height && height }} className={buttonCss.ButtonSubmitBlack}>
             {children}
         </button>
     )
@@ -64,13 +64,14 @@ export const ButtonTransparent = ({type, children, onClick}) => {
     )
 }
 
-export const ButtonTransparentSquare = ({ type, onClick, color, width, height, bgColor, children }) => { 
+export const ButtonTransparentSquare = ({ type, onClick, color, width, height, bgColor, children, borderRadius }) => { 
 
     const buttonStyle = {
         color: color,
         width: width,
         height: height,
-        backgroundColor: bgColor && bgColor
+        backgroundColor: bgColor && bgColor,
+        borderRadius: borderRadius
     };
 
     return (
@@ -176,11 +177,19 @@ export const ButtonCard = props => {
     )
 }
 
-export const ButtonThin = props => {
+export const ButtonThin = ({color, width, height, bgColor, borderRadius, children, onClick}) => {
+
+    const buttonStyle = {
+        color: color,
+        width: width,
+        height: height,
+        backgroundColor: bgColor && bgColor,
+        borderRadius: borderRadius
+    };
     
     return (
-        <div className={buttonCss.ButtonThin} onClick={props.onClick}>
-            {props.children}
+        <div style={buttonStyle} className={buttonCss.ButtonThin} onClick={onClick}>
+            {children}
         </div>
     )
 }
