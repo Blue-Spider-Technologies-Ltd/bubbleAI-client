@@ -124,7 +124,7 @@
     position: fixed;
     text-align: center;
     top: 35px;
-    transition: all 2s ease-in-out;
+    transition: all 1s ease-in-out;
     z-index: 1;
 }
 

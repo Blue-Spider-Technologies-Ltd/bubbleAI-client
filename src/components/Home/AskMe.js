@@ -28,18 +28,19 @@ const suggestions = [
         title: "Quicken monotonous tasks",
         description: "How can Bubble AI's Resume Builder streamline and display my skills and profile more efficiently?"
     },
-    {
-      title: "Create video content",
-      description: "You are an expert content creator at a business development firm, create a social media video script of 1 minute 30 seconds on the importance of digital marketing with catchy illustrations"
-    },
+
 ]
+
+const suggestionThree = {
+  title: "Create video content",
+  description: "You are an expert content creator at a business development firm, create a social media video script of 1 minute 30 seconds on the importance of digital marketing with catchy illustrations"
+}
 
 
 const AskMe = () => {
   const { messages } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
-  const inputRef = useRef();
   const navigate = useNavigate();
   const now = new Date().getTime();
   const countItemJson = localStorage?.getItem("oats_3297");
@@ -49,7 +50,10 @@ const AskMe = () => {
 
   const [authMenuOpen, setAuthMenuOpen] = useState(false)
   const [askMeVal, setAskMeVal] = useState("")
-  const [suggestionDisplay, setSuggestionDisplay] = useState(true)
+  const [suggestionDisplay, setSuggestionDisplay] = useState(false)
+  const [aiSuggestions, setAiSuggestions] = useState([])
+
+  const isEffectExecuted = useRef(false);
 
   const errorSetter = (string) => {
     dispatch(setError(string))
@@ -59,11 +63,13 @@ const AskMe = () => {
 
 
   const askMeErrorObj = {
-            role: 'assistant',
-            content:  "I am currently throttling requests, try again in a moment"
-          }
+    role: 'assistant',
+    content:  "I am currently throttling requests, try again in a moment"
+  }
 
   const isAuth = localStorage?.getItem("token");
+
+
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -76,6 +82,30 @@ const AskMe = () => {
       localStorage?.removeItem("oats_3297");
     }
   }, [expiration, now])
+
+ useEffect(() => {
+    const data = {
+      suggestions: suggestions
+    }
+  
+    const generateSuggestions = async () => {
+      try {
+        setSuggestionDisplay(true)
+        let response = await axios.post("/suggestions", data);
+        const objectData = JSON.parse(response.data)
+        setAiSuggestions(objectData)
+      } catch (error) {
+        
+      }
+    }
+  
+    if (!isEffectExecuted.current) {
+      generateSuggestions()
+      isEffectExecuted.current = true;
+    }
+  
+  }, [])
+  
 
   
 
@@ -95,8 +125,8 @@ const AskMe = () => {
     };
     const isAssistant = message.role === "assistant";
     let contentTrim = message.content.trim()
-    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("\n").map(paragraph => {
-        return <p>{paragraph}</p>
+    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("\n").map((paragraph, index) => {
+        return <p key={index}>{paragraph}</p>
     })
 
     const content = isAssistant? (
@@ -172,7 +202,7 @@ const AskMe = () => {
         };
         dispatch(deleteLastMessage());
         dispatch(setMessage(overUseMessage));
-        e.target.elements[0].value = "";
+        setAskMeVal("");
         return
       } else {
         //THIS BLOCK WORKS FOR unauthenticated users below 3 usage within the day
@@ -261,9 +291,11 @@ const AskMe = () => {
               <div style={{ padding: "0", width: "92vw", margin: "auto" }}>
                 <div className={suggestionDisplay ? "suggestion-container" : "suggestion-out"}>
                   <h5>How to?</h5>
-                  {suggestions.map(suggestion => {
+
+                  {aiSuggestions.map((suggestion, index) => {
                     return (
                       <button 
+                        key={index}
                         className="suggestion-buttons" 
                         onClick={() => {
                           setSuggestionDisplay(false)
@@ -274,7 +306,15 @@ const AskMe = () => {
                       </button>
                     )
                   })}
-
+                  <button 
+                    className="suggestion-buttons" 
+                    onClick={() => {
+                    setSuggestionDisplay(false)
+                    setAskMeVal(suggestionThree.description)}
+                    }
+                  >
+                    {suggestionThree.title}
+                  </button>
                 </div>
               </div>
 
@@ -294,7 +334,6 @@ const AskMe = () => {
                     rows={2}
                     maxRows={6}
                     required={true}
-                    inputRef={inputRef}
                     onKeyDown={handleKeyPress}
                     onChange={handleValChange}
                     onFocus={handleFocus}
