@@ -67,7 +67,7 @@ const Profile = () => {
                 setStreetCity(profileData.streetCity)
                 setStateRegion(profileData.stateRegion)
                 setCountry(profileData.country)
-
+                
                 dispatch(setFetching(false))
             } catch (error) {
                 if(error?.response?.status === 401) {
@@ -114,6 +114,7 @@ const Profile = () => {
                 if (response.status === 201) {
                     const prevPath = localStorage.getItem("prevPath")
                     navigate(prevPath)
+                    localStorage.removeItem("prevPath")
                     dispatch(setFetching(false))
                     return
                 }

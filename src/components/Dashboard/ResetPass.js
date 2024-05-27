@@ -93,6 +93,7 @@ const ResetPass = () => {
             if (response.status === 201) {
                 const prevPath = localStorage.getItem("prevPath")
                 navigate(prevPath)
+                localStorage.removeItem("prevPath")
                 dispatch(setFetching(false))
                 return
             }

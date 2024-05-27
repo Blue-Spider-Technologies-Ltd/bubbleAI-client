@@ -71,7 +71,8 @@ const CustomizeResume = () => {
 
   useEffect(() => {
     dispatch(setFetching(true));
-
+    localStorage.removeItem("prevPath");
+    
     const populateUser = async () => {
       try {
         //must await
@@ -140,7 +141,7 @@ const CustomizeResume = () => {
       
   }, [navigate, dispatch, isAuth]);
 
-  //to redirect useer if previously unfinished resume
+  //to redirect user if previously unfinished resume
   useEffect(() => {
     const now = Date.now();
     const isResumePresent = localStorage?.getItem(

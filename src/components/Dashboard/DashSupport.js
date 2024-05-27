@@ -14,8 +14,11 @@ const DashSupport = (props) => {
 
 
     const goBackPrevPage = () => {
-        const prevPath = localStorage?.getItem("prevPath")
-        navigate(prevPath)
+        const prevPath = localStorage.getItem("prevPath");
+        if (prevPath) {
+            navigate(prevPath);
+            localStorage.removeItem("prevPath");
+        }
     }
 
     const openNewTab = (url) => {

@@ -83,7 +83,9 @@ const AskMe = () => {
     }
   }, [expiration, now])
 
+
  useEffect(() => {
+    localStorage.removeItem("prevPath")
     const data = {
       suggestions: suggestions
     }
