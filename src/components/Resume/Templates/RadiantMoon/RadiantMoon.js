@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import radiantCss from "./RadiantMoon.module.css"
 import BuildIcon from '@mui/icons-material/Build';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Grid } from "@mui/material";
-import avatarImg from "../../../../images/avatar.webp"
+// import avatarImg from "../../../../images/avatar.webp"
 
 
 
 const RadiantMoon = (props) => {
+
     return (
         <div className={radiantCss.RadiantContainer}>
             <Grid container>
                 <Grid item xs={4} className={radiantCss.LeftBg}>
                     <div className={radiantCss.ImgContainer}>
-                        {props.imgUrl ? <img src={props.imgUrl} alt="avatar" width={"100%"} /> : <img src={props.resume?.storageDetails?.imgUrl ? props.resume.storageDetails.imgUrl : avatarImg} alt="avatar" width={"100%"} />}
+                        <img src={props.imgUrl} alt="avatar" width={"100%"} />
                     </div>
 
                     <h3>PROFILE</h3>

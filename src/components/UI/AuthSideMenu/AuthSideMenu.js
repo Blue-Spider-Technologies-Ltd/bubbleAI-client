@@ -57,7 +57,8 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         navigate("/user/dashboard/dash-support")
     }
 
-    const handleDeleteResume = async (index) => {
+
+    const handleDeleteResume = async (index, imgUrl) => {
         try {
             //must await
             await checkAuthenticatedUser()
@@ -71,9 +72,22 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         })
         .then(async () => {
             dispatch(setFetching(true))
-            const body = {
-                indexOfResume: index
+            let body;
+            if(imgUrl) {
+                const urlParts = new URL(imgUrl);
+                const pathname = urlParts.pathname;
+                const pathParts = pathname.split('/');
+                const fileName = pathParts[pathParts.length - 1];
+                body = {
+                    indexOfResume: index,
+                    fileName: fileName
+                }
+            } else {
+                body = {
+                    indexOfResume: index
+                }
             }
+
             try {
                 const response = await axios.post("/user/delete-resume", body, {
                     headers: {
@@ -147,7 +161,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                                 <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}> <DownloadIcon fontSize='medium' /> </span> 
                             </div> 
                             <div> 
-                                <span onClick={() => handleDeleteResume(index)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }} > 
+                                <span onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }} > 
                                     <DeleteForeverIcon fontSize='small' /> 
                                 </span> 
                             </div> 

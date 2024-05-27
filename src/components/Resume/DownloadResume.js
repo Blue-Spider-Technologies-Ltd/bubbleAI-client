@@ -9,7 +9,7 @@ import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
-import { errorAnimation } from "../../utils/client-functions";
+import { errorAnimation, successMiniAnimation } from "../../utils/client-functions";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
@@ -20,7 +20,7 @@ import jwt_decode from "jwt-decode";
 import { SuccessFailureModal } from '../UI/Modal/Modal';
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
-import { setError, setFetching } from "../../redux/states";
+import { setError, setFetching, setSuccessMini } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
 import Alert from '@mui/material/Alert';
 import { useConfirm } from "material-ui-confirm";
@@ -44,7 +44,7 @@ const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
 
 
 const DownloadResume = () => {
-    const { resume, error, resumeSubDuration } = useSelector(state => state.stateData)
+    const { resume, error, successMini, resumeSubDuration } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirm = useConfirm();
@@ -55,9 +55,8 @@ const DownloadResume = () => {
     const [canPrint, setCanPrint] = useState(false)
     const [activeIndex, setActiveIndex] = useState(null);
     const [carouselName, setCarouselName] = useState("");
-    const [imgUrl, setImgUrl] = useState("");
+    const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "http://localhost:5000/uploads/default-img/avatar.webp");
     const [hasImg, setHasImg] = useState(false);
-    const [template, setTemplate] = useState(<h5 style={{textAlign: "center"}}>Select template to display here</h5>)
     const [storageDetails, setStorageDetails] = useState({
         name: "",
         desc: "",
@@ -68,11 +67,14 @@ const DownloadResume = () => {
     const hasDroppedFeedback = authUser && authUser.rated
    
 
-
-
     const errorSetter = (string) => {
         dispatch(setError(string))
         errorAnimation()
+    }
+
+    const successSetter = (string) => {
+        dispatch(setSuccessMini(string))
+        successMiniAnimation()
     }
 
 
@@ -171,7 +173,6 @@ const DownloadResume = () => {
         setActiveIndex(index);
         setCarouselName(selectedCarousel.title)
     
-        let newTemplate;
         let canPrintFlag = false;
         if (selectedCarousel.title === "Radiant Moon") {
             setHasImg(true)
@@ -183,42 +184,75 @@ const DownloadResume = () => {
             case "Standard":
             case "Radiant Moon":
                 canPrintFlag = true;
-                newTemplate = selectedCarousel.title === "Standard" ? <Standard resume={resume} /> : <RadiantMoon resume={resume} imgUrl={imgUrl} />;
                 break;
             default:
                 canPrintFlag = false;
-                newTemplate = <h5 style={{textAlign: "center"}}>Coming Soon</h5>;
                 break;
         }
     
         setCanPrint(canPrintFlag);
-        setTemplate(newTemplate);
     };
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        
+        if (!file) {
+            errorSetter('Kindly select an image file');
+            return;
+        }
         if (file.size > 2 * 1024 * 1024) {
           errorSetter('File size exceeds 2MB limit. Please select a smaller file.');
           return;
         }
     
-   
+        saveImageToFolder(file)
     };
 
     
-    // const saveImageToFolder = (blob) => {
-    //     const formData = new FormData();
-    //     formData.append('file', blob);
-    
-    //     axios.post('/user/upload', formData)
-    //         .then(response => {
-    //             console.log(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error(error);
-    //         });
-    // };
+    const saveImageToFolder = (blob) => {
+        const formData = new FormData();
+        formData.append('file', blob);
+        
+        axios.post('/user/upload-img', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'x-access-token': isAuth
+            }
+        })
+        .then(response => {
+            setImgUrl(response.data.url)
+            setStorageDetails({ ...storageDetails, imgUrl: response.data.url });
+            successSetter(`Image uploaded successfully!`);
+        })
+        .catch(error => {
+            console.error(error);
+            errorSetter('Error uploading image.');
+        });
+    };
+
+    const selectTemplate = () => {
+        let template;
+   
+        switch (carouselName) {
+            case "Standard":
+                template  = <Standard resume={resume} />
+                break;
+            case "Radiant Moon":
+                template  = <RadiantMoon resume={resume} imgUrl={imgUrl} />
+                break;
+            case "Flying Fish":
+            case "Swimming Elephant":
+            case "Water Train":
+            case "Sinking Duck":
+                template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
+                break;
+        
+            default:
+                template  = <h5 style={{textAlign: "center"}}>Pick a template to display here</h5>
+                break;
+        }
+
+        return template
+    }
     
 
     return (
@@ -243,8 +277,10 @@ const DownloadResume = () => {
                     </div>
                     <form>
                         <div className='error'>{error}</div>
+                        <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
                             <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Click Download only when you are sure to download as action is not reversible</Alert>
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Flip screen orientation to landscape to display template properly on mobile</Alert>}
                         </div>
                         <div className="Segment">
                             <h4>Save Resume Details</h4>
@@ -303,7 +339,7 @@ const DownloadResume = () => {
                             <h4>View and Download</h4>
                             <div className={resumeCss.ResponsivePrintView}>
                                 <div ref={componentRef}>
-                                    {template}
+                                    {selectTemplate()}
                                 </div>
                                 
                             </div>
@@ -364,4 +400,3 @@ const DownloadResume = () => {
 
 
 export default DownloadResume;
-
