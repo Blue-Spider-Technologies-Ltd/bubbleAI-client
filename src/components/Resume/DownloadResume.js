@@ -10,11 +10,11 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
 import { errorAnimation } from "../../utils/client-functions";
-import standardTempImg from "../../images/resume-standard.png";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
-import Standard from './Templates/Standard/Standard';
+import Standard from './Templates/Standard/Standard'
+import RadiantMoon from './Templates/RadiantMoon/RadiantMoon';
 import Feedback from '../Dashboard/Feedback';
 import jwt_decode from "jwt-decode";
 import { SuccessFailureModal } from '../UI/Modal/Modal';
@@ -22,28 +22,82 @@ import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
 import { setError, setFetching } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
+import Alert from '@mui/material/Alert';
+import { useConfirm } from "material-ui-confirm";
 const screenWidth = window.innerWidth
 
+
+const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
+    return (
+        <div
+            className={resumeCss.carouselInner}
+            key={index}
+            onClick={() => handleItemClick(index)}
+        >
+            <h5>{item.title}</h5>
+            <div className={`${activeIndex === index ? resumeCss.carouselMiddleActive : resumeCss.carouselMiddle}`} style={{backgroundImage: `url(${item.image})` }}>
+                {activeIndex === index && <CheckCircleIcon fontSize='inherit' />}
+            </div>
+        </div>
+    );
+};
+
+
 const DownloadResume = () => {
-    const { resume, error } = useSelector(state => state.stateData)
+    const { resume, error, resumeSubDuration } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const confirm = useConfirm();
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
     const [completed, setCompleted] = useState(false)
     const [isFeedbackTime, setIsFeedbackTime] = useState(false)
+    const [canPrint, setCanPrint] = useState(false)
+    const [activeIndex, setActiveIndex] = useState(null);
+    const [carouselName, setCarouselName] = useState("");
+    const [imgUrl, setImgUrl] = useState("");
+    const [hasImg, setHasImg] = useState(false);
+    const [template, setTemplate] = useState(<h5 style={{textAlign: "center"}}>Select template to display here</h5>)
     const [storageDetails, setStorageDetails] = useState({
         name: "",
-        desc: ""
+        desc: "",
+        imgUrl:""
     })
     const isAuth = localStorage?.getItem('token')
-    const authUser =  jwt_decode(isAuth)
-    const hasDroppedFeedback = authUser.rated
+    const authUser = isAuth && jwt_decode(isAuth)
+    const hasDroppedFeedback = authUser && authUser.rated
+   
+
+
 
     const errorSetter = (string) => {
         dispatch(setError(string))
         errorAnimation()
     }
+
+
+    useEffect(() => {
+        const checkIfAuthUser = async () => {
+            try {
+                await checkAuthenticatedUser();
+            } catch (error) {
+                localStorage?.removeItem("token");
+                navigate("/popin?resume");
+            }
+        };
+        checkIfAuthUser();
+
+    }, [navigate, resumeSubDuration])
+
+    useEffect(() => {
+        const resumeLength = Object.keys(resume).length;
+
+        if (resumeLength < 1) {
+            navigate('/user/dashboard/resume?customize');
+        } 
+    }, [resume, navigate]);
+
+
     //Option for carousel in template section
     const responsive = {
       desktop: {
@@ -62,29 +116,13 @@ const DownloadResume = () => {
         slidesToSlide: 1 // optional, default to 1.
       }
     };
-
-    useEffect(() => {
-        const resumeLength = Object.keys(resume).length   
-        const checkIfAuthUser = async () => {
-            try {
-                //must await
-                await checkAuthenticatedUser()
-            } catch (error) {
-                dispatch(setFetching(false));
-                localStorage?.removeItem('token')
-                return navigate("/popin?resume");      
-            }
-        } 
-        checkIfAuthUser()
-        if (resumeLength <= 0) {
-            navigate('/user/dashboard/resume?customize')
-        }
-    }, [])
+    
 
     //scroll to page top on render
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
 
 
     const handleResumeSave = async () => {
@@ -128,6 +166,61 @@ const DownloadResume = () => {
         setStorageDetails({ ...storageDetails, [prop]: event.target.value });
     };
 
+    const handleItemClick = (index) => {
+        const selectedCarousel = carouselData[index];
+        setActiveIndex(index);
+        setCarouselName(selectedCarousel.title)
+    
+        let newTemplate;
+        let canPrintFlag = false;
+        if (selectedCarousel.title === "Radiant Moon") {
+            setHasImg(true)
+        } else {
+            setHasImg(false)
+        }
+    
+        switch (selectedCarousel.title) {
+            case "Standard":
+            case "Radiant Moon":
+                canPrintFlag = true;
+                newTemplate = selectedCarousel.title === "Standard" ? <Standard resume={resume} /> : <RadiantMoon resume={resume} imgUrl={imgUrl} />;
+                break;
+            default:
+                canPrintFlag = false;
+                newTemplate = <h5 style={{textAlign: "center"}}>Coming Soon</h5>;
+                break;
+        }
+    
+        setCanPrint(canPrintFlag);
+        setTemplate(newTemplate);
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        
+        if (file.size > 2 * 1024 * 1024) {
+          errorSetter('File size exceeds 2MB limit. Please select a smaller file.');
+          return;
+        }
+    
+   
+    };
+
+    
+    // const saveImageToFolder = (blob) => {
+    //     const formData = new FormData();
+    //     formData.append('file', blob);
+    
+    //     axios.post('/user/upload', formData)
+    //         .then(response => {
+    //             console.log(response.data);
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //         });
+    // };
+    
+
     return (
         <div className="auth-container">
             {/* For SIDE MENU */}
@@ -150,7 +243,9 @@ const DownloadResume = () => {
                     </div>
                     <form>
                         <div className='error'>{error}</div>
-                       
+                        <div className='explanation-points'>
+                            <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Click Download only when you are sure to download as action is not reversible</Alert>
+                        </div>
                         <div className="Segment">
                             <h4>Save Resume Details</h4>
                             <div>
@@ -177,50 +272,74 @@ const DownloadResume = () => {
                                     dotListClass="custom-dot-list-style"
                                     itemClass="carousel-item-padding-40-px"
                                     centerMode={ screenWidth > 900 ? false : true}
-                                    focusOnSelect={true}
+                                    focusOnSelect={screenWidth < 900}
                                 >
-                                    <div className={resumeCss.carouselInner} >
-                                        <h5>Standard</h5>
-                                        <div className={resumeCss.carouselMiddleActive} style={{backgroundImage: `url(${standardTempImg})` }}>
-                                            <CheckCircleIcon fontSize='inherit' />
-                                        </div>
-                                    </div>
 
-                                    {carouselData.map((item, index) => {
-                                        return (
-                                            <div className={resumeCss.carouselInner} key={index} >
-                                                <h5>{item.title}</h5>
-                                                <div className={resumeCss.carouselMiddle} style={{backgroundImage: `url(${item.image})` }}>
+                                    {carouselData.map((item, index) => (
+                                        <CarouselItem
+                                            key={index}
+                                            item={item}
+                                            index={index}
+                                            activeIndex={activeIndex}
+                                            handleItemClick={handleItemClick}
+                                        />
+                                    ))}
 
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
                                 </Carousel>
                             </div>
                         </div>
+                        {hasImg && (
+                            <div className="Segment">
+                                <h4>Upload Image</h4>
+                                <div style={{textAlign: "center", fontSize: ".8rem"}}>
+                                    <p>CVs with your image has 80% more chance of being read</p>
+                                    <input style={{marginLeft: "50px"}} type="file" accept="image/*" onChange={handleFileChange} />
+                                </div>
+                            </div>
+                        )}
+
+
                         <div className="Segment">
                             <h4>View and Download</h4>
                             <div className={resumeCss.ResponsivePrintView}>
                                 <div ref={componentRef}>
-                                    <Standard resume={resume} />
+                                    {template}
                                 </div>
                                 
                             </div>
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "150px" }}>
-                                    <ButtonSubmitGreen type="button" onClick={() => {
-                                        if(storageDetails.name === "") {
-                                            window.scrollTo(0, 0);
-                                            return errorSetter('Resume must have a name')
-                                        }
-                                        handlePrint()
-                                    }}>
+                                    <ButtonSubmitGreen 
+                                        type="button"
+                                        onClick={() => {
+                                            if(storageDetails.name === "") {
+                                                window.scrollTo(0, 0);
+                                                return errorSetter('Resume must have a name')
+                                            }
+                                            if(!canPrint) {
+                                                return errorSetter('Select an AVAILABLE template to print')
+                                            }
+                                            if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
+                                                return errorSetter("Your Subscription tier can not use this template")
+                                            }
+                                            confirm({ 
+                                                    description: "Click OK only if you are sure to download, You must save or print your resume if you click OK. You can SCALE FONT and ADD/REDUCE MARGIN in the advanced setting of the next pop up, but you CAN NOT return here",
+                                                    title: "This action is irreversible"
+                                                })
+                                                .then(() => {
+                                                    handlePrint()
+                                                })
+                                                .catch(() => {
+                                                    errorSetter("Resume not yet printed")
+                                                });
+                                        }}
+                                    >
                                         <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF </span>
                                     </ButtonSubmitGreen>
                                 </div>
                             </div>
                         </div>
+
 
                     </form>
 

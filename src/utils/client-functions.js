@@ -5,17 +5,22 @@ import jwt_decode from "jwt-decode";
 export const checkAuthenticatedUser = async () => {
     try {
         const isAuth = localStorage?.getItem('token');
-        const authUser = jwt_decode(isAuth);
-        const now = Date.now();
-        if (isAuth && now < authUser.expiration) {
-            return true
-        } else {
-            localStorage?.removeItem('token');
-            throw new Error('Session Expired');
+
+        if (isAuth) {
+            const authUser = jwt_decode(isAuth);
+            const now = Date.now();
+            if (now < authUser.expiration) {
+                return true
+            } else {
+                localStorage?.removeItem('token');
+                throw new Error("Invalid Session")
+            }
         }
+        localStorage?.removeItem('token');
+        throw new Error("Invalid token specified")
     } catch (error) {
         localStorage?.removeItem('token');
-        throw new Error("Invalid Session")
+        throw new Error("Someth happened, try again")
     }
 
 }

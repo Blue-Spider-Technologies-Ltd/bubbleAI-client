@@ -42,7 +42,7 @@ export const ButtonSubmitBlack = ({disabled, type, height, children, onClick}) =
 
 export const ButtonSubmitGreen = (props) => {
     return (
-        <button type={props.type} onClick={props.onClick} className={buttonCss.ButtonSubmitGreen}>
+        <button disabled={props.disabled} type={props.type} onClick={props.onClick} className={buttonCss.ButtonSubmitGreen}>
             {props.children}
         </button>
     )

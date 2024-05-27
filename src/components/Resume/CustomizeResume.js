@@ -5,7 +5,13 @@ import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { errorAnimation, checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, setResume, setFetching, setUserResumesAll, setError } from "../../redux/states";
+import { 
+  setUser, 
+  setResume, 
+  setFetching, 
+  setUserResumesAll, 
+  setError, 
+  setResumeSubDuration } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -21,7 +27,7 @@ import Alert from '@mui/material/Alert';
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, userResumesAll, error } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error, resumeSubDuration } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -120,6 +126,7 @@ const CustomizeResume = () => {
         dispatch(setUserResumesAll(resumes))
         setIsFirstTimeUserPopUp(isFirstTimeUser)
         setSubDuration(resumeSubscriptions?.duration)
+        dispatch(setResumeSubDuration(resumeSubscriptions?.duration))
         dispatch(setUser(response.data.user));
         dispatch(setFetching(false));
 

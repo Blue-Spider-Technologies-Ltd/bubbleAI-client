@@ -53,21 +53,21 @@ const PriceCard = ({details}) => {
                             </ListItem> 
                         )}
  
-                        {features.reAccessSaved && (
+                        {features.severalTemplates && (
                             <ListItem >
                                 <ListItemIcon>
-                                    {features.reAccessSaved.available ? (
+                                    {features.severalTemplates.available ? (
                                         <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
                                     ) : (
                                         <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
                                     )}
                                 </ListItemIcon>
                                 <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                    {features.reAccessSaved.text}
+                                    {features.severalTemplates.text}
                                 </Typography>
                             </ListItem>
                         )}
-
+                        
                         {features.createSeveral && (
                             <ListItem >
                                 <ListItemIcon>
@@ -81,7 +81,37 @@ const PriceCard = ({details}) => {
                                     {features.createSeveral.text}
                                 </Typography>
                             </ListItem>  
-                        )}                
+                        )}  
+
+                        {features.changeName && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.changeName.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.changeName.text}
+                                </Typography>
+                            </ListItem> 
+                        )}
+
+                        {features.reAccessSaved && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.reAccessSaved.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.reAccessSaved.text}
+                                </Typography>
+                            </ListItem>
+                        )}              
 
                         {features.sharableLink && (
                             <ListItem >
@@ -94,21 +124,6 @@ const PriceCard = ({details}) => {
                                 </ListItemIcon>
                                 <Typography sx={{ml: -3, fontSize: '.9rem'}}>
                                     {features.sharableLink.text}
-                                </Typography>
-                            </ListItem> 
-                        )}
-  
-                        {features.changeName && (
-                            <ListItem >
-                                <ListItemIcon>
-                                    {features.changeName.available ? (
-                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
-                                    ) : (
-                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
-                                    )}
-                                </ListItemIcon>
-                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                                    {features.changeName.text}
                                 </Typography>
                             </ListItem> 
                         )}

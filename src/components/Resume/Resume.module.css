@@ -53,6 +53,7 @@
     align-items: center;
     height: 150px;
     width: 150px;
+    transition: 0.5s all ease-in-out;
 }
 
 .carouselMiddle {

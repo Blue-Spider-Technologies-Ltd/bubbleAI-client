@@ -70,6 +70,10 @@ const resumePricingDetails = [
             downloadablePDF: {
                 available: true,
                 text: 'Save Resume as PDF'
+            },
+            severalTemplates: {
+                available: false,
+                text: 'Choose Your Template'
             }
         }
     },
@@ -99,6 +103,10 @@ const resumePricingDetails = [
             downloadablePDF: {
                 available: true,
                 text: 'Save Resume as PDF'
+            },
+            severalTemplates: {
+                available: true,
+                text: 'Choose Your Template'
             }
         }
     },
@@ -128,6 +136,10 @@ const resumePricingDetails = [
             downloadablePDF: {
                 available: true,
                 text: 'Save Resume as PDF'
+            },
+            severalTemplates: {
+                available: true,
+                text: 'Choose Your Template'
             }
         }
     }

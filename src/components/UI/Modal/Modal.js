@@ -407,6 +407,7 @@ export const CheckoutSummaryModal = () => {
                                 <h2>GUARANTEED</h2>
                                 <a 
                                     href='/terms' 
+                                    target='_blank'
                                     style={{fontSize: '.65rem', color: '#3E8F93', position: 'relative', top: '-20px'}}
                                 >
                                     See Terms & Conditions

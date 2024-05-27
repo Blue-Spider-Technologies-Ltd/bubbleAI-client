@@ -41,10 +41,10 @@
 .chat-ex {
     box-sizing: border-box;
     width: 100vw;
-    height: 90%;
+    height: 92%;
     padding-right: 0;
     padding-top: 3.5rem;
-    padding-bottom: 5%;
+    padding-bottom: 1%;
     overflow-y: scroll;
     overflow-x: hidden;
 }

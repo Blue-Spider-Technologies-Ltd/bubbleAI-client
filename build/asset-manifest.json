@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.4a6e9d9f.css",
-    "main.js": "/static/js/main.443e1f9f.js",
+    "main.css": "/static/css/main.a731b3d8.css",
+    "main.js": "/static/js/main.9f031d51.js",
     "static/js/850.53b7e135.chunk.js": "/static/js/850.53b7e135.chunk.js",
     "static/js/353.b48c6ab6.chunk.js": "/static/js/353.b48c6ab6.chunk.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
@@ -11,6 +11,7 @@
     "static/media/success.gif": "/static/media/success.05e3bee91653111f1bbe.gif",
     "static/media/resume.png": "/static/media/resume.45b9fee5abf6c047a2c6.png",
     "static/media/chatbgtwo.png": "/static/media/chatbgtwo.4c974492ddf645c6d85f.png",
+    "static/media/radiant.jpg": "/static/media/radiant.1fa11696217399314ea7.jpg",
     "static/media/chatbgone.png": "/static/media/chatbgone.e4b0c4e73246293d44a6.png",
     "static/media/business-plan.jpg": "/static/media/business-plan.3ef4cf1ae4d6f64707fd.jpg",
     "static/media/refund-stamp.png": "/static/media/refund-stamp.19654e7aecd4136b31aa.png",
@@ -27,15 +28,16 @@
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
+    "static/media/avatar.webp": "/static/media/avatar.59020370a51d2ab273f9.webp",
     "index.html": "/index.html",
-    "main.4a6e9d9f.css.map": "/static/css/main.4a6e9d9f.css.map",
-    "main.443e1f9f.js.map": "/static/js/main.443e1f9f.js.map",
+    "main.a731b3d8.css.map": "/static/css/main.a731b3d8.css.map",
+    "main.9f031d51.js.map": "/static/js/main.9f031d51.js.map",
     "850.53b7e135.chunk.js.map": "/static/js/850.53b7e135.chunk.js.map",
     "353.b48c6ab6.chunk.js.map": "/static/js/353.b48c6ab6.chunk.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4a6e9d9f.css",
-    "static/js/main.443e1f9f.js"
+    "static/css/main.a731b3d8.css",
+    "static/js/main.9f031d51.js"
   ]
 }

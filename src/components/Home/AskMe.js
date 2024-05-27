@@ -32,7 +32,7 @@ const suggestions = [
 ]
 
 const suggestionThree = {
-  title: "Create video content",
+  title: "Create Video Content",
   description: "You are an expert content creator at a business development firm, create a social media video script of 1 minute 30 seconds on the importance of digital marketing with catchy illustrations"
 }
 
