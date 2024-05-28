@@ -54,6 +54,7 @@ const AskMe = () => {
   const [aiSuggestions, setAiSuggestions] = useState([])
 
   const isEffectExecuted = useRef(false);
+  let coverLetterPrompt = localStorage.getItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA")
 
   const errorSetter = (string) => {
     dispatch(setError(string))
@@ -86,12 +87,21 @@ const AskMe = () => {
 
  useEffect(() => {
     localStorage.removeItem("prevPath")
-    const data = {
-      suggestions: suggestions
+
+    const createCoverLetter = async () => {
+      try {
+        setAskMeVal(coverLetterPrompt)
+        setSuggestionDisplay(true)
+      } catch (error) {
+        errorSetter("Failed to generate Cover Letter query")
+      }
     }
   
     const generateSuggestions = async () => {
       try {
+        const data = {
+          suggestions: suggestions
+        }
         setSuggestionDisplay(true)
         let response = await axios.post("/suggestions", data);
         const objectData = JSON.parse(response.data)
@@ -102,7 +112,11 @@ const AskMe = () => {
     }
   
     if (!isEffectExecuted.current) {
-      generateSuggestions()
+      if(coverLetterPrompt) {
+        createCoverLetter()
+      } else {
+        generateSuggestions()
+      }
       isEffectExecuted.current = true;
     }
   
@@ -181,6 +195,7 @@ const AskMe = () => {
         //save ai response for auth user
         dispatch(deleteLastMessage());
         dispatch(setMessage(response.data));
+        localStorage?.removeItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA")
       } catch (error) {
         dispatch(deleteLastMessage());
         dispatch(setMessage(askMeErrorObj));
@@ -292,31 +307,38 @@ const AskMe = () => {
             <div className="chat-ex" ref={chatBoxRef}>
               <div style={{ padding: "0", width: "92vw", margin: "auto" }}>
                 <div className={suggestionDisplay ? "suggestion-container" : "suggestion-out"}>
-                  <h5>How to?</h5>
+                  {coverLetterPrompt ? (
+                    <span style={{color: "white"}}>Read the query in the input field (edit if necessary) and click the send icon to generate Cover Letter</span>
+                  ) : (
+                    <div>
+                      <h5>How to?</h5>
 
-                  {aiSuggestions.map((suggestion, index) => {
-                    return (
+                      {aiSuggestions.map((suggestion, index) => {
+                        return (
+                          <button 
+                            key={index}
+                            className="suggestion-buttons" 
+                            onClick={() => {
+                              setSuggestionDisplay(false)
+                              setAskMeVal(suggestion.description)}
+                            }
+                          >
+                            {suggestion.title}
+                          </button>
+                        )
+                      })}
                       <button 
-                        key={index}
                         className="suggestion-buttons" 
                         onClick={() => {
-                          setSuggestionDisplay(false)
-                          setAskMeVal(suggestion.description)}
+                        setSuggestionDisplay(false)
+                        setAskMeVal(suggestionThree.description)}
                         }
                       >
-                        {suggestion.title}
+                        {suggestionThree.title}
                       </button>
-                    )
-                  })}
-                  <button 
-                    className="suggestion-buttons" 
-                    onClick={() => {
-                    setSuggestionDisplay(false)
-                    setAskMeVal(suggestionThree.description)}
-                    }
-                  >
-                    {suggestionThree.title}
-                  </button>
+                    </div>
+                  )}
+                  
                 </div>
               </div>
 

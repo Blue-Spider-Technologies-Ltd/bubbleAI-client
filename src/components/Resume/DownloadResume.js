@@ -9,7 +9,7 @@ import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
-import { errorAnimation, successMiniAnimation } from "../../utils/client-functions";
+import { errorAnimation, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
@@ -57,6 +57,7 @@ const DownloadResume = () => {
     const [carouselName, setCarouselName] = useState("");
     const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "http://localhost:5000/uploads/default-img/avatar.webp");
     const [hasImg, setHasImg] = useState(false);
+    const [companyName, setCompanyName] = useState("");
     const [storageDetails, setStorageDetails] = useState({
         name: "",
         desc: "",
@@ -253,7 +254,31 @@ const DownloadResume = () => {
 
         return template
     }
+
+    const handleCompanyNameChange = (e) => {
+        setCompanyName(e.target.value)
+    }
     
+    const handleCoverLetterCompose = () => {
+        if(!companyName) {
+            return errorSetter("Enter the Employer/Company to create Cover  Letter")
+        }
+
+        if(resumeSubDuration === "Per Use") {
+            return errorSetter("Upgrade Subscription to access this feature")
+        }
+        const basicInfo = resume?.basicInfo
+        const fullName = basicInfo.firstName + " " + basicInfo.lastName
+        const jobPosition = basicInfo.jobPosition
+        const skills = resume.skills?.map(skill => `${skill}`).join(', ');
+        const pastWorkPositions = resume.workExpArray.map(exp => exp.position).join(', ');
+        const date = getOrdinalDate()
+
+        const prompt = `You are a job applicant with the full name: ${fullName}, applying for the position of a ${jobPosition} at ${companyName}; you possess the following skills: ${skills}; You have previously held the following roles: ${pastWorkPositions}; and therefore, believe you are the best candidate for the job. Write a stunning professional Cover letter to prove this to your employer using ${date} as the date of application.`
+        localStorage.setItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA", prompt)
+        navigate("/chat")
+
+    }
 
     return (
         <div className="auth-container">
@@ -389,6 +414,10 @@ const DownloadResume = () => {
                     success={true} 
                     notApaymentTextPositive="Resume Creation Completed!"
                     notApayment={true}
+                    label="Company Name"
+                    value={companyName}
+                    handleChange={handleCompanyNameChange}
+                    handleCoverLetterCompose={handleCoverLetterCompose}
                 />
             )}
                             

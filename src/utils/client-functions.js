@@ -95,6 +95,28 @@ export const checkEmptyStrings = (arr) => {
     }
     return true;
 }
+
+
+
+export const getOrdinalDate = () => {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+
+    // Function to add ordinal suffix to date
+    function getOrdinalSuffix(n) {
+        if (n > 3 && n < 21) return 'th'; // handles special case for numbers between 11 and 13
+        switch (n % 10) {
+            case 1:  return "st";
+            case 2:  return "nd";
+            case 3:  return "rd";
+            default: return "th";
+        }
+    }
+
+    return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
+}
   
   
   
@@ -120,7 +142,7 @@ export const fetchPrice = async (category, usage) => {
         switch (category) {
             case 'resume':
                 comparativePriceOne_Africa = 1000;
-                comparativePriceTwo_Africa = 4000;
+                comparativePriceTwo_Africa = 5000;
                 comparativePriceThree_Africa = 15000;
 
                 comparativePriceOne_RestOfWorld = 6000;

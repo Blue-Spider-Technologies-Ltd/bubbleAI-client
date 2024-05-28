@@ -184,6 +184,10 @@
         padding: 0 10px;
     }
 
+    .chat-ex {
+        height: 99%;
+    }
+
     .askme-bg {
         max-height: 89vh;
         background-size: cover;

@@ -59,6 +59,10 @@ const resumePricingDetails = [
                 available: false,
                 text: 'Create More Than One'
             },
+            coverLetter: {
+                available: false,
+                text: 'Tailored Cover Letter'
+            },
             sharableLink: {
                 available: false,
                 text: 'Sharable Link to Resume'
@@ -92,6 +96,10 @@ const resumePricingDetails = [
                 available: true,
                 text: 'Create More Than One'
             },
+            coverLetter: {
+                available: true,
+                text: 'Tailored Cover Letter'
+            },
             sharableLink: {
                 available: false,
                 text: 'Sharable Link to Resume'
@@ -124,6 +132,10 @@ const resumePricingDetails = [
             createSeveral: {
                 available: true,
                 text: 'Create More Than One'
+            },
+            coverLetter: {
+                available: true,
+                text: 'Tailored Cover Letter'
             },
             sharableLink: {
                 available: true,

@@ -152,7 +152,16 @@ export const PlainModalOverlay = (props) => {
 }
 
 
-export const SuccessFailureModal = ({ success, fullName, notApayment, notApaymentTextPositive, notApaymentTextNegative }) => {
+export const SuccessFailureModal = ({ 
+    success, 
+    fullName, 
+    notApayment, 
+    notApaymentTextPositive, 
+    notApaymentTextNegative, 
+    value, 
+    label,
+    handleChange,
+    handleCoverLetterCompose }) => {
 
     const navigate = useNavigate()
     const prevPath = localStorage?.getItem("prevPath")
@@ -185,12 +194,34 @@ export const SuccessFailureModal = ({ success, fullName, notApayment, notApaymen
                     ) : (
                         <div>
                             <h1>{success ? notApaymentTextPositive : notApaymentTextNegative}</h1>
+
+                            <div style={{margin: "30px"}}>
+                                <h4>Get a stunning Cover Letter. Input the Company Name you are applying to and click GET COVER LETTER</h4>
+                                <h6 style={{color: "#3E8F93", marginBottom: "0"}}>Only available to Per Week and Per Month plans. <a style={{color: "rgb(177, 71, 1)"}} href="/pricing" target="_blank">Upgrade</a></h6>
+                                <Grid container>
+                                    <AuthInput
+                                        name={value}
+                                        id={value}
+                                        value={value}
+                                        label={label}
+                                        inputType="text"
+                                        inputGridSm={12}
+                                        mb={1}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <div style={{padding: "0 6px"}}>
+                                    <ButtonSubmitBlack type="submit" height='40px' onClick={handleCoverLetterCompose}>
+                                        GET COVER LETTER
+                                    </ButtonSubmitBlack>
+                                </div>
+                            </div>
                         </div>
                     )}
                     
                     <div>
                         <ButtonOutlineGreenWithDiffStyle borderColor={!success && "#D00000"} onClick={handleSuccess}>
-                            {success ? "Continue to Bubble" : "Try Again"}
+                            {success ? "Done! Continue to Bubble" : "Try Again"}
                         </ButtonOutlineGreenWithDiffStyle>
                     </div>
 
