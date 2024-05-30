@@ -44,7 +44,7 @@ const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
 
 
 const DownloadResume = () => {
-    const { resume, error, successMini, resumeSubDuration } = useSelector(state => state.stateData)
+    const { resume, error, successMini, resumeSubDuration, user } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirm = useConfirm();
@@ -55,9 +55,10 @@ const DownloadResume = () => {
     const [canPrint, setCanPrint] = useState(false)
     const [activeIndex, setActiveIndex] = useState(null);
     const [carouselName, setCarouselName] = useState("");
-    const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "http://localhost:5000/uploads/default-img/avatar.webp");
+    const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "https://bubble-ai.tech/uploads/default-img/avatar.webp");
     const [hasImg, setHasImg] = useState(false);
     const [companyName, setCompanyName] = useState("");
+    const [resumeNameExist, setResumeNameExist] = useState(false);
     const [shareableLink, setShareableLink] = useState("");
     const [storageDetails, setStorageDetails] = useState({
         name: "",
@@ -96,11 +97,12 @@ const DownloadResume = () => {
 
     useEffect(() => {
         const resumeLength = Object.keys(resume).length;
+        const userLength = Object.keys(user).length;
 
-        if (resumeLength < 1) {
+        if (resumeLength < 1 || userLength < 1 ) {
             navigate('/user/dashboard/resume?customize');
         } 
-    }, [resume, navigate]);
+    }, [user]);
 
 
     //Option for carousel in template section
@@ -128,7 +130,41 @@ const DownloadResume = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    const checkObjectForKeyValue = (arr, key, keyOfKey, searchValue) => {
+        if (arr.some(obj => obj[key][keyOfKey] === searchValue)) {
+            errorSetter("Resume name already exists")
+            setResumeNameExist(true)
+        } else {
+            setResumeNameExist(false)
+        }
+    }
 
+
+
+    const selectTemplate = () => {
+        let template;
+   
+        switch (carouselName) {
+            case "Standard":
+                template  = <Standard resume={resume} />
+                break;
+            case "Radiant Moon":
+                template  = <RadiantMoon resume={resume} imgUrl={imgUrl} />
+                break;
+            case "Flying Fish":
+            case "Swimming Elephant":
+            case "Water Train":
+            case "Sinking Duck":
+                template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
+                break;
+        
+            default:
+                template  = <h5 style={{textAlign: "center"}}>Pick a template to display here</h5>
+                break;
+        }
+
+        return template
+    }
 
     const handleResumeSave = async () => {
         const completeResume = { ...resume, storageDetails }
@@ -144,7 +180,6 @@ const DownloadResume = () => {
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
             const data = response.data.shareableLink
-            console.log(data)
             setShareableLink(data)
             dispatch(setFetching(false));
             
@@ -155,6 +190,7 @@ const DownloadResume = () => {
             }
         } catch (error) {
             dispatch(setFetching(false));
+            console.log(error);
             errorSetter("Not saved to database, Try again")
         }
     }
@@ -204,7 +240,8 @@ const DownloadResume = () => {
     };
 
 
-    const saveImageToFolder = (blob) => {
+    const saveImageToFolder = (blob, event) => {
+        event.preventDefault();
         const formData = new FormData();
         formData.append('file', blob);
         
@@ -223,8 +260,8 @@ const DownloadResume = () => {
             console.error(error);
             errorSetter('Error uploading image.');
         });
-            // Prevent default form submission behavior
-            return false;
+        // Prevent default form submission behavior
+        return false;
     };
 
     const handleFileChange = (event) => {
@@ -238,36 +275,9 @@ const DownloadResume = () => {
           return;
         }
     
-        saveImageToFolder(file)
+        saveImageToFolder(file, event)
     };
 
-    
-
-
-    const selectTemplate = () => {
-        let template;
-   
-        switch (carouselName) {
-            case "Standard":
-                template  = <Standard resume={resume} />
-                break;
-            case "Radiant Moon":
-                template  = <RadiantMoon resume={resume} imgUrl={imgUrl} />
-                break;
-            case "Flying Fish":
-            case "Swimming Elephant":
-            case "Water Train":
-            case "Sinking Duck":
-                template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
-                break;
-        
-            default:
-                template  = <h5 style={{textAlign: "center"}}>Pick a template to display here</h5>
-                break;
-        }
-
-        return template
-    }
 
     const handleCompanyNameChange = (e) => {
         setCompanyName(e.target.value)
@@ -328,7 +338,17 @@ const DownloadResume = () => {
                             <h4>Save Resume Details</h4>
                             <div>
                                 <Grid container>
-                                    <AuthInput name="resumeName" value={storageDetails.name} label="Resume Name" inputType="text" inputGridSm={12} inputGrid={12} mb={2} required={true} onChange={handleInputChange('name')} />
+                                    <AuthInput 
+                                        name="resumeName"  
+                                        value={storageDetails.name} 
+                                        label="Resume Name" 
+                                        inputType="text" 
+                                        inputGridSm={12} 
+                                        inputGrid={12} 
+                                        mb={2} 
+                                        onChange={handleInputChange('name')} 
+                                        onBlur={() => checkObjectForKeyValue(user.resumes, "storageDetails", "name", storageDetails.name)} 
+                                    />
                                     <AuthInput name="desc" value={storageDetails.desc} placeholder="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
                                 </Grid>
                             </div>
@@ -393,6 +413,10 @@ const DownloadResume = () => {
                                             if(storageDetails.name === "") {
                                                 window.scrollTo(0, 0);
                                                 return errorSetter('Resume must have a name')
+                                            }
+                                            if (resumeNameExist) {
+                                                window.scrollTo(0, 0);
+                                                return errorSetter('Please change the resume name')
                                             }
                                             if(!canPrint) {
                                                 return errorSetter('Select an AVAILABLE template to print')

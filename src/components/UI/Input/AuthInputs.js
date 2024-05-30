@@ -278,6 +278,7 @@ const AuthInput = props => {
                     disabled={props.disabled}
                     value={props.value}
                     name={props.name}
+                    onBlur={props.onBlur}
                 />                                                          
                 
             }

@@ -233,8 +233,7 @@ export const SuccessFailureModal = ({
                     ) : (
                         <div>
                             <h1>{success ? notApaymentTextPositive : notApaymentTextNegative}</h1>
-                            {shareableLink && (
-                                
+                           
                                 <div>
                                     <h4>Copy the link below to share to employers</h4>
                                     <div style={{width: "100%", padding: "5px", backgroundColor: "#c0d1d457", border: "2px dashed #56A8AC", borderRadius: "10px", wordBreak: "break-word", lineHeight: "1", boxShadow: "outset 10px 10px 10px rgba(0, 0, 0, 0.1)"}}>
@@ -246,7 +245,6 @@ export const SuccessFailureModal = ({
                                     
                                 </div>
 
-                            )}
                             <div style={{margin: "30px"}}>
                                 <h4 style={{marginBottom: "0"}}>Get a stunning Cover Letter. Input the Company Name you are applying to and click GET COVER LETTER</h4>
                                 <h6 style={{color: "#3E8F93", marginTop: "0"}}>Only available to Per Week and Per Month plans. <a style={{color: "rgb(177, 71, 1)"}} href="/pricing" target="_blank">Upgrade</a></h6>

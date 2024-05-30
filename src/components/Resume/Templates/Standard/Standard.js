@@ -9,7 +9,8 @@ const Standard = (props) => {
     return (
         <div className={standardCss.StandardContainer}>
             <div className={standardCss.basicInfo}>
-                <h3>{props.resume?.basicInfo?.firstName} {props.resume?.basicInfo?.lastName}</h3>
+                <h2>{props.resume?.basicInfo?.firstName} {props.resume?.basicInfo?.lastName}</h2>
+                <h5>{props.resume?.basicInfo?.jobPosition}</h5>
                 <span>{props.resume?.basicInfo?.mobile}</span> <span><a href={`mailto:${props.resume?.basicInfo?.email}`}>{props.resume?.basicInfo?.email}</a></span>
 
                 {props.resume?.linkInfo && (
@@ -24,22 +25,18 @@ const Standard = (props) => {
             <div className={standardCss.resBody}>
                 <div className={standardCss.profSummary}>{props.resume?.basicInfo?.profSummary}</div>
 
-                {props.resume?.eduArray && (
+                {props.resume?.skills && (
                     <section>
-                        <h3>Education</h3>
-                        {props.resume.eduArray.map((eduInfo, index) => (
-                            <div key={index} className={standardCss.Education}>
-                                <h5>{eduInfo.institution}</h5>
-                                <div className={standardCss.FlexContainer}>
-                                    <div><span>{eduInfo.degree}</span></div>
-                                    <div>{eduInfo.date.slice(0, 4)}</div>
-                                </div>
-                            </div>
-                        ))}
+                        <h3>Skills & Expertise</h3>
+                        <div className={standardCss.Skills}>
+                            {props.resume.skills.map((skill, index) => (
+                                <span key={index} className={standardCss.SkillItems}><PsychologyIcon fontSize="inherit" /> <span>{skill}</span></span>
+                            ))}
+                        </div>
                     </section>
                 )}
 
-
+                
                 {props.resume?.workExpArray && (
                     <section>
                         <h3>Relevant Experience</h3>
@@ -67,16 +64,21 @@ const Standard = (props) => {
                     </section>
                 )}
 
-                {props.resume?.skills && (
+                {props.resume?.eduArray && (
                     <section>
-                        <h3>Skills & Proficiencies</h3>
-                        <div className={standardCss.Skills}>
-                            {props.resume.skills.map((skill, index) => (
-                                <span key={index} className={standardCss.SkillItems}><PsychologyIcon fontSize="inherit" /> <span>{skill}</span></span>
-                            ))}
-                        </div>
+                        <h3>Education</h3>
+                        {props.resume.eduArray.map((eduInfo, index) => (
+                            <div key={index} className={standardCss.Education}>
+                                <h5>{eduInfo.institution}</h5>
+                                <div className={standardCss.FlexContainer}>
+                                    <div><span>{eduInfo.degree}</span></div>
+                                    <div>{eduInfo.date.slice(0, 4)}</div>
+                                </div>
+                            </div>
+                        ))}
                     </section>
                 )}
+
 
 
                 {props.resume?.awardArray && (
