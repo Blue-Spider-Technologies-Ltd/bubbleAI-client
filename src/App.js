@@ -8,6 +8,7 @@ import Register from './components/Auth/Register';
 import Verification from './components/Auth/Verification';
 import PwdRecovery from './components/Auth/PwdRecovery';
 import Resume from './components/Resume/Resume'
+import ViewResume from './components/Resume/ViewResume'
 import Depositions from './components/Depositions/Depositions';
 import MockTests from './components/MockTests/MockTests'
 import Pricing from './components/Pricing/Pricing';
@@ -62,6 +63,7 @@ const App = () => {
         <Route path={'/user/dashboard/mock/toefl'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/mock/utme'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/mock/wassce'} element={ <UnderConstruction /> } />
+
         <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
         <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />
         <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
@@ -69,11 +71,13 @@ const App = () => {
         <Route path={'/user/dashboard/depositions'} element={ <Depositions /> } />
         <Route path={'/user/dashboard/mock'} element={ <MockTests /> } />
         <Route path={'/user/dashboard/business-plan'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/business-proposals'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/product-price'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/councellor'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/fraud-detector'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/generate-report'} element={ <UnderConstruction /> } />
         <Route path={'/images/logo'} element={<img src={logoImg} alt="Logo" width={"100px"}/>} />
+        <Route path={'/view-resume'} element={<ViewResume />} />
         <Route path={'/popin'} element={ <Login /> } />
         <Route path={'/verify'} element={ <Verification /> } />
         <Route path={'/reset-password'} element={ <PwdRecovery /> } />
@@ -83,6 +87,7 @@ const App = () => {
         <Route path={'/how-i-work'} element={<HowIWork />} />
         <Route path={'/transaction'} element={<TransactionDone />} />
         <Route path={'/chat'} element={<AskMe />} />
+        <Route path="/not-found" element={<NotFound />} />
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

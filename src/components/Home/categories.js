@@ -12,7 +12,7 @@ import bizProposalImg from "../../images/biz-proposal.jpg"
 const categoriesData = [
     {
         title: "Resume Writer",
-        desc: "Enter to create the perfect resume",
+        desc: "Enter for Ai-tailored Résumé/CV, Cover Letters and automatic Vacant Job suggestions around you",
         isAuthURL: '/user/dashboard/resume',
         unAuthURL: '/popin?resume',
         image: resumeImg

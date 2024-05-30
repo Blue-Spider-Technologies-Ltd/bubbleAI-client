@@ -15,6 +15,7 @@ import AuthInput from '../Input/AuthInputs';
 import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/Buttons';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { ThreeCircles } from 'react-loader-spinner';
 import refundImg from '../../../images/refund-stamp.png';
 import successImg from '../../../images/success.gif';
@@ -22,8 +23,8 @@ import failedImg from '../../../images/failed.gif';
 import { reviewDetails } from '../../../utils/reviews';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { checkAuthenticatedUser, errorAnimation } from '../../../utils/client-functions';
-import { setFetching, setError } from '../../../redux/states';
+import { checkAuthenticatedUser, errorAnimation, successMiniAnimation } from '../../../utils/client-functions';
+import { setFetching, setError, setSuccessMini } from '../../../redux/states';
 const screenWidth = window.innerWidth;
 
 //progress bar styling
@@ -161,10 +162,21 @@ export const SuccessFailureModal = ({
     value, 
     label,
     handleChange,
-    handleCoverLetterCompose }) => {
-
+    handleCoverLetterCompose,
+    shareableLink }) => {
+    const dispatch = useDispatch();
     const navigate = useNavigate()
     const prevPath = localStorage?.getItem("prevPath")
+
+    const errorSetter = (string) => {
+        dispatch(setError(string))
+        errorAnimation()
+    }
+
+    const successSetter = (string) => {
+        dispatch(setSuccessMini(string))
+        successMiniAnimation()
+    }
 
     const handleSuccess = () => {
         if (!success) {
@@ -173,6 +185,33 @@ export const SuccessFailureModal = ({
             navigate(prevPath)
         }
     }
+
+    const handleCopy = () => {
+        // Convert React nodes to a string or handle differently if needed
+        const textToCopy = React.Children.map(shareableLink, child => 
+            typeof child === "string" ? child : React.isValidElement(child) ? child.props.children : ""
+        ).join('');
+
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    successSetter('Link copied to clipboard');
+                })
+                .catch(err => {
+                    errorSetter('Failed to copy Link: ', err);
+                });
+        } else {
+            //For older browsers
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            successSetter('Link copied to clipboard');
+        }
+    };
 
     return (
         <div className={modalCss.ModalContainer}>
@@ -194,10 +233,23 @@ export const SuccessFailureModal = ({
                     ) : (
                         <div>
                             <h1>{success ? notApaymentTextPositive : notApaymentTextNegative}</h1>
+                            {shareableLink && (
+                                
+                                <div>
+                                    <h4>Copy the link below to share to employers</h4>
+                                    <div style={{width: "100%", padding: "5px", backgroundColor: "#c0d1d457", border: "2px dashed #56A8AC", borderRadius: "10px", wordBreak: "break-word", lineHeight: "1", boxShadow: "outset 10px 10px 10px rgba(0, 0, 0, 0.1)"}}>
+                                        <a className="link" style={{fontSize: ".7rem"}} href={shareableLink} target='_blank' rel="noreferrer">{shareableLink}</a>
+                                        <span onClick={handleCopy} style={{color: "green", cursor: "pointer", float: "right"}}>
+                                            <ContentCopyIcon fontSize="small" />
+                                        </span>
+                                    </div>
+                                    
+                                </div>
 
+                            )}
                             <div style={{margin: "30px"}}>
-                                <h4>Get a stunning Cover Letter. Input the Company Name you are applying to and click GET COVER LETTER</h4>
-                                <h6 style={{color: "#3E8F93", marginBottom: "0"}}>Only available to Per Week and Per Month plans. <a style={{color: "rgb(177, 71, 1)"}} href="/pricing" target="_blank">Upgrade</a></h6>
+                                <h4 style={{marginBottom: "0"}}>Get a stunning Cover Letter. Input the Company Name you are applying to and click GET COVER LETTER</h4>
+                                <h6 style={{color: "#3E8F93", marginTop: "0"}}>Only available to Per Week and Per Month plans. <a style={{color: "rgb(177, 71, 1)"}} href="/pricing" target="_blank">Upgrade</a></h6>
                                 <Grid container>
                                     <AuthInput
                                         name={value}

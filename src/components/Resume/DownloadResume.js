@@ -58,10 +58,12 @@ const DownloadResume = () => {
     const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "http://localhost:5000/uploads/default-img/avatar.webp");
     const [hasImg, setHasImg] = useState(false);
     const [companyName, setCompanyName] = useState("");
+    const [shareableLink, setShareableLink] = useState("");
     const [storageDetails, setStorageDetails] = useState({
         name: "",
         desc: "",
-        imgUrl:""
+        imgUrl:"",
+        template: "Standard"
     })
     const isAuth = localStorage?.getItem('token')
     const authUser = isAuth && jwt_decode(isAuth)
@@ -141,6 +143,9 @@ const DownloadResume = () => {
             localStorage?.removeItem(
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
+            const data = response.data.shareableLink
+            console.log(data)
+            setShareableLink(data)
             dispatch(setFetching(false));
             
             if(hasDroppedFeedback) {
@@ -183,7 +188,11 @@ const DownloadResume = () => {
     
         switch (selectedCarousel.title) {
             case "Standard":
+                canPrintFlag = true;
+                setStorageDetails({ ...storageDetails, template: "Standard" });
+                break;
             case "Radiant Moon":
+                setStorageDetails({ ...storageDetails, template: "Radiant Moon" });
                 canPrintFlag = true;
                 break;
             default:
@@ -194,21 +203,7 @@ const DownloadResume = () => {
         setCanPrint(canPrintFlag);
     };
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (!file) {
-            errorSetter('Kindly select an image file');
-            return;
-        }
-        if (file.size > 2 * 1024 * 1024) {
-          errorSetter('File size exceeds 2MB limit. Please select a smaller file.');
-          return;
-        }
-    
-        saveImageToFolder(file)
-    };
 
-    
     const saveImageToFolder = (blob) => {
         const formData = new FormData();
         formData.append('file', blob);
@@ -228,7 +223,26 @@ const DownloadResume = () => {
             console.error(error);
             errorSetter('Error uploading image.');
         });
+            // Prevent default form submission behavior
+            return false;
     };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            errorSetter('Kindly select an image file');
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+          errorSetter('File size exceeds 2MB limit. Please select a smaller file.');
+          return;
+        }
+    
+        saveImageToFolder(file)
+    };
+
+    
+
 
     const selectTemplate = () => {
         let template;
@@ -261,22 +275,25 @@ const DownloadResume = () => {
     
     const handleCoverLetterCompose = () => {
         if(!companyName) {
-            return errorSetter("Enter the Employer/Company to create Cover  Letter")
+            return errorSetter("Enter the Employer/Company to create Cover Letter")
         }
 
         if(resumeSubDuration === "Per Use") {
             return errorSetter("Upgrade Subscription to access this feature")
         }
+        
         const basicInfo = resume?.basicInfo
+        const email = basicInfo.email
         const fullName = basicInfo.firstName + " " + basicInfo.lastName
         const jobPosition = basicInfo.jobPosition
         const skills = resume.skills?.map(skill => `${skill}`).join(', ');
         const pastWorkPositions = resume.workExpArray.map(exp => exp.position).join(', ');
         const date = getOrdinalDate()
 
-        const prompt = `You are a job applicant with the full name: ${fullName}, applying for the position of a ${jobPosition} at ${companyName}; you possess the following skills: ${skills}; You have previously held the following roles: ${pastWorkPositions}; and therefore, believe you are the best candidate for the job. Write a stunning professional Cover letter to prove this to your employer using ${date} as the date of application.`
+        const prompt = `You are a job applicant with the full name: ${fullName}, email address: ${email}, applying for the position of a ${jobPosition} at ${companyName}; you possess the following skills: ${skills}; You have previously held the following roles: ${pastWorkPositions}; and therefore, believe you are the best candidate for the job. Write a stunning professional Cover letter to prove this to your employer using ${date} as the date of application.`
         localStorage.setItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA", prompt)
-        navigate("/chat")
+        // Open navigate in a new tab
+        window.open("/chat", "_blank");
 
     }
 
@@ -418,6 +435,7 @@ const DownloadResume = () => {
                     value={companyName}
                     handleChange={handleCompanyNameChange}
                     handleCoverLetterCompose={handleCoverLetterCompose}
+                    shareableLink={shareableLink}
                 />
             )}
                             

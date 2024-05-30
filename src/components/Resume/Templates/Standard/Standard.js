@@ -12,7 +12,7 @@ const Standard = (props) => {
                 <h3>{props.resume?.basicInfo?.firstName} {props.resume?.basicInfo?.lastName}</h3>
                 <span>{props.resume?.basicInfo?.mobile}</span> <span><a href={`mailto:${props.resume?.basicInfo?.email}`}>{props.resume?.basicInfo?.email}</a></span>
 
-                {props.resume.linkInfo && (
+                {props.resume?.linkInfo && (
                     <div>
                         {props.resume.linkInfo.length > 0 && props.resume.linkInfo.map((link, index) => (
                             <span key={index}><a href={link}>{link}</a> </span>
@@ -24,7 +24,7 @@ const Standard = (props) => {
             <div className={standardCss.resBody}>
                 <div className={standardCss.profSummary}>{props.resume?.basicInfo?.profSummary}</div>
 
-                {props.resume.eduArray && (
+                {props.resume?.eduArray && (
                     <section>
                         <h3>Education</h3>
                         {props.resume.eduArray.map((eduInfo, index) => (
@@ -40,7 +40,7 @@ const Standard = (props) => {
                 )}
 
 
-                {props.resume.workExpArray && (
+                {props.resume?.workExpArray && (
                     <section>
                         <h3>Relevant Experience</h3>
                         {props.resume.workExpArray.map((workInfo, index) => (
@@ -67,7 +67,7 @@ const Standard = (props) => {
                     </section>
                 )}
 
-                {props.resume.skills && (
+                {props.resume?.skills && (
                     <section>
                         <h3>Skills & Proficiencies</h3>
                         <div className={standardCss.Skills}>
@@ -79,7 +79,7 @@ const Standard = (props) => {
                 )}
 
 
-                {props.resume.awardArray && (
+                {props.resume?.awardArray && (
                     <div>
                         {props.resume.awardArray.length > 0 && (
                             <section>
