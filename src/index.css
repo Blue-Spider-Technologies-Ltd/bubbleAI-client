@@ -149,7 +149,7 @@ h1 {
   position: absolute;
   background-color: #4b939892;
   top: -86%;
-  left: -15%;
+  left: -19%;
   width: 80% !important;
   height: 140vh;
   padding: 0;
@@ -168,9 +168,11 @@ h1 {
 .auth-container {
   box-sizing: border-box;
   width: 100vw !important;
+  height: 100vh;
   padding: 0;
   margin: 0;
   overflow-x: hidden !important;
+  overflow-y: scroll !important;
 }
 
 .auth-container-inner {
@@ -203,7 +205,7 @@ h1 {
 
 .BodyWrapper form, .BodyWrapper .content {
   margin: 2rem 0;
-  padding: 10px 20px;
+  padding: 10px 5px;
 }
 
 .BodyWrapper h4 {
