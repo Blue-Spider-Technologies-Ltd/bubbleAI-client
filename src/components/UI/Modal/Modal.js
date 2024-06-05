@@ -16,6 +16,10 @@ import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle }
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import SpeedIcon from '@mui/icons-material/Speed';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import { ThreeCircles } from 'react-loader-spinner';
 import refundImg from '../../../images/refund-stamp.png';
 import successImg from '../../../images/success.gif';
@@ -153,6 +157,116 @@ export const PlainModalOverlay = (props) => {
 }
 
 
+const JobList = ({ aiSuggestedJobs }) => {
+    const styles = {
+        container: {
+          width: "100%",
+          textAlign: "left",
+          padding: "5px",
+          backgroundColor: "#c0d1d457",
+          borderRadius: "10px",
+          wordBreak: "break-word",
+          lineHeight: "1",
+          boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
+        },
+        iconContainer: {
+          fontSize: '1.8rem',
+          width: "3rem",
+          height: "3rem",
+          margin: "auto",
+          color: "gray",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "50%",
+          boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
+        },
+        jobTitle: {
+          margin: "0",
+          fontWeight: "500",
+          fontSize: "1rem"
+        },
+        companyInfo: {
+          fontSize: ".75rem"
+        },
+        locationTimeContainer: {
+          marginLeft: "5.6rem",
+          color: "gray",
+          fontSize: ".7rem"
+        },
+        linkStyle: {
+          color: "rgb(177, 71, 1)"
+        },
+        hrStyle: {
+          width: "70%",
+          margin: "auto",
+          marginBottom: "15px",
+          marginTop: "5px"
+        }
+    };
+    if (!Array.isArray(aiSuggestedJobs) || aiSuggestedJobs.length === 0) {
+      return (
+        <div>
+            <h4>Bubble Ai SUGGESTED JOBS in your Area</h4>
+            <div style={styles.container}>
+                <div style={{ padding: "10px", color: "gray", fontSize: ".7rem" }}>
+                    You either are not subscribed for this (<a style={styles.linkStyle} href="/pricing" target="_blank">Upgrade</a>) or no jobs were found that match your CV in your area.
+                </div>
+            </div>
+        </div>
+      );
+    }
+  
+    return (
+      <div>
+        <h4>Bubble Ai SUGGESTED JOBS in your Area</h4>
+        <div style={styles.container}>
+          {aiSuggestedJobs.map((job, index) => (
+            <div key={index}>
+              <Grid container>
+                <Grid item xs={2}>
+                  <div style={styles.iconContainer}>
+                    <BusinessCenterIcon fontSize='inherit' />
+                  </div>
+                </Grid>
+                <Grid item xs={10} style={{ textAlign: "left", alignItems: "center", paddingTop: "8px" }}>
+                  <h3 style={styles.jobTitle}>{job?.title}</h3>
+                  <div style={styles.companyInfo}>{job?.company_name}</div>
+                </Grid>
+              </Grid>
+  
+              <div style={styles.locationTimeContainer}>
+                <Grid container>
+                  <Grid item xs={8}>
+                    <div>
+                      <LocationOnIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
+                      <span style={{ position: "relative", top: "-4px" }}>{job?.location}</span>
+                    </div>
+                    <div>
+                      <MoreTimeIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
+                      <span style={{ position: "relative", top: "-4px" }}>{job?.time_posted}</span>
+                    </div>
+                  </Grid>
+  
+                  <Grid item xs={4} style={{ fontWeight: "600", textAlign: "left" }}>
+                    <div style={{ marginBottom: "10px" }}>
+                      <a href={job?.company_url} target="_blank" rel="noreferrer" className="link">View Company</a>
+                    </div>
+                    <div>
+                      <a href={job?.url} target="_blank" rel="noreferrer" className="link">Apply Now</a>
+                    </div>
+                  </Grid>
+                </Grid>
+                <hr style={styles.hrStyle} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+};
+
+
 export const SuccessFailureModal = ({ 
     success, 
     fullName, 
@@ -163,7 +277,9 @@ export const SuccessFailureModal = ({
     label,
     handleChange,
     handleCoverLetterCompose,
-    shareableLink }) => {
+    shareableLink, 
+    aiSuggestedJobs }) => {
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const prevPath = localStorage?.getItem("prevPath")
@@ -213,6 +329,7 @@ export const SuccessFailureModal = ({
         }
     };
 
+
     return (
         <div className={modalCss.ModalContainer}>
             <div style={{textAlign: 'center', backgroundColor: 'white'}} className={modalCss.CheckoutContainer}>
@@ -234,16 +351,18 @@ export const SuccessFailureModal = ({
                         <div>
                             <h1>{success ? notApaymentTextPositive : notApaymentTextNegative}</h1>
                            
-                                <div>
-                                    <h4>Copy the link below to share to employers</h4>
-                                    <div style={{width: "100%", padding: "5px", backgroundColor: "#c0d1d457", border: "2px dashed #56A8AC", borderRadius: "10px", wordBreak: "break-word", lineHeight: "1", boxShadow: "outset 10px 10px 10px rgba(0, 0, 0, 0.1)"}}>
-                                        <a className="link" style={{fontSize: ".7rem"}} href={shareableLink} target='_blank' rel="noreferrer">{shareableLink}</a>
-                                        <span onClick={handleCopy} style={{color: "green", cursor: "pointer", float: "right"}}>
-                                            <ContentCopyIcon fontSize="small" />
-                                        </span>
-                                    </div>
-                                    
+                            <div>
+                                <h4>Copy the link below to share to employers</h4>
+                                <div style={{width: "100%", padding: "5px", backgroundColor: "#c0d1d457", borderRadius: "10px", wordBreak: "break-word", lineHeight: "1", boxShadow: "outset 10px 10px 10px rgba(0, 0, 0, 0.1)"}}>
+                                    <a className="link" style={{fontSize: ".7rem"}} href={shareableLink} target='_blank' rel="noreferrer">{shareableLink}</a>
+                                    <span onClick={handleCopy} style={{color: "green", cursor: "pointer", float: "right"}}>
+                                        <ContentCopyIcon fontSize="small" />
+                                    </span>
                                 </div>
+                                
+                            </div>
+
+                            <JobList aiSuggestedJobs={aiSuggestedJobs} />
 
                             <div style={{margin: "30px"}}>
                                 <h4 style={{marginBottom: "0"}}>Get a stunning Cover Letter. Input the Company Name you are applying to and click GET COVER LETTER</h4>

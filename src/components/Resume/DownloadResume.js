@@ -60,6 +60,7 @@ const DownloadResume = () => {
     const [companyName, setCompanyName] = useState("");
     const [resumeNameExist, setResumeNameExist] = useState(false);
     const [shareableLink, setShareableLink] = useState("");
+    const [aiSuggestedJobs, setAiSuggestedJobs] = useState([]);
     const [storageDetails, setStorageDetails] = useState({
         name: "",
         desc: "",
@@ -179,8 +180,11 @@ const DownloadResume = () => {
             localStorage?.removeItem(
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
-            const data = response.data.shareableLink
+            const data = response?.data?.shareableLink
+            const data2 = response?.data?.aiSuggestedJobs
+
             setShareableLink(data)
+            setAiSuggestedJobs(data2)
             dispatch(setFetching(false));
             
             if(hasDroppedFeedback) {
@@ -460,6 +464,7 @@ const DownloadResume = () => {
                     handleChange={handleCompanyNameChange}
                     handleCoverLetterCompose={handleCoverLetterCompose}
                     shareableLink={shareableLink}
+                    aiSuggestedJobs={aiSuggestedJobs}
                 />
             )}
                             
