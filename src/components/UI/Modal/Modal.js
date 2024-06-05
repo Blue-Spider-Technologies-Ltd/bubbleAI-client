@@ -158,6 +158,7 @@ export const PlainModalOverlay = (props) => {
 
 
 const JobList = ({ aiSuggestedJobs }) => {
+    const screenWidth = window.innerWidth
     const styles = {
         container: {
           width: "100%",
@@ -190,15 +191,15 @@ const JobList = ({ aiSuggestedJobs }) => {
           fontSize: ".75rem"
         },
         locationTimeContainer: {
-          marginLeft: "5.6rem",
-          color: "gray",
-          fontSize: ".7rem"
+          marginLeft: screenWidth >= 900 ? '5.6rem' : '1rem',
+          color: 'gray',
+          fontSize: '.7rem'
         },
         linkStyle: {
           color: "rgb(177, 71, 1)"
         },
         hrStyle: {
-          width: "70%",
+          width: '90%',
           margin: "auto",
           marginBottom: "15px",
           marginTop: "5px"
@@ -210,7 +211,7 @@ const JobList = ({ aiSuggestedJobs }) => {
             <h4>Bubble Ai SUGGESTED JOBS in your Area</h4>
             <div style={styles.container}>
                 <div style={{ padding: "10px", color: "gray", fontSize: ".7rem" }}>
-                    You either are not subscribed for this (<a style={styles.linkStyle} href="/pricing" target="_blank">Upgrade</a>) or no jobs were found that match your CV in your area.
+                    You either are not subscribed for this (<a style={styles.linkStyle} href="/pricing" target="_blank">Upgrade</a>). Already on a weekly or monthly plan? then no jobs were found that match your CV in your area.
                 </div>
             </div>
         </div>
