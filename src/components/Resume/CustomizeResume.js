@@ -27,7 +27,7 @@ import Alert from '@mui/material/Alert';
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, userResumesAll, error, resumeSubDuration } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -45,6 +45,8 @@ const CustomizeResume = () => {
   const [pubFaded, setPubFaded] = useState(true)
   const [interestFaded, setInterestFaded] = useState(true)
   const [countryid, setCountryid] = useState(0);
+  const [searchString, setSearchString] = useState("");
+  const [resumeForSearch, setResumeForSearch] = useState("");
 
 
   const isAuth = localStorage?.getItem("token");
@@ -125,6 +127,7 @@ const CustomizeResume = () => {
         
 
         dispatch(setUserResumesAll(resumes))
+        setResumeForSearch(resumes)
         setIsFirstTimeUserPopUp(isFirstTimeUser)
         setSubDuration(resumeSubscriptions?.duration)
         dispatch(setResumeSubDuration(resumeSubscriptions?.duration))
@@ -177,7 +180,10 @@ const CustomizeResume = () => {
     } 
   }, [confirm, dispatch, navigate])
 
-    
+  useEffect(() => {
+    setResumeForSearch(userResumesAll)
+  }, [userResumesAll])
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -739,15 +745,33 @@ const CustomizeResume = () => {
     }
   }
 
+const handleSearch = (e) => {
+      const newSearchString = e.target.value;
+      setSearchString(newSearchString);
+  
+      if (newSearchString.length < 1) {
+          setResumeForSearch(userResumesAll);
+      } else  {
+          // Filter the resumes based on the search string
+          const filteredData = resumeForSearch.filter(item =>
+            item.storageDetails.name.includes(newSearchString)
+          );
+          setResumeForSearch(filteredData);
+      }
+  };
+  
+
   return (
     <div className="auth-container">
       {/* For SIDE MENU */}
       <AuthSideMenu
         opened={authMenuOpen}
         seacrhBarPlaceholder="Search by resume name"
+        onChange={handleSearch}
+        value={searchString}
         hidden={!authMenuOpen}
         resumeSubDuration={subDuration}
-        arrayDetails={userResumesAll}
+        arrayDetails={resumeForSearch}
       />
 
       <div style={{ width: "100%", padding: "0" }}>

@@ -24,10 +24,10 @@ const DashSupport = (props) => {
     const searchBarWidth = screenWidth >= 900 ? '40%' : '80%';
     
   
-    const errorSetter = (string) => {
-        dispatch(setError(string))
-        errorAnimation()
-    }
+    // const errorSetter = (string) => {
+    //     dispatch(setError(string))
+    //     errorAnimation()
+    // }
 
     const toggleSideMenu = () => {
         setMenuOpen(!menuOpen)

@@ -258,6 +258,7 @@ const AuthInput = props => {
                         placeholder={props.placeholder}
                         inputProps={{ 'aria-label': props.placeholder }}
                         className={classes.root}
+                        value={props.value}
                         onChange={props.onChange}
                     />
                     <IconButton type="button" aria-label="search">

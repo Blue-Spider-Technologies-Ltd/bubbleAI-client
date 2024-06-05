@@ -19,7 +19,7 @@ import { checkAuthenticatedUser, errorAnimation } from '../../../utils/client-fu
 
 
 
-const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration}) => {
+const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration, value, onChange}) => {
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const navigate = useNavigate();
@@ -79,12 +79,12 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                 const pathParts = pathname.split('/');
                 const fileName = pathParts[pathParts.length - 1];
                 body = {
-                    indexOfResume: index,
+                    nameOfResume: arrayDetails[index].storageDetails.name,
                     fileName: fileName
                 }
             } else {
                 body = {
-                    indexOfResume: index
+                    nameOfResume: arrayDetails[index].storageDetails.name,
                 }
             }
 
@@ -175,7 +175,17 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
     return (
         <div className={opened ? authMenuCss.ContainerOpen : authMenuCss.ContainerClose}>
 
-            <AuthInputs placeholder={seacrhBarPlaceholder} hidden={hidden} inputType="search" inputGridSm={12} inputGrid={4} mb={2} required={true} />
+            <AuthInputs 
+                placeholder={seacrhBarPlaceholder} 
+                hidden={hidden} 
+                inputType="search" 
+                inputGridSm={12} 
+                inputGrid={4} 
+                mb={2} 
+                required={true} 
+                value={value}
+                onChange={onChange}
+            />
             
             <div className={authMenuCss.InnerContainer}>
                 {resumeSubDuration === "Per Month" ? <ItemsNamesArray /> : <NonMonthlySubDisplay />}

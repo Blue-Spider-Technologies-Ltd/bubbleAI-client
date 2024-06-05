@@ -60,7 +60,7 @@ const HowIWork = () => {
 
             <div style={{paddingLeft: "20px", fontSize: ".9rem"}}>
                 <ul>
-                    <li>This is the first section on the <a href="/" target="_blank">Bubble AI home page</a>.</li>
+                    <li>This is the first section on the <a href="/chat" target="_blank">Bubble AI home page</a>.</li>
                     <li>It is totally free and unlimited for registered users</li>
                     <li>Click the input field to reveal the chat box and query away.</li>
                 </ul>  
