@@ -46,25 +46,25 @@ const FileTranscriptionPricing = () => {
 const fileTranscriptionPricingDetails = [
     {
         product: "Audio & Video Transcription AI",
-        duration: 'Per Use',
-        price: pricePerUse,
+        duration: 'Per Month',
+        price: pricePerMonth,
         currency: currency,
-        popular: true,
+        popular: false,
         features: {
             reAccessSaved: {
-                available: false,
+                available: true,
                 text: 'Reaccess Saved Resumes'
             },
             editPrev: {
-                available: false,
+                available: true,
                 text: 'Edit Previous Resumes'
             },
             sharableLink: {
-                available: false,
+                available: true,
                 text: 'Sharable Link to Resume'
             },
             changeName: {
-                available: false,
+                available: true,
                 text: 'Change Names on Resume'
             },
             downloadablePDF: {
@@ -104,25 +104,25 @@ const fileTranscriptionPricingDetails = [
     },
     {
         product: "Audio & Video Transcription AI",
-        duration: 'Per Month',
-        price: pricePerMonth,
+        duration: 'Per Use',
+        price: pricePerUse,
         currency: currency,
-        popular: false,
+        popular: true,
         features: {
             reAccessSaved: {
-                available: true,
+                available: false,
                 text: 'Reaccess Saved Resumes'
             },
             editPrev: {
-                available: true,
+                available: false,
                 text: 'Edit Previous Resumes'
             },
             sharableLink: {
-                available: true,
+                available: false,
                 text: 'Sharable Link to Resume'
             },
             changeName: {
-                available: true,
+                available: false,
                 text: 'Change Names on Resume'
             },
             downloadablePDF: {
@@ -130,7 +130,7 @@ const fileTranscriptionPricingDetails = [
                 text: 'Save Resume as PDF'
             }
         }
-    }
+    },
 ]
 
 
