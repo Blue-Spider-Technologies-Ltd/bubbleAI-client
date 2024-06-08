@@ -168,7 +168,7 @@ h1 {
 .auth-container {
   box-sizing: border-box;
   width: 100vw !important;
-  height: 100vh;
+  height: auto;
   padding: 0;
   margin: 0;
   overflow-x: hidden !important;
