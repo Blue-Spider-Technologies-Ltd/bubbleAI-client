@@ -47,6 +47,7 @@ const CustomizeResume = () => {
   const [countryid, setCountryid] = useState(0);
   const [searchString, setSearchString] = useState("");
   const [resumeForSearch, setResumeForSearch] = useState("");
+  const screenWidth = window.innerWidth
 
 
   const isAuth = localStorage?.getItem("token");
@@ -800,11 +801,11 @@ const handleSearch = (e) => {
           </div>
 
           <form method="post" onSubmit={handleFormSubmit}>
-          <div className="error">{error}</div>
+            <div className="error">{error}</div>
             <div className='explanation-points'>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">The + and - buttons are to add and delete applicable input fields or sections</Alert>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">All fields with * are required</Alert>
+                {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>}
             </div>
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>

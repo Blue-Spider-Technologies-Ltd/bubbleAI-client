@@ -85,7 +85,7 @@
 }
 
 .ButtonSubmitGreen {
-    background-color: var(--navColor2);
+    background-color: var(--navColor1);
     border: none;
     color: white;
     box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);

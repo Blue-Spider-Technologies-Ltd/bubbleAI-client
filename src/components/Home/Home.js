@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MenuBar from "../UI/Menu/Menu";
 import "./Home.css";
@@ -23,8 +23,6 @@ const Home = () => {
     dispatch(setError(string))
     errorAnimation()
   }
-
-
 
   const isAuth = localStorage?.getItem("token");
 

@@ -113,6 +113,7 @@ const AdminDashboard = () => {
 
             <div className={adminCss.OtherWrapper}>
                 <div className={adminCss.TopContainer}>
+                    <h4>Admin Dashboard</h4>
                 </div>
 
                 <Grid container py={3} px={1}>

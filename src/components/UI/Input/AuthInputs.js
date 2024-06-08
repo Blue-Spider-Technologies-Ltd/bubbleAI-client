@@ -175,7 +175,7 @@ const AuthInput = props => {
                     name={props.name}
                     onChange={props.onChange}
                     placeHolder={props.placeholder}
-                    className={classes.root}
+                    inputClassName={classes.root}
                     value={props.value}
                     required={props.required}
                 />
@@ -186,7 +186,7 @@ const AuthInput = props => {
                     countryid={props.countryid}
                     onChange={props.onChange}
                     placeHolder={props.placeholder}
-                    className={classes.root}
+                    inputClassName={classes.root}
                     value={props.value}
                     required={props.required}
                 />
@@ -242,7 +242,6 @@ const AuthInput = props => {
                     inputClass={allInputCss.Mobile}
                     onChange={props.onChange}
                     required={props.required}
-                    className={classes.root}
                     value={props.value}
                     disabled={props.disabled}
                     enableSearch={true}

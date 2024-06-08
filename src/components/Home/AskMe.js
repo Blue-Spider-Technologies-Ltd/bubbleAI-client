@@ -110,11 +110,9 @@ const AskMe = () => {
 
     };
 
-    if (messages.length < 1) {
-      populateMessages()
-    }
+    populateMessages()
     
-  });
+  }, []);
 
   //Cover letter and Ai suggestions useeffect
  useEffect(() => {
