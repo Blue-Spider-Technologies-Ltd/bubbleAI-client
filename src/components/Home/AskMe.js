@@ -14,8 +14,8 @@ import { ThreeDots } from 'react-loader-spinner'
 import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import axios from "axios";
-import { setError } from "../../redux/states";
-import { errorAnimation } from "../../utils/client-functions";
+import { setError, setMessages } from "../../redux/states";
+import { errorAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
 
 const screenWidth = window.innerWidth
 
@@ -84,7 +84,39 @@ const AskMe = () => {
     }
   }, [expiration, now])
 
+  //fetch messages for auth user
+  useEffect(() => {
+    const populateMessages = async () => {
+      if (isAuth) {
+        //only try this if isAuth present in local Storage, meaning user had previously logged into browser
+        try {
+          //must await
+          await checkAuthenticatedUser()
+        } catch (error) {
+          return navigate("/popin");      
+        }
 
+        try {
+          const headers = {
+            "x-access-token": isAuth,
+          };
+          const response = await axios.get("/user/user/messages", { headers });
+          
+          dispatch(setMessages(response.data.messages));
+        } catch (error) {
+          errorSetter("Reload page to fetch data");
+        }
+      }
+
+    };
+
+    if (messages.length < 1) {
+      populateMessages()
+    }
+    
+  });
+
+  //Cover letter and Ai suggestions useeffect
  useEffect(() => {
     localStorage.removeItem("prevPath")
 
@@ -140,6 +172,7 @@ const AskMe = () => {
       );
     };
     const isAssistant = message.role === "assistant";
+    // console.log(message);
     let contentTrim = message.content.trim()
     const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("\n").map((paragraph, index) => {
         return <p key={index}>{paragraph}</p>
@@ -181,13 +214,18 @@ const AskMe = () => {
       role: "assistant",
       content: "",
     };
+    dispatch(setMessage(newMessage));
+    dispatch(setMessage(emptyMessage));
+    const lastFiveMessages = [...messages.slice(-4), newMessage]; 
+    const promptForBackend = {
+      lastFiveMessages
+    }
     if (isAuth) {
       //save authenticated user message
-      dispatch(setMessage(newMessage));
-      dispatch(setMessage(emptyMessage));
+
       setAskMeVal("");
       try {
-        let response = await axios.post("/askme", newMessage, {
+        let response = await axios.post("/askme", promptForBackend, {
           headers: {
             "x-access-token": isAuth,
           },
@@ -210,8 +248,6 @@ const AskMe = () => {
 
       if (useCount > 2) {
         //set user message
-        dispatch(setMessage(newMessage));
-        dispatch(setMessage(emptyMessage));
 
         const overUseMessage = {
           role: "assistant",
@@ -223,12 +259,10 @@ const AskMe = () => {
         return
       } else {
         //THIS BLOCK WORKS FOR unauthenticated users below 3 usage within the day
-        dispatch(setMessage(newMessage));
-        dispatch(setMessage(emptyMessage));
         setAskMeVal("");
 
         try {
-          let response = await axios.post("/askme", newMessage);
+          let response = await axios.post("/askme", promptForBackend);
           dispatch(deleteLastMessage());
           dispatch(setMessage(response.data));
           localStorage.setItem("oats_3297", useIndicatorJson);
