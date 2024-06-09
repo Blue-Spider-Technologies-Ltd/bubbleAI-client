@@ -64,8 +64,8 @@
     box-sizing: border-box;
 }
 
-@media (max-width: 900) {
+/* @media (max-width: 900) {
     .assistantOuter, .userOutter {
         font-size: .9rem;
     }
-  }
+} */
