@@ -8,7 +8,7 @@ import { errorAnimation, checkAuthenticatedAdmin } from "../utils/client-functio
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../redux/states";
 import AdminSideMenu from "../components/UI/AdminSideMenu/AdminSideMenu";
-const isAdminAuth = sessionStorage?.getItem("afd8TvhsdjwiuuvsgjhsAfgsUhjs")
+
 // import { checkAuthenticatedUser } from "../../utils/client-functions";
 
 
@@ -22,6 +22,7 @@ const AdminDashboard = () => {
     const [transactionsCount, setTransactionsCount] = useState(0)
     const [adminCount, setAdminCount] = useState(0)
     const [couponCount, setCouponCount] = useState(0)
+    const isAdminAuth = sessionStorage?.getItem("afd8TvhsdjwiuuvsgjhsAfgsUhjs")
 
     
     const errorSetter = (string) => {
@@ -102,7 +103,7 @@ const AdminDashboard = () => {
         fetchTransactionsCount()
         fetchAdminCount()
         fetchCouponCount()
-    }, [])
+    }, [navigate])
 
 
     return (
