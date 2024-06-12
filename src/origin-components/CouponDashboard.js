@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import adminCss from "./Admin.module.css"
+import resumeCss from "../components/Resume/Resume.module.css"
 import axios from "axios";
 import AdminSideMenu from "../components/UI/AdminSideMenu/AdminSideMenu";
 import AuthInput from '../components/UI/Input/AuthInputs';
@@ -9,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { errorAnimation, successMiniAnimation, checkAuthenticatedAdmin } from '../utils/client-functions';
 import { setError, setFetching, setSuccessMini } from '../redux/states';
+import CouponTable from '../components/UI/Tables/CouponTable'
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
 
 const productList = [
@@ -20,6 +22,18 @@ const productList = [
     },
     {
         name: "Depositions"
+    }
+]
+
+const subTypes = [
+    {
+        name: "Per Use"
+    },
+    {
+        name: "Per Week"
+    },
+    {
+        name: "Per Month"
     }
 ]
 
@@ -59,12 +73,39 @@ const CouponDashboard = () => {
     const navigate = useNavigate()
     const [couponCode, setCouponCode] = useState("")
     const [codeLength, setCodeLength] = useState(12)
-    const [generatedCoupon, setGeneratedCoupon] = useState("")
+    const [createdUseCount, setCreatedUseCount] = useState(1)
+    const [subDuration, setSubDuration] = useState("")
+    const [coupons, setCoupons] = useState([])
     const [discountPercentage, setDiscountPercentage] = useState(0)
     const [productName, setProductName] = useState("")
     const [expiration, setExpiration] = useState("")
     const isAdminAuth = sessionStorage?.getItem("afd8TvhsdjwiuuvsgjhsAfgsUhjs")
 
+    useEffect(() => {
+        const fetchCoupons = async () => {
+            try {
+                //must await
+                await checkAuthenticatedAdmin()
+            } catch (error) {
+                return navigate("/");      
+            }
+            try {
+                dispatch(setFetching(true))
+                const response = await axios.get("/origin/get-all-coupons", {
+                    headers: {
+                      "x-access-token": isAdminAuth,
+                    },
+                });
+                setCoupons(response.data.coupons)
+                dispatch(setFetching(false))
+            } catch (error) {
+                dispatch(setFetching(false))
+                errorSetter(error?.response?.statusText)
+            }
+        }
+
+        fetchCoupons()
+    }, [navigate])
     
     const errorSetter = (string) => {
         dispatch(setError(string))
@@ -91,11 +132,22 @@ const CouponDashboard = () => {
         setProductName(e.target.value)
     }
 
+    const handleSubDurationChange = (e) => {
+        if (e.target.value === undefined) {
+            return setSubDuration("")
+        }
+        setSubDuration(e.target.value)
+    }
+
     const handleCodeLengthChange = (e) => {
         if (e.target.value === undefined) {
             return setCodeLength(12)
         }
         setCodeLength(e.target.value)
+    }
+
+    const handleUseCountChange = (e) => {
+        setCreatedUseCount(e.target.value)
     }
 
     const handleExpirationChange = (e) => {
@@ -121,9 +173,14 @@ const CouponDashboard = () => {
             return errorSetter("Select Product Name")
         }
 
+        if (subDuration === ""  || subDuration === "Choose Sub Duration") {
+            return errorSetter("Select Sub Duration")
+        }
+
         if (discountPercentage === null || discountPercentage <= 4) {
             return errorSetter("Set Discount Percentage to a value greater than 4")
         }
+
 
         if (expiration === "") {
             return errorSetter("Set Expiration")
@@ -134,6 +191,7 @@ const CouponDashboard = () => {
             codeLength,
             productName,
             discountPercentage,
+            createdUseCount,
             expiration
         }
 
@@ -152,9 +210,9 @@ const CouponDashboard = () => {
             });
             
             if (response.status === 201) {
-                setGeneratedCoupon(response.data.code)
+                setCoupons(response.data.coupons)
                 dispatch(setFetching(false))
-                successSetter(`Coupon: ${response.data.code} generated`)
+                successSetter(`Coupon: ${response?.data?.newCoupon?.code} generated`)
                 return
             }
 
@@ -196,6 +254,20 @@ const CouponDashboard = () => {
                     />
 
                     <AuthInput 
+                        id="subType"  
+                        name="subType"  
+                        value={subDuration}
+                        label="Choose Sub Duration" 
+                        inputType="select2" 
+                        inputGridSm={12} 
+                        inputGrid={6} 
+                        mb={2} 
+                        list={subTypes}
+                        onChange={handleSubDurationChange}
+                        required
+                    />
+
+                    <AuthInput 
                         name="discountPercentage"  
                         value={discountPercentage}
                         label="Discount Percentage" 
@@ -207,14 +279,18 @@ const CouponDashboard = () => {
                         required
                     />
 
+                    <Grid item xs={3} md={2} style={{ width: "50%" }}>
+                        <div className={resumeCss.DetachedLabels}>
+                            To Expiration on?
+                        </div>
+                    </Grid>
                     <AuthInput 
                         id="expiration"  
                         name="expiration"  
                         value={expiration}
-                        label="To Expiration on?" 
                         inputType="date" 
-                        inputGridSm={12} 
-                        inputGrid={6} 
+                        inputGridSm={9} 
+                        inputGrid={4} 
                         mb={2}
                         onChange={handleExpirationChange}
                         required
@@ -244,20 +320,35 @@ const CouponDashboard = () => {
                         mb={2} 
                         onChange={handleCouponChange}
                     />
+
+                    <AuthInput 
+                        name="createUseCount"  
+                        value={createdUseCount}
+                        label="Alloted Usage Count" 
+                        inputType="number" 
+                        inputGridSm={12} 
+                        inputGrid={6} 
+                        mb={2} 
+                        onChange={handleUseCountChange}
+                        required
+                    />
+
+
+                    <Grid item xs={12} md={6}>
+                        <div style={{ width: "100%"}}>
+                            <ButtonSubmitGreen type="button" onClick={createCoupon}>
+                                Create Coupon
+                            </ButtonSubmitGreen>
+                        </div>
+                    </Grid>
                 </Grid>
 
 
-
-                <div style={{ width: "100%", display: "flex", justifyContent: "right"}}>
-                    <div style={{ width: "30%", float: "right"}}>
-                    <ButtonSubmitGreen type="button" onClick={createCoupon}>
-                        Create Coupon
-                    </ButtonSubmitGreen>
-                    </div>
-                </div>
-
             </div>
 
+            <div className='Segment'>
+                <CouponTable allCoupons={coupons} />
+            </div>
 
         </div>
     </div>

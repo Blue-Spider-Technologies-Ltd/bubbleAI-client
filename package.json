@@ -33,6 +33,7 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "^5.0.1",
     "react-to-print": "^2.14.13",
+    "react-virtuoso": "^4.7.11",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
