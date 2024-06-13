@@ -7,12 +7,12 @@ import resumeImg from "../../images/resume.png"
 // import reportImg from "../../images/report.jpg"
 // import relationshipImg from "../../images/relationship.jpg"
 import sttImg from "../../images/stt2.jpg"
-import bizProposalImg from "../../images/biz-proposal.jpg"
+// import bizProposalImg from "../../images/biz-proposal.jpg"
 
 const categoriesData = [
     {
         title: "Resume Writer",
-        desc: "Enter for Ai-tailored Résumé/CV, Cover Letters and automatic Vacant Job suggestions around you",
+        desc: "Professional Résumé/CV in PDF, Cover Letters and Job Apps in 5mins",
         isAuthURL: '/user/dashboard/resume',
         unAuthURL: '/popin?resume',
         image: resumeImg
@@ -31,13 +31,13 @@ const categoriesData = [
         unAuthURL: '/popin?depositions',
         image: sttImg
     },
-    {
-        title: "Business Proposals",
-        desc: "Enter for a professional proposal, 100% conversion of potential clients",
-        isAuthURL: '/user/dashboard/business-proposals',
-        unAuthURL: '/popin?business-proposals',
-        image: bizProposalImg
-    },
+    // {
+    //     title: "Business Proposals",
+    //     desc: "Enter for a professional proposal, 100% conversion of potential clients",
+    //     isAuthURL: '/user/dashboard/business-proposals',
+    //     unAuthURL: '/popin?business-proposals',
+    //     image: bizProposalImg
+    // },
     // {
     //     title: "Business Plan",
     //     desc: "Enter to define the purpose and a trajectory for your ideas",
