@@ -25,6 +25,11 @@ const columns = [
     width: 120,
     label: 'Product Name',
     dataKey: 'productName'
+  },  
+  {
+    width: 120,
+    label: 'Applicable Duration',
+    dataKey: 'subType'
   },
   {
     width: 120,

@@ -155,6 +155,13 @@ const CouponDashboard = () => {
     }
 
     const createCoupon = async () => {
+        
+        try {
+            //must await
+            await checkAuthenticatedAdmin()
+        } catch (error) {
+            return navigate("/");      
+        }
         const isComposedOfAllowedCharacters = (input) => {
             const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             // Check if every character in the input is in the allowedCharacters string
@@ -181,7 +188,6 @@ const CouponDashboard = () => {
             return errorSetter("Set Discount Percentage to a value greater than 4")
         }
 
-
         if (expiration === "") {
             return errorSetter("Set Expiration")
         }
@@ -192,15 +198,10 @@ const CouponDashboard = () => {
             productName,
             discountPercentage,
             createdUseCount,
+            subDuration,
             expiration
         }
 
-        try {
-            //must await
-            await checkAuthenticatedAdmin()
-        } catch (error) {
-            return navigate("/");      
-        }
         try {
             dispatch(setFetching(true))
             const response = await axios.post("/origin/create-coupon", couponData, {

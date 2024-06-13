@@ -11,18 +11,22 @@ const TransactionDone = () => {
     const [isSuccessful, setIsSuccessful] = useState(false)
     const [isCompleted, setIsCompleted] = useState(false)
     const [transaction, setTransaction] = useState({})
+    const [name, setName] = useState("")
     const isEffectExecuted = useRef(false);
     
     useEffect(() => {
         if (!isEffectExecuted.current) {
+            const params = new URLSearchParams(location.search);
+        
+            const status = params.get("status");
+            const txRef = params.get("tx_ref");
+            const transactionId = params.get("transaction_id");
+            const couponCode = params.get("coupon");
+            const fullName = params.get("name");
+
             const completeTransaction = async () => {
                 try {
-                    const params = new URLSearchParams(location.search);
-        
-                    const status = params.get("status");
-                    const txRef = params.get("tx_ref");
-                    const transactionId = params.get("transaction_id");
-                  
+
                     const payload = {
                         status : status,
                         txRef: txRef,
@@ -50,7 +54,19 @@ const TransactionDone = () => {
                     setIsCompleted(true)
                 }
             }
-            completeTransaction()
+
+            const completeCouponTransact100percentDiscount = async () => {
+                setName(fullName)
+                setIsSuccessful(true)
+                setIsCompleted(true)
+            }
+
+            if(couponCode) {
+                completeCouponTransact100percentDiscount()
+            } else {
+                completeTransaction()
+            }
+
             isEffectExecuted.current = true;
         }
         
@@ -62,7 +78,7 @@ const TransactionDone = () => {
             {isCompleted ? 
                 <SuccessFailureModal 
                     success={isSuccessful} 
-                    fullName={transaction?.customer?.fullName} 
+                    fullName={name ? name : transaction?.customer?.fullName} 
                 /> 
             : 
                 <Fetching />

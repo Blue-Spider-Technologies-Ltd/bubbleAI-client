@@ -405,9 +405,10 @@ export const CheckoutSummaryModal = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
-    const { pricingDetails, error } = useSelector(state => state.stateData)
+    const { pricingDetails, error, successMini } = useSelector(state => state.stateData)
     const [loading, setLoading] = useState(false)
     const [discount, setDiscount] = useState(0)
+    const [couponCode, setCouponCode] = useState("")
     const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const formattedPrice = pricingDetails.price?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const vat = pricingDetails.price * 0.075;
@@ -420,6 +421,11 @@ export const CheckoutSummaryModal = () => {
         errorAnimation()
     }
 
+    const successSetter = (string) => {
+        dispatch(setSuccessMini(string))
+        successMiniAnimation()
+    }
+
     const hideCheckoutFunction = () => {
         dispatch(setShowCheckout(false))
     }
@@ -428,7 +434,7 @@ export const CheckoutSummaryModal = () => {
         dispatch(setFetching(true))
         const prevPath = location.pathname
         localStorage?.setItem("prevPath", prevPath)
-        if(total <= 0) {
+        if(total <= 0 && discount === 0) {
             errorSetter('Reload Page to fix amount')
             dispatch(setFetching(false))
             return
@@ -450,25 +456,83 @@ export const CheckoutSummaryModal = () => {
                 duration: pricingDetails.duration,
                 amount: total,
                 product: pricingDetails.product,
+                couponCode: discount ? couponCode : "",
                 customizations: {
-                    title: `Bubble ${pricingDetails.product} (${pricingDetails?.duration})`,
+                    title: `Bubble ${pricingDetails?.product} (${pricingDetails?.duration})`,
                     logo: logoImg,
                 },
             }
-            const response = await axios.post("/pricing/start-payment", priceData, {
-                headers: {
-                  "x-access-token": isAuth,
-                },
-            });
 
-            if (response.data === "Subscription Already Exists") {
-                throw new Error(response.data)
+            if (discount === (pricingDetails.price + vat)) {
+                //WHEN USER APPLIES 100% COUPON
+                const response = await axios.post("/pricing/full-payment-with-coupon", priceData, {
+                    headers: {
+                      "x-access-token": isAuth,
+                    },
+                });
+                if (response.data === "Subscription Already Exists") {
+                    throw new Error(response.data)
+                }
+                const {status, tx_ref, couponCode} = response.data;
+                const name = response.data.customer?.fullName
+                const transactionId = tx_ref
+                window.location.href = `/transaction?status=${status}&tx_ref=${tx_ref}&transaction_id=${transactionId}&coupon=${couponCode}&name=${name}`
+            } else {
+                //WHEN USER PAYS ALL OR PART
+                const response = await axios.post("/pricing/start-payment", priceData, {
+                    headers: {
+                      "x-access-token": isAuth,
+                    },
+                });            
+                if (response.data === "Subscription Already Exists") {
+                    throw new Error(response.data)
+                }
+                
+                window.location.href = response.data.data.link
             }
-            
-            window.location.href = response.data.data.link
+
+
         } catch (error) {
-            errorSetter(error.response.data)
             dispatch(setFetching(false))
+            errorSetter(error.response.data)
+        }
+
+    }
+
+    const handleCouponCodeChange = (e) => {
+        setCouponCode(e.target.value)
+    }
+
+    const handleDiscount = async () => {
+        if (!couponCode) {
+            return errorSetter("Input your Discount Code")
+        }
+
+        try {
+            setLoading(true) 
+            const data = {
+                couponCode: couponCode,
+                product: pricingDetails.product,
+                duration: pricingDetails.duration
+            } 
+            const response = await axios.post("/pricing/check-coupon", data);
+            // const 
+            if(response.status !== 200) {
+                setLoading(false) 
+                setCouponCode("")
+                return errorSetter("Something went wrong, try another code")
+            }
+
+            const newDiscount = response.data.discountPercent/100 * total
+            setDiscount(newDiscount)
+            setLoading(false) 
+            successSetter(`Congrats! ${response?.data?.discountPercent}% discount on product applied`)
+
+
+        } catch (error) {
+            setCouponCode("")
+            setLoading(false) 
+            return errorSetter(error.response.data.message)
         }
 
     }
@@ -483,6 +547,7 @@ export const CheckoutSummaryModal = () => {
                 <h2>Checkout</h2>
 
                 <div className="error">{error}</div>
+                <div className="success-mini">{successMini}</div>
                 <Grid container>
                     <Grid item xs={12} md={7}> 
                         <div className='Segment'>
@@ -570,14 +635,18 @@ export const CheckoutSummaryModal = () => {
                             <div className={modalCss.CheckoutInnerContainer}>
                                 <div>
                                     <AuthInput
-                                        value=''
+                                        value={couponCode}
                                         inputType="text"
                                         inputGridSm={12}
-                                        required={true}
+                                        onChange={handleCouponCodeChange}
                                     />
                                 </div>
                                 <div className='align-right-bold'>
-                                    <ButtonSubmitBlack type="submit" height='30px'>{!loading ? "Apply" : 
+                                    <ButtonSubmitBlack 
+                                        type="submit" 
+                                        height='30px'
+                                        onClick={handleDiscount}
+                                    >{!loading ? "Apply" : 
                                         <ThreeCircles
                                             height="15"
                                             width="15"
