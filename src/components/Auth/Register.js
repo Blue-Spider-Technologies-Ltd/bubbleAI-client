@@ -129,6 +129,7 @@ const Register = () => {
                 <div className={authCss.formInner}>
                     <h2>Get a Bubble</h2>
                     <div className="error">{error}</div>
+                    <div className="description-box">Become the Most Sorted. Join the All in one platform for CVs, Cover Letters, Jobs, Ai Meeting Minutes, Business Plans and Proposals all in finished PDFs in 3mins</div>
                     <form method="post" onSubmit={handleFormSubmit}>
                         <Grid container>
                             <Input placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 
@@ -138,7 +139,7 @@ const Register = () => {
                         <Input placeholder="Password..." value={user.password} inputType="password" inputGridSm={12} onChange={handleInputChange('password')} onFocus={handleBlur} />
                         <Input placeholder="Confirm password..." value={user.confirmPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmPassword')} onFocus={handleBlur} />
                         <Link href="/popin" className={authCss.pwdRec}>Login?</Link>
-                        <p style={{fontSize: ".75rem",  fontWeight: "500", textAlign: "left", marginLeft: "10px"}}>By proceeding with the registration, you agree to Bubble <a href="/terms" target="_blank">User Agreement</a></p>
+                        <p className="description-box">By proceeding with the registration, you agree to Bubble <a href="/terms" target="_blank">User Agreement</a></p>
                         {pwdChecklist &&
                             (
                                 <div style={{width: '90%', padding: '5px', margin: '0 20px 20px', fontSize: '.7rem', backgroundColor: '#c0d1d413', borderRadius: '3px'}}>

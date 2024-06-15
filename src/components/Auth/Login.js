@@ -87,10 +87,18 @@ const Login = () => {
                 navigate('/')
             }
         } catch (error) {
-            setLoading(false)
-            errorSetter(error?.response?.data?.message);
+            if (error.response.data.message === "Unverified User") {
+                errorSetter("Unverified User, Redirecting you to verify");
+                dispatch(setEmail(error?.response?.data?.email));
+                setTimeout(() => {
+                    navigate("/verify");
+                }, 5000);
+            } else {
+                errorSetter(error?.response?.data?.message);
+            }
         }
-
+        setLoading(false);
+        
     }
 
     //password recovery handler
