@@ -73,9 +73,7 @@ const CustomizeResume = () => {
   });
 
   const advancedMatching = { 
-    email: user.email, 
-    firstName: user.firstName, 
-    lastName: user.lastName  
+    em: user.email
   }
   const options = {
     autoConfig: true,
