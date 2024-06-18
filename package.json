@@ -25,6 +25,7 @@
     "react-audio-voice-recorder": "^2.1.2",
     "react-country-state-city": "^1.1.0",
     "react-dom": "^18.2.0",
+    "react-facebook-pixel": "^1.0.4",
     "react-loader-spinner": "^5.3.4",
     "react-multi-carousel": "^2.8.4",
     "react-multiple-password-validator": "^2021.10.28-1.1.5",

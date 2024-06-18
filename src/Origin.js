@@ -4,6 +4,8 @@ import NotFound from './components/Home/NotFound';
 import AdminLogin from './origin-components/AdminLogin';
 import AdminDashboard from './origin-components/AdminDashboard';
 import CouponDashboard from './origin-components/CouponDashboard';
+import UsersDashboard from './origin-components/UsersDashboard';
+import TransactionsDashboard from './origin-components/TransactionsDashboard';
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
@@ -19,6 +21,8 @@ const Origin = () => {
         <Route exact path="/" element={ <AdminLogin /> } />
         <Route exact path="/origin/dashboard" element={ <AdminDashboard /> } />
         <Route exact path="/origin/coupons" element={ <CouponDashboard /> } />
+        <Route exact path="/origin/users" element={ <UsersDashboard /> } />
+        <Route exact path="/origin/transactions" element={ <TransactionsDashboard /> } />
         <Route path="*" element={<NotFound />} />
       </Routes>
       

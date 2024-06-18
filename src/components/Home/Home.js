@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import ReactPixel from 'react-facebook-pixel';
 import { useNavigate } from "react-router-dom";
 import MenuBar from "../UI/Menu/Menu";
 import "./Home.css";
@@ -19,6 +20,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
+
   const errorSetter = (string) => {
     dispatch(setError(string))
     errorAnimation()
@@ -26,7 +29,10 @@ const Home = () => {
 
   const isAuth = localStorage?.getItem("token");
 
-
+  useEffect(() => {
+    ReactPixel.init('1133510054551065');
+    ReactPixel.pageView();
+  }, []);
 
   //fetch messages for auth user
   useEffect(() => {

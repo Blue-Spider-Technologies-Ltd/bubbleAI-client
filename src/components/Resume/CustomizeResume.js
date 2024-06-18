@@ -1,4 +1,5 @@
 import React, { useEffect, useState, memo } from "react";
+import ReactPixel from 'react-facebook-pixel';
 import resumeCss from "./Resume.module.css";
 import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
@@ -70,6 +71,21 @@ const CustomizeResume = () => {
     country: "",
     profSummary: "",
   });
+
+  const advancedMatching = { 
+    email: user.email, 
+    firstName: user.firstName, 
+    lastName: user.lastName  
+  }
+  const options = {
+    autoConfig: true,
+    debug: false, // enable logs
+  };
+
+  useEffect(() => {
+    ReactPixel.init('1133510054551065', advancedMatching, options);
+    ReactPixel.pageView();
+  }, []);
 
 
   useEffect(() => {
