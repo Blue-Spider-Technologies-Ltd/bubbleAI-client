@@ -4,22 +4,18 @@ import "./Blob.css";
 // import bubblesVid from "../../../vids/bubbles1.mp4";
 
 
+
 const Blob = (props) => {
+    const { bgImage, link, altText, title, desc } = props;
+
     return (
-        <div className="circle">
-            <Link className="welcome-links" href={props.link}>
-                <img src={props.bgImage} alt={props.altText} title={'Enter ' + props.title} />
-               {/* {props.bgImage ? 
-                 <img src={props.bgImage} alt={props.altText} title={'Enter ' + props.title} />
-                :
-                <video autoPlay muted loop style={{ width: '100%', height: '100%', position: 'relative', top: '2px', bottom: '0' }}>
-                    <source src={bubblesVid} type="video/mp4" />
-                </video>
-               } */}
-                <p>{props.desc}</p>
-            </Link>
+        <div className="circle" style={{backgroundImage: `url(${bgImage})`, backgroundSize: "200%"}}>
+            <a className="welcome-links" href={link}>
+                <img src={bgImage} alt={altText} title={`Enter ${title}`} />
+                <p>{desc}</p>
+            </a>
         </div>
-    )
+    );
 }
 
-export default React.memo(Blob);
+export default Blob;

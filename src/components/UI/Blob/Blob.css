@@ -2,7 +2,7 @@
 .circle {
     background: #CFDDD5;
     box-sizing: border-box;
-    width: 80%;
+    width: 70%;
     height: 80%;
     margin: 0 auto;
     border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
@@ -36,11 +36,11 @@
 }
 
 .circle:hover img{
-    transform: scale(1.2);
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    -o-transform: scale(1.2);
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
 }
 
 .circle p {
@@ -66,9 +66,9 @@
 
 .circle:hover p {
     background-color: #03cafca1;
-    transform: scale(1.2);
+    transform: scale(1.1);
     padding: 5px 25px 0;
-    height: 102%;
+    height: 101%;
     top: -16rem;
     font-weight: 700;
     -webkit-transform: scale(1.2);

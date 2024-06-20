@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import authCss from "./Auth.module.css"
+import modalCss from "../UI/Modal/Modal.module.css"
 import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
 import bubbleBgAuthImg from "../../images/bubblebg-auth.png"
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Google, Apple } from '@mui/icons-material';
-import { Link, Grid } from "@mui/material";
+import { Link, Grid, Rating } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner'
@@ -14,9 +15,27 @@ import PasswordChecklist from "react-multiple-password-validator"
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setError } from "../../redux/states";
 import { errorAnimation } from "../../utils/client-functions";
+import Carousel from "react-multi-carousel";
+import { reviewDetails } from '../../utils/reviews';
 
 
 const screenWidth = window.innerWidth
+
+//Option for carousel in resume template section
+const responsive = {
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 1
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 700 },
+        items: 1
+    },
+    mobile: {
+        breakpoint: { max: 700, min: 0 },
+        items: 1
+    }
+};
 
 const Register = () => {
     const dispatch = useDispatch()
@@ -115,12 +134,25 @@ const Register = () => {
             <MenuBar />
             <div className={authCss.authContainer}>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginRight: '100px'}}>
-                    <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginLeft: '50px', height: "200px", overflow: "hidden"}}>
+                    <div style={{height: "120%", width: "120%"}}>
+                        <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
+                    </div>
+
                 </div>
 
-                <div style={{marginTop: screenWidth > 900 ? '350px' : '', marginLeft: '100px'}} >
-                    <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '200px', height: "200px", overflow: "hidden"}}>
+                    <div style={{height: "120%", width: "120%"}}>
+                        <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
+                    </div>
+
+                </div>
+
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '400px', height: "300px", overflow: "hidden"}}>
+                    <div style={{height: "100%", width: "100%"}}>
+                        <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
+                    </div>
+
                 </div>
 
             </div>
@@ -129,7 +161,78 @@ const Register = () => {
                 <div className={authCss.formInner}>
                     <h2>Get a Bubble</h2>
                     <div className="error">{error}</div>
-                    <div className="description-box">Become the Most Sorted. Join the All in one platform for CVs, Cover Letters, Jobs, Ai Meeting Minutes, Business Plans and Proposals all in finished PDFs in 3mins</div>
+                    <div className="description-box">
+                        <p>Join thousands of successful job seekers who have transformed their careers with Bubble Ai's powerful <strong>resume</strong>, <strong>cover letters</strong> and <strong>job application tools in minutes</strong>. Our Users see real results with over 75% of them being called for an interview in the first week!</p>
+                        <p><strong>REGISTER NOW</strong> to secure one of our 200 available discount coupons to get the perfect resume and view fitted high-paying jobs around you in a matter of minutes</p>
+                    </div>
+
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                        <Grid container>
+                            <Grid item xs={5} mt={5}>
+                                {/* <img src={refundImg} alt='Refund Guaranteed' style={{width: '60px', borderRadius: '50%'}} /> */}
+
+                                <div style={{marginTop: "20px"}}>
+                                    <h5>Your dreams</h5>
+                                    <h2>GUARANTEED</h2>
+                                    <a 
+                                        href='/how-i-work' 
+                                        target='_blank'
+                                        style={{fontSize: '.65rem', color: '#3E8F93', position: 'relative', top: '-20px'}}
+                                    >
+                                        How I Work
+                                    </a>
+                                </div>
+                            </Grid>
+                            <Grid item  xs={7}>
+                                <div className='Segment'>
+                                    <Carousel
+                                        autoPlay={true}
+                                        autoPlaySpeed={3000}
+                                        arrows={false}
+                                        responsive={responsive}
+                                        swipeable={true}
+                                        draggable={true}
+                                        ssr={true} // render carousel on server-side.
+                                        infinite={true}
+                                        keyBoardControl={true}
+                                        customTransition="all .5"
+                                        containerClass="carousel-container"
+                                        dotListClass="custom-dot-list-style"
+                                        itemClass="carousel-item-padding-40-px"
+                                        focusOnSelect={true}
+                                    >
+
+                                        {reviewDetails?.map((detail, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <div style={{fontSize: '.7rem', display: 'flex', justifyContent: 'left', width: '100%'}}>
+                                                        <div style={{width: '40px', borderRadius: '50%', overflow: 'hidden'}}>
+                                                            <img src={detail?.img} alt={detail?.name} width='100%' />
+                                                        </div>
+                                                        <div style={{marginLeft: '10px'}}>
+                                                            <div style={{fontSize: '.67rem', fontWeight: '700', color: '#5fbec5'}}>
+                                                                {detail?.name}
+                                                            </div>
+                                                            <div>
+                                                                <Rating name="read-only" value={detail?.rating} size="small" precision={0.5} readOnly />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className={modalCss.reviewCarousel}>
+                                                        <p>
+                                                            {detail?.review}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </Carousel>
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </div> 
+
                     <form method="post" onSubmit={handleFormSubmit}>
                         <Grid container>
                             <Input placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 

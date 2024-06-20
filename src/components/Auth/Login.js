@@ -135,12 +135,19 @@ const Login = () => {
         <div>
             <MenuBar />
             <div className={authCss.authContainer}>
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginRight: '100px'}}>
-                    <Blob bgImage={bubbleBgAuthImg} altText="POP back in" />
+
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '200px', marginRight: '100px', height: "200px", overflow: "hidden"}}>
+                    <div style={{height: "120%", width: "120%"}}>
+                        <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
+                    </div>
+
                 </div>
 
-                <div style={{marginTop: screenWidth > 900 ? '350px' : '', marginLeft: '100px'}} >
-                    <Blob bgImage={bubbleBgAuthImg} altText="POP back in" />
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '400px', marginLeft: '100px', height: "300px", overflow: "hidden"}}>
+                    <div style={{height: "120%", width: "120%"}}>
+                        <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
+                    </div>
+
                 </div>
             </div>
 
