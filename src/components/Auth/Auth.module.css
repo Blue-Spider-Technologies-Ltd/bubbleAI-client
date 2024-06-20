@@ -22,12 +22,13 @@
 }
 
 .formInner {
-    background-color: rgba(255, 255, 255, 0.74);
+    background-color: rgba(255, 255, 255, 0.927);
     border-radius: 10px;
     width: 480px;
     text-align: center;
     line-height: 1;
     margin-top: 150px;
+    margin-bottom: 50px;
     padding: 20px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -102,7 +103,7 @@
     }
 
     .formInner {
-        width: 80%;
-        margin-top: 300px;
+        margin-top: 150px;
+        width: 95%;
     }
 }

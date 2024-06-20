@@ -3,7 +3,7 @@ import authCss from "./Auth.module.css"
 import modalCss from "../UI/Modal/Modal.module.css"
 import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
-import bubbleBgAuthImg from "../../images/bubblebg-auth.png"
+import bubbleBgAuthImg from "../../images/bubblebg-auth.jpg"
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Google, Apple } from '@mui/icons-material';
@@ -134,26 +134,24 @@ const Register = () => {
             <MenuBar />
             <div className={authCss.authContainer}>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginLeft: '50px', height: "200px", overflow: "hidden"}}>
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "350px", marginLeft: '50px', overflow: "hidden"}}>
                     <div style={{height: "120%", width: "120%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
 
                 </div>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '200px', height: "200px", overflow: "hidden"}}>
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "300px", marginTop: '200px', overflow: "hidden"}}>
                     <div style={{height: "120%", width: "120%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
-
                 </div>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '400px', height: "300px", overflow: "hidden"}}>
-                    <div style={{height: "100%", width: "100%"}}>
+                {/* <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '300px', overflow: "hidden"}}> */}
+                    <div style={{height: "10%", width: "10%", marginTop: '30%',}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
-
-                </div>
+                {/* </div> */}
 
             </div>
 
@@ -168,10 +166,10 @@ const Register = () => {
 
                     <div style={{width: '100%', textAlign: 'center'}}>
                         <Grid container>
-                            <Grid item xs={5} mt={5}>
+                            <Grid item xs={12} md={5} mt={5}>
                                 {/* <img src={refundImg} alt='Refund Guaranteed' style={{width: '60px', borderRadius: '50%'}} /> */}
 
-                                <div style={{marginTop: "20px"}}>
+                                <div style={{marginTop: screenWidth > 900 ? "20px" : "-10px"}}>
                                     <h5>Your dreams</h5>
                                     <h2>GUARANTEED</h2>
                                     <a 
@@ -183,7 +181,7 @@ const Register = () => {
                                     </a>
                                 </div>
                             </Grid>
-                            <Grid item  xs={7}>
+                            <Grid item  xs={12} md={7}>
                                 <div className='Segment'>
                                     <Carousel
                                         autoPlay={true}
@@ -204,7 +202,7 @@ const Register = () => {
 
                                         {reviewDetails?.map((detail, index) => {
                                             return (
-                                                <div key={index}>
+                                                <div key={index} style={{height: screenWidth < 900 ? "100px" : "auto"}}>
                                                     <div style={{fontSize: '.7rem', display: 'flex', justifyContent: 'left', width: '100%'}}>
                                                         <div style={{width: '40px', borderRadius: '50%', overflow: 'hidden'}}>
                                                             <img src={detail?.img} alt={detail?.name} width='100%' />

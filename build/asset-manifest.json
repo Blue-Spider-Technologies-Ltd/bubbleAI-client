@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.977e5a3d.css",
-    "main.js": "/static/js/main.c531e47b.js",
+    "main.css": "/static/css/main.6c54c7b8.css",
+    "main.js": "/static/js/main.5d9af06c.js",
     "static/js/850.53b7e135.chunk.js": "/static/js/850.53b7e135.chunk.js",
     "static/js/353.b48c6ab6.chunk.js": "/static/js/353.b48c6ab6.chunk.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
@@ -15,20 +15,21 @@
     "static/media/refund-stamp.png": "/static/media/refund-stamp.19654e7aecd4136b31aa.png",
     "static/media/unavailable.png": "/static/media/unavailable.5084bb9c1fdd048c677b.png",
     "static/media/stt2.jpg": "/static/media/stt2.0c93355fc5a41b38d49b.jpg",
+    "static/media/bubblebg-auth.jpg": "/static/media/bubblebg-auth.01ddcf5f198eec3d6b40.jpg",
     "static/media/soon.jpg": "/static/media/soon.42d5aa43636ab88f7a8d.jpg",
     "static/media/bubble-logo.png": "/static/media/bubble-logo.63e34960a90ae6d78b82.png",
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.977e5a3d.css.map": "/static/css/main.977e5a3d.css.map",
-    "main.c531e47b.js.map": "/static/js/main.c531e47b.js.map",
+    "main.6c54c7b8.css.map": "/static/css/main.6c54c7b8.css.map",
+    "main.5d9af06c.js.map": "/static/js/main.5d9af06c.js.map",
     "850.53b7e135.chunk.js.map": "/static/js/850.53b7e135.chunk.js.map",
     "353.b48c6ab6.chunk.js.map": "/static/js/353.b48c6ab6.chunk.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.977e5a3d.css",
-    "static/js/main.c531e47b.js"
+    "static/css/main.6c54c7b8.css",
+    "static/js/main.5d9af06c.js"
   ]
 }
