@@ -185,7 +185,7 @@ const Register = () => {
                                 <div className='Segment'>
                                     <Carousel
                                         autoPlay={true}
-                                        autoPlaySpeed={3000}
+                                        autoPlaySpeed={6000}
                                         arrows={false}
                                         responsive={responsive}
                                         swipeable={true}
@@ -203,7 +203,7 @@ const Register = () => {
                                         {reviewDetails?.map((detail, index) => {
                                             return (
                                                 <div key={index} style={{height: screenWidth < 900 ? "100px" : "auto"}}>
-                                                    <div style={{fontSize: '.7rem', display: 'flex', justifyContent: 'left', width: '100%'}}>
+                                                    <div style={{fontSize: '.7rem', display: 'flex', justifyContent: 'center', width: '100%'}}>
                                                         <div style={{width: '40px', borderRadius: '50%', overflow: 'hidden'}}>
                                                             <img src={detail?.img} alt={detail?.name} width='100%' />
                                                         </div>
