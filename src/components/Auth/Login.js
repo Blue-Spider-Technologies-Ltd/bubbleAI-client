@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import authCss from "./Auth.module.css";
 import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
-import bubbleBgAuthImg from "../../images/bubblebg-auth.png";
+import bubbleBgAuthImg from "../../images/bubblebg-auth.jpg";
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Google, Apple } from '@mui/icons-material';
@@ -132,18 +132,18 @@ const Login = () => {
         setData({ ...data, [prop]: event.target.value});
     };
     return (
-        <div>
+        <div style={{overflow: 'hidden', height: '100vh'}}>
             <MenuBar />
             <div className={authCss.authContainer}>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '120px', marginRight: '100px', height: "200px", overflow: "hidden"}}>
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '30px', marginRight: '100px', height: "200px"}}>
                     <div style={{height: "120%", width: "120%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
 
                 </div>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '200px', marginLeft: '100px', height: "300px", overflow: "hidden"}}>
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '80px', marginLeft: '50px', height: "300px"}}>
                     <div style={{height: "120%", width: "120%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>

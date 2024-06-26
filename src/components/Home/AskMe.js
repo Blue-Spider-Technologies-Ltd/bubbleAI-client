@@ -343,7 +343,7 @@ const AskMe = () => {
                     <span style={{color: "white"}}>Read the query in the input field (edit if necessary) and click the send icon to generate Cover Letter</span>
                   ) : (
                     <div>
-                      <h5>How to?</h5>
+                      <h5>Suggestions</h5>
 
                       {aiSuggestions.map((suggestion, index) => {
                         return (
