@@ -17,6 +17,7 @@ import { setEmail, setError } from "../../redux/states";
 import { errorAnimation } from "../../utils/client-functions";
 import Carousel from "react-multi-carousel";
 import { reviewDetails } from '../../utils/reviews';
+import HelpIcon from "../UI/HelpIcon/HelpIcon";
 
 
 const screenWidth = window.innerWidth
@@ -283,6 +284,7 @@ const Register = () => {
                     {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#333333" }}><Apple /></span><span>et with Apple</span></ButtonTransparent> */}
                 </div>
             </div>
+            <HelpIcon />
         </div>        
     )
 }

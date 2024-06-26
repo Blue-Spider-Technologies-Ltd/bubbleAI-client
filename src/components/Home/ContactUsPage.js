@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MenuBar from "../UI/Menu/Menu";
 import leftImg from "../../images/contact-desk1.jpg"
 import rightImg from "../../images/contact-desk2.jpg"
@@ -11,27 +11,32 @@ const screenWidth =  window.innerWidth
 
 const faqs = [
   {
-    question: "What is Bubble Ai?",
-    answer: ""
+    q: "What is Bubble Ai?",
+    a: `Bubble Ai is an AI-powered virtual assistant running on the RA1 engine developed by Blue Spider
+      Technologies Ltd. in Nigeria. It can perform various complex tasks such as creating cutting edge resumes/CVs, 
+      tailored cover letters, easy job applications, ongoing and live meeting minute transcription, exceptional business 
+      plans and proposals, as well as large audio and video transcription and translation in any language.`
   },
   {
-    question: "Is there a free trial?",
-    answer: ""
+    q: "Is there a free trial on the Resume creator?",
+    a: `As a first time user on Bubble Ai, you can view a part of your created resume, if satisfied, then you can 
+      choose between one of our already very cheap usage options to download with available templates.`
   },
   {
-    question: "Can I upgrade or downgrade?",
-    answer: ""
+    q: "Can I upgrade or downgrade?",
+    a: `For the Per Use plan, there is usually no need to upgrade as you naturally only get to use it once. 
+      But if you wish to upgrade an existing plan, send us an email with your registered email stating exactly what you want and we will support yur upgrade with a GOOD DISCOUNT.`
   },
   {
-    question: "Is my personal info secure?",
-    answer: ""
+    q: "Is my personal info secure?",
+    a: `YES! At Bubble Ai, we maintain the highest level of users' data security from development to daily handling of your data. Your privacy is a priority.`
   }
 ]
 
 const ContactUsPage = () => {
-
+  const [activeIndex, setActiveIndex] = useState(null);
   const handleQClick = index => {
-    console.log(index);
+    setActiveIndex(index === activeIndex ? null : index);
   }
   return (
     <div style={styles.pageContainer}>
@@ -53,7 +58,6 @@ const ContactUsPage = () => {
           <div>
             <h1>Contact Us</h1>
             <div style={styles.header}>
-              <div>PHONE: <br /> <strong>+2347013370222</strong></div>
               <div>EMAIL: <br /> <strong>hello@bubble-ai.tech</strong></div>
             </div>
 
@@ -61,9 +65,12 @@ const ContactUsPage = () => {
             <div style={{overflowY: 'scroll', height: "220px"}}>
               {faqs.map((item, index) => {
                 return (
-                  <div key={index} style={styles.faqItem} onClick={() => handleQClick(index)}>
-                    <p>{item.question}</p>
-                    <p style={styles.plus}>+</p>
+                  <div key={index}>
+                    <div style={styles.faqItem} onClick={() => handleQClick(index)}>
+                      <p>{item.q}</p>
+                      <p style={styles.plus}>+</p>
+                    </div>
+                    <div style={activeIndex !== index ? styles.faqAnswer : styles.faqClicked}>{item.a}</div>
                   </div>
                 )
               })}
@@ -71,15 +78,21 @@ const ContactUsPage = () => {
 
 
             <div style={styles.socialContainer}>
-              <div>
-                <FaTwitter style={styles.icon} /> <br /> @_bubbleai
-              </div>
-              <div>
-                <FaInstagram style={styles.icon} /> <br /> @_bubble.ai
-              </div>
-              <div>
-                <FaTiktok style={styles.icon} /> <br /> @_bubbleai
-              </div>
+              <a style={styles.a} href="https://x.com/_BubbleAI" target="_blank" rel="noreferrer">
+                <FaTwitter style={styles.icon} />
+                {screenWidth > 900 && <br />}
+                {screenWidth > 900 && "@_bubbleai"}
+              </a>
+              <a style={styles.a} href="https://www.instagram.com/_bubble.ai?igsh=MW9vZXJ0NmtlbW5mMQ%3D%3D&utm_source=qr" target="_blank" rel="noreferrer">
+                <FaInstagram style={styles.icon} />
+                {screenWidth > 900 && <br />}
+                {screenWidth > 900 && "@_bubble.ai"}
+              </a>
+              <a style={styles.a} href="https://www.tiktok.com/@_bubbleai?_t=8nWYhlFhczl&_r=1" target="_blank" rel="noreferrer">
+                <FaTiktok style={styles.icon} />
+                {screenWidth > 900 && <br />}
+                {screenWidth > 900 && "@_bubbleai"}
+              </a>
             </div>
           </div>
         </Grid>
@@ -145,6 +158,24 @@ const styles = {
     boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
     alignItems: 'center'
   },
+  faqAnswer: {
+    overflow: 'hidden',
+    fontSize: screenWidth < 900 && '.9rem',
+    marginLeft: '5%',
+    width: '90%',
+    height: 0,
+    transition: 'all 0.3s ease'
+  },
+  faqClicked: {
+    color: screenWidth < 900 && '#fff',
+    fontSize: screenWidth < 900 && '.9rem',
+    width: '90%',
+    marginLeft: '5%',
+    opacity: 1,
+    height: 'auto',
+    marginBottom: '10px',
+    transition: 'all 0.3s ease'
+  },
   plus: {
     fontSize: '20px',
     color: '#FFF'
@@ -155,6 +186,11 @@ const styles = {
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: '60px',
+    marginLeft: screenWidth < 900 && '-20px',
+  },
+  a: {
+    textDecoration: 'none',
+    color: screenWidth < 900 ? '#fff' : "#000",
   },
   icon: {
     margin: '0 10px',

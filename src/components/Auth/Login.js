@@ -12,6 +12,7 @@ import { ThreeCircles } from 'react-loader-spinner';
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setError } from "../../redux/states";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
+import HelpIcon from "../UI/HelpIcon/HelpIcon";
 
 
 const screenWidth = window.innerWidth
@@ -188,6 +189,7 @@ const Login = () => {
 
                 </div>
             </div>
+            <HelpIcon />
         </div>        
     )
 }
