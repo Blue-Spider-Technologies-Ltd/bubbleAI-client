@@ -162,7 +162,7 @@ const AskMe = () => {
 
   const renderLineWaves = () => {
     const lineWaves = [];
-    const count = 10
+    const count = screenWidth > 900 ? 10 : 8
     for (let i = 0; i < count; i++) {
       lineWaves.push(
         <LineWave
@@ -441,7 +441,7 @@ const AskMe = () => {
                   </Grid>
                 ) : audioBlob ? (
                   <Grid item xs={10}>
-                    <audio controls style={{width: "100%", height: "30px", marginTop: '15px'}}>
+                    <audio controls style={{width: screenWidth < 900 ? "90%" : "100%", height: "30px", marginTop: '15px'}}>
                         <source src={URL.createObjectURL(audioBlob)} type="audio/wav" />
                     </audio>
                   </Grid>
