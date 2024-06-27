@@ -16,6 +16,7 @@ import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots } from 'react-loader-spinner'
 import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { setError, setMessages } from "../../redux/states";
 import { errorAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
@@ -159,6 +160,28 @@ const AskMe = () => {
   }, [])
   
 
+  const renderLineWaves = () => {
+    const lineWaves = [];
+    const count = 10
+    for (let i = 0; i < count; i++) {
+      lineWaves.push(
+        <LineWave
+          key={i}
+          visible={true}
+          height="40"
+          width="100%"
+          color="#3E8F93"
+          ariaLabel="line-wave-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          firstLineColor=""
+          middleLineColor=""
+          lastLineColor=""
+        />
+      );
+    }
+    return lineWaves;
+  };
   
   const chatExchange = messages.map((message, index) => {
     const OverUseMessage = () => {
@@ -413,8 +436,8 @@ const AskMe = () => {
             <div className="ask-me-form">
               <Grid container>
                 {recording ? (
-                  <Grid item xs={10}>
-                    <div className="wave-simulator"></div>
+                  <Grid item xs={10} sx={{display: 'flex', justifyContent: 'center'}}>
+                    {renderLineWaves()}
                   </Grid>
                 ) : audioBlob ? (
                   <Grid item xs={10}>

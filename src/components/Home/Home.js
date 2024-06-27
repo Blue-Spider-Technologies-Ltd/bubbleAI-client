@@ -16,6 +16,8 @@ import HelpIcon from "../UI/HelpIcon/HelpIcon";
 import axios from "axios";
 
 
+const screenWidth =  window.innerWidth
+
 const Home = () => {
   const { user, error } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
@@ -96,12 +98,10 @@ const Home = () => {
 
               <AuthInput
                 name="askMe"
-                // value={info.industry}
                 label="Ask a Question..."
                 placeholder="Ask a Question..."
                 multiline={true}
                 inputGridSm={10}
-                // mt={1}
                 rows={2}
                 maxRows={2}
                 required={true}
@@ -109,7 +109,7 @@ const Home = () => {
               <Grid
                 item
                 xs={2}
-                sx={{ textAlign: "right" }}
+                sx={{ textAlign: "right", marginTop: screenWidth > 900 && '-3px' }}
               >
                 <ButtonSubmitBlack>
                   <SendIcon />
