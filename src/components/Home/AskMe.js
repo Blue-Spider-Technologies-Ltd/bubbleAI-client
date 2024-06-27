@@ -441,7 +441,7 @@ const AskMe = () => {
                   </Grid>
                 ) : audioBlob ? (
                   <Grid item xs={10}>
-                    <audio controls style={{width: screenWidth < 900 ? "90%" : "100%", height: "30px", marginTop: '15px'}}>
+                    <audio controls style={{width: screenWidth < 900 ? "90%" : "100%", height: "30px", marginTop: screenWidth > 900 ? '15px' : "5px", marginLeft: '10px'}}>
                         <source src={URL.createObjectURL(audioBlob)} type="audio/wav" />
                     </audio>
                   </Grid>
