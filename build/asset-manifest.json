@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.6c54c7b8.css",
-    "main.js": "/static/js/main.ff9c3213.js",
+    "main.css": "/static/css/main.2587577a.css",
+    "main.js": "/static/js/main.751c1c93.js",
     "static/js/850.53b7e135.chunk.js": "/static/js/850.53b7e135.chunk.js",
     "static/js/353.b48c6ab6.chunk.js": "/static/js/353.b48c6ab6.chunk.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
@@ -11,7 +11,6 @@
     "static/media/failed.gif": "/static/media/failed.6627106d63a9dade2c9f.gif",
     "static/media/success.gif": "/static/media/success.05e3bee91653111f1bbe.gif",
     "static/media/resume.png": "/static/media/resume.45b9fee5abf6c047a2c6.png",
-    "static/media/chatbgtwo.png": "/static/media/chatbgtwo.4c974492ddf645c6d85f.png",
     "static/media/radiant.jpg": "/static/media/radiant.1fa11696217399314ea7.jpg",
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.7a4d0bbbe53cc081ca37.png",
     "static/media/chatbgone.png": "/static/media/chatbgone.e4b0c4e73246293d44a6.png",
@@ -25,14 +24,14 @@
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.6c54c7b8.css.map": "/static/css/main.6c54c7b8.css.map",
-    "main.ff9c3213.js.map": "/static/js/main.ff9c3213.js.map",
+    "main.2587577a.css.map": "/static/css/main.2587577a.css.map",
+    "main.751c1c93.js.map": "/static/js/main.751c1c93.js.map",
     "850.53b7e135.chunk.js.map": "/static/js/850.53b7e135.chunk.js.map",
     "353.b48c6ab6.chunk.js.map": "/static/js/353.b48c6ab6.chunk.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6c54c7b8.css",
-    "static/js/main.ff9c3213.js"
+    "static/css/main.2587577a.css",
+    "static/js/main.751c1c93.js"
   ]
 }

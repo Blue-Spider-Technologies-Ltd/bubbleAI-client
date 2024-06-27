@@ -4,7 +4,10 @@ import "./Home.css";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import { Grid } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import StopIcon from "@mui/icons-material/Stop";
+import MicIcon from '@mui/icons-material/Mic';
 import CloseIcon from "@mui/icons-material/Close";
+import CancelIcon from '@mui/icons-material/Cancel';
 import AuthInput from "../UI/Input/AuthInputs";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons"
 import { useSelector, useDispatch } from "react-redux";
@@ -52,6 +55,9 @@ const AskMe = () => {
   const [askMeVal, setAskMeVal] = useState("")
   const [suggestionDisplay, setSuggestionDisplay] = useState(false)
   const [aiSuggestions, setAiSuggestions] = useState([])
+  const [recording, setRecording] = useState(false);
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
 
   const isEffectExecuted = useRef(false);
   let coverLetterPrompt = localStorage.getItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA")
@@ -154,8 +160,6 @@ const AskMe = () => {
   
 
   
-
-
   const chatExchange = messages.map((message, index) => {
     const OverUseMessage = () => {
       const overUseMessage = {
@@ -195,6 +199,35 @@ const AskMe = () => {
   });
 
 
+  const handleRecordAudio = () => {
+    if (!recording) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                const recorder = new MediaRecorder(stream);
+                const audioChunks = [];
+
+                recorder.ondataavailable = e => {
+                    audioChunks.push(e.data);
+                };
+
+                recorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    setAudioBlob(audioBlob);
+                };
+
+                recorder.start();
+                setRecording(true);
+                setMediaRecorder(recorder);
+            })
+            .catch(error => {
+                console.error('Error accessing microphone:', error);
+            });
+    } else {
+        // Stop recording
+        mediaRecorder.stop();
+        setRecording(false);
+    }
+};
 
 
   const handleAskMeAnything = async (e) => {
@@ -326,7 +359,7 @@ const AskMe = () => {
                 onClick={toHomePage}
             >
                 <CloseIcon 
-                    fontSize='medium'
+                  fontSize='medium'
                 />
             </div>
         </div>
@@ -378,32 +411,61 @@ const AskMe = () => {
             </div>
 
             <div className="ask-me-form">
-                <Grid container>
-                <AuthInput
-                    name="askMe"
-                    value={askMeVal}
-                    label="Ask a Question..."
-                    placeholder="Ask a Question..."
-                    multiline={true}
-                    inputGridSm={10}
-                    mt={1}
-                    rows={2}
-                    maxRows={6}
-                    required={true}
-                    onKeyDown={handleKeyPress}
-                    onChange={handleValChange}
-                    onFocus={handleFocus}
-                />
+              <Grid container>
+                {recording ? (
+                  <Grid item xs={10}>
+                    <div className="wave-simulator"></div>
+                  </Grid>
+                ) : audioBlob ? (
+                  <Grid item xs={10}>
+                    <audio controls style={{width: "100%", height: "30px", marginTop: '15px'}}>
+                        <source src={URL.createObjectURL(audioBlob)} type="audio/wav" />
+                    </audio>
+                  </Grid>
+                ) : (
+                  <AuthInput
+                      name="askMe"
+                      value={askMeVal}
+                      label="Ask a Question..."
+                      placeholder="Ask a Question..."
+                      multiline={true}
+                      inputGridSm={10}
+                      mt={1}
+                      rows={screenWidth <= 900 ? 1 : 2}
+                      maxRows={6}
+                      required={true}
+                      onKeyDown={handleKeyPress}
+                      onChange={handleValChange}
+                      onFocus={handleFocus}
+                  />
+                )}
+
                 <Grid
                     item
-                    xs={2}
-                    sx={{ textAlign: "right", marginTop: "5px" }}
+                    xs={1}
+                    sx={{ marginTop: screenWidth > 900 ? "5px" : "-2px", marginLeft: "-5px"}}
+                >
+                  {audioBlob ? (
+                    <ButtonSubmitBlack type="button" width="90%" onClick={() => setAudioBlob(null)}>
+                      <CancelIcon />
+                    </ButtonSubmitBlack>
+                  ) : (
+                    <ButtonSubmitBlack type="button" width="90%" onClick={handleRecordAudio}>
+                      {recording ? <StopIcon /> : <MicIcon />}
+                    </ButtonSubmitBlack>
+                  )}
+                </Grid>
+
+                <Grid
+                    item
+                    xs={1}
+                    sx={{marginTop: screenWidth > 900 ? "5px" : "-2px" }}
                 >
                     <ButtonSubmitBlack type="button" onClick={handleAskMeAnything}>
-                        <SendIcon />
+                        <SendIcon /> 
                     </ButtonSubmitBlack>
                 </Grid>
-                </Grid>
+              </Grid>
             </div>
         </div>
 

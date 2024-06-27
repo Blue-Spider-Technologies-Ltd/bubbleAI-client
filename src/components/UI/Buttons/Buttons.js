@@ -32,9 +32,9 @@ export const ButtonLogOut = ({ to, type, clicked, children }) => {
 }
 
 
-export const ButtonSubmitBlack = ({disabled, type, height, children, onClick}) => {
+export const ButtonSubmitBlack = ({disabled, type, height, width, children, onClick}) => {
     return (
-        <button onClick={onClick} type={type} disabled={disabled} style={{ height: height && height }} className={buttonCss.ButtonSubmitBlack}>
+        <button onClick={onClick} type={type} disabled={disabled} style={{ height: height && height, width: width && width }} className={buttonCss.ButtonSubmitBlack}>
             {children}
         </button>
     )
