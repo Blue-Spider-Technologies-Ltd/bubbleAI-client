@@ -13,7 +13,7 @@ import { ButtonSubmitBlack } from "../UI/Buttons/Buttons"
 import { useSelector, useDispatch } from "react-redux";
 import { setMessage, deleteLastMessage } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
-import { ThreeDots } from 'react-loader-spinner'
+import { ThreeDots, Oval } from 'react-loader-spinner'
 import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { LineWave } from 'react-loader-spinner'
@@ -59,6 +59,8 @@ const AskMe = () => {
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioTranscribed, setAudioTranscribed] = useState(false)
+  const [transcribing, setTranscribing] = useState(false)
 
   const isEffectExecuted = useRef(false);
   let coverLetterPrompt = localStorage.getItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA")
@@ -90,6 +92,14 @@ const AskMe = () => {
       localStorage?.removeItem("oats_3297");
     }
   }, [expiration, now])
+
+  useEffect(() => {
+    if (audioTranscribed) {
+      handleAskMeAnything();
+      setAudioTranscribed(false)
+      setTranscribing(false)
+    }
+}, [audioTranscribed]);
 
   //fetch messages for auth user
   useEffect(() => {
@@ -222,40 +232,10 @@ const AskMe = () => {
   });
 
 
-  const handleRecordAudio = () => {
-    if (!recording) {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                const recorder = new MediaRecorder(stream);
-                const audioChunks = [];
-
-                recorder.ondataavailable = e => {
-                    audioChunks.push(e.data);
-                };
-
-                recorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    setAudioBlob(audioBlob);
-                };
-
-                recorder.start();
-                setRecording(true);
-                setMediaRecorder(recorder);
-            })
-            .catch(error => {
-                console.error('Error accessing microphone:', error);
-            });
-    } else {
-        // Stop recording
-        mediaRecorder.stop();
-        setRecording(false);
-    }
-};
-
-
-  const handleAskMeAnything = async (e) => {
+  const handleAskMeAnything = async () => {
 
     if (askMeVal === "") {
+      console.log(askMeVal);
       return errorSetter("Empty question detected")
     }
     const newMessage = {
@@ -326,6 +306,58 @@ const AskMe = () => {
           dispatch(setMessage(askMeErrorObj));
         }
       }
+    }
+  };
+
+  
+  const handleRecordAudio = () => {
+    if (!recording) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                const recorder = new MediaRecorder(stream);
+                const audioChunks = [];
+
+                recorder.ondataavailable = e => {
+                    audioChunks.push(e.data);
+                };
+
+                recorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    setAudioBlob(audioBlob);
+                };
+
+                recorder.start();
+                setRecording(true);
+                setMediaRecorder(recorder);
+            })
+            .catch(error => {
+                console.error('Error accessing microphone:', error);
+            });
+    } else {
+        // Stop recording
+        mediaRecorder.stop();
+        setRecording(false);
+    }
+  };
+
+  const handleSendAudio = () => {
+    if (audioBlob) {
+      setTranscribing(true)
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'audio.wav');
+
+      axios.post('/transcript/transcribe-askme', formData)
+          .then(response => {
+            setAskMeVal(response.data)
+            setAudioTranscribed(true)
+            setAudioBlob(null)
+          })
+          .catch(error => {
+            setTranscribing(false)
+            errorSetter('Error transcribing audio:', error);
+          });
+    } else {
+      return errorSetter('No audio to send');
     }
   };
 
@@ -484,8 +516,15 @@ const AskMe = () => {
                     xs={1}
                     sx={{marginTop: screenWidth > 900 ? "5px" : "-2px" }}
                 >
-                    <ButtonSubmitBlack type="button" onClick={handleAskMeAnything}>
-                        <SendIcon /> 
+                    <ButtonSubmitBlack type="button" onClick={audioBlob ? handleSendAudio : handleAskMeAnything}>
+                        {transcribing ? 
+                          <Oval
+                            visible={true}
+                            height="20"
+                            width="20"
+                            color="#3E8F93"
+                            ariaLabel="oval-loading"
+                          /> : <SendIcon /> }
                     </ButtonSubmitBlack>
                 </Grid>
               </Grid>
