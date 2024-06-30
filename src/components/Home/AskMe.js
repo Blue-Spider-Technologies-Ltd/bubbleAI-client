@@ -312,7 +312,7 @@ const AskMe = () => {
                 audioChunks.push(event.data);
               };
               mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 setAudioBlob(audioBlob);
               };
               mediaRecorder.start();
@@ -478,7 +478,7 @@ const AskMe = () => {
                 ) : audioBlob ? (
                   <Grid item xs={10}>
                     <audio controls style={{width: screenWidth < 900 ? "90%" : "100%", height: "30px", marginTop: screenWidth > 900 ? '15px' : "5px", marginLeft: '10px'}}>
-                        <source src={URL.createObjectURL(audioBlob)} type={audioBlob.type} />
+                        <source src={URL.createObjectURL(audioBlob)} type="audio/mp3" />
                     </audio>
                   </Grid>
                 ) : (
