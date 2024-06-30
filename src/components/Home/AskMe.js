@@ -42,7 +42,7 @@ const suggestionThree = {
 
 
 const AskMe = () => {
-  const { messages } = useSelector((state) => state.stateData);
+  const { messages, error } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
   const navigate = useNavigate();
@@ -70,16 +70,12 @@ const AskMe = () => {
     errorAnimation()
   }
 
-
-
   const askMeErrorObj = {
     role: 'assistant',
     content:  "I am currently throttling requests, try again in a moment"
   }
 
   const isAuth = localStorage?.getItem("token");
-
-
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -99,7 +95,7 @@ const AskMe = () => {
       setAudioTranscribed(false)
       setTranscribing(false)
     }
-}, [audioTranscribed]);
+  }, [audioTranscribed]);
 
   //fetch messages for auth user
   useEffect(() => {
@@ -182,11 +178,6 @@ const AskMe = () => {
           width="100%"
           color="#3E8F93"
           ariaLabel="line-wave-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-          firstLineColor=""
-          middleLineColor=""
-          lastLineColor=""
         />
       );
     }
@@ -196,8 +187,7 @@ const AskMe = () => {
   const chatExchange = messages.map((message, index) => {
     const OverUseMessage = () => {
       const overUseMessage = {
-        content:
-          `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble" >Register here</a> or <a href="/popin" >Log in</a> to enjoy more for FREE`,
+        content: `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble" >Register here</a> or <a href="/popin" >Log in</a> to enjoy more for FREE`,
       };
     
       return (
@@ -235,8 +225,8 @@ const AskMe = () => {
   const handleAskMeAnything = async () => {
 
     if (askMeVal === "") {
-      console.log(askMeVal);
-      return errorSetter("Empty question detected")
+      errorSetter("Empty question detected")
+      return
     }
     const newMessage = {
       role: "user",
@@ -312,33 +302,35 @@ const AskMe = () => {
   
   const handleRecordAudio = () => {
     if (!recording) {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                const recorder = new MediaRecorder(stream);
-                const audioChunks = [];
+      navigator.getUserMedia(
+        { audio: true }, (stream) => {
+          const audioTracks = stream.getAudioTracks();
 
-                recorder.ondataavailable = e => {
-                    audioChunks.push(e.data);
-                };
+          const audioRecorder = new MediaRecorder(new MediaStream(audioTracks));
+          const audioChunks = [];
 
-                recorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    setAudioBlob(audioBlob);
-                };
+          audioRecorder.ondataavailable = (e) => {
+              audioChunks.push(e.data);
+          };
 
-                recorder.start();
-                setRecording(true);
-                setMediaRecorder(recorder);
-            })
-            .catch(error => {
-                console.error('Error accessing microphone:', error);
-            });
+          audioRecorder.onstop = () => {
+              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+              setAudioBlob(audioBlob);
+          };
+
+          audioRecorder.start();
+          setRecording(true);
+          setMediaRecorder(audioRecorder);
+        }, (error) => {
+          errorSetter('Error accessing microphone:', error);
+      });
     } else {
-        // Stop recording
-        mediaRecorder.stop();
-        setRecording(false);
+      // Stop recording
+      mediaRecorder.stop();
+      setRecording(false);
     }
   };
+  
 
   const handleSendAudio = () => {
     if (audioBlob) {
@@ -398,6 +390,7 @@ const AskMe = () => {
             // resumeSubDuration={subDuration}
             // arrayDetails={userResumesAll}
         />
+        <div className="error">{error}</div>
 
         <div className="chat-header">
             <div className="chat-menu-icon" onClick={handleMenuToggle}>
@@ -506,7 +499,7 @@ const AskMe = () => {
                     </ButtonSubmitBlack>
                   ) : (
                     <ButtonSubmitBlack type="button" width="90%" onClick={handleRecordAudio}>
-                      {recording ? <StopIcon /> : <MicIcon />}
+                      {recording ? <StopIcon sx={{color: 'rgb(216, 7, 7)'}} /> : <MicIcon />}
                     </ButtonSubmitBlack>
                   )}
                 </Grid>

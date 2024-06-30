@@ -135,24 +135,23 @@ const Register = () => {
             <MenuBar />
             <div className={authCss.authContainer}>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "350px", marginLeft: '50px', overflow: "hidden"}}>
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "350px", marginLeft: '50px'}}>
                     <div style={{height: "120%", width: "120%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
 
                 </div>
 
-                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "300px", marginTop: '200px', overflow: "hidden"}}>
-                    <div style={{height: "120%", width: "120%"}}>
+                <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "300px", marginTop: '200px'}}>
+                    <div style={{height: "120%", width: "110%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
                 </div>
+ 
+                <div style={{height: "10%", width: "10%", marginTop: '30%',}}>
+                    <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
+                </div>
 
-                {/* <div style={{marginBottom: screenWidth > 900 ? '350px' : '', marginTop: '300px', overflow: "hidden"}}> */}
-                    <div style={{height: "10%", width: "10%", marginTop: '30%',}}>
-                        <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
-                    </div>
-                {/* </div> */}
 
             </div>
 

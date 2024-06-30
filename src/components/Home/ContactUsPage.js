@@ -25,7 +25,7 @@ const faqs = [
   {
     q: "Can I upgrade or downgrade?",
     a: `For the Per Use plan, there is usually no need to upgrade as you naturally only get to use it once. 
-      But if you wish to upgrade an existing plan, send us an email with your registered email stating exactly what you want and we will support yur upgrade with a GOOD DISCOUNT.`
+      But if you wish to upgrade an existing plan, send us an email with your registered email stating exactly what you want and we will support your upgrade with a GOOD DISCOUNT.`
   },
   {
     q: "Is my personal info secure?",
@@ -58,7 +58,7 @@ const ContactUsPage = () => {
           <div>
             <h1>Contact Us</h1>
             <div style={styles.header}>
-              <div>EMAIL: <br /> <strong>hello@bubble-ai.tech</strong></div>
+              <div>EMAIL: <br /> <strong>support@bubble-ai.tech</strong></div>
             </div>
 
             <h2>FAQs</h2>
