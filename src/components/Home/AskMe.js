@@ -313,7 +313,7 @@ const AskMe = () => {
                 audioChunks.push(event.data);
               };
               mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
                 setAudioBlob(audioBlob);
               };
               mediaRecorder.start();
@@ -348,7 +348,7 @@ const AskMe = () => {
     if (audioBlob) {
       setTranscribing(true)
       const formData = new FormData();
-      formData.append('audio', audioBlob, audioBlob.type);
+      formData.append('audio', audioBlob, 'audio.mp3');
 
       axios.post('/transcript/transcribe-askme', formData)
           .then(response => {
