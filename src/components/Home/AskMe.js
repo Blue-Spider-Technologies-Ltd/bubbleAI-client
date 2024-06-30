@@ -20,6 +20,7 @@ import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { setError, setMessages } from "../../redux/states";
 import { errorAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
+import adapter from 'webrtc-adapter';
 
 const screenWidth = window.innerWidth
 
@@ -302,34 +303,39 @@ const AskMe = () => {
   
   const handleRecordAudio = () => {
     if (!recording) {
-      navigator.getUserMedia(
-        { audio: true }, (stream) => {
-          const audioTracks = stream.getAudioTracks();
+      navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        const tracks = stream.getTracks();
+        const audioTracks = tracks.filter(track => track.kind === 'audio');
 
-          const audioRecorder = new MediaRecorder(new MediaStream(audioTracks));
-          const audioChunks = [];
+        const audioStream = new MediaStream(audioTracks);
+        const audioRecorder = new MediaRecorder(audioStream);
+        const audioChunks = [];
 
-          audioRecorder.ondataavailable = (e) => {
-              audioChunks.push(e.data);
-          };
+        audioRecorder.ondataavailable = e => {
+            audioChunks.push(e.data);
+        };
 
-          audioRecorder.onstop = () => {
-              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-              setAudioBlob(audioBlob);
-          };
+        audioRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            setAudioBlob(audioBlob);
+        };
 
-          audioRecorder.start();
-          setRecording(true);
-          setMediaRecorder(audioRecorder);
-        }, (error) => {
-          errorSetter('Error accessing microphone:', error);
+        audioRecorder.start();
+        setRecording(true);
+        setMediaRecorder(audioRecorder);
+      })
+      .catch(error => {
+        errorSetter('Error accessing microphone');
+        return
       });
     } else {
-      // Stop recording
-      mediaRecorder.stop();
-      setRecording(false);
+        // Stop recording
+        mediaRecorder.stop();
+        setRecording(false);
     }
   };
+  
   
 
   const handleSendAudio = () => {
