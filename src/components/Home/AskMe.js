@@ -20,7 +20,7 @@ import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { setError, setMessages } from "../../redux/states";
 import { errorAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
-import adapter from 'webrtc-adapter';
+import Recorder from 'recorder-js';
 
 const screenWidth = window.innerWidth
 
@@ -303,38 +303,43 @@ const AskMe = () => {
   
   const handleRecordAudio = () => {
     if (!recording) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(stream => {
-        const tracks = stream.getTracks();
-        const audioTracks = tracks.filter(track => track.kind === 'audio');
-
-        const audioStream = new MediaStream(audioTracks);
-        const audioRecorder = new MediaRecorder(audioStream);
-        const audioChunks = [];
-
-        audioRecorder.ondataavailable = e => {
-            audioChunks.push(e.data);
-        };
-
-        audioRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            setAudioBlob(audioBlob);
-        };
-
-        audioRecorder.start();
-        setRecording(true);
-        setMediaRecorder(audioRecorder);
-      })
-      .catch(error => {
-        errorSetter('Error accessing microphone');
-        return
-      });
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+              const mediaRecorder = new MediaRecorder(stream);
+              const audioChunks = [];
+              mediaRecorder.ondataavailable = (event) => {
+                  audioChunks.push(event.data);
+              };
+              mediaRecorder.onstop = () => {
+                  const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                  setAudioBlob(audioBlob);
+              };
+              mediaRecorder.start();
+              setRecording(true);
+              setMediaRecorder(mediaRecorder);
+          })
+          .catch(error => {
+              errorSetter('Error accessing microphone');
+          });
+      } else {
+          errorSetter('getUserMedia is not supported on this browser');
+      }
     } else {
-        // Stop recording
-        mediaRecorder.stop();
-        setRecording(false);
+      // Stop recording
+      if (mediaRecorder) {
+          try {
+              mediaRecorder.stop();
+          } catch (error) {
+              errorSetter('Error stopping recording');
+          }
+      }
+      setRecording(false);
+      setMediaRecorder(null);
     }
   };
+
+  
   
   
 
