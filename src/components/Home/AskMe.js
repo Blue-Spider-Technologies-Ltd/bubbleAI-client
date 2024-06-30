@@ -309,29 +309,29 @@ const AskMe = () => {
               const mediaRecorder = new MediaRecorder(stream);
               const audioChunks = [];
               mediaRecorder.ondataavailable = (event) => {
-                  audioChunks.push(event.data);
+                audioChunks.push(event.data);
               };
               mediaRecorder.onstop = () => {
-                  const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                  setAudioBlob(audioBlob);
+                const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                setAudioBlob(audioBlob);
               };
               mediaRecorder.start();
               setRecording(true);
               setMediaRecorder(mediaRecorder);
           })
           .catch(error => {
-              errorSetter('Error accessing microphone');
+            errorSetter('Error accessing microphone');
           });
       } else {
-          errorSetter('getUserMedia is not supported on this browser');
+        errorSetter('getUserMedia is not supported on this browser');
       }
     } else {
       // Stop recording
       if (mediaRecorder) {
           try {
-              mediaRecorder.stop();
+            mediaRecorder.stop();
           } catch (error) {
-              errorSetter('Error stopping recording');
+            errorSetter('Error stopping recording');
           }
       }
       setRecording(false);
