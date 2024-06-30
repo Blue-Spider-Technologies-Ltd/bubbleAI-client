@@ -302,6 +302,7 @@ const AskMe = () => {
 
   
   const handleRecordAudio = () => {
+    setSuggestionDisplay(false)
     if (!recording) {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ audio: true })
@@ -347,7 +348,7 @@ const AskMe = () => {
     if (audioBlob) {
       setTranscribing(true)
       const formData = new FormData();
-      formData.append('audio', audioBlob, 'audio.wav');
+      formData.append('audio', audioBlob, audioBlob.type);
 
       axios.post('/transcript/transcribe-askme', formData)
           .then(response => {
