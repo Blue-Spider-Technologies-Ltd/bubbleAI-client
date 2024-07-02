@@ -324,28 +324,25 @@ const AskMe = () => {
             errorSetter('Error accessing microphone');
           });
       } else {
-        errorSetter('getUserMedia is not supported on this browser');
+        errorSetter('audio recording not supported on this browser');
       }
     } else {
       // Stop recording
       if (mediaRecorder) {
-          try {
-            mediaRecorder.stop();
-          } catch (error) {
-            errorSetter('Error stopping recording');
-          }
+        try {
+          mediaRecorder.stop();
+        } catch (error) {
+          errorSetter('Error stopping recording');
+        }
       }
       setRecording(false);
-      setMediaRecorder(null);
+      // setMediaRecorder(null);
     }
   };
-
-  
-  
   
 
   const handleSendAudio = () => {
-    if (audioBlob) {
+    if (audioBlob && mediaRecorder && mediaRecorder.state === 'inactive') {
       setTranscribing(true)
       const formData = new FormData();
       formData.append('audio', audioBlob, 'audio.mp3');
@@ -355,6 +352,7 @@ const AskMe = () => {
             setAskMeVal(response.data)
             setAudioTranscribed(true)
             setAudioBlob(null)
+            setMediaRecorder(null);
           })
           .catch(error => {
             setTranscribing(false)
@@ -424,7 +422,6 @@ const AskMe = () => {
             </div>
         </div>
        
-
 
         <div className="chatbg-overlay" onClick={() => setAuthMenuOpen(false)}>
 

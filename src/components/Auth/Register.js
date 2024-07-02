@@ -136,21 +136,21 @@ const Register = () => {
             <div className={authCss.authContainer}>
 
                 <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "350px", marginLeft: '50px'}}>
-                    <div style={{height: "120%", width: "120%"}}>
+                    <div style={{height: screenWidth > 900 ? "120%" : "100%", width: screenWidth > 900 ? "120%" : "100%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
 
                 </div>
 
                 <div style={{marginBottom: screenWidth > 900 ? '350px' : '', height: "300px", marginTop: '200px'}}>
-                    <div style={{height: "120%", width: "110%"}}>
+                    <div style={{height: screenWidth > 900 ? "120%" : "100%", width: screenWidth > 900 ? "110%" : "100%"}}>
                         <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
                     </div>
                 </div>
  
-                <div style={{height: "10%", width: "10%", marginTop: '30%',}}>
+                {screenWidth > 900 && (<div style={{height: "10%", width: "10%", marginTop: '30%',}}>
                     <Blob bgImage={bubbleBgAuthImg} altText="Join bubble" />          
-                </div>
+                </div>)}
 
 
             </div>
