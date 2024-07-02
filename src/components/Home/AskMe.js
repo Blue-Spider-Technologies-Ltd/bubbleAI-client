@@ -324,7 +324,7 @@ const AskMe = () => {
             errorSetter('Error accessing microphone');
           });
       } else {
-        errorSetter('audio recording not supported on this browser');
+        errorSetter('Audio recording not supported on this browser');
       }
     } else {
       // Stop recording
