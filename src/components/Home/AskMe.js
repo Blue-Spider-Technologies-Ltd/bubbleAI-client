@@ -24,17 +24,15 @@ import Recorder from 'recorder-js';
 
 const screenWidth = window.innerWidth
 
-const suggestions = [
-    {
-        title: "Write professional email",
-        description: "Write a sample professional follow up email to a prospective client listing out why our products [mention products] are the best for them"
-    },
-    {
-        title: "Quicken monotonous tasks",
-        description: "How can Bubble AI's Resume Builder streamline and display my skills and profile more efficiently?"
-    },
+const suggestionOne = {
+      title: "Write professional email",
+      description: "Write a sample professional follow up email to a prospective client listing out why our products [mention products] are the best for them"
+  }
 
-]
+const suggestionTwo = {
+  title: "Job Interview Preparation",
+  description: "You are a Job Interview preparation coach. Coach me on how to prepare and ace an interview with [COMPANY NAME HERE] that are in the [INDUSTRY NAME e.g HOSPITALITY] for the role of [PLACE ROLE HERE], given that the specific requirements for the role are [COPY AND PASTE REQUIREMENTS HERE]."
+}
 
 const suggestionThree = {
   title: "Create Video Content",
@@ -144,14 +142,14 @@ const AskMe = () => {
     const generateSuggestions = async () => {
       try {
         const data = {
-          suggestions: suggestions
+          suggestions: suggestionOne
         }
         setSuggestionDisplay(true)
         let response = await axios.post("/suggestions", data);
-        const objectData = JSON.parse(response.data)
-        setAiSuggestions(objectData)
+        const objectData = response.data
+        setAiSuggestions([objectData, suggestionTwo, suggestionThree])
       } catch (error) {
-        
+        console.error(error);
       }
     }
   
@@ -449,7 +447,7 @@ const AskMe = () => {
                           </button>
                         )
                       })}
-                      <button 
+                      {/* <button 
                         className="suggestion-buttons" 
                         onClick={() => {
                         setSuggestionDisplay(false)
@@ -457,7 +455,7 @@ const AskMe = () => {
                         }
                       >
                         {suggestionThree.title}
-                      </button>
+                      </button> */}
                     </div>
                   )}
                   
