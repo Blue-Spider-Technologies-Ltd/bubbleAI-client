@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import authMenuCss from './AuthMenu.module.css'
 import AuthInputs from '../Input/AuthInputs';
@@ -26,7 +26,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
     const navigate = useNavigate();
     const location = useLocation();
     const isAuth = localStorage?.getItem("token")
-    const [activeIndex, setActiveIndex] = useState(arrayDetails[arrayDetails.length - 1]);
+    const [activeIndex, setActiveIndex] = useState(null);
     const errorSetter = (string) => {
         dispatch(setError(string))
         errorAnimation()
@@ -37,6 +37,9 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         successMiniAnimation()
     }
 
+    useEffect(() => {
+        setActiveIndex(arrayDetails.length - 1)
+    }, [arrayDetails.length])
 
     const handleLogOut = () => {
         localStorage?.removeItem("token");
