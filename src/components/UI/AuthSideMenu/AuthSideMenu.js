@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import authMenuCss from './AuthMenu.module.css'
 import AuthInputs from '../Input/AuthInputs';
 import { Grid } from "@mui/material";
 import { ButtonTransparentSquare, ButtonOutlineGreen } from '../Buttons/Buttons';
 import DownloadIcon from '@mui/icons-material/Download';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
 import unavailableImg from "../../../images/unavailable.png";
-import { setResume, setFetching, setUserResumesAll, setError } from '../../../redux/states';
+import { setResume, setFetching, setUserResumesAll, setError, setAllMessagesArray, setMessages, setSuccessMini } from '../../../redux/states';
 import { useDispatch } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import { useNavigate, useLocation } from "react-router-dom";
-import { checkAuthenticatedUser, errorAnimation } from '../../../utils/client-functions';
+import { checkAuthenticatedUser, errorAnimation, successMiniAnimation } from '../../../utils/client-functions';
 
 
 
@@ -25,15 +26,21 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
     const navigate = useNavigate();
     const location = useLocation();
     const isAuth = localStorage?.getItem("token")
+    const [activeIndex, setActiveIndex] = useState(arrayDetails[arrayDetails.length - 1]);
     const errorSetter = (string) => {
         dispatch(setError(string))
         errorAnimation()
     }
 
+    const successSetter = (string) => {
+        dispatch(setSuccessMini(string))
+        successMiniAnimation()
+    }
+
 
     const handleLogOut = () => {
         localStorage?.removeItem("token");
-        navigate("/")
+        window.location.reload()
     }    
 
     const handleLogIn = () => {
@@ -96,6 +103,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                 });
                 dispatch(setUserResumesAll(response.data.resume))
                 dispatch(setFetching(false))
+                successSetter("Resume Deleted")
             } catch (error) {
                 dispatch(setFetching(false))
                 errorSetter(error.response.data.error)
@@ -106,6 +114,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         });
     }
 
+    
         
     const handleReDownload = (index) => {
         // setTrueOpened(true)
@@ -117,6 +126,63 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
             //set only one resume to download
             dispatch(setResume(arrayDetails[index]))
             navigate("/user/dashboard/resume?download");
+        })
+        .catch(() => {
+            return    
+        });
+    }
+
+
+    
+    const handleDeleteMsgSession = async (index, item) => {
+        try {
+            //must await
+            await checkAuthenticatedUser()
+        } catch (error) {
+            dispatch(setFetching(false));
+            return navigate("/popin?chat");      
+        }
+        confirm({
+            title: `Delete "${item[index]?.content?.slice(0, 30)}"?`,
+            description: `Click OK to delete the selected session forever`,
+        })
+        .then(async () => {
+            dispatch(setFetching(true))
+
+            const body = {
+                indexOfChat: index
+            }
+
+            try {
+                const response = await axios.post("/delete-askme-session", body, {
+                    headers: {
+                        "x-access-token": isAuth,
+                    },
+                });
+                dispatch(setAllMessagesArray(response?.data))
+                dispatch(setMessages(response?.data[response?.data?.length - 1]))
+                dispatch(setFetching(false))
+                successSetter("Session Deleted")
+            } catch (error) {
+                dispatch(setFetching(false))
+                errorSetter(error.response.data.error)
+            }
+        })
+        .catch(() => {
+            return    
+        });
+    }
+
+    const continueDiffChat = (index) => {
+        // setTrueOpened(true)
+        confirm({
+            title: `Switch Session?`,
+            description: `Click OK to switch to selected`,
+        })
+        .then(() => {
+            dispatch(setMessages(arrayDetails[index]));
+            setActiveIndex(index)
+            successSetter("Session Switched")
         })
         .catch(() => {
             return    
@@ -148,27 +214,60 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
 
     const ItemsNamesArray = () => { 
         return ( 
-            <div className={authMenuCss.Items}>
-                {arrayDetails.length < 1 ? ( 
-                    <div className={authMenuCss.NonMonthlySubDisplay}> 
-                        <p>You have no resumes to display. Please create one.</p> 
-                    </div> 
-                ) : ( 
-                    arrayDetails.map((item, index) => ( 
-                        <div key={index} className={authMenuCss.Item}> 
-                            <div onClick={() => handleReDownload(index)} style={{ width: "90%" }}> 
-                                <span style={{ position: "relative", top: ".6rem", fontWeight: "700" }}> {item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"} </span> 
-                                <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}> <DownloadIcon fontSize='medium' /> </span> 
-                            </div> 
-                            <div> 
-                                <span onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }} > 
-                                    <DeleteForeverIcon fontSize='small' /> 
-                                </span> 
-                            </div> 
-                        </div> )) 
+           <div className={authMenuCss.Items}>
+                {arrayDetails?.length < 1 ? (
+                    <div className={authMenuCss.NonMonthlySubDisplay}>
+                        {location.pathname !== "/chat" ? 
+                            <p>You have no resumes to display. Please create one.</p>
+                        :
+                            <p>Login below to display chat history here.</p>}
+                    </div>
+                ) : location.pathname === "/chat" ? (
+                    arrayDetails[0]?.length < 1 ? (
+                        <div className={authMenuCss.NonMonthlySubDisplay}>
+                            <p>Start a chat to view chat history here.</p>
+                        </div>
+                    ) : (
+                        arrayDetails?.map((item, index) => (
+                            <div key={index} className={activeIndex !== index ? authMenuCss.Item : authMenuCss.ItemActive}>
+                                <div onClick={() => continueDiffChat(index)} style={{ width: "90%" }}>
+                                    <span style={{ position: "relative", top: ".6rem", fontWeight: "600" }}>
+                                        {item[0]?.content?.slice(0, 24) + "..."}
+                                    </span>
+                                    <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}>
+                                        <EditNoteIcon fontSize='medium' />
+                                    </span>
+                                </div>
+                                <div>
+                                    <span onClick={() => handleDeleteMsgSession(index, item)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }}>
+                                        <DeleteForeverIcon fontSize='small' />
+                                    </span>
+                                </div>
+                            </div>
+                        ))
                     )
-                } 
-            </div> 
+                ) : (
+                    arrayDetails.map((item, index) => (
+                        <div key={index} className={authMenuCss.Item}>
+                            <div onClick={() => handleReDownload(index)} style={{ width: "90%" }}>
+                                <span style={{ position: "relative", top: ".6rem", fontWeight: "700" }}>
+                                    {item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}
+                                </span>
+                                <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}>
+                                    <DownloadIcon fontSize='medium' />
+                                </span>
+                            </div>
+                            <div>
+                                <span onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }}>
+                                    <DeleteForeverIcon fontSize='small' />
+                                </span>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+            
+            
         ); 
     };
 
@@ -188,7 +287,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
             />
             
             <div className={authMenuCss.InnerContainer}>
-                {resumeSubDuration === "Per Month" ? <ItemsNamesArray /> : <NonMonthlySubDisplay />}
+                {resumeSubDuration === "Per Month" || location.pathname === "/chat" ? <ItemsNamesArray /> : <NonMonthlySubDisplay />}
             </div>
 
             <Grid container sx={{height: "60px"}}>

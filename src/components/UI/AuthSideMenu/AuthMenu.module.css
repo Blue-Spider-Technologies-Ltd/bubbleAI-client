@@ -57,6 +57,29 @@
     height: 50px;
     margin-top: 1px;
     padding: 0 8px;
+    transition: all 0.5s ease-in;
+    box-shadow: -1px 5px 6px -3px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -1px 5px 6px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 5px 6px -3px rgba(0,0,0,0.75);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.ItemActive {
+    background-color: var(--navColor1) !important;
+    border-radius: 5px;
+    color: white !important;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .85rem !important;
+    height: 50px;
+    margin-top: 1px;
+    padding: 0 8px;
+    transition: all 0.3s ease-out;
     box-shadow: -1px 5px 6px -3px rgba(0,0,0,0.75);
     -webkit-box-shadow: -1px 5px 6px -3px rgba(0,0,0,0.75);
     -moz-box-shadow: -1px 5px 6px -3px rgba(0,0,0,0.75);

@@ -8,19 +8,18 @@ import StopIcon from "@mui/icons-material/Stop";
 import MicIcon from '@mui/icons-material/Mic';
 import CloseIcon from "@mui/icons-material/Close";
 import CancelIcon from '@mui/icons-material/Cancel';
+import AddIcon from '@mui/icons-material/Add';
 import AuthInput from "../UI/Input/AuthInputs";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons"
 import { useSelector, useDispatch } from "react-redux";
-import { setMessage, deleteLastMessage } from "../../redux/states";
+import { setMessage, deleteLastMessage, setError, setSuccessMini, setMessages, setAllMessagesArray, setFetching } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots, Oval } from 'react-loader-spinner'
 import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
-import { setError, setMessages } from "../../redux/states";
-import { errorAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
-import Recorder from 'recorder-js';
+import { errorAnimation, successMiniAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
 
 const screenWidth = window.innerWidth
 
@@ -41,10 +40,11 @@ const suggestionThree = {
 
 
 const AskMe = () => {
-  const { messages, error } = useSelector((state) => state.stateData);
+  const { messages, error, successMini, allMessagesArray } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
   const navigate = useNavigate();
+  const isAuth = localStorage?.getItem("token");
   const now = new Date().getTime();
   const countItemJson = localStorage?.getItem("oats_3297");
   const item = JSON.parse(countItemJson);
@@ -69,12 +69,15 @@ const AskMe = () => {
     errorAnimation()
   }
 
+  const successSetter = (string) => {
+    dispatch(setSuccessMini(string))
+    successMiniAnimation()
+  }
+
   const askMeErrorObj = {
     role: 'assistant',
     content:  "I am currently throttling requests, try again in a moment"
   }
-
-  const isAuth = localStorage?.getItem("token");
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -87,14 +90,6 @@ const AskMe = () => {
       localStorage?.removeItem("oats_3297");
     }
   }, [expiration, now])
-
-  useEffect(() => {
-    if (audioTranscribed) {
-      handleAskMeAnything();
-      setAudioTranscribed(false)
-      setTranscribing(false)
-    }
-  }, [audioTranscribed]);
 
   //fetch messages for auth user
   useEffect(() => {
@@ -113,18 +108,26 @@ const AskMe = () => {
             "x-access-token": isAuth,
           };
           const response = await axios.get("/user/user/messages", { headers });
-          
-          dispatch(setMessages(response.data.messages));
+          const messagesArrayofArray = response.data.messages
+
+          dispatch(setAllMessagesArray(messagesArrayofArray));
+          dispatch(setMessages(messagesArrayofArray[messagesArrayofArray.length - 1]));
         } catch (error) {
           errorSetter("Reload page to fetch data");
         }
-      }
+      } 
 
     };
-
     populateMessages()
-    
   }, []);
+
+  useEffect(() => {
+    if (audioTranscribed) {
+      handleAskMeAnything();
+      setAudioTranscribed(false)
+      setTranscribing(false)
+    }
+  }, [audioTranscribed]);
 
   //Cover letter and Ai suggestions useeffect
  useEffect(() => {
@@ -196,7 +199,6 @@ const AskMe = () => {
       );
     };
     const isAssistant = message.role === "assistant";
-    // console.log(message);
     let contentTrim = message.content.trim()
     const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("\n").map((paragraph, index) => {
         return <p key={index}>{paragraph}</p>
@@ -290,7 +292,6 @@ const AskMe = () => {
           dispatch(setMessage(response.data));
           localStorage.setItem("oats_3297", useIndicatorJson);
         } catch (error) {
-          console.log(error);
           dispatch(deleteLastMessage());
           dispatch(setMessage(askMeErrorObj));
         }
@@ -361,6 +362,35 @@ const AskMe = () => {
     }
   };
 
+  const handleNewSession = async () => {
+    if(!isAuth) {
+      return errorSetter("Log in to access this feature")
+    }
+    if (messages.length === 0) {
+      errorSetter("Already a new session")
+    } else {
+      dispatch(setFetching(true))
+      //push a new empty array to backend and frontend
+      const emptyArr = []
+      try {
+        let response = await axios.post("/create-new-askme-session", emptyArr, {
+          headers: {
+            "x-access-token": isAuth,
+          },
+        });
+        
+        const messagesArrayofArray = response.data
+        dispatch(setAllMessagesArray(messagesArrayofArray));
+        dispatch(setMessages(messagesArrayofArray[messagesArrayofArray.length - 1]));
+        dispatch(setFetching(false))
+        successSetter("New Chat Session Started")
+        return
+      } catch (error) {
+        dispatch(setFetching(false))
+        errorSetter(error?.response?.data?.message);
+      }
+    }
+  }
 
   const handleKeyPress = (e) => {
     if (screenWidth > 900 ) {
@@ -396,34 +426,43 @@ const AskMe = () => {
             seacrhBarPlaceholder=""
             hidden={!authMenuOpen}
             // resumeSubDuration={subDuration}
-            // arrayDetails={userResumesAll}
+            arrayDetails={allMessagesArray}
         />
         <div className="error">{error}</div>
+        <div className="success-mini">{successMini}</div>
 
         <div className="chat-header">
-            <div className="chat-menu-icon" onClick={handleMenuToggle}>
-              
-                {!authMenuOpen ? 
-                    <ArrowCircleRightIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} />
-                :
-                    <ArrowCircleLeftIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} />}
-                
-            </div>
-            <div
-                className="close-icon"
-                title="Close Chat"
-                onClick={toHomePage}
-            >
-                <CloseIcon 
-                  fontSize='medium'
-                />
-            </div>
+          <div className="chat-menu-icon">
+            
+              {!authMenuOpen ? 
+                <ArrowCircleRightIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} onClick={handleMenuToggle}/>
+              :
+                <ArrowCircleLeftIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} onClick={handleMenuToggle} />}
+          </div>
+          <div 
+            title="Start New Session"
+            style={{ marginLeft: "-65%", height: "2rem" }}
+          >
+            <AddIcon 
+              fontSize='large'
+              sx={{color: "#3E8F93", cursor: "pointer"}}
+              onClick={handleNewSession}
+            />
+          </div>
+          {/* <AddCircleIcon fontSize='large' sx={{color: "white"}} /> */}
+          <div
+            className="close-icon"
+            title="Close Chat"
+            onClick={toHomePage}
+          >
+            <CloseIcon 
+              fontSize='medium'
+            />
+          </div>
         </div>
        
 
         <div className="chatbg-overlay" onClick={() => setAuthMenuOpen(false)}>
-
-
             <div className="chat-ex" ref={chatBoxRef}>
               <div style={{ padding: "0", width: "92vw", margin: "auto" }}>
                 <div className={suggestionDisplay ? "suggestion-container" : "suggestion-out"}>
@@ -447,15 +486,6 @@ const AskMe = () => {
                           </button>
                         )
                       })}
-                      {/* <button 
-                        className="suggestion-buttons" 
-                        onClick={() => {
-                        setSuggestionDisplay(false)
-                        setAskMeVal(suggestionThree.description)}
-                        }
-                      >
-                        {suggestionThree.title}
-                      </button> */}
                     </div>
                   )}
                   
@@ -524,7 +554,7 @@ const AskMe = () => {
                             width="20"
                             color="#3E8F93"
                             ariaLabel="oval-loading"
-                          /> : <SendIcon /> }
+                          /> : <SendIcon sx={{color:"#3E8F93"}} /> }
                     </ButtonSubmitBlack>
                 </Grid>
               </Grid>

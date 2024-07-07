@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import ReactPixel from 'react-facebook-pixel';
 import { useNavigate } from "react-router-dom";
 import MenuBar from "../UI/Menu/Menu";
@@ -10,7 +10,7 @@ import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import categoriesData from "./categories";
 import { useSelector, useDispatch } from "react-redux";
-import { setMessages, setUser, setError } from "../../redux/states";
+import { setMessages, setUser, setError, setAllMessagesArray } from "../../redux/states";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 import HelpIcon from "../UI/HelpIcon/HelpIcon";
 import axios from "axios";
@@ -22,7 +22,7 @@ const Home = () => {
   const { user, error } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const isEffectExecuted = useRef(false);
 
 
   const errorSetter = (string) => {
@@ -48,31 +48,32 @@ const Home = () => {
         } catch (error) {
           return navigate("/popin");      
         }
-        //Check if user and messages set for authenticated user, if not, set
-        if (Object.keys(user).length > 0) {
-          dispatch(setMessages(user?.messages));
-        } else {
-          try {
-            const headers = {
-              "x-access-token": isAuth,
-            };
-            const response = await axios.get("/user/user", { headers });
-            if (response.data.status === "unauthenticated" || response.data.status === "Unauthorized") {
-              localStorage?.removeItem("token");
-              return navigate("/popin");
-            }
-            
-            dispatch(setMessages(response.data.user.messages));
-            dispatch(setUser(response.data.user));
-          } catch (error) {
-            errorSetter("Reload page to fetch data");
+
+        try {
+          const headers = {
+            "x-access-token": isAuth,
+          };
+          const response = await axios.get("/user/user", { headers });
+          if (response.data.status === "unauthenticated" || response.data.status === "Unauthorized") {
+            localStorage?.removeItem("token");
+            return navigate("/popin");
           }
+          
+          dispatch(setMessages(response.data.user.messages[response.data.user.messages.length - 1]));
+          // dispatch(setAllMessagesArray(response.data.user.messages));
+          dispatch(setUser(response.data.user));
+        } catch (error) {
+          errorSetter("Reload page to fetch data");
         }
       } else {
         //console.log("unauthenticated");
       }
     };
-    populateUser();
+
+    if (!isEffectExecuted.current) {
+      populateUser();
+      isEffectExecuted.current = true;
+    }
   }, [dispatch, user, navigate, isAuth]);
 
 
@@ -85,9 +86,8 @@ const Home = () => {
 
   return (
     <div>
+
       <MenuBar />
-
-
 
       <section id="ask-me" className="container" style={{ marginTop: "100px" }}>
         <div className="container-inner" onFocus={handleFocus}>

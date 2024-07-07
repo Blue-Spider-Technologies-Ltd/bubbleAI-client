@@ -4,6 +4,8 @@ const initialState = {
   error: "",
   successMini: "",
   messages: [],
+  //this is an array of array of a user's different messages sessions
+  allMessagesArray: [],
   userResumesAll: [],
   user: {},
   resume: {},
@@ -32,6 +34,16 @@ export const stateSlice = createSlice({
       const newArray = [...action.payload];
       state.messages = newArray
     },
+    //For when user logs in set all messages array of arrays from server
+    setAllMessagesArray: (state, action) => {
+      const newArrays = [...action.payload];
+      state.allMessagesArray = newArrays
+    },
+    //Add new message session array
+    // setNewSessionArray: (state, action) => {
+    //   const newArray = action.payload
+    //   state.allMessagesArray = [...state.allMessagesArray, newArray]
+    // },
     setUserResumesAll: (state, action) => {
       const newArray = action.payload;
       state.userResumesAll = newArray
@@ -82,6 +94,8 @@ export const {
   setError,
   setSuccessMini,
   setMessages, 
+  setAllMessagesArray,
+  // setNewSessionArray,
   setUserResumesAll,
   setUser, 
   setMessage, 

@@ -57,7 +57,7 @@ const DashSupport = (props) => {
                         iconImg={faqIconImg}
                         title="FAQs"
                         description="Most of your questions are likely already answered here"
-                        onClick={() => openNewTab("/faqs")}
+                        onClick={() => openNewTab("/support")}
                     />
                 </Grid>
 
@@ -65,7 +65,7 @@ const DashSupport = (props) => {
                     <ButtonCard 
                         iconImg={howIWorkIcon}
                         title="How Bubble Works"
-                        description="Learn how to use different AI solutions that Bubble AI offers"
+                        description="Learn how to use different AI solutions that Bubble AI provides"
                         onClick={() => openNewTab("/how-i-work")}
                     />
                 </Grid>
@@ -84,7 +84,7 @@ const DashSupport = (props) => {
                         iconImg={contactIcon}
                         title="Talk to us Directly"
                         description="Contains all platforms to reach us directly. We are here to help"
-                        onClick={() => openNewTab("/contact")}
+                        onClick={() => openNewTab("/support")}
                     />
                 </Grid>
             </Grid>
