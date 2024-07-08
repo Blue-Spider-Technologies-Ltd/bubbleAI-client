@@ -28,7 +28,7 @@
 }
 
 .askme-bg {
-    background-image: url('../../images/chatbgone.png');
+    background-image: url('../../images/chat-land.gif');
     background-size: cover;
     background-repeat: repeat;
     box-sizing: border-box;
@@ -55,7 +55,7 @@
     box-sizing: border-box;
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.322);
+    background-color: rgba(0, 0, 0, 0.85);
     margin: 0;
 }
 
@@ -117,8 +117,8 @@
     box-sizing: border-box;
     border: none;
     background: rgba(0, 0, 0, 0.646);
-    box-shadow: -6px 0px 10px rgba(255, 255, 255, 0.8),
-                    6px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: -1px 0px 10px rgba(255, 255, 255, 0.8),
+                    -1px 0px 10px rgba(0, 0, 0, 0.2);
     border-radius: 12px;
     margin-top: 15px;
     width: 91%;
@@ -193,8 +193,9 @@
 
     .askme-bg {
         max-height: 89vh;
-        background-size: cover;
-        background-image: url('../../images/chatbgone.png');
+        background-size: 58%;
+        background-repeat: repeat;
+        background-image: url('../../images/chat-portrait.gif');
     }
 
     .ask-me-form {

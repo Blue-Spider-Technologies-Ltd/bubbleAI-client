@@ -52,7 +52,7 @@ export const Assistant = (props) => {
 
     return (
         <div className={chatBoxCss.assistantOuter}>
-            <SmartToyIcon />
+            <SmartToyIcon  sx={{color: "beige"}} />
             <div className={chatBoxCss.Assistant}>
                 <div className="error">{error}</div>
                 <div className="success-mini">{successMini}</div>
@@ -121,7 +121,7 @@ export const User = (props) => {
                 </span>
 
             </div>
-            <Person4Icon />
+            <Person4Icon sx={{color: "#3E8F93"}}/>
         </div>
     )
 }
