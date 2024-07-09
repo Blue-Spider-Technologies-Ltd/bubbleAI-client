@@ -49,3 +49,10 @@
 .CardBottom {
     padding: 15px 5px;
 }
+
+@media (max-width: 900px) {
+    .CardContainer {
+        max-width: 300px;
+        margin-bottom: 30px;
+    }
+}

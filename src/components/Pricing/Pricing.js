@@ -34,7 +34,7 @@ const Pricing = () => {
             <section className="container" style={{ marginTop: "100px" }}>
                 <div className="container-inner">
                     <h1 style={{color: "#56A8AC"}}>Pricing</h1>
-                    <h4>On this page</h4>
+                    {/* <h4>On this page</h4>
 
                     <Grid container>
                         {pricingCategoryChoices.map((detail, index) => {
@@ -48,7 +48,7 @@ const Pricing = () => {
                                 </Grid>
                             )
                         })}
-                    </Grid>
+                    </Grid> */}
                 </div>
             </section>
 

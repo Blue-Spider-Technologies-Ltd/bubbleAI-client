@@ -82,6 +82,10 @@ const resumePricingDetails = [
             aiJobSuggestions: {
                 available: true,
                 text: 'Tailored Ai Job Suggestions Around You'
+            },
+            recommendation: {
+                available: true,
+                text: '(Recommended for Business)'
             }
         }
     },
@@ -123,6 +127,10 @@ const resumePricingDetails = [
             aiJobSuggestions: {
                 available: true,
                 text: 'Tailored Ai Job Suggestions Around You'
+            },
+            recommendation: {
+                available: true,
+                text: '(Apply to Jobs Quick)'
             }
         }
     },
@@ -164,6 +172,10 @@ const resumePricingDetails = [
             aiJobSuggestions: {
                 available: false,
                 text: 'Tailored Ai Job Suggestions Around You'
+            },
+            recommendation: {
+                available: true,
+                text: '(One-time Resume)'
             }
         }
     }
