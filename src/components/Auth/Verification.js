@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import authCss from "./Auth.module.css";
 import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
-import bubbleBgAuthImg from "../../images/bubblebg-auth.png";
+import bubbleBgAuthImg from "../../images/bubblebg-auth.jpg";
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import { Send} from '@mui/icons-material';
@@ -32,6 +32,8 @@ const Verification = () => {
     const [verified, setVerified] = useState(false);
     const [count, setCount] = useState(60);
     const [isZero, setIsZero] = useState(false);
+    const [firstName, setFirstName] = useState("")
+    const [couponCode, setCouponCode] = useState("")
 
     const errorSetter = (string) => {
         dispatch(setError(string))
@@ -73,8 +75,11 @@ const Verification = () => {
                 errorSetter(response.data.message)
                 return
             }
-            //if no error, set verification status
+            
+            setCouponCode(response.data.couponCode)
+            setFirstName(response.data.firstName)
             setVerified(true)
+            
 
         } catch (error) {
             setLoading(false)
@@ -151,13 +156,56 @@ const Verification = () => {
                                 <h2>Account Verified</h2>
                             </div>
                             
-                            <p style={{fontSize: '.75rem', fontWeight: '600'}}>Proceed to <Link href="/popin" sx={{color: '#56A8AC', textDecoration: 'none'}}>Login</Link></p>
+                            <div style={styles.container}>
+                                <div>
+                                    <p>Dear {firstName},</p>
+                                    <h2>YOUR WELCOME GIFT!</h2>
+                                </div>
+                                <p>Bubble Ai is an AI-powered virtual assistant that can perform complex tasks such as creating resumes/CVs, tailored cover letters, and curate high-paying jobs for you in your chosen location, ensuring that you stand a 90% chance of securing an interview, as well as preparing you seamlessly for the interview.</p>
+                                <p>Because we believe in improving your professional and everyday life, we offer you <a href='/chat' style={styles.link} target="_blank">interview preparations, content creation</a> and other Ai assitant features FREE FOREVER,
+                                    we offer <a href='/user/dashboard/resume' style={styles.link} target="_blank">Resume/CV and high-paying job suggestions</a> tailored to your CV on a very <a href='/pricing' style={styles.link} target="_blank">affordable subscription basis.</a></p>
+                        
+                                <p>To boost your chances, this is an <strong>OFFER LIMITED FOR 3 DAYS</strong>, of a 30% DISCOUNT coupon with code: <span style={{fontSize: '1.5rem', fontWeight: 600, color: '#3E8F93'}}>{couponCode}</span> on our PER WEEK PLAN only.</p>
+                                <p>You can create an unlimited number of CVs for the week, unlimited number of cover letters, and unlimited applications to high-paying jobs tailored to your specifications, guaranteeing you a JOB INTERVIEW WITHIN A WEEK.</p>
+                                
+                                <div style={{textAlign: 'center', lineHeight: 2}}>
+                                    <h2>Your Next Steps:</h2>
+                                    <a href='/pricing' style={styles.link} target="_blank">Redeem Discount</a> <br />
+                                    <a href='/user/dashboard/resume' style={styles.link} target="_blank">Apply to 5 Jobs in 10mins</a> <br />
+                                    <a href='/dashboard/resume' style={styles.link} target="_blank">Create Your First Resume in 2mins</a> <br />
+                                    <a href='/chat' style={styles.link} target="_blank">Free Interview Prep</a> <br />
+                                    <a href='/chat' style={styles.link} target="_blank">Create Content Script Free</a> <br />
+                                    <a href='/chat' style={styles.link} target="_blank">Free Research with Bubble Ai</a> <br />
+                                    <a href='https://www.instagram.com/reel/C8pHqBfIuUY/?igsh=MW9qYnV0em40YW1zdw==' style={styles.link} target="_blank" rel="noreferrer">Earn with Bubble Ai</a> 
+                                </div> 
+                                
+                                <p></p>
+                            </div>
                         </div>
                     )}
                 </div>
             </div>
         </div>        
     )
+}
+
+const styles = {
+    container: {
+      width: "100%",
+      textAlign: "center !important",
+      padding: "5px",
+      backgroundColor: "#c0d1d457",
+      borderRadius: "10px",
+      wordBreak: "break-word",
+      lineHeight: "1",
+      boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
+    },
+    link: {
+        fontSize: ".9rem",
+        fontWeight: '600',
+        color: 'rgb(177, 144, 13)',
+        textDecoration: 'none'
+    }
 }
 
 export default Verification;

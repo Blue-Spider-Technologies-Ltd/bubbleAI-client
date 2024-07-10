@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import radiantCss from "./RadiantMoon.module.css"
 import BuildIcon from '@mui/icons-material/Build';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Grid } from "@mui/material";
-// import avatarImg from "../../../../images/avatar.webp"
 
 
 

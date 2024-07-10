@@ -55,7 +55,7 @@
 //     const [canPrint, setCanPrint] = useState(false)
 //     const [activeIndex, setActiveIndex] = useState(null);
 //     const [carouselName, setCarouselName] = useState("");
-//     const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "https://bubble-ai.tech/uploads/default-img/avatar.webp");
+//     const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "https://bubble-ai.tech/uploads/avatar.webp");
 //     const [hasImg, setHasImg] = useState(false);
 //     const [companyName, setCompanyName] = useState("");
 //     const [resumeNameExist, setResumeNameExist] = useState(false);

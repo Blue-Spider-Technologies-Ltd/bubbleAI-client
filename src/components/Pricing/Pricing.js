@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import MenuBar from "../UI/Menu/Menu";
-import { Grid } from "@mui/material"
-import { ButtonLogOut } from '../UI/Buttons/Buttons';
+// import { Grid } from "@mui/material"
+// import { ButtonLogOut } from '../UI/Buttons/Buttons';
 import ResumePricing from './ResumePricing';
 // import DepositionPricing from './DepositionPricing';
 // import FileTranscriptionPricing from './FileTranscriptionPricing';
@@ -12,20 +12,20 @@ import { useSelector } from "react-redux";
 const Pricing = () => {
     const { showCheckout } = useSelector(state => state.stateData)
     
-    const pricingCategoryChoices = [ 
-        {
-            name: "Resume Pricing",
-            to: "/pricing#resume"
-        },
-        {
-            name: "Deposition Pricing",
-            to: "/pricing#deposition"
-        },
-        {
-            name: "Transcription & Translation",
-            to: "/pricing#transcription"
-        }
-    ]
+    // const pricingCategoryChoices = [ 
+    //     {
+    //         name: "Resume Pricing",
+    //         to: "/pricing#resume"
+    //     },
+    //     {
+    //         name: "Deposition Pricing",
+    //         to: "/pricing#deposition"
+    //     },
+    //     {
+    //         name: "Transcription & Translation",
+    //         to: "/pricing#transcription"
+    //     }
+    // ]
 
     return (
         <div>
