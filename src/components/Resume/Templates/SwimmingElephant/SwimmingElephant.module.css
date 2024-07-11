@@ -3,13 +3,13 @@
     width: 100%;
     height: auto;
     box-sizing: border-box;
-    font-size: 0.75rem;
+    font-size: 0.87rem;
     font-weight: 500;
-    padding: 0 1.5rem 1.5rem 1.5rem;
+    padding: 0 10px 10px 10px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: .87rem;
     overflow-y: hidden;
 }
+
 
 .LeftBg {
     height: 100%;
