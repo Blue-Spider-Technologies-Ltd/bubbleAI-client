@@ -15,6 +15,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import Standard from './Templates/Standard/Standard'
 import RadiantMoon from './Templates/RadiantMoon/RadiantMoon';
+import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
 import Feedback from '../Dashboard/Feedback';
 import jwt_decode from "jwt-decode";
 import { SuccessFailureModal } from '../UI/Modal/Modal';
@@ -94,7 +95,7 @@ const DownloadResume = () => {
         };
         checkIfAuthUser();
 
-    }, [navigate, resumeSubDuration])
+    }, [navigate])
 
     useEffect(() => {
         const resumeLength = Object.keys(resume).length;
@@ -105,6 +106,11 @@ const DownloadResume = () => {
         } 
     }, [user]);
 
+    
+    //scroll to page top on render
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     //Option for carousel in template section
     const responsive = {
@@ -126,10 +132,6 @@ const DownloadResume = () => {
     };
     
 
-    //scroll to page top on render
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
 
     const checkObjectForKeyValue = (arr, key, keyOfKey, searchValue) => {
         if (arr.some(obj => obj[key][keyOfKey] === searchValue)) {
@@ -152,8 +154,10 @@ const DownloadResume = () => {
             case "Radiant Moon":
                 template  = <RadiantMoon resume={resume} imgUrl={imgUrl} />
                 break;
-            case "Flying Fish":
             case "Swimming Elephant":
+                template  = <SwimmingElephant resume={resume} imgUrl={imgUrl} />
+                break;
+            case "Flying Fish":
             case "Water Train":
             case "Sinking Duck":
                 template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
@@ -220,7 +224,7 @@ const DownloadResume = () => {
         setCarouselName(selectedCarousel.title)
     
         let canPrintFlag = false;
-        if (selectedCarousel.title === "Radiant Moon") {
+        if (selectedCarousel.title === "Radiant Moon" || selectedCarousel.title === "Swimming Elephant") {
             setHasImg(true)
         } else {
             setHasImg(false)
@@ -233,6 +237,10 @@ const DownloadResume = () => {
                 break;
             case "Radiant Moon":
                 setStorageDetails({ ...storageDetails, template: "Radiant Moon" });
+                canPrintFlag = true;
+                break;
+            case "Swimming Elephant":
+                setStorageDetails({ ...storageDetails, template: "Swimming Elephant" });
                 canPrintFlag = true;
                 break;
             default:
@@ -259,13 +267,12 @@ const DownloadResume = () => {
             setImgUrl(response.data.url)
             setStorageDetails({ ...storageDetails, imgUrl: response.data.url });
             successSetter(`Image uploaded successfully!`);
+            return
         })
         .catch(error => {
             console.error(error);
             errorSetter('Error uploading image.');
         });
-        // Prevent default form submission behavior
-        return false;
     };
 
     const handleFileChange = (event) => {
@@ -280,6 +287,7 @@ const DownloadResume = () => {
         }
     
         saveImageToFolder(file, event)
+        return
     };
 
 

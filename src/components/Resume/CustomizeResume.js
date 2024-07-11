@@ -611,7 +611,7 @@ const CustomizeResume = () => {
     }
     if (prop === "country") {
       setCountryid(event.id)
-          setBasicInfo({
+      setBasicInfo({
         ...basicInfo,
         [prop]: event.name,
       });

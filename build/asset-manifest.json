@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d791bf17.css",
-    "main.js": "/static/js/main.b555a5ba.js",
+    "main.css": "/static/css/main.7717573b.css",
+    "main.js": "/static/js/main.c633fb8d.js",
     "static/js/850.53b7e135.chunk.js": "/static/js/850.53b7e135.chunk.js",
     "static/js/353.b48c6ab6.chunk.js": "/static/js/353.b48c6ab6.chunk.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
@@ -10,6 +10,7 @@
     "static/media/contact-desk2.jpg": "/static/media/contact-desk2.3f8d1759f53e881527ba.jpg",
     "static/media/contact-desk1.jpg": "/static/media/contact-desk1.cc63ebc0cd5ae137ad11.jpg",
     "static/media/contact-mobile.jpg": "/static/media/contact-mobile.e503c5d550546e93a62e.jpg",
+    "static/media/swimming-elephant.png": "/static/media/swimming-elephant.df8639c66a5ab98acb0d.png",
     "static/media/failed.gif": "/static/media/failed.6627106d63a9dade2c9f.gif",
     "static/media/success.gif": "/static/media/success.05e3bee91653111f1bbe.gif",
     "static/media/resume.png": "/static/media/resume.45b9fee5abf6c047a2c6.png",
@@ -25,14 +26,14 @@
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.d791bf17.css.map": "/static/css/main.d791bf17.css.map",
-    "main.b555a5ba.js.map": "/static/js/main.b555a5ba.js.map",
+    "main.7717573b.css.map": "/static/css/main.7717573b.css.map",
+    "main.c633fb8d.js.map": "/static/js/main.c633fb8d.js.map",
     "850.53b7e135.chunk.js.map": "/static/js/850.53b7e135.chunk.js.map",
     "353.b48c6ab6.chunk.js.map": "/static/js/353.b48c6ab6.chunk.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d791bf17.css",
-    "static/js/main.b555a5ba.js"
+    "static/css/main.7717573b.css",
+    "static/js/main.c633fb8d.js"
   ]
 }

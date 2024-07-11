@@ -88,7 +88,7 @@ const AdminLogin = () => {
         <div>
 
             <div className={authCss.formContainer}>
-                <div className={authCss.formInner} style={{marginTop: '-100px'}}>
+                <div className={authCss.formInner} >
                     <h2>Controller Pop in</h2>
                     <div className="error">{error}</div>
                     <form onSubmit={handleAdminLogin}>
