@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import Standard from './Templates/Standard/Standard'
 import RadiantMoon from './Templates/RadiantMoon/RadiantMoon';
+import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
 import NotFound from '../Home/NotFound';
 import { setFetching } from "../../redux/states";
 import axios from 'axios';
@@ -57,7 +58,9 @@ const ViewResume = () => {
         case "Radiant Moon":
             template = <RadiantMoon resume={resume} imgUrl={resume.storageDetails.imgUrl} />
             break;
-    
+        case "Swimming Elephant":
+            template  = <SwimmingElephant resume={resume} imgUrl={resume.storageDetails.imgUrl} />
+            break;
         default:
             template = <Standard resume={resume} />
             break;
