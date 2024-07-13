@@ -16,6 +16,7 @@ import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import Standard from './Templates/Standard/Standard'
 import RadiantMoon from './Templates/RadiantMoon/RadiantMoon';
 import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
+import FlyingFish from './Templates/FlyingFish/FlyingFish';
 import Feedback from '../Dashboard/Feedback';
 import jwt_decode from "jwt-decode";
 import { SuccessFailureModal } from '../UI/Modal/Modal';
@@ -25,6 +26,7 @@ import { setError, setFetching, setSuccessMini } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
 import Alert from '@mui/material/Alert';
 import { useConfirm } from "material-ui-confirm";
+import avatarImg from '../../images/avatar.png'
 const screenWidth = window.innerWidth
 
 
@@ -56,7 +58,7 @@ const DownloadResume = () => {
     const [canPrint, setCanPrint] = useState(false)
     const [activeIndex, setActiveIndex] = useState(null);
     const [carouselName, setCarouselName] = useState("");
-    const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || "https://bubble-ai.tech/uploads/avatar.webp");
+    const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || avatarImg);
     const [hasImg, setHasImg] = useState(false);
     const [companyName, setCompanyName] = useState("");
     const [resumeNameExist, setResumeNameExist] = useState(false);
@@ -158,6 +160,8 @@ const DownloadResume = () => {
                 template  = <SwimmingElephant resume={resume} imgUrl={imgUrl} />
                 break;
             case "Flying Fish":
+                template  = <FlyingFish resume={resume} imgUrl={imgUrl} />
+                break;
             case "Water Train":
             case "Sinking Duck":
                 template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
@@ -224,7 +228,7 @@ const DownloadResume = () => {
         setCarouselName(selectedCarousel.title)
     
         let canPrintFlag = false;
-        if (selectedCarousel.title === "Radiant Moon" || selectedCarousel.title === "Swimming Elephant") {
+        if (selectedCarousel.title === "Radiant Moon" || selectedCarousel.title === "Swimming Elephant" || selectedCarousel.title === "Flying Fish") {
             setHasImg(true)
         } else {
             setHasImg(false)
@@ -241,6 +245,10 @@ const DownloadResume = () => {
                 break;
             case "Swimming Elephant":
                 setStorageDetails({ ...storageDetails, template: "Swimming Elephant" });
+                canPrintFlag = true;
+                break;
+            case "Flying Fish":
+                setStorageDetails({ ...storageDetails, template: "Flying Fish" });
                 canPrintFlag = true;
                 break;
             default:

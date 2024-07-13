@@ -97,7 +97,7 @@ const resumePricingDetails = [
         popular: true,
         features: {
             reAccessSaved: {
-                available: false,
+                available: true,
                 text: 'Reaccess Saved Resumes'
             },
             createSeveral: {

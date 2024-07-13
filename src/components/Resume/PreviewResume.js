@@ -257,6 +257,7 @@ const PreviewResume = () => {
             <div className="error">{error}</div>
             <div className='explanation-points'>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">On the job description field, make sure each point is separated by a semi colon (if you decide to edit it) to enable proper formatting on the download page.</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Always read the generated resume carefully and make edits to imprint your personal touch.</Alert>
             </div>
             <div className="Segment">
               <h4>Basic Info</h4>

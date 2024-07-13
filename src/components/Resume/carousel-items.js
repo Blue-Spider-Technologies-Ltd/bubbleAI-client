@@ -2,6 +2,7 @@ import comingSoonImg from "../../images/soon.jpg"
 import standardTempImg from "../../images/resume-standard.png";
 import elephantImg from "../../images/swimming-elephant.png";
 import radiantImg from "../../images/radiant.jpg";
+import flyingFish from "../../images/flying-fish.png";
 
 const carouselData = [
     {
@@ -18,7 +19,7 @@ const carouselData = [
     },
     {
         title: "Flying Fish",
-        image: comingSoonImg
+        image: flyingFish
     },
     {
         title: "Water Train",

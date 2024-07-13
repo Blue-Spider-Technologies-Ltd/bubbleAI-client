@@ -6,6 +6,7 @@ import { PiPhoneCallFill } from "react-icons/pi";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { ImPushpin } from "react-icons/im";
 import { PiLinkSimpleDuotone } from "react-icons/pi";
+import { FaCircleDot } from "react-icons/fa6";
 
 
 
@@ -20,8 +21,8 @@ const SwimmingElephant = (props) => {
                         {props.resume?.basicInfo?.jobPosition}
                     </div>
                     <div className={css.Names}>
-                        <h1 style={{marginTop: "0", marginBottom: "0", color: 'rgb(145, 145, 145)'}}>{props.resume?.basicInfo?.firstName}</h1>
-                        <h1 style={{marginTop: "0"}}>{props.resume?.basicInfo?.lastName}</h1>
+                        <h1 style={{marginTop: "0", marginBottom: "0", color: 'rgb(145, 145, 145)'}}>{props.resume?.basicInfo?.lastName}</h1>
+                        <h1 style={{marginTop: "0"}}>{props.resume?.basicInfo?.firstName}</h1>
                     </div>
                 
                     <section style={{paddingLeft: '1rem', paddingTop: '.3rem'}}>
@@ -61,9 +62,9 @@ const SwimmingElephant = (props) => {
 
                             {props.resume?.awardArray && (
                                 <div>
-                                    <h3>AWARDS & CERTIFICATIONS</h3>
                                     {props.resume.awardArray.length > 0 && (
                                         <section>
+                                            <h3>AWARDS & CERTIFICATIONS</h3>
                                             {props.resume.awardArray.map((awardInfo, index) => (
                                                 <div key={index} style={{marginBottom: "10px"}}>
                                                     
@@ -84,9 +85,11 @@ const SwimmingElephant = (props) => {
                                     {props.resume.publications.length > 0 && (
                                         <section>
                                             <h3>PUBLICATIONS</h3>
-                                            {props.resume.publications.map((publication, index) => (
-                                                <p key={index}>{publication.title + ", " + publication.source + ", " + publication.date.slice(0, 4)}</p>
-                                            ))}
+                                            <ul>
+                                                {props.resume.publications.map((publication, index) => (
+                                                    <li key={index}>{publication.title + ", " + publication.source + ", " + publication.date.slice(0, 4)}</li>
+                                                ))}
+                                            </ul>
                                         </section>
                                     )}
                                 </div>
@@ -134,12 +137,12 @@ const SwimmingElephant = (props) => {
                         
                     </div>
 
-                    <div style={{marginTop: "1rem", borderLeft: '1px solid black', padding: '0 0 0 15px', height: '75%'}}>
+                    <div style={{marginTop: "1rem", borderLeft: '3px solid rgb(145, 145, 145)', padding: '0 0 0 15px', height: '75%'}}>
                         <section>
-                            <h3>EDUCATION</h3>
+                            <h3><FaCircleDot className={css.Icons} />EDUCATION</h3>
                             
                             {props.resume?.eduArray && (
-                                <div>
+                                <div style={{marginLeft: "1.6rem"}}>
                                     {props.resume?.eduArray?.map((eduInfo, index) => (
                                         <div key={index}>
                                             
@@ -157,7 +160,7 @@ const SwimmingElephant = (props) => {
                         <section>
                             {props.resume?.skills?.length > 0 && (
                                 <div>
-                                    <h3>SKILLS</h3>
+                                    <h3><FaCircleDot className={css.Icons} />SKILLS</h3>
                                     <ul>
                                     {props.resume.skills.map((skill, index) => (
                                         <li key={index} className={css.SkillItems}> <span>{skill}</span></li>
@@ -169,9 +172,9 @@ const SwimmingElephant = (props) => {
 
                             {props.resume?.interests?.length > 0 && (
                                 <div>
-                                    <h3>HOBBIES</h3>
+                                    <h3><FaCircleDot className={css.Icons} />HOBBIES</h3>
                                     {props.resume.interests.map((interest, index) => (
-                                        <span key={index} className={css.SkillItems}><BiSolidLike /> <span>{interest}</span></span>
+                                        <span key={index} className={css.SkillItems} style={{marginLeft: "1.6rem"}}><BiSolidLike /> <span>{interest}</span></span>
                                     ))}
                                 </div>
                             )}

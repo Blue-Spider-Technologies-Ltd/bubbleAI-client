@@ -18,8 +18,8 @@
 }
 
 .CardContainer hr {
- border: 3px solid var(--navColor1);
- margin: 0;
+    border: 3px solid var(--navColor1);
+    margin: 0;
 }
 
 .CardTop {

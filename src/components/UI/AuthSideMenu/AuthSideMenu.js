@@ -290,7 +290,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
             />
             
             <div className={authMenuCss.InnerContainer}>
-                {resumeSubDuration === "Per Month" || location.pathname === "/chat" ? <ItemsNamesArray /> : <NonMonthlySubDisplay />}
+                {resumeSubDuration === "Per Month" || resumeSubDuration === "Per Week" || location.pathname === "/chat" ? <ItemsNamesArray /> : <NonMonthlySubDisplay />}
             </div>
 
             <Grid container sx={{height: "60px"}}>

@@ -5,9 +5,11 @@ import { useDispatch } from "react-redux";
 import Standard from './Templates/Standard/Standard'
 import RadiantMoon from './Templates/RadiantMoon/RadiantMoon';
 import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
+import FlyingFish from './Templates/FlyingFish/FlyingFish';
 import NotFound from '../Home/NotFound';
 import { setFetching } from "../../redux/states";
 import axios from 'axios';
+import avatarImg from '../../images/avatar.png'
 
 const ViewResume = () => {
     const [searchParams] = useSearchParams();
@@ -16,6 +18,7 @@ const ViewResume = () => {
     const shareableLink = searchParams.get('link');
     const [resume, setResume] = useState({})
     const [templateName, setTemplateName] = useState("")
+    const imgUrl = resume.storageDetails.imgUrl || avatarImg
 
     useEffect(() => {
         const fetchResume = async () => {
@@ -31,7 +34,6 @@ const ViewResume = () => {
                 //it return as an array of one object
                 setResume(response.data.resume[0])
                 setTemplateName(response?.data?.resume[0]?.storageDetails?.template)
-                console.log(response?.data?.resume[0]?.storageDetails?.imgUrl);
                 dispatch(setFetching(false))
             } catch (error) {
                 dispatch(setFetching(false))
@@ -56,10 +58,13 @@ const ViewResume = () => {
             template = <Standard resume={resume} />
             break;
         case "Radiant Moon":
-            template = <RadiantMoon resume={resume} imgUrl={resume.storageDetails.imgUrl} />
+            template = <RadiantMoon resume={resume} imgUrl={imgUrl} />
             break;
         case "Swimming Elephant":
-            template  = <SwimmingElephant resume={resume} imgUrl={resume.storageDetails.imgUrl} />
+            template  = <SwimmingElephant resume={resume} imgUrl={imgUrl} />
+            break;
+        case "Flying Fish":
+            template  = <FlyingFish resume={resume} imgUrl={imgUrl} />
             break;
         default:
             template = <Standard resume={resume} />
