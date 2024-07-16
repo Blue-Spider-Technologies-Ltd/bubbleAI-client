@@ -262,6 +262,7 @@ const DownloadResume = () => {
 
     const saveImageToFolder = (blob, event) => {
         event.preventDefault();
+        setFetching(true)
         const formData = new FormData();
         formData.append('file', blob);
         
@@ -274,10 +275,12 @@ const DownloadResume = () => {
         .then(response => {
             setImgUrl(response.data.url)
             setStorageDetails({ ...storageDetails, imgUrl: response.data.url });
+            setFetching(false)
             successSetter(`Image uploaded successfully!`);
             return
         })
         .catch(error => {
+            setFetching(false)
             console.error(error);
             errorSetter('Error uploading image.');
         });
@@ -325,6 +328,34 @@ const DownloadResume = () => {
         // Open navigate in a new tab
         window.open("/chat", "_blank");
 
+    }
+
+    const handleDownload = (e) => {
+        e.preventDefault()
+        if(storageDetails.name === "") {
+            window.scrollTo(0, 0);
+            return errorSetter('Resume must have a name')
+        }
+        if (resumeNameExist) {
+            window.scrollTo(0, 0);
+            return errorSetter('Please change the resume name')
+        }
+        if(!canPrint) {
+            return errorSetter('Select an AVAILABLE template to print')
+        }
+        if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
+            return errorSetter("Your Subscription tier can not use this template")
+        }
+        confirm({ 
+                description: "Click OK only if you are sure to download, You must save or print your resume if you click OK. You can SCALE FONT and ADD/REDUCE MARGIN in the advanced setting of the next pop up, but you CAN NOT return here",
+                title: "IRREVERSIBLE ACTION"
+            })
+            .then(() => {
+                handlePrint()
+            })
+            .catch(() => {
+                errorSetter("Resume not yet printed")
+            });
     }
 
     return (
@@ -410,7 +441,7 @@ const DownloadResume = () => {
                             <div className="Segment">
                                 <h4>Upload Image</h4>
                                 <div style={{textAlign: "center", fontSize: ".8rem"}}>
-                                    <p>CVs with your image has 80% more chance of being read</p>
+                                    <p>CVs with your image have 80% more chance of being read</p>
                                     <input style={{marginLeft: "50px"}} type="file" accept="image/*" onChange={handleFileChange} />
                                 </div>
                             </div>
@@ -429,32 +460,7 @@ const DownloadResume = () => {
                                 <div style={{ width: "150px" }}>
                                     <ButtonSubmitGreen 
                                         type="button"
-                                        onClick={() => {
-                                            if(storageDetails.name === "") {
-                                                window.scrollTo(0, 0);
-                                                return errorSetter('Resume must have a name')
-                                            }
-                                            if (resumeNameExist) {
-                                                window.scrollTo(0, 0);
-                                                return errorSetter('Please change the resume name')
-                                            }
-                                            if(!canPrint) {
-                                                return errorSetter('Select an AVAILABLE template to print')
-                                            }
-                                            if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
-                                                return errorSetter("Your Subscription tier can not use this template")
-                                            }
-                                            confirm({ 
-                                                    description: "Click OK only if you are sure to download, You must save or print your resume if you click OK. You can SCALE FONT and ADD/REDUCE MARGIN in the advanced setting of the next pop up, but you CAN NOT return here",
-                                                    title: "This action is irreversible"
-                                                })
-                                                .then(() => {
-                                                    handlePrint()
-                                                })
-                                                .catch(() => {
-                                                    errorSetter("Resume not yet printed")
-                                                });
-                                        }}
+                                        onClick={handleDownload}
                                     >
                                         <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF </span>
                                     </ButtonSubmitGreen>

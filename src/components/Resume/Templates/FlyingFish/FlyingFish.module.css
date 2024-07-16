@@ -11,7 +11,7 @@
 
 .topCont {
     width: 100%;
-    background-color: #a8a7a7;
+    background-color: #929292;
     color: white;
     height: 11rem;
     display: flex;
@@ -28,7 +28,7 @@
 }
 
 .LeftBg {
-    background-color: #fce8e4;
+    background-color: #F3E0DC;
     border-radius: 2px;
     margin: -8rem auto 0;
     z-index: 2;
@@ -49,7 +49,7 @@
 
 .LeftBg hr {
     width: 100%;
-    border: 1px solid #a8a7a7;
+    border: 1px solid #EDEDED;
     margin-bottom: 20px;
 }
 
@@ -95,7 +95,7 @@
     color: black;
     text-align: center;
     width: 70%;
-    background-color: #a8a7a736;
+    background-color: #EDEDED;
     padding: 3px;
     margin: 0 auto 20px;
 }
@@ -122,8 +122,8 @@
 }
 
 .Icons {
-    margin-right: 20px;
-    color: gray;
+    margin-right: 5px;
+    color: #929292;
     margin-bottom: -4px;
 }
 

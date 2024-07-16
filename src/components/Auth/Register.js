@@ -170,7 +170,7 @@ const Register = () => {
                                 {/* <img src={refundImg} alt='Refund Guaranteed' style={{width: '60px', borderRadius: '50%'}} /> */}
 
                                 <div style={{marginTop: screenWidth > 900 ? "20px" : "-10px"}}>
-                                    <h5>Your dreams</h5>
+                                    <h5>A better life</h5>
                                     <h2>GUARANTEED</h2>
                                     <a 
                                         href='/how-i-work' 

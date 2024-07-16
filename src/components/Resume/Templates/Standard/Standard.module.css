@@ -1,7 +1,7 @@
 .StandardContainer {
     width: 100%;
     box-sizing: border-box;
-    padding: 2rem;
+    padding: 10px;
     text-align: left;
     font-size: 0.75rem;
 }

@@ -20,6 +20,7 @@ const Profile = () => {
     const { error } = useSelector((state) => state.stateData);
     const [isResumeSubscribed, setIsResumeSubscribed] = useState(false)
     const [resumeDuration, setResumeDuration] = useState("Per Month")
+    const [resumeSubExpiration, setResumeSubExpiration] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
@@ -31,6 +32,7 @@ const Profile = () => {
     //page where cancel icon would lead to
     const prevPath = localStorage.getItem("prevPath")
     const resumeSub = isResumeSubscribed ? resumeDuration : "Unsubscribed"; 
+    const resumeSubExp = isResumeSubscribed ? resumeSubExpiration : "Unsubscribed"; 
     const [countryid, setCountryid] = useState(0);
 
 
@@ -59,6 +61,7 @@ const Profile = () => {
                 const profileData = response.data.profile
                 setIsResumeSubscribed(profileData.subscriptions.resume.subscribed)
                 setResumeDuration(profileData.subscriptions.resume?.duration)
+                setResumeSubExpiration(profileData.subscriptions.resume?.endDate)
                 setFirstName(profileData.firstName)
                 setLastName(profileData.lastName)
                 setEmail(profileData.email)
@@ -238,6 +241,7 @@ const Profile = () => {
                                     required={true}
                                     onChange={handleCountryChange}
                                  />
+                                 <span style={{fontSize: '.6rem', marginTop: '-10px'}}>Change country to change/view states*</span>
                                 <AuthInput
                                     id={stateRegion}
                                     value={stateRegion}
@@ -250,21 +254,34 @@ const Profile = () => {
                                     onChange={handleStateRegionChange}
                                 />
 
-                                <div style={{marginBottom: "22px", marginLeft: "10px", textAlign: "left"}}>
-                                    <h5>Current Subscritions</h5>
-                                </div>
-
-                                <AuthInput
-                                    id={resumeSub}
-                                    value={`${resumeSub}`}
-                                    label="Resume Subscription"
-                                    inputType="text"
-                                    disabled={true}
-                                    inputGridSm={12}
-                                    mb={2}
-                                />
                             </Grid>
 
+                        </Grid>
+                        <hr />
+                        <div style={{marginBottom: "22px", marginLeft: "10px", textAlign: "left"}}>
+                            <h5>Current Subscritions</h5>
+                        </div>
+                        <Grid container xs={12}>
+
+                            <AuthInput
+                                id={resumeSub}
+                                value={`${resumeSub}`}
+                                label="Resume Subscription"
+                                inputType="text"
+                                disabled={true}
+                                inputGridSm={6}
+                                mb={2}
+                            />
+
+                            <AuthInput
+                                id={resumeSubExp}
+                                value={`${resumeSubExp.slice(0, 10)}`}
+                                label="Expires"
+                                inputType="text"
+                                disabled={true}
+                                inputGridSm={6}
+                                mb={2}
+                            />
                         </Grid>
                     </div>
                     

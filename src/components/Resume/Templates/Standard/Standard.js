@@ -9,8 +9,8 @@ const Standard = (props) => {
     return (
         <div className={standardCss.StandardContainer}>
             <div className={standardCss.basicInfo}>
-                <h2>{props.resume?.basicInfo?.firstName} {props.resume?.basicInfo?.lastName}</h2>
-                <h5>{props.resume?.basicInfo?.jobPosition}</h5>
+                <h1>{props.resume?.basicInfo?.firstName} {props.resume?.basicInfo?.lastName}</h1>
+                <h3>{props.resume?.basicInfo?.jobPosition}</h3>
                 <span>{props.resume?.basicInfo?.mobile}</span> <span><a href={`mailto:${props.resume?.basicInfo?.email}`}>{props.resume?.basicInfo?.email}</a></span>
 
                 {props.resume?.linkInfo && (
