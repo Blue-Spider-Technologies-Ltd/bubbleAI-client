@@ -46,25 +46,25 @@ const ResumePricing = () => {
 const resumePricingDetails = [
     {
         product: "AI Resume",
-        duration: 'Per Month',
-        price: pricePerMonth,
+        duration: 'Per Use',
+        price: pricePerUse,
         currency: currency,
         popular: false,
         features: {
             reAccessSaved: {
-                available: true,
+                available: false,
                 text: 'Reaccess Saved Resumes'
             },
             createSeveral: {
-                available: true,
+                available: false,
                 text: 'Create More Than One'
             },
             coverLetter: {
-                available: true,
+                available: false,
                 text: 'Tailored Cover Letter'
             },
             sharableLink: {
-                available: true,
+                available: false,
                 text: 'Sharable Link to Resume'
             },
             changeName: {
@@ -76,16 +76,16 @@ const resumePricingDetails = [
                 text: 'Save Resume as PDF'
             },
             severalTemplates: {
-                available: true,
+                available: false,
                 text: 'Choose Your Template'
             },
             aiJobSuggestions: {
-                available: true,
+                available: false,
                 text: 'Tailored Ai Job Suggestions Around You'
             },
             recommendation: {
                 available: true,
-                text: '(Recommended for Business)'
+                text: '(One-time Resume)'
             }
         }
     },
@@ -136,25 +136,25 @@ const resumePricingDetails = [
     },
     {
         product: "AI Resume",
-        duration: 'Per Use',
-        price: pricePerUse,
+        duration: 'Per Month',
+        price: pricePerMonth,
         currency: currency,
         popular: false,
         features: {
             reAccessSaved: {
-                available: false,
+                available: true,
                 text: 'Reaccess Saved Resumes'
             },
             createSeveral: {
-                available: false,
+                available: true,
                 text: 'Create More Than One'
             },
             coverLetter: {
-                available: false,
+                available: true,
                 text: 'Tailored Cover Letter'
             },
             sharableLink: {
-                available: false,
+                available: true,
                 text: 'Sharable Link to Resume'
             },
             changeName: {
@@ -166,19 +166,20 @@ const resumePricingDetails = [
                 text: 'Save Resume as PDF'
             },
             severalTemplates: {
-                available: false,
+                available: true,
                 text: 'Choose Your Template'
             },
             aiJobSuggestions: {
-                available: false,
+                available: true,
                 text: 'Tailored Ai Job Suggestions Around You'
             },
             recommendation: {
                 available: true,
-                text: '(One-time Resume)'
+                text: '(Recommended for Business)'
             }
         }
     }
+
 ]
 
 
