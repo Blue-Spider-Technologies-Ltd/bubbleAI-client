@@ -171,8 +171,8 @@ const Verification = () => {
                                 <div style={{textAlign: 'center', lineHeight: 2}}>
                                     <h2>Your Next Steps:</h2>
                                     <a href='/pricing' style={styles.link} target="_blank">Redeem Discount</a> <br />
+                                    <a href='/user/dashboard/resume' style={styles.link} target="_blank">Try FOR FREE</a> <br />
                                     <a href='/user/dashboard/resume' style={styles.link} target="_blank">Apply to 5 Jobs in 10mins</a> <br />
-                                    <a href='/dashboard/resume' style={styles.link} target="_blank">Create Your First Resume in 2mins</a> <br />
                                     <a href='/chat' style={styles.link} target="_blank">Free Interview Prep</a> <br />
                                     <a href='/chat' style={styles.link} target="_blank">Create Content Script Free</a> <br />
                                     <a href='/chat' style={styles.link} target="_blank">Free Research with Bubble Ai</a> <br />

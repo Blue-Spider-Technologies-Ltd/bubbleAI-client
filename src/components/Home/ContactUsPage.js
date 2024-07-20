@@ -4,7 +4,8 @@ import leftImg from "../../images/contact-desk1.jpg"
 import rightImg from "../../images/contact-desk2.jpg"
 import mobileBg from "../../images/contact-mobile.jpg"
 import { Grid } from "@mui/material";
-import { FaTwitter, FaInstagram, FaTiktok } from 'react-icons/fa';
+import { FaInstagram, FaTiktok } from 'react-icons/fa';
+import { FaXTwitter } from "react-icons/fa6";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 
 const screenWidth =  window.innerWidth
@@ -77,11 +78,6 @@ const ContactUsPage = () => {
 
 
             <div style={styles.socialContainer}>
-              <a style={styles.a} href="https://x.com/_BubbleAI" target="_blank" rel="noreferrer">
-                <FaTwitter style={styles.icon} />
-                {screenWidth > 900 && <br />}
-                {screenWidth > 900 && "@_bubbleai"}
-              </a>
               <a style={styles.a} href="https://www.instagram.com/_bubble.ai?igsh=MW9vZXJ0NmtlbW5mMQ%3D%3D&utm_source=qr" target="_blank" rel="noreferrer">
                 <FaInstagram style={styles.icon} />
                 {screenWidth > 900 && <br />}
@@ -89,6 +85,11 @@ const ContactUsPage = () => {
               </a>
               <a style={styles.a} href="https://www.tiktok.com/@_bubbleai?_t=8nWYhlFhczl&_r=1" target="_blank" rel="noreferrer">
                 <FaTiktok style={styles.icon} />
+                {screenWidth > 900 && <br />}
+                {screenWidth > 900 && "@_bubbleai"}
+              </a>
+              <a style={styles.a} href="https://x.com/_BubbleAI" target="_blank" rel="noreferrer">
+                <FaXTwitter style={styles.icon} />
                 {screenWidth > 900 && <br />}
                 {screenWidth > 900 && "@_bubbleai"}
               </a>
