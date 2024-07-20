@@ -30,7 +30,7 @@ const suggestionOne = {
 
 const suggestionTwo = {
   title: "Job Interview Preparation",
-  description: "You are a Job Interview preparation coach. Coach me on how to prepare and ace an interview with [COMPANY NAME HERE] that are in the [INDUSTRY NAME e.g HOSPITALITY] for the role of [PLACE ROLE HERE], given that the specific requirements for the role are [COPY AND PASTE REQUIREMENTS HERE]."
+  description: "You are a Job Interview preparation coach. Coach me on how to prepare and ace an interview with [COMPANY NAME HERE] that are in the [INDUSTRY NAME e.g HOSPITALITY] for the role of [PLACE ROLE HERE], given that the specific requirements for the role are [COPY AND PASTE REQUIREMENTS HERE]. After that, give me 10 possible interview questions that might be asked for this role and their best possible answers."
 }
 
 const suggestionThree = {
@@ -79,18 +79,6 @@ const AskMe = () => {
     content:  "I am currently throttling requests, try again in a moment"
   }
 
-  // Scroll to bottom on new message
-  useEffect(() => {
-    chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-  }, [messages]);
-
-  //check and remove unauth user's expired use count for ask me anything
-  useEffect(() => {
-    if (expiration < now) {
-      localStorage?.removeItem("oats_3297");
-    }
-  }, [expiration, now])
-
   //fetch messages for auth user
   useEffect(() => {
     const populateMessages = async () => {
@@ -120,6 +108,20 @@ const AskMe = () => {
     };
     populateMessages()
   }, []);
+
+
+  // Scroll to bottom on new message
+  useEffect(() => {
+    chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+  }, [messages]);
+
+  //check and remove unauth user's expired use count for ask me anything
+  useEffect(() => {
+    if (expiration < now) {
+      localStorage?.removeItem("oats_3297");
+    }
+  }, [expiration, now])
+
 
   useEffect(() => {
     if (audioTranscribed) {
