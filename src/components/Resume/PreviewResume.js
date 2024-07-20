@@ -22,10 +22,10 @@ import axios from "axios";
 const PreviewResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { resume, error, showCheckout } = useSelector((state) => state.stateData);
+  const { user, resume, error, showCheckout } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [authMenuOpen, setAuthMenuOpen] = useState(false);
+  // const [authMenuOpen, setAuthMenuOpen] = useState(false);
 
   const errorSetter = (string) => {
     dispatch(setError(string))
@@ -125,11 +125,15 @@ const PreviewResume = () => {
         window.removeEventListener('scroll', handleScroll);
       }
     };
-    window.addEventListener('scroll', handleScroll);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    //if user has used new user free resume creation
+    if (user.isFirstFreeUsed) {
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
   }, []);
 
 
@@ -355,6 +359,11 @@ const PreviewResume = () => {
                   required={true}
                   disabled={true}
                 />
+
+                <div style={{textAlign: 'center', width: '100%'}}>
+                  <h4 style={{display: 'inline'}}>Ai Generated Prof. Summary</h4>
+                  <h6 style={{display: 'inline'}}>(editable)</h6>
+                </div>
                 <AuthInput
                   value={basicInfo.profSummary}
                   label="AI Generated Prof. Summary"
@@ -620,6 +629,11 @@ const PreviewResume = () => {
                             }
                           />
                         </div>
+                        
+                        <div style={{textAlign: 'center', width: '100%'}}>
+                          <h4 style={{display: 'inline'}}>Ai Generated Job Description</h4>
+                          <h6 style={{display: 'inline'}}>(editable)</h6>
+                        </div>
                         <AuthInput
                           name="jobDesc"
                           label="Job Description"
@@ -810,7 +824,7 @@ const PreviewResume = () => {
 
       
       {!isSubscribed && (
-        <Overlay>
+        <Overlay prevPath="/user/dashboard/resume">
           <ResumePricing />
         </Overlay>
       )}

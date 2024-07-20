@@ -18,7 +18,7 @@ const ViewResume = () => {
     const shareableLink = searchParams.get('link');
     const [resume, setResume] = useState({})
     const [templateName, setTemplateName] = useState("")
-    const imgUrl = resume.storageDetails.imgUrl || avatarImg
+    const imgUrl = resume?.storageDetails?.imgUrl || avatarImg
 
     useEffect(() => {
         const fetchResume = async () => {

@@ -76,7 +76,7 @@ const Depositions = () => {
 
     return (
         <div>
-            <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search Transcriptions" hidden={!authMenuOpen} />  
+            {/* <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search Transcriptions" hidden={!authMenuOpen} />   */}
             
             <div style={{width: '100%', padding: '0'}}>
                 <div className="auth-bg-blob">

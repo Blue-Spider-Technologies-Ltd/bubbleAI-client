@@ -19,7 +19,8 @@ import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
 import FlyingFish from './Templates/FlyingFish/FlyingFish';
 import Feedback from '../Dashboard/Feedback';
 import jwt_decode from "jwt-decode";
-import { SuccessFailureModal } from '../UI/Modal/Modal';
+import { SuccessFailureModal, Overlay } from '../UI/Modal/Modal';
+import ResumePricing from '../Pricing/ResumePricing';
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
 import { setError, setFetching, setSuccessMini } from "../../redux/states";
@@ -64,6 +65,8 @@ const DownloadResume = () => {
     const [resumeNameExist, setResumeNameExist] = useState(false);
     const [shareableLink, setShareableLink] = useState("");
     const [aiSuggestedJobs, setAiSuggestedJobs] = useState([]);
+    const [isSubscribed, setIsSubscribed] = useState(true);
+    const [isFirstFreeSetOnDB, setIsFirstFreeSetOnDB] = useState(false)
     const [storageDetails, setStorageDetails] = useState({
         name: "",
         desc: "",
@@ -147,6 +150,24 @@ const DownloadResume = () => {
 
 
     const selectTemplate = () => {
+
+        if (!user.isFirstFreeUsed) {
+            if (!isFirstFreeSetOnDB) {
+                axios.get('/set-first-free-used', {
+                    headers: {
+                      "x-access-token": isAuth,
+                    },
+                })
+                .then(response => {
+                    setIsFirstFreeSetOnDB(true)
+                 })
+                .catch(error => {
+                    setIsFirstFreeSetOnDB(false)
+                });
+            }
+        }
+
+
         let template;
    
         switch (carouselName) {
@@ -332,6 +353,15 @@ const DownloadResume = () => {
 
     const handleDownload = (e) => {
         e.preventDefault()
+        if(!canPrint) {
+            return errorSetter('Select an AVAILABLE template to print')
+        }
+        //check if user used first free use already and if not subscribed
+        if(!user?.resumeSubscriptions?.subscribed) {
+            errorSetter('Please SUBSCRIBE to download resume plus other BENEFITS')
+            setIsSubscribed(false)
+            return
+        }
         if(storageDetails.name === "") {
             window.scrollTo(0, 0);
             return errorSetter('Resume must have a name')
@@ -339,9 +369,6 @@ const DownloadResume = () => {
         if (resumeNameExist) {
             window.scrollTo(0, 0);
             return errorSetter('Please change the resume name')
-        }
-        if(!canPrint) {
-            return errorSetter('Select an AVAILABLE template to print')
         }
         if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
             return errorSetter("Your Subscription tier can not use this template")
@@ -474,6 +501,12 @@ const DownloadResume = () => {
                 </div>
 
             </div>
+
+            {!isSubscribed && (
+                <Overlay prevPath="/user/dashboard/resume">
+                    <ResumePricing />
+                </Overlay>
+            )}
             
             {!hasDroppedFeedback && isFeedbackTime && <Feedback notApaymentTextPositive="Resume Creation Completed!"/>}
             {completed &&  (                

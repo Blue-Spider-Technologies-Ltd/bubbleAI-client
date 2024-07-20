@@ -30,12 +30,13 @@ const PriceCard = ({details}) => {
             <div className={cardCss.CardTop}>
                 <h3>{duration}</h3>
             </div>
-            {features.recommendation && <div className='link' style={{fontSize: '.75rem', marginTop: '-2.5rem', marginBottom: '1.4rem'}}>{features.recommendation.text}</div>}
+
             <hr />
             <div className={cardCss.PriceTag}>
                 {formattedPrice + " " + currency}
             </div>
             <div className={cardCss.CardBottom}>
+            {features.recommendation && <div className='link' style={{fontSize: '.75rem', marginTop: '.2rem', marginBottom: '.2rem'}}>{features.recommendation.text}</div>}
                 <Grid item xs={12}>
 
                     <List>

@@ -19,8 +19,7 @@ const faqs = [
   },
   {
     q: "Is there a free trial on the Resume creator?",
-    a: `As a first time user on Bubble Ai, you can view a part of your created resume, if satisfied, then you can 
-      choose between one of our already very cheap usage options to download with available templates.`
+    a: `As a first time user on Bubble Ai, you get free Job interview preparation, create one CV but might not have download access and no tailored cover letter.`
   },
   {
     q: "Can I upgrade or downgrade?",

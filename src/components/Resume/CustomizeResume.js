@@ -139,8 +139,7 @@ const CustomizeResume = () => {
           country: country || "",
           profSummary: profSummary || "",
         });
-        
-
+        // console.log(response.data.user);
         dispatch(setUserResumesAll(resumes))
         setResumeForSearch(resumes)
         setIsFirstTimeUserPopUp(isFirstTimeUser)

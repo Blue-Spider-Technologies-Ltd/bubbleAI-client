@@ -1,6 +1,6 @@
 import React from 'react'
 // import resumeCss from './Resume.module.css'
-// import CustomizeResume from './CustomizeResume'
+import CustomizeProposal from './CustomizeProposal'
 // import PreviewResume from './PreviewResume'
 // import DownloadResume from './DownloadResume'
 import { useLocation } from 'react-router-dom'
@@ -10,23 +10,23 @@ const BizProposal = () => {
     const location = useLocation()
     
     const currentComponent = (path) => {
-        // let page
-        // switch (path) {
-        //     case "?customize":
-        //         page = <CustomizeResume />
-        //         break;
-        //     case "?preview":
-        //         page = <PreviewResume />
-        //         break;
-        //     case "?download":
-        //         page = <DownloadResume />
-        //         break;
+        let page
+        switch (path) {
+            case "?customize":
+                page = <CustomizeProposal />
+                break;
+            // case "?preview":
+            //     page = <PreviewResume />
+            //     break;
+            // case "?download":
+            //     page = <DownloadResume />
+            //     break;
     
-        //     default: 
-        //         page = <CustomizeResume />
-        //         break;
-        // }
-        // return page
+            default: 
+                page = <CustomizeProposal />
+                break;
+        }
+        return page
     }
 
     const page = currentComponent(location.search)

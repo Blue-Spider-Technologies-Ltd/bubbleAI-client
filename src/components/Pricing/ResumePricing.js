@@ -57,7 +57,7 @@ const resumePricingDetails = [
             },
             createSeveral: {
                 available: false,
-                text: 'Create More Than One'
+                text: 'Create More Than One CV'
             },
             coverLetter: {
                 available: false,
@@ -102,7 +102,7 @@ const resumePricingDetails = [
             },
             createSeveral: {
                 available: true,
-                text: 'Create More Than One'
+                text: 'Create More Than One CV'
             },
             coverLetter: {
                 available: true,
@@ -147,7 +147,7 @@ const resumePricingDetails = [
             },
             createSeveral: {
                 available: true,
-                text: 'Create More Than One'
+                text: 'Create More Than One CV'
             },
             coverLetter: {
                 available: true,
