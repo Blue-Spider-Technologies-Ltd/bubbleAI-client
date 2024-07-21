@@ -76,7 +76,6 @@ const DownloadResume = () => {
     const isAuth = localStorage?.getItem('token')
     const authUser = isAuth && jwt_decode(isAuth)
     const hasDroppedFeedback = authUser && authUser.rated
-   
 
     const errorSetter = (string) => {
         dispatch(setError(string))
@@ -87,7 +86,6 @@ const DownloadResume = () => {
         dispatch(setSuccessMini(string))
         successMiniAnimation()
     }
-
 
     useEffect(() => {
         const checkIfAuthUser = async () => {
@@ -135,7 +133,6 @@ const DownloadResume = () => {
         slidesToSlide: 1 // optional, default to 1.
       }
     };
-    
 
 
     const checkObjectForKeyValue = (arr, key, keyOfKey, searchValue) => {
@@ -146,7 +143,6 @@ const DownloadResume = () => {
             setResumeNameExist(false)
         }
     }
-
 
 
     const selectTemplate = () => {
@@ -351,8 +347,7 @@ const DownloadResume = () => {
 
     }
 
-    const handleDownload = (e) => {
-        e.preventDefault()
+    const handleDownload = () => {
         if(!canPrint) {
             return errorSetter('Select an AVAILABLE template to print')
         }
@@ -494,7 +489,6 @@ const DownloadResume = () => {
                                 </div>
                             </div>
                         </div>
-
 
                     </form>
 

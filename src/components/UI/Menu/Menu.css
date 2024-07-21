@@ -6,7 +6,7 @@
     margin: 0 ;
     padding: .8rem 4rem;
     align-items: center;
-    background-color: white;
+    background-color: var(--snow);
     display: flex;
     justify-content: space-between;
     z-index: 999;
@@ -42,17 +42,16 @@
   
 
   .BigMenu {
-      display: none;
+    display: none;
   }
 
   .SmallMenuContainer {
-      position: fixed;
-      z-index: 99;
-      top: 0;
-      width: 100vw;
-      background-color: #fff;
-      padding: 1.7rem 2rem;
-      
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    width: 100vw;
+    background-color: var(--snow);
+    padding: 1.7rem 2rem;
   }
 
   .HamburgerContainer {

@@ -8,6 +8,7 @@ import Register from './components/Auth/Register';
 import Verification from './components/Auth/Verification';
 import PwdRecovery from './components/Auth/PwdRecovery';
 import Resume from './components/Resume/Resume'
+import ResumeLearnMore from './components/UI/LearnMorePages/ResumeLearnMore';
 import ViewResume from './components/Resume/ViewResume'
 import Depositions from './components/Depositions/Depositions';
 import MockTests from './components/MockTests/MockTests'
@@ -38,7 +39,6 @@ import AskMe from "./components/Home/AskMe"
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
-import logoImg from "./images/bubble-logo.png"
 
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
 
@@ -77,7 +77,7 @@ const App = () => {
         <Route path={'/user/dashboard/councellor'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/fraud-detector'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/generate-report'} element={ <UnderConstruction /> } />
-        <Route path={'/images/logo'} element={<img src={logoImg} alt="Logo" width={"100px"}/>} />
+        <Route path={'/learn-more'} element={<ResumeLearnMore />} />
         <Route path={'/view-resume'} element={<ViewResume />} />
         <Route path={'/popin'} element={ <Login /> } />
         <Route path={'/verify'} element={ <Verification /> } />

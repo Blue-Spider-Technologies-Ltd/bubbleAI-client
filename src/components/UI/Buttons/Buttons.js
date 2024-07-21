@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import buttonCss from "./Buttons.module.css"
 import { Link } from "@mui/material"
 import Groups3Icon from '@mui/icons-material/Groups3';
@@ -41,8 +41,23 @@ export const ButtonSubmitBlack = ({disabled, type, height, width, children, onCl
 }
 
 export const ButtonSubmitGreen = (props) => {
+    const [buttonSize, setButtonSize] = useState(1);
+
+    const handleClick = () => {
+        setButtonSize(0.85); // Shrink the button
+        setTimeout(() => {
+          setButtonSize(1); // Restore the button to its original size
+        }, 100);
+        props.onClick()
+    }
     return (
-        <button disabled={props.disabled} type={props.type} onClick={props.onClick} className={buttonCss.ButtonSubmitGreen}>
+        <button disabled={props.disabled} type={props.type} onClick={handleClick}      
+            style={{
+                transform: `scale(${buttonSize})`,
+                transition: 'transform 0.4s ease-in-out'
+            }} 
+            className={buttonCss.ButtonSubmitGreen}
+        >
             {props.children}
         </button>
     )

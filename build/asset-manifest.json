@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.1001c104.css",
-    "main.js": "/static/js/main.a27ad255.js",
+    "main.css": "/static/css/main.2765dc27.css",
+    "main.js": "/static/js/main.ff7293fe.js",
     "static/js/850.53b7e135.chunk.js": "/static/js/850.53b7e135.chunk.js",
     "static/js/353.b48c6ab6.chunk.js": "/static/js/353.b48c6ab6.chunk.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
@@ -11,30 +11,37 @@
     "static/media/contact-desk1.jpg": "/static/media/contact-desk1.cc63ebc0cd5ae137ad11.jpg",
     "static/media/contact-mobile.jpg": "/static/media/contact-mobile.e503c5d550546e93a62e.jpg",
     "static/media/swimming-elephant.png": "/static/media/swimming-elephant.df8639c66a5ab98acb0d.png",
+    "static/media/2.jpg": "/static/media/2.5e16e079f7c79535c71a.jpg",
     "static/media/flying-fish.png": "/static/media/flying-fish.3cfec5a2363b92b8e650.png",
     "static/media/failed.gif": "/static/media/failed.6627106d63a9dade2c9f.gif",
     "static/media/success.gif": "/static/media/success.05e3bee91653111f1bbe.gif",
     "static/media/resume.png": "/static/media/resume.45b9fee5abf6c047a2c6.png",
+    "static/media/interview-prep.jpg": "/static/media/interview-prep.46fb8d310c0d5dd1ed9e.jpg",
+    "static/media/cover-letter.jpg": "/static/media/cover-letter.5d63c1e8e8e6966cb7ec.jpg",
     "static/media/radiant.jpg": "/static/media/radiant.1fa11696217399314ea7.jpg",
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.7a4d0bbbe53cc081ca37.png",
+    "static/media/jobs.jpg": "/static/media/jobs.3fb7529e36429e99bb48.jpg",
     "static/media/refund-stamp.png": "/static/media/refund-stamp.19654e7aecd4136b31aa.png",
     "static/media/unavailable.png": "/static/media/unavailable.5084bb9c1fdd048c677b.png",
     "static/media/stt2.jpg": "/static/media/stt2.0c93355fc5a41b38d49b.jpg",
     "static/media/bubblebg-auth.jpg": "/static/media/bubblebg-auth.01ddcf5f198eec3d6b40.jpg",
     "static/media/soon.jpg": "/static/media/soon.42d5aa43636ab88f7a8d.jpg",
+    "static/media/meta.png": "/static/media/meta.32869ff467490b2a5ab7.png",
     "static/media/bubble-logo.png": "/static/media/bubble-logo.63e34960a90ae6d78b82.png",
+    "static/media/amazon.jpg": "/static/media/amazon.860b802fdf513b9b0571.jpg",
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/microsoft.png": "/static/media/microsoft.204345df7313cd2dc55b.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.1001c104.css.map": "/static/css/main.1001c104.css.map",
-    "main.a27ad255.js.map": "/static/js/main.a27ad255.js.map",
+    "main.2765dc27.css.map": "/static/css/main.2765dc27.css.map",
+    "main.ff7293fe.js.map": "/static/js/main.ff7293fe.js.map",
     "850.53b7e135.chunk.js.map": "/static/js/850.53b7e135.chunk.js.map",
     "353.b48c6ab6.chunk.js.map": "/static/js/353.b48c6ab6.chunk.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1001c104.css",
-    "static/js/main.a27ad255.js"
+    "static/css/main.2765dc27.css",
+    "static/js/main.ff7293fe.js"
   ]
 }

@@ -25,7 +25,7 @@ const categoriesData = [
     //     image: examImg
     // },
     {
-        title: "Depositions",
+        title: "Depositions (Beta)",
         desc: "Minutes of Proceedings (Speech to Text & Voice Recognition) AI",
         isAuthURL: '/user/dashboard/depositions',
         unAuthURL: '/popin?depositions',

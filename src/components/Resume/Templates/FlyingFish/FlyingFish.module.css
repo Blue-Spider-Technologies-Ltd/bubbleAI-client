@@ -92,7 +92,7 @@
     text-transform: uppercase;
     font-size: .8rem;
     font-weight: 600;
-    color: black;
+    color: black !important;
     text-align: center;
     width: 70%;
     background-color: #EDEDED;

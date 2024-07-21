@@ -91,6 +91,32 @@
     box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
     -webkit-box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
     -moz-box-shadow: 1px 3px 16px -8px rgba(0,0,0,0.75);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.ButtonSubmitGreen:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to left, transparent, var(--navColor3), transparent);
+    background-size: 200% 200%;
+    background-position: -100% 0;
+    animation: ripple 2s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes ripple {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
 }
 
 .ButtonSubmitGreen:hover {
