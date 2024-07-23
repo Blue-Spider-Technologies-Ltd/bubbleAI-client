@@ -26,6 +26,7 @@ import { useReactToPrint  } from 'react-to-print';
 import { setError, setFetching, setSuccessMini } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
 import Alert from '@mui/material/Alert';
+import ProtectedContent from '../UI/ProtectedContent/ProtectedContent ';
 import { useConfirm } from "material-ui-confirm";
 import avatarImg from '../../images/avatar.png'
 const screenWidth = window.innerWidth
@@ -110,6 +111,55 @@ const DownloadResume = () => {
     }, [user]);
 
     
+    useEffect(() => {
+        let timer;
+    
+        const handleScroll = () => {
+            const scrollPosition = window.scrollY || window.pageYOffset;
+            const viewHeight = window.innerHeight || document.documentElement.clientHeight;
+            const scrollThreshold = 0.7 * viewHeight;
+    
+            if (
+                scrollPosition > scrollThreshold &&
+                !user.resumeSubscriptions.subscribed &&
+                !user.isFirstFreeUsed
+            ) {
+                errorSetter("Select a package to get all BENEFITS");
+                setIsFirstFreeUsedAndUpdateDB();
+            }
+        };
+    
+        const runHandleScroll = () => {
+            handleScroll();
+            window.addEventListener('scroll', handleScroll);
+        };
+    
+        timer = setTimeout(runHandleScroll, 60000); // 1 minute
+        
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [user.isFirstFreeUsed, isFirstFreeSetOnDB]);
+    
+    
+    const setIsFirstFreeUsedAndUpdateDB = () => {
+        axios
+            .get('/set-first-free-used', {
+                headers: {
+                    'x-access-token': isAuth,
+                },
+            })
+            .then((response) => {
+                setIsFirstFreeSetOnDB(true);
+                setIsSubscribed(false);
+            })
+            .catch((error) => {
+                setIsFirstFreeSetOnDB(false);
+            });
+    };
+    
+    
     //scroll to page top on render
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -146,23 +196,6 @@ const DownloadResume = () => {
 
 
     const selectTemplate = () => {
-
-        if (!user.isFirstFreeUsed) {
-            if (!isFirstFreeSetOnDB) {
-                axios.get('/set-first-free-used', {
-                    headers: {
-                      "x-access-token": isAuth,
-                    },
-                })
-                .then(response => {
-                    setIsFirstFreeSetOnDB(true)
-                 })
-                .catch(error => {
-                    setIsFirstFreeSetOnDB(false)
-                });
-            }
-        }
-
 
         let template;
    
@@ -472,12 +505,13 @@ const DownloadResume = () => {
 
                         <div className="Segment">
                             <h4>View and Download</h4>
-                            <div className={resumeCss.ResponsivePrintView}>
-                                <div ref={componentRef}>
-                                    {selectTemplate()}
+                            <ProtectedContent>
+                                <div className={resumeCss.ResponsivePrintView}>
+                                    <div ref={componentRef}>
+                                        {selectTemplate()}
+                                    </div>
                                 </div>
-                                
-                            </div>
+                            </ProtectedContent>
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "150px" }}>
                                     <ButtonSubmitGreen 

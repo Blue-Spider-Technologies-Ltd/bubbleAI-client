@@ -38,6 +38,7 @@ const CustomizeResume = () => {
   const [dobFirstUser, setDobFirstUser] = useState("")
   const [mobileFirstUser, setMobileFirstUser] = useState("")
   const [subDuration, setSubDuration] = useState("");
+  const [isResumeSubbed, setIsResumeSubbed] = useState(false);
   const [basicFaded, setBasicFaded] = useState(false)
   const [eduFaded, setEduFaded] = useState(true)
   const [workFaded, setWorkFaded] = useState(true)
@@ -144,6 +145,7 @@ const CustomizeResume = () => {
         setResumeForSearch(resumes)
         setIsFirstTimeUserPopUp(isFirstTimeUser)
         setSubDuration(resumeSubscriptions?.duration)
+        setIsResumeSubbed(resumeSubscriptions?.subscribed)
         dispatch(setResumeSubDuration(resumeSubscriptions?.duration))
         dispatch(setUser(response.data.user));
         dispatch(setFetching(false));
@@ -785,6 +787,7 @@ const handleSearch = (e) => {
         value={searchString}
         hidden={!authMenuOpen}
         resumeSubDuration={subDuration}
+        isResumeSubbed={isResumeSubbed}
         arrayDetails={resumeForSearch}
       />
 
@@ -1003,7 +1006,7 @@ const handleSearch = (e) => {
 
             {/* EDUCATION INFO */}
             <div id="edu-info" className={`Segment ${eduFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Education Info</h4>
+              <h4>Education Info (most recent first)</h4>
               <div>
                 {eduArray.map((info, index) => {
                   return (
@@ -1100,7 +1103,7 @@ const handleSearch = (e) => {
 
             {/* WORK EXPERIENCE */}
             <div id="work-exp" className={`Segment ${workFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Work & Volunteering Experience</h4>
+              <h4>Work & Volunteering Experience (most recent first)</h4>
               <div>
                 {workExpArray.map((info, index) => {
                   return (

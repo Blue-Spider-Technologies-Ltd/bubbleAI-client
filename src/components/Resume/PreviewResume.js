@@ -100,41 +100,37 @@ const PreviewResume = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY || window.pageYOffset;
-      const viewHeight = window.innerHeight || document.documentElement.clientHeight;
-      const screenWidth = window.innerWidth
-      const scrollMeter = screenWidth < 900 ? 0.7 : 0.5
-
-      if (scrollPosition > (scrollMeter * viewHeight)) {
-        dispatch(setFetching(true));
-        axios.get('/user/get-subscription', {
-          headers: {
-            "x-access-token": isAuth,
-          },
-        })
-          .then(response => {
-            setIsSubscribed(response.data?.resumeSubscriptions);
-            dispatch(setFetching(false));
-          })
-          .catch(error => {
-            errorSetter("Looks like you are not subscribed. Choose a plan to download your CV")
-            setIsSubscribed(false);
-            dispatch(setFetching(false));
-          });
-        window.removeEventListener('scroll', handleScroll);
-      }
-    };
-
-    //if user has used new user free resume creation
     if (user.isFirstFreeUsed) {
-      window.addEventListener('scroll', handleScroll);
+      const handleScroll = () => {
+        const scrollPosition = window.scrollY || window.pageYOffset;
+        const viewHeight = window.innerHeight || document.documentElement.clientHeight;
+        const screenWidth = window.innerWidth;
+        const scrollMeter = screenWidth < 900 ? 0.7 : 0.5;
+  
+        if (scrollPosition > (scrollMeter * viewHeight)) {
 
+          axios.get('/user/get-subscription', {
+            headers: { "x-access-token": isAuth },
+          })
+          .then((response) => {
+            setIsSubscribed(response.data?.resumeSubscriptions);
+          })
+          .catch((error) => {
+            errorSetter("Looks like you are not subscribed. Choose a plan to complete your CV");
+            setIsSubscribed(false);
+          });
+          window.removeEventListener('scroll', handleScroll);
+        }
+      };
+  
+      window.addEventListener('scroll', handleScroll);
+  
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, []);
+  }, [user.isFirstFreeUsed, dispatch, isAuth, errorSetter]);
+  
 
 
   //////LINK HANDLERS
@@ -629,7 +625,7 @@ const PreviewResume = () => {
                             }
                           />
                         </div>
-                        
+
                         <div style={{textAlign: 'center', width: '100%'}}>
                           <h4 style={{display: 'inline'}}>Ai Generated Job Description</h4>
                           <h6 style={{display: 'inline'}}>(editable)</h6>

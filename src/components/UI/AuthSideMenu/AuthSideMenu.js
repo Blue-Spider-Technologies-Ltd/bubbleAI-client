@@ -20,7 +20,7 @@ import { checkAuthenticatedUser, errorAnimation, successMiniAnimation } from '..
 
 
 
-const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration, value, onChange}) => {
+const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration, isResumeSubbed, value, onChange}) => {
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const navigate = useNavigate();
@@ -290,7 +290,17 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
             />
             
             <div className={authMenuCss.InnerContainer}>
-                {resumeSubDuration === "Per Month" || resumeSubDuration === "Per Week" || location.pathname === "/chat" ? <ItemsNamesArray /> : <NonMonthlySubDisplay />}
+                {(() => {
+                    if (
+                        (isResumeSubbed && resumeSubDuration === "Per Month") ||
+                        (isResumeSubbed && resumeSubDuration === "Per Week") ||
+                        location.pathname === "/chat"
+                    ) {
+                        return <ItemsNamesArray />;
+                    } else {
+                        return <NonMonthlySubDisplay />;
+                    }
+                })()}
             </div>
 
             <Grid container sx={{height: "60px"}}>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import authCss from "./Auth.module.css"
 import modalCss from "../UI/Modal/Modal.module.css"
 import MenuBar from "../UI/Menu/Menu";
@@ -60,6 +60,14 @@ const Register = () => {
         dispatch(setError(string))
         errorAnimation()
     }
+
+    useEffect(() => {
+        const isAuth = localStorage?.getItem('token')
+        const prevPath = localStorage?.getItem('prevPath')
+        if (isAuth) {
+            navigate(prevPath)
+        }
+    })
 
     let isValid = false;
     const checkPassword = (password) => {

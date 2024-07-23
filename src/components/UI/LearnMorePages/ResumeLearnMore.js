@@ -49,6 +49,7 @@ const ResumeLearnMore = () => {
     }, [bubbleText]);
 
     const handleTryFree = () => {
+        localStorage.setItem('prevPath', '/user/dashboard/resume')
         window.open('/join-bubble', '_blank');
     }
 
@@ -129,7 +130,7 @@ const ResumeLearnMore = () => {
             </section>   
 
             <section className={css.TopCompanies}>
-                <h2>Our Users Secure Employment in Top Companies</h2>
+                <h2>Our Users Secure Employments in Top Companies</h2>
                 <Grid container>
                     <Grid container xs={12} md={2}>
                         <Grid item xs={6}>
@@ -141,7 +142,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid container xs={12} md={2}>
                         <Grid item xs={6} md={12}>
-                            <img src={amazonImg} className={css.CompanyImg} alt="" />
+                            <img src={nvidiaImg} className={css.CompanyImg} alt="" />
                         </Grid>
                         <Grid item xs={6} md={0}>
 
@@ -168,7 +169,7 @@ const ResumeLearnMore = () => {
 
                         </Grid>
                         <Grid item xs={6} md={12}>
-                        <img src={nvidiaImg} className={css.CompanyImg} alt="" />
+                            <img src={amazonImg} className={css.CompanyImg} alt="" />
                         </Grid>
                     </Grid>
                     <Grid container xs={12} md={2}>
