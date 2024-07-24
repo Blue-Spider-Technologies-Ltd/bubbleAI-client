@@ -72,6 +72,7 @@
 
 .TopCompanies h2 {
     margin-bottom: 25px;
+    font-size: 2.5rem;
 }
 
 .TopCompanies h2 {
@@ -83,6 +84,32 @@
     height: 50px;
 }
 
+.Process {
+    margin: 30px 20px;
+}
+
+.Process h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center
+}
+
+.Process h3 {
+    font-family: "Bubblegum Sans", sans-serif;
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+
+.Points {
+    margin: 0 20px;
+    line-height: 1.2;
+}
+
+.Pointers {
+    color: var(--navColor1);
+    margin: 0 13px;
+    font-size: 1.2rem;
+}
 
 @media (max-width: 900px) {
     .TitleContainer {

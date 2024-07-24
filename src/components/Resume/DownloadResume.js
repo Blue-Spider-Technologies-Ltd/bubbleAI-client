@@ -26,7 +26,7 @@ import { useReactToPrint  } from 'react-to-print';
 import { setError, setFetching, setSuccessMini } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
 import Alert from '@mui/material/Alert';
-import ProtectedContent from '../UI/ProtectedContent/ProtectedContent ';
+import ProtectedContent from "../UI/ProtectedContent/ProtectedContent ";
 import { useConfirm } from "material-ui-confirm";
 import avatarImg from '../../images/avatar.png'
 const screenWidth = window.innerWidth

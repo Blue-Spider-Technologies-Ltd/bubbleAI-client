@@ -33,7 +33,7 @@ import Wassce from "./components/MockTests/Exams/Wassce"
 import ResetPass from './components/Dashboard/ResetPass';
 import GoogleCallback from './components/Auth/GoogleCallback';
 import Terms from './components/Home/Terms';
-import HowIWork from './components/Home/HowIWork';
+// import HowIWork from './components/Home/HowIWork';
 import ContactUsPage from './components/Home/ContactUsPage';
 import AskMe from "./components/Home/AskMe"
 import { ConfirmProvider } from "material-ui-confirm";
@@ -85,7 +85,7 @@ const App = () => {
         <Route path={'/join-bubble'} element={<Register />} />
         <Route path={'/pricing'} element={<Pricing />} />
         <Route path={'/terms'} element={<Terms />} />
-        <Route path={'/how-i-work'} element={<HowIWork />} />
+        <Route path={'/how-i-work'} element={<ResumeLearnMore />} />
         <Route path={'/support'} element={<ContactUsPage />} />
         <Route path={'/transaction'} element={<TransactionDone />} />
         <Route path={'/chat'} element={<AskMe />} />
