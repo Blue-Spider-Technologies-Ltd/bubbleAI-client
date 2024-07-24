@@ -130,7 +130,7 @@ const PreviewResume = () => {
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [user.isFirstFreeUsed, dispatch, isAuth, errorSetter]);
+  }, [user.isFirstFreeUsed, dispatch, isAuth]);
   
 
 

@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
 import css from './LearnMorePages.module.css'
+import modalCss from '../Modal/Modal.module.css'
 import { fetchCountryData } from '../../../utils/client-functions';
 import MenuBar from '../Menu/Menu';
 import { ButtonSubmitGreen } from '../Buttons/Buttons';
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { TfiHandPointRight } from "react-icons/tfi";
+import Carousel from "react-multi-carousel";
+import { reviewDetails } from '../../../utils/reviews';
 import bubbleBgAuthImg from "../../../images/bubblebg-auth.jpg"
 import jobImg from "../../../images/jobs.jpg"
 import coverImg from "../../../images/cover-letter.jpg"
@@ -20,7 +23,7 @@ import customImg from "../../../images/customize.jpg"
 import downloadImg from "../../../images/download.jpg"
 import previewImg from "../../../images/preview.jpg"
 import Blob from '../Blob/Blob';
-import { Grid } from "@mui/material";
+import { Grid, Rating } from "@mui/material";
 import HelpIcon from '../HelpIcon/HelpIcon';
 const screenWidth = window.innerWidth
 
@@ -28,7 +31,24 @@ const ResumeLearnMore = () => {
     const [country, setCountry] = useState("")
     const [bubbleText, setBubbleText] = useState(['B', 'u', 'b', 'b', 'l', 'e', ' ', 'A', 'i']);
     const bubbleTextRef = useRef(null);
-
+    //Option for carousel in template section
+    const responsive = {
+        desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: 6,
+          slidesToSlide: 3 // optional, default to 1.
+        },
+        tablet: {
+          breakpoint: { max: 1024, min: 700 },
+          items: 3,
+          slidesToSlide: 2 // optional, default to 1.
+        },
+        mobile: {
+          breakpoint: { max: 700, min: 0 },
+          items: 1,
+          slidesToSlide: 1 // optional, default to 1.
+        }
+    };
 
     useEffect(() => {
         const returnCountryName = async () => {
@@ -416,8 +436,52 @@ const ResumeLearnMore = () => {
             </section>  
 
             <section className={css.TopCompanies}>
-                <h2>Users' Feedback Say More Than We Do!</h2>
+                <h2>Users' Feedback Say More Than We Can!</h2>
 
+                <Carousel
+                    responsive={responsive}
+                    swipeable={true}
+                    draggable={true}
+                    ssr={true} // render carousel on server-side.
+                    infinite={true}
+                    keyBoardControl={true}
+                    customTransition="all .5 ease-out"
+                    transitionDuration={500}
+                    containerClass="carousel-container"
+                    autoPlaySpeed={4000}
+                    dotListClass="custom-dot-list-style"
+                    itemClass="carousel-item-padding-40-px"
+                    autoPlay={true}
+                    centerMode={ screenWidth > 900 ? false : true}
+                    focusOnSelect={screenWidth < 900}
+                >
+                    {reviewDetails?.map((detail, index) => {
+                        return (
+                            <div key={index} style={{height: "auto", marginLeft: '10px'}}>
+                                <div style={{fontSize: '.7rem', display: 'flex', justifyContent: 'center', width: '100%'}}>
+                                    <div style={{width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden'}}>
+                                        <img src={detail?.img} alt={detail?.name} width='100%' />
+                                    </div>
+                                    <div style={{marginLeft: '10px'}}>
+                                        <div style={{fontSize: '.67rem', fontWeight: '700', color: '#5fbec5'}}>
+                                            {detail?.name}
+                                        </div>
+                                        <div>
+                                            <Rating name="read-only" value={detail?.rating} size="small" precision={0.5} readOnly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={modalCss.reviewCarousel}>
+                                    <p>
+                                        {detail?.review}
+                                    </p>
+                                </div>
+                            </div>
+                        )
+                    })}
+
+                </Carousel>
             </section>   
 
             <HelpIcon />
