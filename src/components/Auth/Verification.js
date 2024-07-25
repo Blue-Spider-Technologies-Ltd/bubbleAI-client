@@ -127,7 +127,7 @@ const Verification = () => {
                             <div className="error">{error}</div>
                             <div style={{fontSize: '.8rem', color: '#56A8AC', marginBottom: '10px'}}>{data.email}</div>
                                 <div style={{margin: '10px 0', fontSize: '.8rem'}}>
-                                    <p style={{textAlign: "center"}}>Didn't receive a code?</p>
+                                    <p style={{textAlign: "center"}}>Didn't receive a code? Check spam</p>
                                     <span>
                                         <button disabled={!isZero} className={isZero ? authCss.enabledResendBtn :  authCss.disabledResendBtn} onClick={handleReset}>Resend</button>
                                         {!isZero && <span>code in <span style={{backgroundColor: '#c0d1d453', padding: '3px', borderRadius: '5px', color: '#3E8F93'}}>{count}</span> seconds</span>}
@@ -161,10 +161,6 @@ const Verification = () => {
                                     <p>Dear {firstName},</p>
                                     <h2>YOUR WELCOME GIFT!</h2>
                                 </div>
-                                <p>Bubble Ai is an AI-powered virtual assistant that can perform monotonous professional tasks such as creating resumes/CVs, tailored cover letters, and curate high-paying jobs for you in your chosen location, ensuring that you stand a 90% chance of securing an interview, as well as preparing you seamlessly for the interview.</p>
-                                <p>Because we believe in improving your professional and everyday life, we offer you <a href='/chat' style={styles.link} target="_blank">interview preparations, content creation</a> and other Ai assitant features FREE FOREVER,
-                                    we offer <a href='/user/dashboard/resume' style={styles.link} target="_blank">Resume/CV and high-paying job suggestions</a> tailored to your CV on a very <a href='/pricing' style={styles.link} target="_blank">affordable subscription basis.</a></p>
-                        
                                 <p>To boost your chances, this is an <strong>OFFER LIMITED FOR 3 DAYS</strong>, of a 30% DISCOUNT coupon with code: <span style={{fontSize: '1.5rem', fontWeight: 600, color: '#3E8F93'}}>{couponCode}</span> on our PER WEEK PLAN only.</p>
                                 <p>You can create an unlimited number of CVs for the week, unlimited number of cover letters, and unlimited applications to high-paying jobs tailored to your specifications, guaranteeing you a JOB INTERVIEW WITHIN A WEEK.</p>
                                 

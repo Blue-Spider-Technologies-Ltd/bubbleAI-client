@@ -11,7 +11,7 @@ import Resume from './components/Resume/Resume'
 import ResumeLearnMore from './components/UI/LearnMorePages/ResumeLearnMore';
 import ViewResume from './components/Resume/ViewResume'
 import Depositions from './components/Depositions/Depositions';
-import MockTests from './components/MockTests/MockTests'
+import MockTests from './components/MockTests/MockTests';
 import Pricing from './components/Pricing/Pricing';
 import TransactionDone from './components/TransactionDone/TransactionDone';
 import Profile from './components/Dashboard/Profile';
