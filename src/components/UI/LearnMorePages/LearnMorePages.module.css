@@ -111,6 +111,45 @@
     font-size: 1.2rem;
 }
 
+.faqItem {
+    cursor: pointer;
+    color: #FFF;
+    display: flex;
+    height: 45px;
+    justify-content: space-between;
+    background: linear-gradient(to right, rgba(63, 106, 108, 0.9), rgba(63, 106, 108, 0.178));
+    margin: 0 0 10px 0;
+    padding: 0 20px;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    align-items: center
+  }
+
+.faqAnswer {
+    overflow: hidden;
+    margin-left: 5%;
+    width: 90%;
+    height: 0;
+    transition: 'all 0.3s ease'
+}
+
+.faqClicked {
+    color: #000;
+    font-size: .9rem;
+    width: 90%;
+    margin-left: 5%;
+    opacity: 1;
+    height: auto;
+    margin-bottom: 10px;
+    transition: all 0.3s ease
+}
+
+.plus {
+    font-size: 20px;
+    color: #000
+}
+
+
 @media (max-width: 900px) {
     .TitleContainer {
         height: 60vh;
@@ -118,6 +157,15 @@
 
     .ShowOffCont {
         width: 100%;
+    }
+
+    .faqAnswer {
+        font-size: .9rem;
+    }
+
+    .faqClicked {
+        color: #fff;
+        font-size: .9rem;
     }
 
     .CompanyImg {

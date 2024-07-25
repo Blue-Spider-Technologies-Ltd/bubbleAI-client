@@ -25,11 +25,13 @@ import previewImg from "../../../images/preview.jpg"
 import Blob from '../Blob/Blob';
 import { Grid, Rating } from "@mui/material";
 import HelpIcon from '../HelpIcon/HelpIcon';
+import { faqs } from '../../../utils/faqs';
 const screenWidth = window.innerWidth
 
 const ResumeLearnMore = () => {
     const [country, setCountry] = useState("")
     const [bubbleText, setBubbleText] = useState(['B', 'u', 'b', 'b', 'l', 'e', ' ', 'A', 'i']);
+    const [activeIndex, setActiveIndex] = useState(null);
     const bubbleTextRef = useRef(null);
     //Option for carousel in template section
     const responsive = {
@@ -75,6 +77,10 @@ const ResumeLearnMore = () => {
     const handleTryFree = () => {
         localStorage.setItem('prevPath', '/user/dashboard/resume')
         window.open('/join-bubble', '_blank');
+    }
+
+    const handleQClick = index => {
+        setActiveIndex(index === activeIndex ? null : index);
     }
 
     return (
@@ -483,6 +489,24 @@ const ResumeLearnMore = () => {
 
                 </Carousel>
             </section>   
+
+            <section className={css.Process}>
+                <h2>FAQs</h2>
+                <div style={{width: screenWidth > 900 && '60%', margin: '0 auto'}}>
+                    {faqs.map((item, index) => {
+                        return (
+                        <div key={index}>
+                            <div className={css.faqItem} onClick={() => handleQClick(index)}>
+                                <p>{item.q}</p>
+                                <p className={css.plus}>+</p>
+                            </div>
+                            <div className={activeIndex !== index ? css.faqAnswer : css.faqClicked}>{item.a}</div>
+                        </div>
+                        )
+                    })}
+                </div>
+
+            </section>
 
             <HelpIcon />
         </div>
