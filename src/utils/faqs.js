@@ -12,12 +12,12 @@ export const faqs = [
     },
     {
         q: "Can I apply to jobs on Bubble Ai?",
-        a: `YES! Premium user (subscribed to the PER WEEK and PER MONTH plans) get suggested high-paying jobs after creating and downloading any resume. These jobs are fitted to the created resume and gives you an over 90% chance of getting recruited.`
+        a: `YES! Premium users (subscribed to the PER WEEK and PER MONTH plans) get suggested high-paying jobs in locations of thier choice (including remote) after creating and downloading any resume. These jobs are fitted to the created resume and gives you an over 90% chance of getting recruited.`
     },
     {
       q: "Can I upgrade or downgrade?",
       a: `For the Per Use plan, there is usually no need to upgrade as you naturally only get to use it once. 
-        But if you wish to upgrade an existing plan, send us an email with your registered email stating exactly what you want and we will support your upgrade with a GOOD DISCOUNT.`
+        But if you wish to upgrade an existing plan, send us an email to support@bubble-ai.tech with your registered email stating exactly what you want and we will support your upgrade with a GOOD DISCOUNT.`
     },
     {
       q: "Is my personal info secure?",
