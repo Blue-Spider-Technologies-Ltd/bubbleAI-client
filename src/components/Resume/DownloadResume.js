@@ -130,17 +130,17 @@ const DownloadResume = () => {
         };
     
         const runHandleScroll = () => {
-            handleScroll();
-            window.addEventListener('scroll', handleScroll);
+            setIsFirstFreeUsedAndUpdateDB();
         };
-    
+
+        window.addEventListener('scroll', handleScroll);
         timer = setTimeout(runHandleScroll, 60000); // 1 minute
         
         return () => {
             clearTimeout(timer);
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [user.isFirstFreeUsed, isFirstFreeSetOnDB]);
+    }, []);
     
     
     const setIsFirstFreeUsedAndUpdateDB = () => {
