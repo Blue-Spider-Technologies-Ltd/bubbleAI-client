@@ -110,14 +110,14 @@ const DownloadResume = () => {
         } 
     }, [user]);
 
-    
+
     useEffect(() => {
         let timer;
-    
+
         const handleScroll = () => {
             const scrollPosition = window.scrollY || window.pageYOffset;
             const viewHeight = window.innerHeight || document.documentElement.clientHeight;
-            const scrollThreshold = 0.7 * viewHeight;
+            const scrollThreshold = 0.8 * viewHeight;
     
             if (
                 scrollPosition > scrollThreshold &&
@@ -125,12 +125,16 @@ const DownloadResume = () => {
                 !user.isFirstFreeUsed
             ) {
                 errorSetter("Select a package to get all BENEFITS");
-                setIsFirstFreeUsedAndUpdateDB();
+                if (isFirstFreeSetOnDB) {
+                    setIsFirstFreeUsedAndUpdateDB();
+                }
             }
         };
     
         const runHandleScroll = () => {
-            setIsFirstFreeUsedAndUpdateDB();
+            if (isFirstFreeSetOnDB) {
+                setIsFirstFreeUsedAndUpdateDB();
+            }
         };
 
         window.addEventListener('scroll', handleScroll);
