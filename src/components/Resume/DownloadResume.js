@@ -19,7 +19,7 @@ import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
 import FlyingFish from './Templates/FlyingFish/FlyingFish';
 import Feedback from '../Dashboard/Feedback';
 import jwt_decode from "jwt-decode";
-import { SuccessFailureModal, Overlay } from '../UI/Modal/Modal';
+import { SuccessFailureModal, Overlay, CheckoutSummaryModal } from '../UI/Modal/Modal';
 import ResumePricing from '../Pricing/ResumePricing';
 import axios from 'axios';
 import { useReactToPrint  } from 'react-to-print';
@@ -49,7 +49,7 @@ const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
 
 
 const DownloadResume = () => {
-    const { resume, error, successMini, resumeSubDuration, user } = useSelector(state => state.stateData)
+    const { resume, error, successMini, resumeSubDuration, user, showCheckout } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirm = useConfirm();
@@ -535,6 +535,8 @@ const DownloadResume = () => {
                     <ResumePricing />
                 </Overlay>
             )}
+
+            {showCheckout && <CheckoutSummaryModal />}
             
             {!hasDroppedFeedback && isFeedbackTime && <Feedback notApaymentTextPositive="Resume Creation Completed!"/>}
             {completed &&  (                

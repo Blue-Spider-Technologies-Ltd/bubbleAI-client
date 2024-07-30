@@ -8,6 +8,7 @@ import Register from './components/Auth/Register';
 import Verification from './components/Auth/Verification';
 import PwdRecovery from './components/Auth/PwdRecovery';
 import Resume from './components/Resume/Resume'
+import BizProposal from './components/BizProposal/BizProposal';
 import ResumeLearnMore from './components/UI/LearnMorePages/ResumeLearnMore';
 import ViewResume from './components/Resume/ViewResume'
 import Depositions from './components/Depositions/Depositions';
@@ -68,11 +69,12 @@ const App = () => {
         <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
         <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />
         <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
+
         <Route path={'/user/dashboard/resume'} element={ <Resume /> } />
         <Route path={'/user/dashboard/depositions'} element={ <Depositions /> } />
         <Route path={'/user/dashboard/mock'} element={ <MockTests /> } />
         <Route path={'/user/dashboard/business-plan'} element={ <UnderConstruction /> } />
-        <Route path={'/user/dashboard/business-proposals'} element={ <UnderConstruction /> } />
+        <Route path={'/user/dashboard/business-proposal'} element={ <BizProposal /> } />
         <Route path={'/user/dashboard/product-price'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/councellor'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/fraud-detector'} element={ <UnderConstruction /> } />

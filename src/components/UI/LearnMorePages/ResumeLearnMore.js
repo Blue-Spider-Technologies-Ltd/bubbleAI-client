@@ -270,7 +270,7 @@ const ResumeLearnMore = () => {
                     )}
                     <Grid item xs={12} md={6} p={3}>
                         <h3>Preview</h3>
-                        <p>While we combine many algorithms to pass Applicant Tracking Systems and other software, we also give you, the user, the opprtunity to preview and edit the seamlessly generated Ai resume, giving it extra legitimacy and a human touch.</p>
+                        <p>While we combine many algorithms to pass Applicant Tracking Systems and other software, we also give you, the user, the opportunity to preview and edit the seamlessly generated Ai resume, giving it extra legitimacy and a human touch.</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -361,7 +361,7 @@ const ResumeLearnMore = () => {
                         </Grid>
                     )}
                     <Grid item xs={12} md={6} p={3}>
-                        <h3>After Download</h3>
+                        <h3>Jobs</h3>
                         <p>This is where the rest of the magic happens. Bubble Ai does not just give you a professional and role-specific CV, a pop up appears after download and Premium Users can BENEFIT from this as it offers:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>

@@ -75,7 +75,7 @@ const useStyles = makeStyles({
             padding: '2px 10px',
             backgroundColor: "#6FCBD1",
             fontSize: '16px',
-            fontWeight: '600'
+            fontWeight: '600',
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
             border: "none",

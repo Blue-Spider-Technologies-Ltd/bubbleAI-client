@@ -8,11 +8,11 @@ export const faqs = [
     },
     {
       q: "Is there a free trial on the Resume creator?",
-      a: `As a first time user on Bubble Ai, you get free Job interview preparation, create one CV but might not have download access and no tailored cover letter.`
+      a: `Yes, ther is. As a first time user on bubble Ai, you get a glimpse of what I offer but with limited access. Proceed to try it for free to see how far you can get.`
     },
     {
         q: "Can I apply to jobs on Bubble Ai?",
-        a: `YES! Premium users (subscribed to the PER WEEK and PER MONTH plans) get suggested high-paying jobs in locations of thier choice (including remote) after creating and downloading any resume. These jobs are fitted to the created resume and gives you an over 90% chance of getting recruited.`
+        a: `YES! Premium users (subscribed to the PER WEEK and PER MONTH plans) get suggested high-paying jobs in locations of their choice (including remote) after creating and downloading any resume. These jobs are fitted to the created resume and gives you an over 90% chance of getting recruited.`
     },
     {
       q: "Can I upgrade or downgrade?",

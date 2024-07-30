@@ -210,11 +210,11 @@ const DashSupport = (props) => {
   return (
     <div className="auth-container">
         {/* For SIDE MENU */}
-        <AuthSideMenu
+        {/* <AuthSideMenu
             opened={menuOpen}
             seacrhBarPlaceholder="Search already taken Exams"
             hidden={!menuOpen}
-        />
+        /> */}
         <div style={{ width: `${searchBarWidth}`, padding: "0" }}>
             <div className="auth-bg-blob"></div>
         </div>

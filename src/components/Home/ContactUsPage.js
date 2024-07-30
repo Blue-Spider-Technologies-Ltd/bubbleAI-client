@@ -56,7 +56,7 @@ const ContactUsPage = () => {
 
 
             <div style={styles.socialContainer}>
-              <a style={styles.a} href="https://www.instagram.com/_bubble.ai?igsh=MW9vZXJ0NmtlbW5mMQ%3D%3D&utm_source=qr" target="_blank" rel="noreferrer">
+              <a style={styles.a} href="https://www.instagram.com/_bubble.ai" target="_blank" rel="noreferrer">
                 <FaInstagram style={styles.icon} />
                 {screenWidth > 900 && <br />}
                 {screenWidth > 900 && "@_bubble.ai"}

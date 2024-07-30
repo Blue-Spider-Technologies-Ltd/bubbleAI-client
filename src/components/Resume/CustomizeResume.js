@@ -761,19 +761,19 @@ const CustomizeResume = () => {
     }
   }
 
-const handleSearch = (e) => {
-      const newSearchString = e.target.value;
-      setSearchString(newSearchString);
-  
-      if (newSearchString.length < 1) {
-          setResumeForSearch(userResumesAll);
-      } else  {
-          // Filter the resumes based on the search string
-          const filteredData = resumeForSearch.filter(item =>
-            item.storageDetails.name.includes(newSearchString)
-          );
-          setResumeForSearch(filteredData);
-      }
+  const handleSearch = (e) => {
+    const newSearchString = e.target.value;
+    setSearchString(newSearchString);
+
+    if (newSearchString.length < 1) {
+        setResumeForSearch(userResumesAll);
+    } else  {
+        // Filter the resumes based on the search string
+        const filteredData = resumeForSearch.filter(item =>
+          item.storageDetails.name.includes(newSearchString)
+        );
+        setResumeForSearch(filteredData);
+    }
   };
   
 
