@@ -7,18 +7,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import { FaLongArrowAltRight } from "react-icons/fa";
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
+import { Button, ButtonGroup } from '@mui/material';
 import { errorAnimation, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-// import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
-import Feedback from '../Dashboard/Feedback';
-import jwt_decode from "jwt-decode";
-import { SuccessFailureModal } from '../UI/Modal/Modal';
-import axios from 'axios';
+// import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+// // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
+// import Feedback from '../Dashboard/Feedback';
+// import jwt_decode from "jwt-decode";
+// import { SuccessFailureModal } from '../UI/Modal/Modal';
+// import axios from 'axios';
 import { setError, setFetching, setSuccessMini } from "../../redux/states";
-import { checkAuthenticatedUser } from '../../utils/client-functions';
-import Alert from '@mui/material/Alert';
-import { useConfirm } from "material-ui-confirm";
-const screenWidth = window.innerWidth
+// import { checkAuthenticatedUser } from '../../utils/client-functions';
+// import Alert from '@mui/material/Alert';
+// import { useConfirm } from "material-ui-confirm";
+// const screenWidth = window.innerWidth
 
 
 
@@ -30,6 +31,7 @@ const CustomizeProposal = () => {
     const [recipientCountryid, setRecipientCountryid] = useState(0);
     const [addyFaded, setAddyFaded] = useState(false);
     const [proposalDetailsFaded, setProposalDetailsFaded] = useState(true);
+    const [selectedIndex, setSelectedIndex] = useState(1);
 
     const [addyInfo, setAddyInfo] = useState({
         writerBizName: "",
@@ -53,9 +55,39 @@ const CustomizeProposal = () => {
         setAuthMenuOpen(!authMenuOpen)
     }
 
-    const handleAddyChange = () => {
-
+    const handleAddyChange = (prop) => (event) => {
+        if (prop === "writerCountry") {
+            setWriterCountryid(event.id)
+            setAddyInfo({
+              ...addyInfo,
+              [prop]: event.name,
+            });
+            return
+        }
+        if (prop === "recipientCountry") {
+            setRecipientCountryid(event.id)
+            setAddyInfo({
+                ...addyInfo,
+                [prop]: event.name,
+            });
+            return
+        }
+        if (prop === "writerState" || prop === "recipientState") {
+            setAddyInfo({
+                ...addyInfo,
+                [prop]: event.name,
+            });
+            return
+        }
+        setAddyInfo({
+            ...addyInfo,
+            [prop]: event.target.value,
+        });
     }
+
+    const handleButtonClick = (index) => {
+        setSelectedIndex(index);
+    };
 
     const addyForwardOrBackward = (arg) => {
         if (writerBizName === "" 
@@ -141,7 +173,7 @@ const CustomizeProposal = () => {
                                             inputType="text"
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange('')}
+                                            onChange={handleAddyChange('writerBizName')}
                                         />
                                         <AuthInput
                                             name="writerSteetCity"
@@ -152,7 +184,7 @@ const CustomizeProposal = () => {
                                             inputType="text"
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange('')}
+                                            onChange={handleAddyChange('writerSteetCity')}
                                         />
                                         <AuthInput
                                             name="writerCountry"
@@ -163,7 +195,7 @@ const CustomizeProposal = () => {
                                             inputType="country-select"
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange('')}
+                                            onChange={handleAddyChange('writerCountry')}
                                         />
                                         <AuthInput
                                             name="writerState"
@@ -175,7 +207,7 @@ const CustomizeProposal = () => {
                                             inputGridSm={12}
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange("")}
+                                            onChange={handleAddyChange("writerState")}
                                         />
                                     </Grid>
 
@@ -195,7 +227,7 @@ const CustomizeProposal = () => {
                                             inputType="text"
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange('')}
+                                            onChange={handleAddyChange('recipientBizName')}
                                         />
                                         <AuthInput
                                             name="recipientSteetCity"
@@ -206,7 +238,7 @@ const CustomizeProposal = () => {
                                             inputType="text"
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange('')}
+                                            onChange={handleAddyChange('recipientSteetCity')}
                                         />
                                         <AuthInput
                                             name="recipientCountry"
@@ -217,7 +249,7 @@ const CustomizeProposal = () => {
                                             inputType="country-select"
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange('')}
+                                            onChange={handleAddyChange('recipientCountry')}
                                         />
                                         <AuthInput
                                             name="recipientState"
@@ -229,7 +261,7 @@ const CustomizeProposal = () => {
                                             inputGridSm={12}
                                             mb={2}
                                             required={true}
-                                            onChange={handleAddyChange("")}
+                                            onChange={handleAddyChange("recipientState")}
                                         />
                                     </Grid>
                                 </Grid>
@@ -259,7 +291,50 @@ const CustomizeProposal = () => {
 
                         {/* PRODUCT/SERVICE DETAILS */}
                         <div id="addy" className={`Segment ${addyFaded ? "Faded" : "Faded-in"}`}>
-                            <h4>Products/Services Details</h4>
+                            <h4>Deliverables Details</h4>
+                            <div style={{width: '100%', textAlign: 'center'}}>                            
+                                <ButtonGroup
+                                    sx={{
+                                        '& .MuiButton-root': {
+                                        backgroundColor: '#3E8F93',
+                                            '&:hover': {
+                                                backgroundColor: '#56A8AC',
+                                            },
+                                            '&.Mui-selected': {
+                                                backgroundColor: '#56A8AC',
+                                            },
+                                        },
+                                    }}
+                                    color="success"
+                                    variant="contained"
+                                    aria-label="Basic button group"
+                                >
+                                    <Button
+                                        onClick={() => handleButtonClick(1)}
+                                        className={selectedIndex === 1 ? 'Mui-selected' : ''}
+                                    >
+                                        Product
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleButtonClick(2)}
+                                        className={selectedIndex === 2 ? 'Mui-selected' : ''}
+                                    >
+                                        Service
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleButtonClick(3)}
+                                        className={selectedIndex === 3 ? 'Mui-selected' : ''}
+                                    >
+                                        Project
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleButtonClick(4)}
+                                        className={selectedIndex === 4 ? 'Mui-selected' : ''}
+                                    >
+                                        Partnership
+                                    </Button>
+                                </ButtonGroup>
+                            </div>
                             <div>
                                 <Grid
                                     container

@@ -132,9 +132,11 @@ const DownloadResume = () => {
         };
     
         const runHandleScroll = () => {
-            errorSetter("Select a package to get all BENEFITS");
-            if (!isFirstFreeSetOnDB) {
-                setIsFirstFreeUsedAndUpdateDB();
+            if (!user?.resumeSubscriptions?.subscribed) {
+                errorSetter("Select a package to get all BENEFITS");
+                if (!isFirstFreeSetOnDB) {
+                    setIsFirstFreeUsedAndUpdateDB();
+                }
             }
         };
 
