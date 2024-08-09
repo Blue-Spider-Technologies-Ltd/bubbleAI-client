@@ -862,7 +862,7 @@ const CustomizeResume = () => {
                 />
                 <div style={{ width: "100%" }}>
                   <div className={resumeCss.DetachedLabels}>
-                    Date of Birth *
+                    Date of Birth * (Might not be visible on resume)
                   </div>
                 </div>
                 <AuthInput

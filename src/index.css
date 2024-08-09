@@ -153,6 +153,7 @@ h1 {
 }
 
 .itemDelete {
+  color: rgb(216, 7, 7);
   cursor: pointer;
   border-left: 1px solid white;
   margin-left: 10px;

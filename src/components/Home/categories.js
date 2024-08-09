@@ -1,13 +1,14 @@
 
 import resumeImg from "../../images/resume.png"
 // import businessPlanImg from "../../images/business-plan.jpg";
-// import productImg from "../../images/product.jpg"
-// import fraudImg from "../../images/fraud-detector.jpg"
-// import examImg from "../../images/exam.jpg"
+
 // import reportImg from "../../images/report.jpg"
 // import relationshipImg from "../../images/relationship.jpg"
 import sttImg from "../../images/stt2.jpg"
 // import bizProposalImg from "../../images/biz-proposal.jpg"
+// import productImg from "../../images/product.jpg"
+// import fraudImg from "../../images/fraud-detector.jpg"
+// import examImg from "../../images/exam.jpg"
 
 const categoriesData = [
     {
@@ -17,13 +18,6 @@ const categoriesData = [
         unAuthURL: '/popin?resume',
         image: resumeImg
     },
-    // {
-    //     title: "Mock Exams and Tutor",
-    //     desc: "Take standard time-based CBT mock: JAMB, IELTS etc. and get tutored on weak areas",
-    //     isAuthURL: '/user/dashboard/mock',
-    //     unAuthURL: '/popin?mock',
-    //     image: examImg
-    // },
     {
         title: "Depositions (Beta)",
         desc: "Minutes of Proceedings (Speech to Text & Voice Recognition) AI",
@@ -32,10 +26,17 @@ const categoriesData = [
         image: sttImg
     },
     // {
+    //     title: "Mock Exams and Tutor",
+    //     desc: "Take standard time-based CBT mock: JAMB, IELTS etc. and get tutored on weak areas",
+    //     isAuthURL: '/user/dashboard/mock',
+    //     unAuthURL: '/popin?mock',
+    //     image: examImg
+    // },
+    // {
     //     title: "Business Proposals",
     //     desc: "Enter for a professional proposal, 100% conversion of potential clients",
-    //     isAuthURL: '/user/dashboard/business-proposals',
-    //     unAuthURL: '/popin?business-proposals',
+    //     isAuthURL: '/user/dashboard/business-proposal',
+    //     unAuthURL: '/popin?business-proposal',
     //     image: bizProposalImg
     // },
     // {
