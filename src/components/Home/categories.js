@@ -1,7 +1,5 @@
 
 import resumeImg from "../../images/resume.png"
-// import businessPlanImg from "../../images/business-plan.jpg";
-
 // import reportImg from "../../images/report.jpg"
 // import relationshipImg from "../../images/relationship.jpg"
 import sttImg from "../../images/stt2.jpg"
@@ -9,6 +7,7 @@ import sttImg from "../../images/stt2.jpg"
 // import productImg from "../../images/product.jpg"
 // import fraudImg from "../../images/fraud-detector.jpg"
 // import examImg from "../../images/exam.jpg"
+// import businessPlanImg from "../../images/business-plan.jpg";
 
 const categoriesData = [
     {
@@ -47,6 +46,13 @@ const categoriesData = [
     //     image: businessPlanImg
     // },
     // {
+    //     title: "Fraud Detector",
+    //     desc: "Pass me a suspicious file, link or message before interacting with it",
+    //     isAuthURL: '/user/dashboard/fraud-detector',
+    //     unAuthURL: '/popin?fraud-detector',
+    //     image: fraudImg
+    // },
+    // {
     //     title: "Product Price Setter",
     //     desc: "I can help you create the perfect price, beat competition",
     //     isAuthURL: '/user/dashboard/product-price',
@@ -59,13 +65,6 @@ const categoriesData = [
     //     isAuthURL: '/user/dashboard/councellor',
     //     unAuthURL: '/popin?councellor',
     //     image: relationshipImg
-    // },
-    // {
-    //     title: "Fraud Detector",
-    //     desc: "Pass me a suspicious file, link or message before interacting with it",
-    //     isAuthURL: '/user/dashboard/fraud-detector',
-    //     unAuthURL: '/popin?fraud-detector',
-    //     image: fraudImg
     // },
     // {
     //     title: "Generate Report",

@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
 import resumeCss from '../Resume/Resume.module.css'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
+import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../UI/Buttons/Buttons';
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import { Button, ButtonGroup } from '@mui/material';
-import { errorAnimation, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
+import { errorAnimation, checkEmptyStringsInObj, checkEmptyStrings, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
 // import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 // import Feedback from '../Dashboard/Feedback';
@@ -31,8 +32,13 @@ const CustomizeProposal = () => {
     const [writerCountryid, setWriterCountryid] = useState(0);
     const [recipientCountryid, setRecipientCountryid] = useState(0);
     const [addyFaded, setAddyFaded] = useState(false);
-    const [proposalDetailsFaded, setProposalDetailsFaded] = useState(true);
-    const [selectedIndex, setSelectedIndex] = useState(1);
+    const [propTypeFaded, setPropTypeFaded] = useState(true)
+    const [productFaded, setProductFaded] = useState(true)
+    const [objFaded, setObjFaded] = useState(true)
+    const [customersFaded, setCustomersFaded] = useState(true)
+    const [otherDeetsFaded, setOtherDeetsFaded] = useState(true)
+    const [proposalType, setProposalType] = useState("")
+    const [selectedIndex, setSelectedIndex] = useState(null);
     const [suggestedObj, setSuggestedObj] = useState([])
     const [objInput, setObjInput] = useState("")
     const [isObjInputDelimited, setIsObjInputDelimited] = useState(false);
@@ -64,6 +70,7 @@ const CustomizeProposal = () => {
     const [productArray, addProductArray] = useState([
         {
           productName: "",
+          price: "",
           productDesc: "",
         }
     ]);
@@ -72,6 +79,7 @@ const CustomizeProposal = () => {
     const handleAddProduct = () => {
         const newProduct =         {
             productName: "",
+            price: "",
             productDesc: "",
         }
         if (productArray.length < 10) {
@@ -92,6 +100,10 @@ const CustomizeProposal = () => {
         switch (event.target.name) {
             case "productName":
                 prevProducts[index].productName = event.target.value;
+                addProductArray(prevProducts);
+                break;            
+            case "price":
+                prevProducts[index].price = event.target.value;
                 addProductArray(prevProducts);
                 break;
             case "productDesc":
@@ -148,36 +160,152 @@ const CustomizeProposal = () => {
         });
     }
 
-    const handleButtonClick = (index) => {
-        setSelectedIndex(index);
-    };
-
     const addyForwardOrBackward = (arg) => {
-        if (writerBizName === "" 
-            || writerIndustry === "" 
-            || writerSteetCity === "" 
-            || writerCountry === "" 
-            || writerCountry === "Country" 
-            || writerState === "" 
-            || writerState === "State/Region" 
-            || recipientBizName === "" 
-            || recipientIndustry === "" 
-            || recipientSteetCity === "" 
-            || recipientCountry === "" 
-            || recipientCountry === "Country" 
-            || recipientState === "State/Region" 
-            || recipientState === ""
-        ) {
-          errorSetter("Complete required fields in this section to continue");
-          return;
-        }
+        // if (writerBizName === "" 
+        //     || writerIndustry === "" 
+        //     || writerSteetCity === "" 
+        //     || writerCountry === "" 
+        //     || writerCountry === "Country" 
+        //     || writerState === "" 
+        //     || writerState === "State/Region" 
+        //     || recipientBizName === "" 
+        //     || recipientIndustry === "" 
+        //     || recipientSteetCity === "" 
+        //     || recipientCountry === "" 
+        //     || recipientCountry === "Country" 
+        //     || recipientState === "State/Region" 
+        //     || recipientState === ""
+        // ) {
+        //   errorSetter("Complete required fields in this section to continue");
+        //   return;
+        // }
         setAddyFaded(true)
         switch (arg) {
           case "forward":
-            setProposalDetailsFaded(false)
+            setPropTypeFaded(false)
             break;
         
           default:
+            break;
+        }
+    }
+
+    const handleProposalTypeForward = (prop) => {
+        setPropTypeFaded(true)
+        setProductFaded(false)
+        switch (prop) {
+            case "product":
+                setSelectedIndex(1);
+                setProposalType("product")
+                break;
+            case "service":
+                setSelectedIndex(2);
+                setProposalType("service")
+                break;
+            case "project":
+                setSelectedIndex(3);
+                setProposalType("project")
+                break;
+            case "partnership":
+                setSelectedIndex(4);
+                setProposalType("partnership")
+                break;
+            default:
+                setPropTypeFaded(false)
+                setProductFaded(true)
+                break;
+        }
+    }
+
+    const handleProposalTypeBackward = () => {
+        setPropTypeFaded(true)
+        setAddyFaded(false)
+    }
+
+    const productForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setProductFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setProductFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setProductFaded(false)
+            break;
+        }
+    }
+
+    const objForwardOrBackward = (arg) => {
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled, exempting two keys
+            // if (checkEmptyStrings(suggestedObj) === false ) {
+            //     return errorSetter("Complete required fields in this section to continue");
+            // }
+            setObjFaded(true)
+            setCustomersFaded(false)
+            break;
+          case "backward":
+            setObjFaded(true)
+            setProductFaded(false)
+            break;
+        
+          default:
+            setObjFaded(false)
+            break;
+        }
+    }
+
+    const customersForwardOrBackward = (arg) => {
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled, exempting two keys
+            // if (checkEmptyStrings(suggestedObj) === false ) {
+            //     return errorSetter("Complete required fields in this section to continue");
+            // }
+            setCustomersFaded(true)
+            setOtherDeetsFaded(false)
+            break;
+          case "backward":
+            setCustomersFaded(true)
+            setObjFaded(false)
+            break;
+        
+          default:
+            setCustomersFaded(false)
+            break;
+        }
+    }
+
+    const otherDeetsForwardOrBackward = (arg) => {
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled, exempting two keys
+            // if (checkEmptyStrings(suggestedObj) === false ) {
+            //     return errorSetter("Complete required fields in this section to continue");
+            // }
+            setOtherDeetsFaded(true)
+            // setOtherDeetsFaded(false)
+            break;
+          case "backward":
+            setOtherDeetsFaded(true)
+            setCustomersFaded(false)
+            break;
+        
+          default:
+            setOtherDeetsFaded(false)
             break;
         }
     }
@@ -231,7 +359,7 @@ const CustomizeProposal = () => {
                             {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Flip screen orientation to landscape to display template properly on mobile</Alert>}
                         </div> */}
 
-                        {/* ADDRESS DETAILS */}
+                        {/* COMPANY DETAILS */}
                         <div id="addy" className={`Segment ${addyFaded ? "Faded" : "Faded-in"}`}>
                             <h4>Company Details</h4>
                             <p></p>
@@ -387,17 +515,17 @@ const CustomizeProposal = () => {
                                     <ButtonSubmitGreen type="button" onClick={() => {
                                         addyForwardOrBackward('forward')
                                     }}>
-                                        Proposal Details &nbsp;&nbsp;<FaLongArrowAltRight />
+                                        Proposal Type &nbsp;&nbsp;<FaLongArrowAltRight />
                                     </ButtonSubmitGreen>
                                 </div>
                             </div>
                         </div>
 
 
-                        {/* PROPOSAL DETAILS */}
-                        <div id="prop-deets" className={`Segment ${addyFaded ? "Faded" : "Faded-in"}`}>
-                            <h4>Proposal Details</h4>
-                            <div style={{width: '100%', textAlign: 'center'}}>       
+                        {/* PROPOSAL TYPE */}
+                        <div id="prop-type" className={`Segment ${propTypeFaded ? "Faded" : "Faded-in"}`}>
+                            <h4>Proposal Type</h4>
+                            <div style={{width: '100%', textAlign: 'center', marginBottom: "20px"}}>       
                                 <Alert 
                                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                                     severity="info"
@@ -421,31 +549,52 @@ const CustomizeProposal = () => {
                                     aria-label="Basic button group"
                                 >
                                     <Button
-                                        onClick={() => handleButtonClick(1)}
+                                        onClick={() => handleProposalTypeForward("product")}
                                         className={selectedIndex === 1 ? 'Mui-selected' : ''}
                                     >
                                         Product
                                     </Button>
                                     <Button
-                                        onClick={() => handleButtonClick(2)}
+                                        onClick={() => handleProposalTypeForward("service")}
                                         className={selectedIndex === 2 ? 'Mui-selected' : ''}
                                     >
                                         Service
                                     </Button>
                                     <Button
-                                        onClick={() => handleButtonClick(3)}
+                                        onClick={() => handleProposalTypeForward("project")}
                                         className={selectedIndex === 3 ? 'Mui-selected' : ''}
                                     >
                                         Project
                                     </Button>
                                     <Button
-                                        onClick={() => handleButtonClick(4)}
+                                        onClick={() => handleProposalTypeForward("partnership")}
                                         className={selectedIndex === 4 ? 'Mui-selected' : ''}
                                     >
                                         Partnership
                                     </Button>
                                 </ButtonGroup>
                             </div>
+
+                            {/* Visibility Buttons */}
+                            <div
+                                style={{
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: "20px",
+                                }}
+                            >
+                                <div style={{ width: "100px"}}>
+                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={handleProposalTypeBackward}>
+                                        <FaLongArrowAltLeft />
+                                    </ButtonOutlineGreenWithDiffStyle>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* PRODUCT DETAILS */}
+                        <div id="product-deets" className={`Segment ${productFaded ? "Faded" : "Faded-in"}`}>
+                            <h4>Product Details</h4>
 
                             <div>
                                 <Grid
@@ -472,6 +621,16 @@ const CustomizeProposal = () => {
                                                     inputType="text"
                                                     mb={2}
                                                     required={true}
+                                                    onChange={(event) => handleProductChange(event, index)}
+                                                />
+                                                <AuthInput
+                                                    name="price"
+                                                    id={item.price}
+                                                    value={item.price}
+                                                    label="Price (OPTIONAL)"
+                                                    inputGridSm={12}
+                                                    inputType="text"
+                                                    mb={2}
                                                     onChange={(event) => handleProductChange(event, index)}
                                                 />
                                                 <AuthInput
@@ -513,18 +672,25 @@ const CustomizeProposal = () => {
                             </div>
 
                     
-                            {/* Visibility Buttons */}
+                            {/* Product Visibility Buttons */}
                             <div
                                 style={{
                                     width: "100%",
                                     display: 'flex',
-                                    justifyContent: 'right',
+                                    justifyContent: 'space-between',
                                     marginBottom: "20px",
                                 }}
                             >
+                                <div style={{ width: "100px"}}>
+                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                                        productForwardOrBackward('backward')
+                                    }}>
+                                        <FaLongArrowAltLeft />
+                                    </ButtonOutlineGreenWithDiffStyle>
+                                </div>
                                 <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
-                                        addyForwardOrBackward('forward')
+                                        productForwardOrBackward('forward')
                                     }}>
                                         Objectives &nbsp;&nbsp;<FaLongArrowAltRight />
                                     </ButtonSubmitGreen>
@@ -534,7 +700,7 @@ const CustomizeProposal = () => {
 
 
                         {/* OBJECTIVES */}
-                        <div id="obj" className={`Segment ${addyFaded ? "Faded" : "Faded-in"}`}>
+                        <div id="obj" className={`Segment ${objFaded ? "Faded" : "Faded-in"}`}>
                         
                             <h4>Objectives</h4>
                             <Alert 
@@ -572,7 +738,7 @@ const CustomizeProposal = () => {
                                 <AuthInput
                                     name="objInput"
                                     value={objInput}
-                                    placeholder="Enter some objectives (Objectives are details of what your product will solve. separate each sentence/word with a comma, semi-colon or full-stop)"
+                                    placeholder="Enter some objectives (Objectives are details of what your product will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
                                     multiline={true}
                                     inputGridSm={12}
                                     mt={2}
@@ -588,25 +754,31 @@ const CustomizeProposal = () => {
                                 style={{
                                     width: "100%",
                                     display: 'flex',
-                                    justifyContent: 'right',
+                                    justifyContent: 'space-between',
                                     marginBottom: "20px",
                                 }}
                             >
-
+                                <div style={{ width: "100px"}}>
+                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                                        objForwardOrBackward('backward')
+                                    }}>
+                                        <FaLongArrowAltLeft />
+                                    </ButtonOutlineGreenWithDiffStyle>
+                                </div>
                                 <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
-                                        addyForwardOrBackward('forward')
+                                        objForwardOrBackward('forward')
                                     }}>
-                                        Other Details &nbsp;&nbsp;<FaLongArrowAltRight />
+                                        Customers &nbsp;&nbsp;<FaLongArrowAltRight />
                                     </ButtonSubmitGreen>
                                 </div>
                             </div>
                         </div>
 
-                        {/* PARTNERS */}
-                        <div id="obj" className={`Segment ${addyFaded ? "Faded" : "Faded-in"}`}>
+                        {/* CUSTOMERS/PARTNERS */}
+                        <div id="obj" className={`Segment ${customersFaded ? "Faded" : "Faded-in"}`}>
                         
-                            <h4>Partners</h4>
+                            <h4>Customers/Partners</h4>
                             <Alert 
                                 sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                                 severity="info"
@@ -653,19 +825,25 @@ const CustomizeProposal = () => {
                                 />
                             </Grid>
 
-                            {/* Visibility Buttons */}
+                            {/* CUSTOMERS Visibility Buttons */}
                             <div
                                 style={{
                                     width: "100%",
                                     display: 'flex',
-                                    justifyContent: 'right',
+                                    justifyContent: 'space-between',
                                     marginBottom: "20px",
                                 }}
                             >
-
+                                <div style={{ width: "100px"}}>
+                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                                        customersForwardOrBackward('backward')
+                                    }}>
+                                        <FaLongArrowAltLeft />
+                                    </ButtonOutlineGreenWithDiffStyle>
+                                </div>
                                 <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
-                                        addyForwardOrBackward('forward')
+                                        customersForwardOrBackward('forward')
                                     }}>
                                         Other Details &nbsp;&nbsp;<FaLongArrowAltRight />
                                     </ButtonSubmitGreen>
@@ -673,8 +851,8 @@ const CustomizeProposal = () => {
                             </div>
                         </div>
 
-                        {/* GOALS DETAILS */}
-                        <div id="addy" className={`Segment ${addyFaded ? "Faded" : "Faded-in"}`}>
+                        {/* OTHER DETAILS */}
+                        <div id="addy" className={`Segment ${otherDeetsFaded ? "Faded" : "Faded-in"}`}>
                             <h4>Other Details</h4>
                             <Alert 
                                 sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
@@ -691,18 +869,24 @@ const CustomizeProposal = () => {
                                 style={{
                                     width: "100%",
                                     display: 'flex',
-                                    justifyContent: 'right',
+                                    justifyContent: 'space-between',
                                     marginBottom: "20px",
                                 }}
                             >
-
-                                <div style={{ width: "200px"}}>
+                                <div style={{ width: "100px"}}>
+                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
+                                        otherDeetsForwardOrBackward('backward')
+                                    }}>
+                                        <FaLongArrowAltLeft />
+                                    </ButtonOutlineGreenWithDiffStyle>
+                                </div>
+                                {/* <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
-                                        addyForwardOrBackward('forward')
+                                        otherDeetsForwardOrBackward('forward')
                                     }}>
                                         Proposal Details &nbsp;&nbsp;<FaLongArrowAltRight />
                                     </ButtonSubmitGreen>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 

@@ -22,6 +22,8 @@ import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
 import Alert from '@mui/material/Alert';
+import { FaLongArrowAltRight } from "react-icons/fa";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
 
 
@@ -677,7 +679,7 @@ const CustomizeResume = () => {
   const workExpForwardOrBackward = (arg) => {
     switch (arg) {
       case "forward":
-        //check if required fields are filled, exempting two keys
+        //check if required fields are filled, exempting some keys
         if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink", "dateTo", "currently") === false ) {
           errorSetter("Complete required fields in this section to continue");
           return;
@@ -819,9 +821,9 @@ const CustomizeResume = () => {
           <form method="post" onSubmit={handleFormSubmit}>
             <div className="error">{error}</div>
             <div className='explanation-points'>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">The + and - buttons are to add and delete applicable input fields or sections</Alert>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">All fields with * are required</Alert>
-                {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>}
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">All fields with * are required</Alert>
+                {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>}
             </div>
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
@@ -984,7 +986,6 @@ const CustomizeResume = () => {
                 />
               </Grid>
 
-
               {/* Visibility Buttons */}
               <div
                 style={{
@@ -998,7 +999,7 @@ const CustomizeResume = () => {
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => basicInfoForward("forward")}>
-                    NEXT: Education Info{" "}
+                    Education &nbsp;&nbsp;<FaLongArrowAltRight />
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1080,22 +1081,18 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "150px"}}>
+                <div style={{ width: "100px"}}>
                   <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
                     eduInfoForwardOrBackward('backward')
                   }}>
-                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
-                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
-                      Basic Info
-                    </span>
-                    
+                     <FaLongArrowAltLeft />
                   </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
                     eduInfoForwardOrBackward('forward')
                   }}>
-                    NEXT: Work Experiences{" "}
+                    Experiences &nbsp;&nbsp;<FaLongArrowAltRight />
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1272,22 +1269,18 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "150px"}}>
+                <div style={{ width: "100px"}}>
                   <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
                     workExpForwardOrBackward('backward')
                   }}>
-                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
-                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
-                      Education Info
-                    </span>
-                    
+                    <FaLongArrowAltLeft />
                   </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
                     workExpForwardOrBackward('forward')
                   }}>
-                    NEXT: Skills{" "}
+                    Skills &nbsp;&nbsp;<FaLongArrowAltRight />
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1351,22 +1344,18 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "150px"}}>
+                <div style={{ width: "100px"}}>
                   <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
                     skillsForwardOrBackward('backward')
                   }}>
-                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
-                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
-                      Work Experience
-                    </span>
-                    
+                    <FaLongArrowAltLeft />
                   </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
                     skillsForwardOrBackward('forward')
                   }}>
-                    NEXT: Certifications{" "}
+                    Certifications &nbsp;&nbsp;<FaLongArrowAltRight />
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1454,21 +1443,18 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "150px"}}>
+                <div style={{ width: "100px"}}>
                   <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
                     certsForwardOrBackward('backward')
                   }}>
-                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
-                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
-                      Skills
-                    </span>
+                    <FaLongArrowAltLeft />
                   </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
                     certsForwardOrBackward('forward')
                   }}>
-                    NEXT: Publications{" "}
+                    Publications &nbsp;&nbsp;<FaLongArrowAltRight />
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1556,21 +1542,18 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "150px"}}>
+                <div style={{ width: "100px"}}>
                   <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
                     pubForwardOrBackward('backward')
                   }}>
-                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
-                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
-                      Certs & Awards
-                    </span>
+                    <FaLongArrowAltLeft />
                   </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
                     pubForwardOrBackward('forward')
                   }}>
-                    NEXT: Hobbies{" "}
+                    Hobbies &nbsp;&nbsp;<FaLongArrowAltRight />
                   </ButtonSubmitGreen>
                 </div>
               </div>
@@ -1634,14 +1617,11 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "150px"}}>
+                <div style={{ width: "100px"}}>
                   <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
                     interestsBackward('backward')
                   }}>
-                    <ArrowBackIosNewIcon fontSize="inherit" />{" "}
-                    <span style={{ marginLeft: "5px", paddingTop: "1px" }}>
-                      Publications
-                    </span>
+                    <FaLongArrowAltLeft />
                   </ButtonOutlineGreenWithDiffStyle>
                 </div>
               </div>
@@ -1659,9 +1639,8 @@ const CustomizeResume = () => {
               <div id="submit-button" style={{ width: "150px", display: "none" }}>
                 <ButtonSubmitGreen>
                   <span style={{ marginRight: "5px", paddingTop: "1px" }}>
-                    Build & Preview{" "}
-                  </span>{" "}
-                  <ArrowForwardIosIcon fontSize="inherit" />
+                    Build & Preview
+                  </span>
                 </ButtonSubmitGreen>
               </div>
             </div>

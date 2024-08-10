@@ -258,8 +258,8 @@ const PreviewResume = () => {
             <form method="post" onSubmit={handleFormSubmit}>
               <div className="error">{error}</div>
               <div className='explanation-points'>
-                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">On the job description field, make sure each point is separated by a semi colon (if you decide to edit it) to enable proper formatting on the download page.</Alert>
-                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Always read the generated resume carefully and make edits to imprint your personal touch.</Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">On the job description field, make sure each point is separated by a semi colon (if you decide to edit it) to enable proper formatting on the download page.</Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Always read the generated resume carefully and make edits to imprint your personal touch.</Alert>
               </div>
               <div className="Segment">
                 <h4>Basic Info</h4>
@@ -804,9 +804,8 @@ const PreviewResume = () => {
                 <div style={{ width: "150px" }}>
                   <ButtonSubmitGreen>
                     <span style={{ marginRight: "5px", paddingTop: "1px" }}>
-                      Finish{" "}
-                    </span>{" "}
-                    <ArrowForwardIosIcon fontSize="inherit" />
+                      Finish
+                    </span>
                   </ButtonSubmitGreen>
                 </div>
               </div>

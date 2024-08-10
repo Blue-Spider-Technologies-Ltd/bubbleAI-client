@@ -444,8 +444,8 @@ const DownloadResume = () => {
                         <div className='error'>{error}</div>
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
-                            <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Click Download only when you are sure to download as action is not reversible</Alert>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">Flip screen orientation to landscape to display template properly on mobile</Alert>}
+                            <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible</Alert>
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Flip screen orientation to landscape to display template properly on mobile</Alert>}
                         </div>
                         <div className="Segment">
                             <h4>Save Resume Details</h4>
