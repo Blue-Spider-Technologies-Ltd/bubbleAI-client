@@ -326,6 +326,21 @@ h1 {
   z-index: 999;
 }
 
+.prev-page {
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.4rem;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 20px;
+  margin-top: 12px;
+  color: var(--navColor1);
+  box-shadow: -6px 0px 10px rgba(255, 255, 255, 0.8),
+              6px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
 .align-right-bold {
   font-weight: 600;
 }

@@ -1081,12 +1081,8 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "100px"}}>
-                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                    eduInfoForwardOrBackward('backward')
-                  }}>
-                     <FaLongArrowAltLeft />
-                  </ButtonOutlineGreenWithDiffStyle>
+                <div className='prev-page' onClick={() => {eduInfoForwardOrBackward('backward')}}>
+                    <FaLongArrowAltLeft />
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
@@ -1269,12 +1265,8 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "100px"}}>
-                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                    workExpForwardOrBackward('backward')
-                  }}>
+                <div className='prev-page' onClick={() => {workExpForwardOrBackward('backward')}}>
                     <FaLongArrowAltLeft />
-                  </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
@@ -1344,12 +1336,8 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "100px"}}>
-                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                    skillsForwardOrBackward('backward')
-                  }}>
+                <div className='prev-page' onClick={() => {skillsForwardOrBackward('backward')}}>
                     <FaLongArrowAltLeft />
-                  </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
@@ -1443,12 +1431,8 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "100px"}}>
-                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                    certsForwardOrBackward('backward')
-                  }}>
+                <div className='prev-page' onClick={() => {certsForwardOrBackward('backward')}}>
                     <FaLongArrowAltLeft />
-                  </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
@@ -1542,12 +1526,8 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "100px"}}>
-                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                    pubForwardOrBackward('backward')
-                  }}>
+                <div className='prev-page' onClick={() => {pubForwardOrBackward('backward')}}>
                     <FaLongArrowAltLeft />
-                  </ButtonOutlineGreenWithDiffStyle>
                 </div>
                 <div style={{ width: "150px"}}>
                   <ButtonSubmitGreen type="button" onClick={() => {
@@ -1617,12 +1597,8 @@ const CustomizeResume = () => {
                   marginBottom: "20px",
                 }}
               >
-                <div style={{ width: "100px"}}>
-                  <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                    interestsBackward('backward')
-                  }}>
+                <div className='prev-page' onClick={() => {interestsBackward('backward')}}>
                     <FaLongArrowAltLeft />
-                  </ButtonOutlineGreenWithDiffStyle>
                 </div>
               </div>
             </div>

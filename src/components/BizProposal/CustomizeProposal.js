@@ -584,10 +584,8 @@ const CustomizeProposal = () => {
                                 marginBottom: "20px",
                                 }}
                             >
-                                <div style={{ width: "100px"}}>
-                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={handleProposalTypeBackward}>
-                                        <FaLongArrowAltLeft />
-                                    </ButtonOutlineGreenWithDiffStyle>
+                                <div className='prev-page' onClick={handleProposalTypeBackward}>
+                                    <FaLongArrowAltLeft />
                                 </div>
                             </div>
                         </div>
@@ -681,12 +679,8 @@ const CustomizeProposal = () => {
                                     marginBottom: "20px",
                                 }}
                             >
-                                <div style={{ width: "100px"}}>
-                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                                        productForwardOrBackward('backward')
-                                    }}>
-                                        <FaLongArrowAltLeft />
-                                    </ButtonOutlineGreenWithDiffStyle>
+                                <div className='prev-page' onClick={() => {productForwardOrBackward('backward')}}>
+                                    <FaLongArrowAltLeft />
                                 </div>
                                 <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
@@ -758,12 +752,8 @@ const CustomizeProposal = () => {
                                     marginBottom: "20px",
                                 }}
                             >
-                                <div style={{ width: "100px"}}>
-                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                                        objForwardOrBackward('backward')
-                                    }}>
-                                        <FaLongArrowAltLeft />
-                                    </ButtonOutlineGreenWithDiffStyle>
+                                <div className='prev-page' onClick={() => {objForwardOrBackward('backward')}}>
+                                    <FaLongArrowAltLeft />
                                 </div>
                                 <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
@@ -834,12 +824,8 @@ const CustomizeProposal = () => {
                                     marginBottom: "20px",
                                 }}
                             >
-                                <div style={{ width: "100px"}}>
-                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                                        customersForwardOrBackward('backward')
-                                    }}>
-                                        <FaLongArrowAltLeft />
-                                    </ButtonOutlineGreenWithDiffStyle>
+                                <div className='prev-page' onClick={() => {customersForwardOrBackward('backward')}}>
+                                    <FaLongArrowAltLeft />
                                 </div>
                                 <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
@@ -873,12 +859,8 @@ const CustomizeProposal = () => {
                                     marginBottom: "20px",
                                 }}
                             >
-                                <div style={{ width: "100px"}}>
-                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={() => {
-                                        otherDeetsForwardOrBackward('backward')
-                                    }}>
-                                        <FaLongArrowAltLeft />
-                                    </ButtonOutlineGreenWithDiffStyle>
+                                <div className='prev-page' onClick={() => {otherDeetsForwardOrBackward('backward')}}>
+                                    <FaLongArrowAltLeft />
                                 </div>
                                 {/* <div style={{ width: "200px"}}>
                                     <ButtonSubmitGreen type="button" onClick={() => {
