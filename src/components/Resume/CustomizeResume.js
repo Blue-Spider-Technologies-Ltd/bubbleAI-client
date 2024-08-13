@@ -827,7 +827,7 @@ const CustomizeResume = () => {
             </div>
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Let's start with some BASIC INFO...</h4>
+              <h4>Answer few questions to generate your CV</h4>
               <Grid container>
                 <AuthInput
                   id={basicInfo.firstName}

@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
-import resumeCss from '../Resume/Resume.module.css'
+// import resumeCss from '../Resume/Resume.module.css'
 // import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../UI/Buttons/Buttons';
+import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
+//PARTIALS
+import ProductsPartial from './Partials/ProductsPartial';
 import { Button, ButtonGroup } from '@mui/material';
 import { errorAnimation, checkEmptyStringsInObj, checkEmptyStrings, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
 // import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -24,6 +26,8 @@ const screenWidth = window.innerWidth
 
 
 
+
+
 const CustomizeProposal = () => {
     const { error, successMini, user } = useSelector(state => state.stateData)
     const confirm = useConfirm();
@@ -33,15 +37,23 @@ const CustomizeProposal = () => {
     const [recipientCountryid, setRecipientCountryid] = useState(0);
     const [addyFaded, setAddyFaded] = useState(false);
     const [propTypeFaded, setPropTypeFaded] = useState(true)
+    const [objInput, setObjInput] = useState("")
     const [productFaded, setProductFaded] = useState(true)
+    const [proposalType, setProposalType] = useState("")
     const [objFaded, setObjFaded] = useState(true)
     const [customersFaded, setCustomersFaded] = useState(true)
     const [otherDeetsFaded, setOtherDeetsFaded] = useState(true)
-    const [proposalType, setProposalType] = useState("")
     const [selectedIndex, setSelectedIndex] = useState(null);
-    const [suggestedObj, setSuggestedObj] = useState([])
-    const [objInput, setObjInput] = useState("")
     const [isObjInputDelimited, setIsObjInputDelimited] = useState(false);
+    const [suggestedObj, setSuggestedObj] = useState([])
+
+    const [productArray, addProductArray] = useState([
+        {
+          productName: "",
+          price: "",
+          productDesc: "",
+        }
+    ]);
 
     const errorSetter = (string) => {
         dispatch(setError(string))
@@ -67,68 +79,10 @@ const CustomizeProposal = () => {
     });
     const { writerBizName, writerIndustry, writerSteetCity, writerCountry, writerState, recipientBizName, recipientIndustry, recipientSteetCity, recipientCountry, recipientState } = addyInfo
 
-    const [productArray, addProductArray] = useState([
-        {
-          productName: "",
-          price: "",
-          productDesc: "",
-        }
-    ]);
-
-      /////AWARD HANDLERS
-    const handleAddProduct = () => {
-        const newProduct =         {
-            productName: "",
-            price: "",
-            productDesc: "",
-        }
-        if (productArray.length < 10) {
-            return addProductArray([...productArray, newProduct]);
-        }
-        errorSetter("Only add 10 Products");
-    };
-    const handleDeleteProduct = () => {
-        if (productArray.length > 1) {
-            const prevProduct = [...productArray];
-            prevProduct.pop();
-            return addProductArray([...prevProduct]);
-        }
-        errorSetter("You must add a product");
-    };
-    const handleProductChange = (event, index) => {
-        const prevProducts = [...productArray];
-        switch (event.target.name) {
-            case "productName":
-                prevProducts[index].productName = event.target.value;
-                addProductArray(prevProducts);
-                break;            
-            case "price":
-                prevProducts[index].price = event.target.value;
-                addProductArray(prevProducts);
-                break;
-            case "productDesc":
-                prevProducts[index].productDesc = event.target.value;
-                addProductArray(prevProducts);
-                break;
-            default:
-                addProductArray(prevProducts);
-                break;
-        }
-    };
 
     const toggleProposals = () => {
         setAuthMenuOpen(!authMenuOpen)
     }
-
-    const handleDeleteObj = (index) => {
-        confirm({ description: `Proceed to delete objective? ${suggestedObj[index]}` })
-          .then(() => {
-            const prevObj = [...suggestedObj];
-            prevObj.splice(index, 1);
-            setSuggestedObj(prevObj);
-          })
-          .catch(() => errorSetter("Not Deleted"));
-    };
 
     const companyInfoHandler = (prop) => (event) => {
         if (prop === "writerCountry") {
@@ -222,6 +176,71 @@ const CustomizeProposal = () => {
         setAddyFaded(false)
     }
 
+    const handleAddProduct = () => {
+        const newProduct =         {
+            productName: "",
+            price: "",
+            productDesc: "",
+        }
+        if (productArray.length < 10) {
+            return addProductArray([...productArray, newProduct]);
+        }
+        errorSetter("Only add 10 Products");
+    };
+
+    const handleDeleteProduct = () => {
+        if (productArray.length > 1) {
+            const prevProduct = [...productArray];
+            prevProduct.pop();
+            return addProductArray([...prevProduct]);
+        }
+        errorSetter("You must add a product");
+    };
+
+    const handleProductChange = (event, index) => {
+        const prevProducts = [...productArray];
+        switch (event.target.name) {
+            case "productName":
+                prevProducts[index].productName = event.target.value;
+                addProductArray(prevProducts);
+                break;            
+            case "price":
+                prevProducts[index].price = event.target.value;
+                addProductArray(prevProducts);
+                break;
+            case "productDesc":
+                prevProducts[index].productDesc = event.target.value;
+                addProductArray(prevProducts);
+                break;
+            default:
+                addProductArray(prevProducts);
+                break;
+        }
+    };
+
+    const handleDeleteObj = (index) => {
+        confirm({ description: `Proceed to delete objective? ${suggestedObj[index]}` })
+          .then(() => {
+            const prevObj = [...suggestedObj];
+            prevObj.splice(index, 1);
+            setSuggestedObj(prevObj);
+          })
+          .catch(() => errorSetter("Not Deleted"));
+    };
+
+    const handleObjInputChange = (e) => {
+        const { value } = e.target;
+        const delimiters = [',', ';', '.'];
+
+        if (delimiters.includes(e.key)) {
+            const newSuggestions = [...suggestedObj, value.trim()];
+            setIsObjInputDelimited(true)
+            setSuggestedObj(newSuggestions);
+        } else {
+            setObjInput(value);
+        }
+    };
+
     const productForwardOrBackward = (arg) => {  
 
         switch (arg) {
@@ -310,20 +329,62 @@ const CustomizeProposal = () => {
         }
     }
 
-    const handleObjInputChange = (e) => {
-        const { value } = e.target;
-        const delimiters = [',', ';', '.'];
-
-        if (delimiters.includes(e.key)) {
-            const newSuggestions = [...suggestedObj, value.trim()];
-            setIsObjInputDelimited(true)
-            setSuggestedObj(newSuggestions);
-        } else {
-            setObjInput(value);
+    const ProposalPartialToDisplay = () => {
+        let template;
+   
+        switch (proposalType) {
+            case "product":
+                template = <ProductsPartial 
+                                productFaded={productFaded}
+                                objFaded={objFaded}
+                                customersFaded={customersFaded}
+                                otherDeetsFaded={otherDeetsFaded}
+                                suggestedObj={suggestedObj}
+                                handleDeleteObj={handleDeleteObj}
+                                objInput={objInput}
+                                handleObjInputChange={handleObjInputChange}
+                                objForwardOrBackward={objForwardOrBackward}
+                                customersForwardOrBackward={customersForwardOrBackward}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                productArray={productArray}
+                                handleProductChange={handleProductChange}
+                                handleDeleteProduct={handleDeleteProduct}
+                                handleAddProduct={handleAddProduct}
+                                productForwardOrBackward={productForwardOrBackward}
+                            />
+                break;
+            case "service":
+            case "project":
+            case "partnership":
+            case "research":
+            case "grant":
+                template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
+                break;
+        
+            default:
+                template = <ProductsPartial 
+                                productFaded={productFaded}
+                                objFaded={objFaded}
+                                customersFaded={customersFaded}
+                                otherDeetsFaded={otherDeetsFaded}
+                                suggestedObj={suggestedObj}
+                                handleDeleteObj={handleDeleteObj}
+                                objInput={objInput}
+                                handleObjInputChange={handleObjInputChange}
+                                objForwardOrBackward={objForwardOrBackward}
+                                customersForwardOrBackward={customersForwardOrBackward}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                productArray={productArray}
+                                handleProductChange={handleProductChange}
+                                handleDeleteProduct={handleDeleteProduct}
+                                handleAddProduct={handleAddProduct}
+                                productForwardOrBackward={productForwardOrBackward}
+                            />
+                break;
         }
-    };
 
-    
+        return template
+    }
     
     
 
@@ -361,7 +422,7 @@ const CustomizeProposal = () => {
 
                         {/* COMPANY DETAILS */}
                         <div id="addy" className={`Segment ${addyFaded ? "Faded" : "Faded-in"}`}>
-                            <h4>Company Details</h4>
+                            <h4>Answer a few questions to get a Customized Proposal</h4>
                             <p></p>
                             <div>
                                 <Grid
@@ -566,11 +627,42 @@ const CustomizeProposal = () => {
                                     >
                                         Project
                                     </Button>
+                                </ButtonGroup>
+
+
+                                <ButtonGroup
+                                    sx={{
+                                        '& .MuiButton-root': {
+                                        backgroundColor: '#3E8F93',
+                                            '&:hover': {
+                                                backgroundColor: '#56A8AC',
+                                            },
+                                            '&.Mui-selected': {
+                                                backgroundColor: '#56A8AC',
+                                            },
+                                        },
+                                    }}
+                                    color="success"
+                                    variant="contained"
+                                    aria-label="Basic button group"
+                                >
                                     <Button
                                         onClick={() => handleProposalTypeForward("partnership")}
                                         className={selectedIndex === 4 ? 'Mui-selected' : ''}
                                     >
                                         Partnership
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleProposalTypeForward("research")}
+                                        className={selectedIndex === 5 ? 'Mui-selected' : ''}
+                                    >
+                                        Research
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleProposalTypeForward("grant")}
+                                        className={selectedIndex === 6 ? 'Mui-selected' : ''}
+                                    >
+                                        Grant
                                     </Button>
                                 </ButtonGroup>
                             </div>
@@ -590,287 +682,7 @@ const CustomizeProposal = () => {
                             </div>
                         </div>
 
-                        {/* PRODUCT DETAILS */}
-                        <div id="product-deets" className={`Segment ${productFaded ? "Faded" : "Faded-in"}`}>
-                            <h4>Product Details</h4>
-
-                            <div>
-                                <Grid
-                                    container
-                                    sx={{ display: "flex", justifyContent: "space-around" }}
-                                    mt={3}
-                                >
-                                    {productArray.map((item, index) => {
-                                        return (
-                                            <Grid
-                                                item
-                                                xs={12}
-                                                md={5}
-                                                mb={2}
-                                                className="segment"
-                                                key={index}
-                                            >
-                                                <AuthInput
-                                                    name="productName"
-                                                    id={item.productName}
-                                                    value={item.productName}
-                                                    label={`Product ${index + 1}`}
-                                                    inputGridSm={12}
-                                                    inputType="text"
-                                                    mb={2}
-                                                    required={true}
-                                                    onChange={(event) => handleProductChange(event, index)}
-                                                />
-                                                <AuthInput
-                                                    name="price"
-                                                    id={item.price}
-                                                    value={item.price}
-                                                    label="Price (OPTIONAL)"
-                                                    inputGridSm={12}
-                                                    inputType="text"
-                                                    mb={2}
-                                                    onChange={(event) => handleProductChange(event, index)}
-                                                />
-                                                <AuthInput
-                                                    name="productDesc"
-                                                    id={item.productDesc}
-                                                    value={item.productDesc}
-                                                    label="[If available] What is this product used for?"
-                                                    placeholder="[If available] What is this product used for?"
-                                                    multiline={true}
-                                                    inputGridSm={12}
-                                                    mt={2}
-                                                    rows={4}
-                                                    maxRows={6}
-                                                    onChange={(event) => handleProductChange(event, index)}
-                                                />
-                                            </Grid>
-                                        );
-                                    })}
-
-                                </Grid>
-
-                                <div className={resumeCss.CenteredElem}>
-                                    <div
-                                        style={{ marginRight: "10px" }}
-                                        className="delete"
-                                        title="Delete Product"
-                                        onClick={handleDeleteProduct}
-                                    >
-                                        -
-                                    </div>
-                                    <div
-                                        className="add"
-                                        title="Add Product"
-                                        onClick={handleAddProduct}
-                                    >
-                                        +
-                                    </div>
-                                </div>
-                            </div>
-
-                    
-                            {/* Product Visibility Buttons */}
-                            <div
-                                style={{
-                                    width: "100%",
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    marginBottom: "20px",
-                                }}
-                            >
-                                <div className='prev-page' onClick={() => {productForwardOrBackward('backward')}}>
-                                    <FaLongArrowAltLeft />
-                                </div>
-                                <div style={{ width: "200px"}}>
-                                    <ButtonSubmitGreen type="button" onClick={() => {
-                                        productForwardOrBackward('forward')
-                                    }}>
-                                        Objectives &nbsp;&nbsp;<FaLongArrowAltRight />
-                                    </ButtonSubmitGreen>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        {/* OBJECTIVES */}
-                        <div id="obj" className={`Segment ${objFaded ? "Faded" : "Faded-in"}`}>
-                        
-                            <h4>Objectives</h4>
-                            <Alert 
-                                sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
-                                severity="info"
-                            >
-                                What need does your product solve?
-                            </Alert>
-
-                            <div style={styles.container}>
-                                {suggestedObj.length === 0 ? (
-                                    <div 
-                                        style={{width: "100%", margin: "auto", fontSize: ".8rem"}}
-                                    >
-                                        Input objectives below to diplay here
-                                    </div>
-                                ) : (
-                                suggestedObj.map((obj, index) => (
-                                    <div key={index} className="array-item">
-                                        {obj}
-                                        <span
-                                            className="itemDelete"
-                                            title="Delete Objective"
-                                            onClick={() => handleDeleteObj(index)}
-                                        >
-                                            X
-                                        </span>
-                                    </div>
-                                ))
-                                )}
-                            </div>
-                            
-
-                            <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
-                                <AuthInput
-                                    name="objInput"
-                                    value={objInput}
-                                    placeholder="Enter some objectives (Objectives are details of what your product will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
-                                    multiline={true}
-                                    inputGridSm={12}
-                                    mt={2}
-                                    rows={4}
-                                    maxRows={6}
-                                    onChange={(e) => handleObjInputChange(e)}
-                                    onKeyDown={(e) => handleObjInputChange(e)}
-                                />
-                            </Grid>
-
-                            {/* Visibility Buttons */}
-                            <div
-                                style={{
-                                    width: "100%",
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    marginBottom: "20px",
-                                }}
-                            >
-                                <div className='prev-page' onClick={() => {objForwardOrBackward('backward')}}>
-                                    <FaLongArrowAltLeft />
-                                </div>
-                                <div style={{ width: "200px"}}>
-                                    <ButtonSubmitGreen type="button" onClick={() => {
-                                        objForwardOrBackward('forward')
-                                    }}>
-                                        Customers &nbsp;&nbsp;<FaLongArrowAltRight />
-                                    </ButtonSubmitGreen>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* CUSTOMERS/PARTNERS */}
-                        <div id="obj" className={`Segment ${customersFaded ? "Faded" : "Faded-in"}`}>
-                        
-                            <h4>Customers/Partners</h4>
-                            <Alert 
-                                sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
-                                severity="info"
-                            >
-                                Enter previous or current <strong>customers/partners</strong> who your products have helped. This will strengthen your conversion by 40%
-                            </Alert>
-
-                            <div style={styles.container}>
-                                {suggestedObj.length === 0 ? (
-                                    <div 
-                                        style={{width: "100%", margin: "auto", fontSize: ".8rem"}}
-                                    >
-                                        Input partners below to diplay here
-                                    </div>
-                                ) : (
-                                suggestedObj.map((obj, index) => (
-                                    <div key={index} className="array-item">
-                                        {obj}
-                                        <span
-                                            className="itemDelete"
-                                            title="Delete Objective"
-                                            onClick={() => handleDeleteObj(index)}
-                                        >
-                                            X
-                                        </span>
-                                    </div>
-                                ))
-                                )}
-                            </div>
-                            
-
-                            <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
-                                <AuthInput
-                                    name="objInput"
-                                    value={objInput}
-                                    placeholder="Enter partners (separate each partner with a comma, semi-colon or full-stop)"
-                                    multiline={true}
-                                    inputGridSm={12}
-                                    mt={2}
-                                    rows={4}
-                                    maxRows={6}
-                                    onChange={(e) => handleObjInputChange(e)}
-                                    onKeyDown={(e) => handleObjInputChange(e)}
-                                />
-                            </Grid>
-
-                            {/* CUSTOMERS Visibility Buttons */}
-                            <div
-                                style={{
-                                    width: "100%",
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    marginBottom: "20px",
-                                }}
-                            >
-                                <div className='prev-page' onClick={() => {customersForwardOrBackward('backward')}}>
-                                    <FaLongArrowAltLeft />
-                                </div>
-                                <div style={{ width: "200px"}}>
-                                    <ButtonSubmitGreen type="button" onClick={() => {
-                                        customersForwardOrBackward('forward')
-                                    }}>
-                                        Other Details &nbsp;&nbsp;<FaLongArrowAltRight />
-                                    </ButtonSubmitGreen>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* OTHER DETAILS */}
-                        <div id="addy" className={`Segment ${otherDeetsFaded ? "Faded" : "Faded-in"}`}>
-                            <h4>Other Details</h4>
-                            <Alert 
-                                sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
-                                severity="info"
-                            >
-                                What need does your product solve?
-                            </Alert>
-                            <div>
-
-                            </div>
-
-                            {/* Visibility Buttons */}
-                            <div
-                                style={{
-                                    width: "100%",
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    marginBottom: "20px",
-                                }}
-                            >
-                                <div className='prev-page' onClick={() => {otherDeetsForwardOrBackward('backward')}}>
-                                    <FaLongArrowAltLeft />
-                                </div>
-                                {/* <div style={{ width: "200px"}}>
-                                    <ButtonSubmitGreen type="button" onClick={() => {
-                                        otherDeetsForwardOrBackward('forward')
-                                    }}>
-                                        Proposal Details &nbsp;&nbsp;<FaLongArrowAltRight />
-                                    </ButtonSubmitGreen>
-                                </div> */}
-                            </div>
-                        </div>
+                        {ProposalPartialToDisplay()}
 
                     </form>
 
@@ -881,19 +693,6 @@ const CustomizeProposal = () => {
     )
 }
 
-const styles = {
-    container: {
-        width: "95%",
-        margin: "20px auto 10px",
-        display: "flex",
-        padding: "10px 5px",
-        backgroundColor: "#c0d1d457",
-        borderRadius: "10px",
-        lineHeight: "1",
-        boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)",
-        flexWrap: "wrap",
-    }
-}
 
 
 
