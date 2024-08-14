@@ -101,7 +101,6 @@ const Register = () => {
             try {
                 const response = await axios.post('/auth/register', userData)
                 setLoading(false)
-                console.log(response.status);
                 //Set email to retrieve for verification
                 dispatch(setEmail(user.email))
                 navigate("/verify")
@@ -169,7 +168,7 @@ const Register = () => {
                     <div className="error">{error}</div>
                     <div className="description-box">
                         <p>Join thousands of successful job seekers who have transformed their careers with Bubble Ai's powerful <strong>resume</strong>, <strong>cover letters</strong> and <strong>job application tools in minutes</strong>. Our Users see real results with over 75% of them being called for an interview in the first week!</p>
-                        <p><strong>REGISTER NOW</strong> to secure one of our 200 available discount coupons to get the perfect resume and view fitted high-paying jobs around you in a matter of minutes</p>
+                        <p><strong>REGISTER NOW</strong> to benefit from our 200 available discount coupons, get the perfect resume and apply to fitted high-paying jobs in choice locations in a matter of minutes.</p>
                     </div>
 
                     <div style={{width: '100%', textAlign: 'center'}}>

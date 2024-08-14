@@ -108,13 +108,13 @@ const ResumeLearnMore = () => {
                             Bubble Ai.
                         </span>
                     </h1>
-                    <h5>Over 90% of users report employment into top companies with our Tailored CV creation, Job Specific Cover Letters, Job Suggestions and Interview Preparation Ai tools.</h5>
+                    <h5>Over 90% of users report employment into top companies with our Tailored CV creation, Job Specific Cover Letters, Job Search Automation and Interview Preparation Ai tools.</h5>
                     <div style={{width: '300px', margin: '10px auto 10px'}}>
                         <ButtonSubmitGreen 
                             type="button"
                             onClick={handleTryFree}
                         >
-                            TRY FOR FREE NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
+                            CREATE CV ONLINE FREE &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
                         </ButtonSubmitGreen>
                     </div>
 
@@ -361,20 +361,20 @@ const ResumeLearnMore = () => {
                         </Grid>
                     )}
                     <Grid item xs={12} md={6} p={3}>
-                        <h3>Jobs</h3>
-                        <p>This is where the rest of the magic happens. Bubble Ai does not just give you a professional and role-specific CV, a pop up appears after download and Premium Users can BENEFIT from this as it offers:</p>
+                        <h3>Automated Job Search</h3>
+                        <p>Bubble Ai does not just create a professional and job-specific CV for you, a pop up appears after download and Premium Users can BENEFIT from this as it offers:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Shareable Link of Resume to employers.</Grid>
+                                <Grid item xs={8}>Resume Link(url), Shareable to employers.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Choice of Job-tailored Cover Letters.</Grid>
+                                <Grid item xs={8}>Automatically Searches jobs around your chosen location (location set during CV customization). You stand more than a 90% chance of securing these jobs from Ai analysis.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Suggests jobs around you that you stand more than a 90% chance of securing.</Grid>
+                                <Grid item xs={8}>Choice of Job-tailored Cover Letters for each job.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>

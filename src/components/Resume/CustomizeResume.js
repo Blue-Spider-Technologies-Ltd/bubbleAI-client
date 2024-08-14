@@ -974,7 +974,7 @@ const CustomizeResume = () => {
                   </div>
                 </Grid>
                 
-                <AuthInput
+                {/* <AuthInput
                   id={basicInfo.profSummary}
                   value={basicInfo.profSummary}
                   placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful"
@@ -983,7 +983,7 @@ const CustomizeResume = () => {
                   inputGridSm={12}
                   mb={2}
                   onChange={handleInputChange("profSummary")}
-                />
+                /> */}
               </Grid>
 
               {/* Visibility Buttons */}
