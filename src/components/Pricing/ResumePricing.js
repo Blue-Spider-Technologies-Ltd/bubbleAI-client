@@ -206,4 +206,5 @@ const resumePricingDetails = [
     )
 }
 
+
 export default memo(ResumePricing);
