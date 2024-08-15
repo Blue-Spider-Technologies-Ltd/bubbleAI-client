@@ -109,7 +109,7 @@ const ResumeLearnMore = () => {
                             Bubble Ai.
                         </span>
                     </h1>
-                    <h5>Over 90% of users report employment into top companies with our Tailored CV creation, Job Specific Cover Letters, Job Search Automation and Interview Preparation Ai tools.</h5>
+                    <h5>Over 90% of users report employment into top companies with our Ai CV builder, Job Specific Cover Letters, Job Search Automation and Interview Preparation Ai tools.</h5>
                     <div style={{width: '300px', margin: '10px auto 10px'}}>
                         <ButtonSubmitGreen 
                             type="button"
