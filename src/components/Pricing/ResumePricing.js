@@ -53,7 +53,7 @@ const resumePricingDetails = [
         features: {
             reAccessSaved: {
                 available: false,
-                text: 'Reaccess Saved Resumes'
+                text: 'Resume Storage for Later Access'
             },
             createSeveral: {
                 available: false,
@@ -61,7 +61,7 @@ const resumePricingDetails = [
             },
             coverLetter: {
                 available: false,
-                text: 'Tailored Cover Letter'
+                text: 'Tailored Cover Letters'
             },
             sharableLink: {
                 available: false,
@@ -69,11 +69,11 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: true,
-                text: 'Change Names During Customzation'
+                text: 'Create CV for Anyone'
             },
             downloadablePDF: {
                 available: true,
-                text: 'Save Resume as PDF'
+                text: 'Download Resume as PDF'
             },
             severalTemplates: {
                 available: false,
@@ -81,7 +81,7 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: false,
-                text: 'Tailored Ai Job Suggestions Around You'
+                text: 'Choice Location Job Search Automation'
             },
             recommendation: {
                 available: true,
@@ -98,7 +98,7 @@ const resumePricingDetails = [
         features: {
             reAccessSaved: {
                 available: true,
-                text: 'Reaccess Saved Resumes'
+                text: 'Resume Storage for Later Access'
             },
             createSeveral: {
                 available: true,
@@ -106,7 +106,7 @@ const resumePricingDetails = [
             },
             coverLetter: {
                 available: true,
-                text: 'Tailored Cover Letter'
+                text: 'Tailored Cover Letters'
             },
             sharableLink: {
                 available: false,
@@ -114,11 +114,11 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: false,
-                text: 'Change Names During Customzation'
+                text: 'Create CV for Anyone'
             },
             downloadablePDF: {
                 available: true,
-                text: 'Save Resume as PDF'
+                text: 'Download Resume as PDF'
             },
             severalTemplates: {
                 available: true,
@@ -126,7 +126,7 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: true,
-                text: 'Tailored Ai Job Suggestions Around You'
+                text: 'Choice Location Job Search Automation'
             },
             recommendation: {
                 available: true,
@@ -143,7 +143,7 @@ const resumePricingDetails = [
         features: {
             reAccessSaved: {
                 available: true,
-                text: 'Reaccess Saved Resumes'
+                text: 'Resume Storage for Later Accesss'
             },
             createSeveral: {
                 available: true,
@@ -151,7 +151,7 @@ const resumePricingDetails = [
             },
             coverLetter: {
                 available: true,
-                text: 'Tailored Cover Letter'
+                text: 'Tailored Cover Letters'
             },
             sharableLink: {
                 available: true,
@@ -159,11 +159,11 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: true,
-                text: 'Change Names During Customzation'
+                text: 'Create CV for Anyone'
             },
             downloadablePDF: {
                 available: true,
-                text: 'Save Resume as PDF'
+                text: 'Download Resume as PDF'
             },
             severalTemplates: {
                 available: true,
@@ -171,7 +171,7 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: true,
-                text: 'Tailored Ai Job Suggestions Around You'
+                text: 'Choice Location Job Search Automation'
             },
             recommendation: {
                 available: true,
@@ -187,7 +187,7 @@ const resumePricingDetails = [
 
         <section id="resume" className="container" style={{ marginTop: "-10px" }}>
             <div className="container-inner">
-                <h2 style={{color: "#56A8AC"}}>Resume Plans</h2>
+                <h2 style={{color: "#56A8AC"}}>Resume & Job Automation Plans</h2>
                 <div className="error">{error}</div>
 
                 <div className='Segment'>

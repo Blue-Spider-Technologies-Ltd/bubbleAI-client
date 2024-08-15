@@ -26,6 +26,7 @@ import Blob from '../Blob/Blob';
 import { Grid, Rating } from "@mui/material";
 import HelpIcon from '../HelpIcon/HelpIcon';
 import { faqs } from '../../../utils/faqs';
+import ResumePricing from '../../Pricing/ResumePricing';
 const screenWidth = window.innerWidth
 
 const ResumeLearnMore = () => {
@@ -134,7 +135,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={4} mb={2}>
                         <div className={css.ShowOffCont}>
-                            <h2>Job Tailored Resume/CV</h2>
+                            <h2>Free Ai Resume Builder</h2>
                             <div className={css.ShowOffBody}>
                                 <img className={css.ShowOffImg} src={resumeImg} alt="" />
                             </div>
@@ -142,7 +143,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={4} mb={2}>
                         <div className={css.ShowOffCont}>
-                            <h2>High Paying Jobs</h2>
+                            <h2>Job Search Automation</h2>
                             <div className={css.ShowOffBody}>
                                 <img className={css.ShowOffImg} src={jobImg} alt="" />
                             </div>
@@ -150,7 +151,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={4} mb={2}>
                         <div className={css.ShowOffCont}>
-                            <h2>Free Interview Prep</h2>
+                            <h2>Free Interview Simulations</h2>
                             <div className={css.ShowOffBody}>
                                 <img className={css.ShowOffImg} src={interviewImg} alt="" />
                             </div>
@@ -160,7 +161,7 @@ const ResumeLearnMore = () => {
             </section>   
 
             <section className={css.TopCompanies}>
-                <h2>Our Users Secure Employment in Top Companies</h2>
+                <h2>Users Secure Employment in Top Companies</h2>
                 <Grid container>
                     <Grid container xs={12} md={2}>
                         <Grid item xs={6}>
@@ -229,7 +230,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={6} p={3} pt={screenWidth < 900 && 0}>
                         <h3>Customize</h3>
-                        <p>After registration, Interact with Bubble Ai providing a few background Info about your Education, Experience and Preferences.</p>
+                        <p>Answer few questions to create a professional CV with Ai in seconds.</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -237,11 +238,11 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Remove the hassle of waiting for days to get CV.</Grid>
+                                <Grid item xs={8}>Get your CV immediately, No waiting time.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Interaction used to generate tailored resume/CV.</Grid>
+                                <Grid item xs={8}>Interaction used to generate job-specific resume/CV.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -249,7 +250,7 @@ const ResumeLearnMore = () => {
                                 type="button"
                                 onClick={handleTryFree}
                             >
-                                START NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
+                                TRY FREE NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
                             </ButtonSubmitGreen>
                         </div>
                     </Grid>
@@ -270,7 +271,7 @@ const ResumeLearnMore = () => {
                     )}
                     <Grid item xs={12} md={6} p={3}>
                         <h3>Preview</h3>
-                        <p>While we combine many algorithms to pass Applicant Tracking Systems and other software, we also give you, the user, the opportunity to preview and edit the seamlessly generated Ai resume, giving it extra legitimacy and a human touch.</p>
+                        <p>Pass Applicant Tracking Systems and other software, you get to preview and edit the seamlessly generated Ai resume, giving it extra legitimacy and a human touch.</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -282,7 +283,7 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Perfect it to choice if necessary.</Grid>
+                                <Grid item xs={8}>Choose from Ai suggested keywords after analysis of your answers.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -382,7 +383,7 @@ const ResumeLearnMore = () => {
                                 type="button"
                                 onClick={handleTryFree}
                             >
-                                START NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
+                                GET CV & JOBS FOR IT &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
                             </ButtonSubmitGreen>
                         </div>
                     </Grid>
@@ -413,19 +414,19 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={6} p={3}>
                         <h3>Interview Preparations</h3>
-                        <p>This is an extra and a free service offered by Bubble Ai. On a random day or after you get a call for an interview, visit Bubble Ai home page and focus on the ASK ME ANYTHING input. You will get a JOB INTERVIEW PREPARATION suggestion. BENEFITS include:</p>
+                        <p>Benefit from free interview preparations with Bubble Ai. On a random day or after you get a call for an interview, visit Bubble Ai home page and focus on the ASK ME ANYTHING input. You will get a JOB INTERVIEW PREPARATION suggestion. BENEFITS include:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Tailored and edittable initial prompt.</Grid>
+                                <Grid item xs={8}>Edittable initial prompt to fit your potential job.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Top 10 frequent questions from your chosen company.</Grid>
+                                <Grid item xs={8}>Top 10 frequently asked questions from your potential employer.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Interactive Ai to coach you on your own generated questions.</Grid>
+                                <Grid item xs={8}>Interactive Ai to answer your questions.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -433,7 +434,7 @@ const ResumeLearnMore = () => {
                                 type="button"
                                 onClick={handleTryFree}
                             >
-                                START NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
+                                TRY IT NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
                             </ButtonSubmitGreen>
                         </div>
                     </Grid>
@@ -507,6 +508,10 @@ const ResumeLearnMore = () => {
                 </div>
 
             </section>
+
+            <secttion>
+                <ResumePricing />
+            </secttion>
 
             <HelpIcon />
         </div>

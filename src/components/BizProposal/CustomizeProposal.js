@@ -634,6 +634,7 @@ const CustomizeProposal = () => {
                                     sx={{
                                         '& .MuiButton-root': {
                                         backgroundColor: '#3E8F93',
+                                        marginTop: screenWidth < 900 ? "10px" : "0",
                                             '&:hover': {
                                                 backgroundColor: '#56A8AC',
                                             },
