@@ -55,11 +55,19 @@ const CustomizeProposal = () => {
         }
     ]);
 
+    const [serviceArray, addServicetArray] = useState([
+        {
+          serviceName: "",
+          price: "",
+          serviceDesc: "",
+        }
+    ]);
+
     const errorSetter = (string) => {
         dispatch(setError(string))
         errorAnimation()
     }
-
+    //TO CLEAR INOUT FIELD AFTER DELIMITING OBJECTIVE
     useEffect(() => {
         setIsObjInputDelimited(false)
         setObjInput("")
