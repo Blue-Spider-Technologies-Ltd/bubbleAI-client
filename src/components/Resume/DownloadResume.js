@@ -113,25 +113,8 @@ const DownloadResume = () => {
 
     useEffect(() => {
         let timer;
-
-        const handleScroll = () => {
-            const scrollPosition = window.scrollY || window.pageYOffset;
-            const viewHeight = window.innerHeight || document.documentElement.clientHeight;
-            const scrollThreshold = 0.8 * viewHeight;
     
-            if (
-                scrollPosition > scrollThreshold &&
-                !user.resumeSubscriptions.subscribed &&
-                !user.isFirstFreeUsed
-            ) {
-                errorSetter("Select a package to get all BENEFITS");
-                if (!isFirstFreeSetOnDB) {
-                    setIsFirstFreeUsedAndUpdateDB();
-                }
-            }
-        };
-    
-        const runHandleScroll = () => {
+        const runSubTimerForNewUser = () => {
             if (!user?.resumeSubscriptions?.subscribed) {
                 errorSetter("Select a package to get all BENEFITS");
                 if (!isFirstFreeSetOnDB) {
@@ -140,17 +123,16 @@ const DownloadResume = () => {
             }
         };
 
-        window.addEventListener('scroll', handleScroll);
-        timer = setTimeout(runHandleScroll, 60000); // 1 minute
+        timer = setTimeout(runSubTimerForNewUser, 180000); // 3 minute
         
         return () => {
             clearTimeout(timer);
-            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
     
     
     const setIsFirstFreeUsedAndUpdateDB = () => {
+        dispatch(setFetching(true))
         axios
             .get('/set-first-free-used', {
                 headers: {
@@ -164,6 +146,7 @@ const DownloadResume = () => {
             .catch((error) => {
                 setIsFirstFreeSetOnDB(false);
             });
+            dispatch(setFetching(false))
     };
     
     
@@ -191,6 +174,14 @@ const DownloadResume = () => {
       }
     };
 
+    const handleFirstFreeDownloadRestrict = () => {
+
+        if (!user.isFirstFreeUsed) {
+            if (!isFirstFreeSetOnDB) {
+                setIsFirstFreeUsedAndUpdateDB();
+            }
+        }
+    };
 
     const checkObjectForKeyValue = (arr, key, keyOfKey, searchValue) => {
         if (arr.some(obj => obj[key][keyOfKey] === searchValue)) {
@@ -394,6 +385,7 @@ const DownloadResume = () => {
         //check if user used first free use already and if not subscribed
         if(!user?.resumeSubscriptions?.subscribed) {
             errorSetter('Please SUBSCRIBE to download resume plus other BENEFITS')
+            handleFirstFreeDownloadRestrict()
             setIsSubscribed(false)
             return
         }

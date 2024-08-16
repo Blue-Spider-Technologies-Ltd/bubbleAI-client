@@ -9,7 +9,7 @@ import { Grid } from "@mui/material";
 const screenWidth = window.innerWidth;
 
 const ServicesPartial = ({
-    productFaded, 
+    serviceFaded, 
     objFaded, 
     customersFaded, 
     otherDeetsFaded, 
@@ -22,16 +22,16 @@ const ServicesPartial = ({
     otherDeetsForwardOrBackward,
     serviceArray,
     handleServiceChange,
-    handleDeleteProduct,
-    handleAddProduct,
-    productForwardOrBackward 
+    handleDeleteService,
+    handleAddService,
+    serviceForwardOrBackward 
 }) => {
 
     return (
         <div>
-                                    {/* PRODUCT DETAILS */}
-            <div id="product-deets" className={`Segment ${productFaded ? "Faded" : "Faded-in"}`}>
-                <h4>Product Details</h4>
+                                    {/* SERVICE DETAILS */}
+            <div id="service-deets" className={`Segment ${serviceFaded ? "Faded" : "Faded-in"}`}>
+                <h4>Service Details</h4>
 
                 <div>
                     <Grid
@@ -50,10 +50,10 @@ const ServicesPartial = ({
                                     key={index}
                                 >
                                     <AuthInput
-                                        name="productName"
+                                        name="serviceName"
                                         id={item?.serviceName}
                                         value={item?.serviceName}
-                                        label={`Product ${index + 1}`}
+                                        label={`Service ${index + 1}`}
                                         inputGridSm={12}
                                         inputType="text"
                                         mb={2}
@@ -71,11 +71,11 @@ const ServicesPartial = ({
                                         onChange={(event) => handleServiceChange(event, index)}
                                     />
                                     <AuthInput
-                                        name="productDesc"
-                                        id={item.productDesc}
-                                        value={item.productDesc}
-                                        label="[If available] What is this product used for?"
-                                        placeholder="[If available] What is this product used for?"
+                                        name="serviceDesc"
+                                        id={item?.serviceDesc}
+                                        value={item?.serviceDesc}
+                                        label="[If available] Describe service"
+                                        placeholder="[If available] Describe service"
                                         multiline={true}
                                         inputGridSm={12}
                                         mt={2}
@@ -93,15 +93,15 @@ const ServicesPartial = ({
                         <div
                             style={{ marginRight: "10px" }}
                             className="delete"
-                            title="Delete Product"
-                            onClick={handleDeleteProduct}
+                            title="Delete Service"
+                            onClick={handleDeleteService}
                         >
                             -
                         </div>
                         <div
                             className="add"
-                            title="Add Product"
-                            onClick={handleAddProduct}
+                            title="Add Service"
+                            onClick={handleAddService}
                         >
                             +
                         </div>
@@ -109,7 +109,7 @@ const ServicesPartial = ({
                 </div>
 
         
-                {/* Product Visibility Buttons */}
+                {/* Service Visibility Buttons */}
                 <div
                     style={{
                         width: "100%",
@@ -118,12 +118,12 @@ const ServicesPartial = ({
                         marginBottom: "20px",
                     }}
                 >
-                    <div className='prev-page' onClick={() => {productForwardOrBackward('backward')}}>
+                    <div className='prev-page' onClick={() => {serviceForwardOrBackward('backward')}}>
                         <FaLongArrowAltLeft />
                     </div>
                     <div style={{ width: "200px"}}>
                         <ButtonSubmitGreen type="button" onClick={() => {
-                            productForwardOrBackward('forward')
+                            serviceForwardOrBackward('forward')
                         }}>
                             Objectives &nbsp;&nbsp;<FaLongArrowAltRight />
                         </ButtonSubmitGreen>
@@ -140,7 +140,7 @@ const ServicesPartial = ({
                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                     severity="info"
                 >
-                    What need does your product solve?
+                    What need does your Service solve?
                 </Alert>
 
                 <div>
@@ -167,7 +167,7 @@ const ServicesPartial = ({
                     <AuthInput
                         name="objInput"
                         value={objInput}
-                        placeholder="Enter some objectives (Objectives are details of what your product will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
+                        placeholder="Enter some objectives (Objectives are details of what your service will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
                         multiline={true}
                         inputGridSm={12}
                         mt={2}
@@ -208,7 +208,7 @@ const ServicesPartial = ({
                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                     severity="info"
                 >
-                    Enter previous or current <strong>customers/partners</strong> who your products have helped. This will strengthen your conversion by 40%
+                    Enter previous or current <strong>customers/partners</strong> who your service have helped. This will strengthen your conversion by 40%
                 </Alert>
 
                 <div>
@@ -276,7 +276,7 @@ const ServicesPartial = ({
                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                     severity="info"
                 >
-                    What need does your product solve?
+                    What need does your service solve?
                 </Alert>
                 <div>
 
