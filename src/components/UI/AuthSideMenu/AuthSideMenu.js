@@ -304,7 +304,7 @@ const handleCopy = () => {
                             )}
                             {item?.storageDetails?.resumeLink && (
                                 <Grid container className={authMenuCss.ItemInnerBottom} title="Copy Resume Link" onClick={handleCopy}>
-                                    <Grid item xs={11} ref={copyLink} sx={{overflowY: 'hidden', whiteSpace: 'nowrap'}}>
+                                    <Grid item xs={11} ref={copyLink} sx={{overflow: 'hidden', whiteSpace: 'nowrap'}}>
                                         {item?.storageDetails?.resumeLink}
                                     </Grid>
                                     <Grid item xs={1} >
