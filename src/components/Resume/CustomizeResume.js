@@ -30,7 +30,7 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, userResumesAll, error } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error, successMini } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -791,6 +791,8 @@ const CustomizeResume = () => {
         resumeSubDuration={subDuration}
         isResumeSubbed={isResumeSubbed}
         arrayDetails={resumeForSearch}
+        error={error}
+        successMini={successMini}
       />
 
       <div style={{ width: "100%", padding: "0" }}>
@@ -824,6 +826,7 @@ const CustomizeResume = () => {
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">All fields with * are required</Alert>
                 {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>}
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have questions? <a className="link" target="_blank" href="/chat" style={{textDecoration: "underline"}}>Ask me anything!</a></Alert>
             </div>
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
@@ -1281,6 +1284,9 @@ const CustomizeResume = () => {
             {/* RELEVANT SKILLS */}
             <div id="skills" className={`Segment ${skillFaded ? "Faded" : "Faded-in"}`}>
               <h4>Relevant Skills</h4>
+              <div className='explanation-points'>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem', marginBottom: "10px", justifyContent: "center"}} severity="info">Write a skill and i will suggest others in the preview section for you, or use the + button to add several skills and I will optimize them, also in the preview.</Alert>
+              </div>
               <Grid container>
                 <Grid container item xs={9}>
                   {skills.map((skill, index) => {

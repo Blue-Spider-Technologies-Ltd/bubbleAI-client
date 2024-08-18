@@ -161,8 +161,8 @@ const Verification = () => {
                                     <p>Dear {firstName},</p>
                                     <h2>YOUR WELCOME GIFT!</h2>
                                 </div>
-                                <p>To boost your chances, this is an <strong>OFFER LIMITED FOR 3 DAYS</strong>, of a 30% DISCOUNT coupon with code: <span style={{fontSize: '1.5rem', fontWeight: 600, color: '#3E8F93'}}>{couponCode}</span> on our PER WEEK PLAN only.</p>
-                                <p>You can create an unlimited number of CVs for the week, unlimited number of cover letters, and unlimited applications to high-paying jobs tailored to your specifications, guaranteeing you a JOB INTERVIEW WITHIN A WEEK.</p>
+                                <p>To boost your chances, this is an <strong>OFFER LIMITED FOR 7 DAYS</strong>, of a 30% DISCOUNT coupon with code: <span style={{fontSize: '1.5rem', fontWeight: 600, color: '#3E8F93'}}>{couponCode}</span> on our PER WEEK PLAN only.</p>
+                                <p>You can create an unlimited number of CVs for the week, unlimited number of cover letters, and unlimited applications to high-paying jobs we will provide, tailored to your needs, guaranteeing you a JOB INTERVIEW WITHIN A WEEK.</p>
                                 
                                 <div style={{textAlign: 'center', lineHeight: 2}}>
                                     <h2>Your Next Steps:</h2>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import authMenuCss from './AuthMenu.module.css'
 import AuthInputs from '../Input/AuthInputs';
@@ -11,6 +11,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import unavailableImg from "../../../images/unavailable.png";
 import { setResume, setFetching, setUserResumesAll, setError, setAllMessagesArray, setMessages, setSuccessMini } from '../../../redux/states';
 import { useDispatch } from "react-redux";
@@ -20,11 +21,12 @@ import { checkAuthenticatedUser, errorAnimation, successMiniAnimation } from '..
 
 
 
-const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration, isResumeSubbed, value, onChange}) => {
+const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration, isResumeSubbed, value, onChange, error, successMini }) => {
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const navigate = useNavigate();
     const location = useLocation();
+    const copyLink = useRef(null);
     const isAuth = localStorage?.getItem("token")
     const [activeIndex, setActiveIndex] = useState(null);
     const errorSetter = (string) => {
@@ -192,6 +194,33 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         });
     }
 
+const handleCopy = () => {
+    if (copyLink.current) {
+        const textToCopy = copyLink.current.textContent;
+  
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+              successSetter("Link copied to clipboard");
+            })
+            .catch((err) => {
+              errorSetter("Failed to copy Link: ", err);
+            });
+        } else {
+          // For older browsers
+          const tempTextArea = document.createElement("textarea");
+          tempTextArea.value = textToCopy;
+          document.body.appendChild(tempTextArea);
+          tempTextArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempTextArea);
+  
+          successSetter("Link copied to clipboard");
+        }
+    }
+};
+    
+
 
     const NonMonthlySubDisplay = () => {
         return (
@@ -232,7 +261,7 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                         </div>
                     ) : (
                         arrayDetails?.map((item, index) => (
-                            <div key={index} className={activeIndex !== index ? authMenuCss.Item : authMenuCss.ItemActive}>
+                            <div style={{display: 'flex', justifyContent: "space-between", alignItems: "center", height: "50px"}} key={index} className={activeIndex !== index ? authMenuCss.Item : authMenuCss.ItemActive}>
                                 <div onClick={() => continueDiffChat(index)} style={{ width: "90%" }}>
                                     <span style={{ position: "relative", top: ".6rem", fontWeight: "600" }}>
                                         {item[0]?.content?.slice(0, 24) + "..."}
@@ -241,30 +270,48 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
                                         <EditNoteIcon fontSize='medium' />
                                     </span>
                                 </div>
-                                <div>
-                                    <span onClick={() => handleDeleteMsgSession(index, item)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }}>
-                                        <DeleteForeverIcon fontSize='small' />
-                                    </span>
+                                <div onClick={() => handleDeleteMsgSession(index, item)} style={{ color: 'rgba(158, 9, 9, 0.733)', paddingTop: '5px' }}>
+                                    <DeleteForeverIcon fontSize='small' />
                                 </div>
                             </div>
                         ))
                     )
                 ) : (
                     arrayDetails.map((item, index) => (
-                        <div key={index} className={authMenuCss.Item}>
-                            <div onClick={() => handleReDownload(index)} style={{ width: "90%" }}>
-                                <span style={{ position: "relative", top: ".6rem", fontWeight: "700" }}>
-                                    {item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}
-                                </span>
-                                <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}>
-                                    <DownloadIcon fontSize='medium' />
-                                </span>
+                        <div key={index} className={authMenuCss.Item} style={{height: !item?.storageDetails?.resumeLink && "50px"}}>
+                            <div className="error">{error}</div>
+                            <div className="success-mini">{successMini}</div>
+                            <div className={authMenuCss.ItemInnerTop}>
+                                <div onClick={() => handleReDownload(index)} style={{ width: "90%" }}>
+                                    <span style={{ position: "relative", top: ".6rem", fontWeight: "700" }}>
+                                        {item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}
+                                    </span>
+                                    <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}>
+                                        <DownloadIcon fontSize='medium' />
+                                    </span>
+                                </div>
+                                <div>
+                                    <span onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }}>
+                                        <DeleteForeverIcon fontSize='small' />
+                                    </span>
+                                </div>
                             </div>
-                            <div>
-                                <span onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }}>
-                                    <DeleteForeverIcon fontSize='small' />
-                                </span>
-                            </div>
+                            
+                            {item?.storageDetails?.buildDate && (
+                                <div className={authMenuCss.buildDate}>
+                                    {item?.storageDetails?.buildDate}
+                                </div>
+                            )}
+                            {item?.storageDetails?.resumeLink && (
+                                <Grid container className={authMenuCss.ItemInnerBottom} title="Copy Resume Link" onClick={handleCopy}>
+                                    <Grid item xs={11} ref={copyLink} sx={{overflowY: 'hidden', whiteSpace: 'nowrap'}}>
+                                        {item?.storageDetails?.resumeLink}
+                                    </Grid>
+                                    <Grid item xs={1} >
+                                        <ContentCopyIcon fontSize='small' />
+                                    </Grid>
+                                </Grid>
+                            )}
                         </div>
                     ))
                 )}

@@ -72,7 +72,9 @@ const DownloadResume = () => {
         name: "",
         desc: "",
         imgUrl:"",
-        template: "Standard"
+        template: "Standard",
+        resumeLink: "",
+        buildDate: ""
     })
     const isAuth = localStorage?.getItem('token')
     const authUser = isAuth && jwt_decode(isAuth)

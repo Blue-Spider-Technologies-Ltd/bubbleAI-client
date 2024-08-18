@@ -10,6 +10,9 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 //PARTIALS
 import ProductsPartial from './Partials/ProductsPartial';
+import ProjectPartial from './Partials/ProjectPartial';
+import ServicesPartial from './Partials/ServicesPartial';
+import PartnershipPartial from './Partials/PartnershipPartial';
 import { Button, ButtonGroup } from '@mui/material';
 import { errorAnimation, checkEmptyStringsInObj, checkEmptyStrings, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
 // import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -39,6 +42,9 @@ const CustomizeProposal = () => {
     const [propTypeFaded, setPropTypeFaded] = useState(true)
     const [objInput, setObjInput] = useState("")
     const [productFaded, setProductFaded] = useState(true)
+    const [serviceFaded, setServiceFaded] = useState(true)
+    const [projectFaded, setProjectFaded] = useState(true)
+    const [partnershipFaded, setPartnershipFaded] = useState(true)
     const [proposalType, setProposalType] = useState("")
     const [objFaded, setObjFaded] = useState(true)
     const [customersFaded, setCustomersFaded] = useState(true)
@@ -55,11 +61,27 @@ const CustomizeProposal = () => {
         }
     ]);
 
-    const [serviceArray, addServicetArray] = useState([
+    const [serviceArray, addServiceArray] = useState([
         {
           serviceName: "",
           price: "",
           serviceDesc: "",
+        }
+    ]);
+
+    const [projectArray, addProjectArray] = useState([
+        {
+          projectName: "",
+          price: "",
+          projectDesc: "",
+        }
+    ]);
+
+    const [partnershipArray, addPartnershipArray] = useState([
+        {
+          partnershipName: "",
+          price: "",
+          partnershipDesc: "",
         }
     ]);
 
@@ -154,23 +176,26 @@ const CustomizeProposal = () => {
 
     const handleProposalTypeForward = (prop) => {
         setPropTypeFaded(true)
-        setProductFaded(false)
         switch (prop) {
             case "product":
                 setSelectedIndex(1);
                 setProposalType("product")
+                setProductFaded(false)
                 break;
             case "service":
                 setSelectedIndex(2);
                 setProposalType("service")
+                setServiceFaded(false)
                 break;
             case "project":
                 setSelectedIndex(3);
                 setProposalType("project")
+                setProjectFaded(false)
                 break;
             case "partnership":
                 setSelectedIndex(4);
                 setProposalType("partnership")
+                setPartnershipFaded(false)
                 break;
             default:
                 setPropTypeFaded(false)
@@ -184,6 +209,7 @@ const CustomizeProposal = () => {
         setAddyFaded(false)
     }
 
+    //PRODUCT FUNCTIONS
     const handleAddProduct = () => {
         const newProduct =         {
             productName: "",
@@ -195,7 +221,6 @@ const CustomizeProposal = () => {
         }
         errorSetter("Only add 10 Products");
     };
-
     const handleDeleteProduct = () => {
         if (productArray.length > 1) {
             const prevProduct = [...productArray];
@@ -204,7 +229,6 @@ const CustomizeProposal = () => {
         }
         errorSetter("You must add a product");
     };
-
     const handleProductChange = (event, index) => {
         const prevProducts = [...productArray];
         switch (event.target.name) {
@@ -222,6 +246,88 @@ const CustomizeProposal = () => {
                 break;
             default:
                 addProductArray(prevProducts);
+                break;
+        }
+    };
+
+    //SERVICE FUNCTIONS
+    const handleAddService = () => {
+        const newService =         {
+            serviceName: "",
+            price: "",
+            ServiceDesc: "",
+        }
+        if (serviceArray.length < 10) {
+            return addServiceArray([...serviceArray, newService]);
+        }
+        errorSetter("Only add 10 Services");
+    };
+    const handleDeleteService = () => {
+        if (serviceArray.length > 1) {
+            const prevService = [...serviceArray];
+            prevService.pop();
+            return addServiceArray([...prevService]);
+        }
+        errorSetter("You must add a Service");
+    };
+    const handleServiceChange = (event, index) => {
+        const prevServices = [...serviceArray];
+        switch (event.target.name) {
+            case "serviceName":
+                prevServices[index].serviceName = event.target.value;
+                addServiceArray(prevServices);
+                break;            
+            case "price":
+                prevServices[index].price = event.target.value;
+                addServiceArray(prevServices);
+                break;
+            case "serviceDesc":
+                prevServices[index].serviceDesc = event.target.value;
+                addServiceArray(prevServices);
+                break;
+            default:
+                addServiceArray(prevServices);
+                break;
+        }
+    };
+
+    //PRODUCT FUNCTIONS
+    const handleAddProject = () => {
+        const newProdject =         {
+            projectName: "",
+            price: "",
+            projectDesc: "",
+        }
+        if (projectArray.length < 10) {
+            return addProjectArray([...projectArray, newProdject]);
+        }
+        errorSetter("Only add 10 Projects");
+    };
+    const handleDeleteProject = () => {
+        if (projectArray.length > 1) {
+            const prevProjects = [...projectArray];
+            prevProjects.pop();
+            return addProjectArray([...prevProjects]);
+        }
+        errorSetter("You must add a Project");
+    };
+    const handleProjectChange = (event, index) => {
+        const prevProjects = [...projectArray];
+        switch (event.target.name) {
+            case "projectName":
+                prevProjects[index].projectName = event.target.value;
+                addProjectArray(prevProjects);
+                break;            
+            case "price":
+                prevProjects[index].price = event.target.value;
+                addProjectArray(prevProjects);
+                break;
+            case "productDesc":
+                prevProjects[index].projectDesc = event.target.value;
+                addProjectArray(prevProjects);
+                break;
+            default:
+                addProjectArray(prevProjects);
                 break;
         }
     };
@@ -271,6 +377,50 @@ const CustomizeProposal = () => {
         }
     }
 
+    const serviceForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setServiceFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setServiceFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setServiceFaded(false)
+            break;
+        }
+    }
+
+    const projectForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setProjectFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setProjectFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setProjectFaded(false)
+            break;
+        }
+    }
+
     const objForwardOrBackward = (arg) => {
 
         switch (arg) {
@@ -285,6 +435,8 @@ const CustomizeProposal = () => {
           case "backward":
             setObjFaded(true)
             setProductFaded(false)
+            setServiceFaded(false)
+            setProjectFaded(false)
             break;
         
           default:
@@ -362,7 +514,45 @@ const CustomizeProposal = () => {
                             />
                 break;
             case "service":
+                template = <ServicesPartial 
+                                serviceFaded={serviceFaded}
+                                objFaded={objFaded}
+                                customersFaded={customersFaded}
+                                otherDeetsFaded={otherDeetsFaded}
+                                suggestedObj={suggestedObj}
+                                handleDeleteObj={handleDeleteObj}
+                                objInput={objInput}
+                                handleObjInputChange={handleObjInputChange}
+                                objForwardOrBackward={objForwardOrBackward}
+                                customersForwardOrBackward={customersForwardOrBackward}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                serviceArray={serviceArray}
+                                handleServiceChange={handleServiceChange}
+                                handleDeleteService={handleDeleteService}
+                                handleAddService={handleAddService}
+                                serviceForwardOrBackward={serviceForwardOrBackward}
+                            />
+                break;
             case "project":
+                template = <ProjectPartial 
+                                projectFaded={projectFaded}
+                                objFaded={objFaded}
+                                customersFaded={customersFaded}
+                                otherDeetsFaded={otherDeetsFaded}
+                                suggestedObj={suggestedObj}
+                                handleDeleteObj={handleDeleteObj}
+                                objInput={objInput}
+                                handleObjInputChange={handleObjInputChange}
+                                objForwardOrBackward={objForwardOrBackward}
+                                customersForwardOrBackward={customersForwardOrBackward}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                projectArray={projectArray}
+                                handleProjectChange={handleProjectChange}
+                                handleDeleteProject={handleDeleteProject}
+                                handleAddProject={handleAddProject}
+                                projectForwardOrBackward={projectForwardOrBackward}
+                            />
+                break;
             case "partnership":
             case "research":
             case "grant":

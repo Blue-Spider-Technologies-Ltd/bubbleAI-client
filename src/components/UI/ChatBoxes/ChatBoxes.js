@@ -24,7 +24,7 @@ export const Assistant = (props) => {
         successMiniAnimation()
     }
     const handleCopy = () => {
-        // Convert React nodes to a string or handle differently if needed
+        // Convert React nodes to a string
         const textToCopy = React.Children.map(props.children, child => 
             typeof child === "string" ? child : React.isValidElement(child) ? child.props.children : ""
         ).join('');

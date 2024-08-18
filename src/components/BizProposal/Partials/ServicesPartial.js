@@ -29,7 +29,7 @@ const ServicesPartial = ({
 
     return (
         <div>
-                                    {/* SERVICE DETAILS */}
+            {/* SERVICE DETAILS */}
             <div id="service-deets" className={`Segment ${serviceFaded ? "Faded" : "Faded-in"}`}>
                 <h4>Service Details</h4>
 
