@@ -12,6 +12,7 @@ const Standard = (props) => {
                 <h1>{props.resume?.basicInfo?.firstName} {props.resume?.basicInfo?.lastName}</h1>
                 <h3>{props.resume?.basicInfo?.jobPosition}</h3>
                 <span>{props.resume?.basicInfo?.mobile}</span> <span><a href={`mailto:${props.resume?.basicInfo?.email}`}>{props.resume?.basicInfo?.email}</a></span>
+                <div><span>{props.resume?.basicInfo?.city},</span> <span>{props.resume?.basicInfo?.country}.</span></div>
 
                 {props.resume?.linkInfo && (
                     <div>
@@ -50,7 +51,7 @@ const Standard = (props) => {
                                         </h5>
                                     </div>
                                     <div style={{ textAlign: "right" }}>
-                                        <span>{workInfo.dateFrom} - {workInfo.currently ? "Present" : workInfo.dateTo}</span>
+                                        <span>{workInfo.dateFrom.slice(0, 7)} - {workInfo.currently ? "Present" : workInfo.dateTo.slice(0, 7)}</span>
                                     </div>
                                 </div>
                                 <div style={{ color: "rgba(0, 0, 0, 0.454)" }}>{workInfo.industry}</div>
@@ -72,7 +73,7 @@ const Standard = (props) => {
                                 <h5>{eduInfo.institution}</h5>
                                 <div className={standardCss.FlexContainer}>
                                     <div><span>{eduInfo.degree}</span></div>
-                                    <div>{eduInfo.date.slice(0, 4)}</div>
+                                    <div>{eduInfo.date.slice(0, 7)}</div>
                                 </div>
                             </div>
                         ))}
@@ -88,10 +89,10 @@ const Standard = (props) => {
                                 <h3>Certifications & Awards</h3>
                                 {props.resume.awardArray.map((awardInfo, index) => (
                                     <div key={index} className={standardCss.Education}>
-                                        <h5>{awardInfo.org}</h5>
+                                        <h5>{awardInfo?.org}</h5>
                                         <div className={standardCss.FlexContainer}>
-                                            <div><span>{awardInfo.award}</span></div>
-                                            <div>{awardInfo.date.slice(0, 4)}</div>
+                                            <div><span>{awardInfo?.award}</span></div>
+                                            <div>{awardInfo?.date.slice(0, 7)}</div>
                                         </div>
                                     </div>
                                 ))}

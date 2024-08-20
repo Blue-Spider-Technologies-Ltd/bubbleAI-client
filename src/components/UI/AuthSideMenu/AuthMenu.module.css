@@ -90,7 +90,7 @@
 
 .ItemInnerBottom {
     border-radius: 5px;
-    background-color: var(--snow);
+    background-color: rgba(255, 250, 250, 0.625);
     cursor: copy;
     display: flex;
     align-items: center;

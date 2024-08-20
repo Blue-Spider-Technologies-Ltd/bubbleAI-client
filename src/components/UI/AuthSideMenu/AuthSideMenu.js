@@ -283,8 +283,8 @@ const handleCopy = () => {
                             <div className="success-mini">{successMini}</div>
                             <div className={authMenuCss.ItemInnerTop}>
                                 <div onClick={() => handleReDownload(index)} style={{ width: "90%" }}>
-                                    <span style={{ position: "relative", top: ".6rem", fontWeight: "700" }}>
-                                        {item?.storageDetails?.name ? item.storageDetails.name : "Unnamed"}
+                                    <span style={{ position: "relative", top: ".6rem", fontWeight: "700", whiteSpace: 'nowrap', overflow: "hidden" }}>
+                                        {item?.storageDetails?.name ? item.storageDetails.name.length > 18 ? `${item.storageDetails.name.slice(0, 18)}...` : item.storageDetails.name : 'Unnamed'}
                                     </span>
                                     <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}>
                                         <DownloadIcon fontSize='medium' />
