@@ -13,6 +13,10 @@ import ProductsPartial from './Partials/ProductsPartial';
 import ProjectPartial from './Partials/ProjectPartial';
 import ServicesPartial from './Partials/ServicesPartial';
 import PartnershipPartial from './Partials/PartnershipPartial';
+import ResearchPartial from './Partials/ResearchPartial';
+import GrantsPartial from './Partials/GrantsPartial';
+
+
 import { Button, ButtonGroup } from '@mui/material';
 import { errorAnimation, checkEmptyStringsInObj, checkEmptyStrings, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
 // import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -45,6 +49,8 @@ const CustomizeProposal = () => {
     const [serviceFaded, setServiceFaded] = useState(true)
     const [projectFaded, setProjectFaded] = useState(true)
     const [partnershipFaded, setPartnershipFaded] = useState(true)
+    const [researchFaded, setResearchFaded] = useState(true)
+    const [grantFaded, setGrantFaded] = useState(true)
     const [proposalType, setProposalType] = useState("")
     const [objFaded, setObjFaded] = useState(true)
     const [customersFaded, setCustomersFaded] = useState(true)
@@ -82,6 +88,22 @@ const CustomizeProposal = () => {
           partnershipName: "",
           price: "",
           partnershipDesc: "",
+        }
+    ]);
+
+    const [researchArray, addResearchArray] = useState([
+        {
+          researchName: "",
+          price: "",
+          researchDesc: "",
+        }
+    ]);
+
+    const [grantArray, addGrantArray] = useState([
+        {
+          grantName: "",
+          price: "",
+          grantDesc: "",
         }
     ]);
 
@@ -197,6 +219,16 @@ const CustomizeProposal = () => {
                 setProposalType("partnership")
                 setPartnershipFaded(false)
                 break;
+            case "research":
+                setSelectedIndex(5);
+                setProposalType("research")
+                setResearchFaded(false)
+                break;
+            case "grant":
+                setSelectedIndex(6);
+                setProposalType("grant")
+                setGrantFaded(false)
+                break;
             default:
                 setPropTypeFaded(false)
                 setProductFaded(true)
@@ -291,15 +323,15 @@ const CustomizeProposal = () => {
         }
     };
 
-    //PRODUCT FUNCTIONS
+    //PROJECT FUNCTIONS
     const handleAddProject = () => {
-        const newProdject =         {
+        const newProject =         {
             projectName: "",
             price: "",
             projectDesc: "",
         }
         if (projectArray.length < 10) {
-            return addProjectArray([...projectArray, newProdject]);
+            return addProjectArray([...projectArray, newProject]);
         }
         errorSetter("Only add 10 Projects");
     };
@@ -328,6 +360,129 @@ const CustomizeProposal = () => {
                 break;
             default:
                 addProjectArray(prevProjects);
+                break;
+        }
+    };
+
+    //PARTNERSHIP FUNCTIONS
+    const handleAddPartnership = () => {
+        const newPartner =         {
+            partnershipName: "",
+            price: "",
+            partnershipDesc: "",
+        }
+        if (partnershipArray.length < 10) {
+            return addPartnershipArray([...partnershipArray, newPartner]);
+        }
+        errorSetter("Add 10 relevent Partners only");
+    };
+    const handleDeletePartnership = () => {
+        if (partnershipArray.length > 1) {
+            const prevPartners = [...partnershipArray];
+            prevPartners.pop();
+            return addPartnershipArray([...prevPartners]);
+        }
+        errorSetter("Leave blank and continue");
+    };
+    const handlePartnershipChange = (event, index) => {
+        const prevPartners = [...partnershipArray];
+        switch (event.target.name) {
+            case "partnershipName":
+                prevPartners[index].partnershipName = event.target.value;
+                addPartnershipArray(prevPartners);
+                break;            
+            case "price":
+                prevPartners[index].price = event.target.value;
+                addPartnershipArray(prevPartners);
+                break;
+            case "partnershipDesc":
+                prevPartners[index].partnershipDesc = event.target.value;
+                addPartnershipArray(prevPartners);
+                break;
+            default:
+                addPartnershipArray(prevPartners);
+                break;
+        }
+    };
+
+    //RESEARCH FUNCTIONS
+    const handleAddResearch = () => {
+        const newResearch =         {
+            researchName: "",
+            price: "",
+            researchDesc: "",
+        }
+        if (researchArray.length < 10) {
+            return addResearchArray([...researchArray, newResearch]);
+        }
+        errorSetter("Add 10 relevent Researches only");
+    };
+    const handleDeleteResearch = () => {
+        if (researchArray.length > 1) {
+            const prevResearches = [...researchArray];
+            prevResearches.pop();
+            return addResearchArray([...prevResearches]);
+        }
+        errorSetter("Leave blank and continue");
+    };
+    const handleResearchChange = (event, index) => {
+        const prevResearches = [...researchArray];
+        switch (event.target.name) {
+            case "researchName":
+                prevResearches[index].researchName = event.target.value;
+                addResearchArray(prevResearches);
+                break;            
+            case "price":
+                prevResearches[index].price = event.target.value;
+                addResearchArray(prevResearches);
+                break;
+            case "partnershipDesc":
+                prevResearches[index].researchDesc = event.target.value;
+                addResearchArray(prevResearches);
+                break;
+            default:
+                addResearchArray(prevResearches);
+                break;
+        }
+    };
+
+    //GRANT FUNCTIONS
+    const handleAddGrant = () => {
+        const newGrant =         {
+            grantName: "",
+            price: "",
+            grantDesc: "",
+        }
+        if (grantArray.length < 5) {
+            return addGrantArray([...grantArray, newGrant]);
+        }
+        errorSetter("Add 5 relevent Grants only");
+    };
+    const handleDeleteGrant = () => {
+        if (grantArray.length > 1) {
+            const prevGrants = [...grantArray];
+            prevGrants.pop();
+            return addGrantArray([...prevGrants]);
+        }
+        errorSetter("Leave blank and continue");
+    };
+    const handleGrantChange = (event, index) => {
+        const prevGrants = [...grantArray];
+        switch (event.target.name) {
+            case "grantName":
+                prevGrants[index].grantName = event.target.value;
+                addGrantArray(prevGrants);
+                break;            
+            case "price":
+                prevGrants[index].price = event.target.value;
+                addGrantArray(prevGrants);
+                break;
+            case "grantDesc":
+                prevGrants[index].grantDesc = event.target.value;
+                addGrantArray(prevGrants);
+                break;
+            default:
+                addGrantArray(prevGrants);
                 break;
         }
     };
@@ -417,6 +572,72 @@ const CustomizeProposal = () => {
         
           default:
             setProjectFaded(false)
+            break;
+        }
+    }
+
+    const partnershipForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setPartnershipFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setPartnershipFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setPartnershipFaded(false)
+            break;
+        }
+    }
+
+    const researchForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setResearchFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setResearchFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setResearchFaded(false)
+            break;
+        }
+    }
+
+    const grantForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setGrantFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setGrantFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setGrantFaded(false)
             break;
         }
     }
@@ -554,9 +775,64 @@ const CustomizeProposal = () => {
                             />
                 break;
             case "partnership":
+                template = <PartnershipPartial 
+                                partnershipFaded={partnershipFaded}
+                                objFaded={objFaded}
+                                customersFaded={customersFaded}
+                                otherDeetsFaded={otherDeetsFaded}
+                                suggestedObj={suggestedObj}
+                                handleDeleteObj={handleDeleteObj}
+                                objInput={objInput}
+                                handleObjInputChange={handleObjInputChange}
+                                objForwardOrBackward={objForwardOrBackward}
+                                customersForwardOrBackward={customersForwardOrBackward}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                partnershipArray={partnershipArray}
+                                handlePartnershipChange={handlePartnershipChange}
+                                handleDeletePartnership={handleDeletePartnership}
+                                handleAddPartnership={handleAddPartnership}
+                                partnershipForwardOrBackward={partnershipForwardOrBackward}
+                            />
+                break;
             case "research":
+                template = <ResearchPartial 
+                                researchFaded={researchFaded}
+                                objFaded={objFaded}
+                                customersFaded={customersFaded}
+                                otherDeetsFaded={otherDeetsFaded}
+                                suggestedObj={suggestedObj}
+                                handleDeleteObj={handleDeleteObj}
+                                objInput={objInput}
+                                handleObjInputChange={handleObjInputChange}
+                                objForwardOrBackward={objForwardOrBackward}
+                                customersForwardOrBackward={customersForwardOrBackward}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                researchArray={researchArray}
+                                handleResearchChange={handleResearchChange}
+                                handleDeleteResearch={handleDeleteResearch}
+                                handleAddResearch={handleAddResearch}
+                                researchForwardOrBackward={researchForwardOrBackward}
+                            />
+                break;
             case "grant":
-                template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
+                template = <GrantsPartial 
+                                grantFaded={grantFaded}
+                                objFaded={objFaded}
+                                customersFaded={customersFaded}
+                                otherDeetsFaded={otherDeetsFaded}
+                                suggestedObj={suggestedObj}
+                                handleDeleteObj={handleDeleteObj}
+                                objInput={objInput}
+                                handleObjInputChange={handleObjInputChange}
+                                objForwardOrBackward={objForwardOrBackward}
+                                customersForwardOrBackward={customersForwardOrBackward}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                grantArray={grantArray}
+                                handleGrantChange={handleGrantChange}
+                                handleDeleteGrant={handleDeleteGrant}
+                                handleAddGrant={handleAddGrant}
+                                grantForwardOrBackward={grantForwardOrBackward}
+                            />
                 break;
         
             default:

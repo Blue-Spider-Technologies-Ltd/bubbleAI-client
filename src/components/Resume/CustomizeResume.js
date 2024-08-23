@@ -942,7 +942,7 @@ const CustomizeResume = () => {
                   return (
                     <AuthInput
                       key={index}
-                      label="Add a link e.g linkedin, github or your website"
+                      label="[Optional] Add a link e.g linkedin, github or your website"
                       id={info}
                       value={info}
                       inputType="text"
