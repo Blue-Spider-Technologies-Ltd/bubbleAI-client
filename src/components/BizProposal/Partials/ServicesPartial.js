@@ -20,10 +20,16 @@ const ServicesPartial = ({
     objForwardOrBackward, 
     customersForwardOrBackward, 
     otherDeetsForwardOrBackward,
+    testimonialsArray,
+    handleAddTestimony,
+    handleDeleteTestimony,
+    handleTestimonyChange,
     serviceArray,
     handleServiceChange,
     handleDeleteService,
     handleAddService,
+    otherDeets,
+    handleOtherDeetsChange,
     serviceForwardOrBackward 
 }) => {
 
@@ -212,40 +218,68 @@ const ServicesPartial = ({
                 </Alert>
 
                 <div>
-                    {suggestedObj.length > 0 && (
-                        <div style={styles.container}>
-                            {suggestedObj.map((obj, index) => (
-                                <div key={index} className="array-item">
-                                    {obj}
-                                    <span
-                                        className="itemDelete"
-                                        title="Delete Objective"
-                                        onClick={() => handleDeleteObj(index)}
-                                    >
-                                        X
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-                
-                
+                    <Grid
+                        container
+                        sx={{ display: "flex", justifyContent: "space-around" }}
+                        mt={3}
+                    >
+                        {testimonialsArray.length > 0 && testimonialsArray.map((item, index) => {
+                            return (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={5}
+                                    mb={2}
+                                    className="segment"
+                                    key={index}
+                                >
+                                    <AuthInput
+                                        name="clientName"
+                                        id={item.clientName}
+                                        value={item.clientName}
+                                        label={`Client Name ${index + 1}`}
+                                        inputGridSm={12}
+                                        inputType="text"
+                                        mb={2}
+                                        required={true}
+                                        onChange={(event) => handleTestimonyChange(event, index)}
+                                    />
+                                    <AuthInput
+                                        name="testimony"
+                                        id={item.testimony}
+                                        value={item.testimony}
+                                        placeholder="testimony/how client was helped (OPTIONAL)"
+                                        inputGridSm={12}
+                                        multiline={true}
+                                        mt={2}
+                                        rows={4}
+                                        maxRows={6}
+                                        onChange={(event) => handleTestimonyChange(event, index)}
+                                    />
+                                </Grid>
+                            );
+                        })}
 
-                <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
-                    <AuthInput
-                        name="objInput"
-                        value={objInput}
-                        placeholder="Enter partners (separate each partner with a comma, semi-colon or full-stop)"
-                        multiline={true}
-                        inputGridSm={12}
-                        mt={2}
-                        rows={4}
-                        maxRows={6}
-                        onChange={(e) => handleObjInputChange(e)}
-                        onKeyDown={(e) => handleObjInputChange(e)}
-                    />
-                </Grid>
+                    </Grid>
+
+                    <div className={resumeCss.CenteredElem}>
+                        <div
+                            style={{ marginRight: "10px" }}
+                            className="delete"
+                            title="Delete Testimony"
+                            onClick={handleDeleteTestimony}
+                        >
+                            -
+                        </div>
+                        <div
+                            className="add"
+                            title="Add Testimony"
+                            onClick={handleAddTestimony}
+                        >
+                            +
+                        </div>
+                    </div>
+                </div>
 
                 {/* CUSTOMERS Visibility Buttons */}
                 <div
@@ -270,17 +304,56 @@ const ServicesPartial = ({
             </div>
 
             {/* OTHER DETAILS */}
-            <div id="addy" className={`Segment ${otherDeetsFaded ? "Faded" : "Faded-in"}`}>
+            <div id="other-deets" className={`Segment ${otherDeetsFaded ? "Faded" : "Faded-in"}`}>
                 <h4>Other Details</h4>
-                <Alert 
+                {/* <Alert 
                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                     severity="info"
                 >
-                    What need does your service solve?
-                </Alert>
-                <div>
+                    What need does your product solve?
+                </Alert> */}
+                <Grid
+                    container
+                    sx={{ display: "flex", justifyContent: "space-around" }}
+                    mt={3}
+                >  
+                    <AuthInput
+                        name={otherDeets?.teamSize}
+                        id={otherDeets?.teamSize}
+                        value={otherDeets?.teamSize}
+                        label="Team Size"
+                        inputGridSm={12}
+                        inputGrid={6}
+                        inputType="number"
+                        mb={2}
+                        onChange={handleOtherDeetsChange("teamSize")}
+                    />
+                    <AuthInput
+                        name={otherDeets?.yearsInBiz}
+                        id={otherDeets?.yearsInBiz}
+                        value={otherDeets?.yearsInBiz}
+                        label="Years in Business"
+                        inputGridSm={12}
+                        inputGrid={6}
+                        inputType="number"
+                        mb={2}
+                        onChange={handleOtherDeetsChange("yearsInBiz")}
+                    />
+                    <AuthInput
+                        name={otherDeets?.missionVisionCore}
+                        id={otherDeets?.missionVisionCore}
+                        value={otherDeets?.missionVisionCore}
+                        label="[If available] Mission: Vision: Core Values: "
+                        placeholder="[If available] Mission: Vision: Core Values: "
+                        multiline={true}
+                        inputGridSm={12}
+                        mt={2}
+                        rows={4}
+                        maxRows={6}
+                        onChange={handleOtherDeetsChange("missionVisionCore")}
+                    />
 
-                </div>
+                </Grid>
 
                 {/* Visibility Buttons */}
                 <div

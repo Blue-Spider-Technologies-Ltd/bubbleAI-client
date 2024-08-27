@@ -27,9 +27,12 @@ import { Grid, Rating } from "@mui/material";
 import HelpIcon from '../HelpIcon/HelpIcon';
 import { faqs } from '../../../utils/faqs';
 import ResumePricing from '../../Pricing/ResumePricing';
+import { CheckoutSummaryModal } from '../Modal/Modal';
+import { useSelector } from "react-redux";
 const screenWidth = window.innerWidth
 
 const ResumeLearnMore = () => {
+    const { showCheckout } = useSelector(state => state.stateData)
     const [country, setCountry] = useState("")
     const [bubbleText, setBubbleText] = useState(['B', 'u', 'b', 'b', 'l', 'e', ' ', 'A', 'i']);
     const [activeIndex, setActiveIndex] = useState(null);
@@ -96,7 +99,7 @@ const ResumeLearnMore = () => {
                 </div>
             </div>
             <div className={css.DiscountHeader}>
-                <div>Seems you are in&nbsp;<span style={{fontWeight: '700'}}>{country}</span>. There is a 30% DISCOUNT in your country if you &nbsp;<span className="link" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={handleTryFree}>REGISTER NOW</span></div>
+                <div>Seems you are in&nbsp;<span style={{fontWeight: '700'}}>{country}</span>. There is a 30% DISCOUNT in your country if you &nbsp;<span className="link" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={handleTryFree}>START NOW</span></div>
             </div>
 
       
@@ -512,7 +515,7 @@ const ResumeLearnMore = () => {
             <secttion>
                 <ResumePricing />
             </secttion>
-
+            {showCheckout && <CheckoutSummaryModal />}
             <HelpIcon />
         </div>
     )

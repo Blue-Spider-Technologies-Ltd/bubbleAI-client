@@ -59,10 +59,17 @@ const CustomizeProposal = () => {
     const [isObjInputDelimited, setIsObjInputDelimited] = useState(false);
     const [suggestedObj, setSuggestedObj] = useState([])
 
+    const [otherDeets, setOtherDeets] = useState({
+        teamSize: "",
+        yearsInBiz: "",
+        missionVisionCore: ""
+    });
+
     const [productArray, addProductArray] = useState([
         {
           productName: "",
           price: "",
+          dicountPercent: 0,
           productDesc: "",
         }
     ]);
@@ -104,6 +111,13 @@ const CustomizeProposal = () => {
           grantName: "",
           price: "",
           grantDesc: "",
+        }
+    ]);
+
+    const [testimonialsArray, addTestimonialsArray] = useState([
+        {
+          clientName: "",
+          testimony: "",
         }
     ]);
 
@@ -270,6 +284,10 @@ const CustomizeProposal = () => {
                 break;            
             case "price":
                 prevProducts[index].price = event.target.value;
+                addProductArray(prevProducts);
+                break;
+            case "dicountPercent":
+                prevProducts[index].dicountPercent = event.target.value;
                 addProductArray(prevProducts);
                 break;
             case "productDesc":
@@ -510,6 +528,50 @@ const CustomizeProposal = () => {
         }
     };
 
+    //TESTIMONIAL FUNCTIONS
+    const handleAddTestimony = () => {
+        const newTestimony =         {
+            clientName: "",
+            testimony: "",
+        }
+        if (testimonialsArray.length < 5) {
+            return addTestimonialsArray([...testimonialsArray, newTestimony]);
+        }
+        errorSetter("Only add 5 Relevant Testimonies");
+    };
+    const handleDeleteTestimony = () => {
+        if (testimonialsArray.length > 1) {
+            const prevTestimony = [...testimonialsArray];
+            prevTestimony.pop();
+            return addTestimonialsArray([...prevTestimony]);
+        }
+        errorSetter("You can skip");
+    };
+    const handleTestimonyChange = (event, index) => {
+        const prevTestimony = [...testimonialsArray];
+        switch (event.target.name) {
+            case "clientName":
+                prevTestimony[index].clientName = event.target.value;
+                addTestimonialsArray(prevTestimony);
+                break;            
+            case "testimony":
+                prevTestimony[index].testimony = event.target.value;
+                addTestimonialsArray(prevTestimony);
+                break;
+            default:
+                addTestimonialsArray(prevTestimony);
+                break;
+        }
+    };
+
+
+    const handleOtherDeetsChange = (key) => (event) => {
+        setOtherDeets((prevState) => ({
+            ...prevState,
+            [key]: event.target.value,
+        }));
+    };
+
     const productForwardOrBackward = (arg) => {  
 
         switch (arg) {
@@ -726,11 +788,17 @@ const CustomizeProposal = () => {
                                 handleObjInputChange={handleObjInputChange}
                                 objForwardOrBackward={objForwardOrBackward}
                                 customersForwardOrBackward={customersForwardOrBackward}
-                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                testimonialsArray={testimonialsArray}
                                 productArray={productArray}
                                 handleProductChange={handleProductChange}
                                 handleDeleteProduct={handleDeleteProduct}
                                 handleAddProduct={handleAddProduct}
+                                handleAddTestimony={handleAddTestimony}
+                                handleDeleteTestimony={handleDeleteTestimony}
+                                handleTestimonyChange={handleTestimonyChange}
+                                otherDeets={otherDeets}
+                                handleOtherDeetsChange={handleOtherDeetsChange}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
                                 productForwardOrBackward={productForwardOrBackward}
                             />
                 break;
@@ -752,6 +820,12 @@ const CustomizeProposal = () => {
                                 handleDeleteService={handleDeleteService}
                                 handleAddService={handleAddService}
                                 serviceForwardOrBackward={serviceForwardOrBackward}
+                                testimonialsArray={testimonialsArray}
+                                handleAddTestimony={handleAddTestimony}
+                                handleDeleteTestimony={handleDeleteTestimony}
+                                handleTestimonyChange={handleTestimonyChange}
+                                otherDeets={otherDeets}
+                                handleOtherDeetsChange={handleOtherDeetsChange}
                             />
                 break;
             case "project":
@@ -847,11 +921,17 @@ const CustomizeProposal = () => {
                                 handleObjInputChange={handleObjInputChange}
                                 objForwardOrBackward={objForwardOrBackward}
                                 customersForwardOrBackward={customersForwardOrBackward}
-                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
+                                testimonialsArray={testimonialsArray}
                                 productArray={productArray}
                                 handleProductChange={handleProductChange}
                                 handleDeleteProduct={handleDeleteProduct}
                                 handleAddProduct={handleAddProduct}
+                                handleAddTestimony={handleAddTestimony}
+                                handleDeleteTestimony={handleDeleteTestimony}
+                                handleTestimonyChange={handleTestimonyChange}
+                                otherDeets={otherDeets}
+                                handleOtherDeetsChange={handleOtherDeetsChange}
+                                otherDeetsForwardOrBackward={otherDeetsForwardOrBackward}
                                 productForwardOrBackward={productForwardOrBackward}
                             />
                 break;
