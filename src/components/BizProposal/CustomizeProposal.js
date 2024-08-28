@@ -62,7 +62,8 @@ const CustomizeProposal = () => {
     const [otherDeets, setOtherDeets] = useState({
         teamSize: "",
         yearsInBiz: "",
-        missionVisionCore: ""
+        missionVisionCore: "",
+        awardRecog: ""
     });
 
     const [productArray, addProductArray] = useState([
@@ -78,6 +79,7 @@ const CustomizeProposal = () => {
         {
           serviceName: "",
           price: "",
+          dicountPercent: 0,
           serviceDesc: "",
         }
     ]);

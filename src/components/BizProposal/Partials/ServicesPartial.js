@@ -77,6 +77,16 @@ const ServicesPartial = ({
                                         onChange={(event) => handleServiceChange(event, index)}
                                     />
                                     <AuthInput
+                                        name="dicountPercent"
+                                        id={item.discountPercent}
+                                        value={item.discountPercent}
+                                        label="Percent Discount (If Available)"
+                                        inputGridSm={12}
+                                        inputType="number"
+                                        mb={2}
+                                        onChange={(event) => handleServiceChange(event, index)}
+                                    />
+                                    <AuthInput
                                         name="serviceDesc"
                                         id={item?.serviceDesc}
                                         value={item?.serviceDesc}
@@ -352,7 +362,19 @@ const ServicesPartial = ({
                         maxRows={6}
                         onChange={handleOtherDeetsChange("missionVisionCore")}
                     />
-
+                    <AuthInput
+                        name={otherDeets?.awardRecog}
+                        id={otherDeets?.awardRecog}
+                        value={otherDeets?.awardRecog}
+                        label="[If available] Awards: Recognitions: "
+                        placeholder="[If available] Awards: Recognitions: "
+                        multiline={true}
+                        inputGridSm={12}
+                        mt={2}
+                        rows={4}
+                        maxRows={6}
+                        onChange={handleOtherDeetsChange("missionVisionCore")}
+                    />
                 </Grid>
 
                 {/* Visibility Buttons */}

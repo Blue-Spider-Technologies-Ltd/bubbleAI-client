@@ -238,10 +238,20 @@ export const fetchPrice = async (category, usage) => {
     }
 }
 
-export const fetchCountryData = async () => {
+export const fetchIp = async () => {
     try {
         const getIPData = await axios.get('https://api.ipify.org')
-        const userIP = getIPData.data || ""
+        const userIP = getIPData.data || "" 
+
+        return userIP
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const fetchCountryData = async () => {
+    try {
+        const userIP = await fetchIp()
         const countryDataRaw = await axios.get(`https://ipapi.co/${userIP}/json/`)
         const countryData = countryDataRaw?.data   
 
@@ -261,3 +271,5 @@ export const fetchCurrency = async () => {
         console.error(error)
     }
 }
+
+

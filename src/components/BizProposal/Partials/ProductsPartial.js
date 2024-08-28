@@ -57,8 +57,8 @@ const ProductsPartial = ({
                                 >
                                     <AuthInput
                                         name="productName"
-                                        id={item.productName}
-                                        value={item.productName}
+                                        id={item?.productName}
+                                        value={item?.productName}
                                         label={`Product ${index + 1}`}
                                         inputGridSm={12}
                                         inputType="text"
@@ -68,8 +68,8 @@ const ProductsPartial = ({
                                     />
                                     <AuthInput
                                         name="price"
-                                        id={item.price}
-                                        value={item.price}
+                                        id={item?.price}
+                                        value={item?.price}
                                         label="Price (OPTIONAL)"
                                         inputGridSm={12}
                                         inputType="text"
@@ -78,9 +78,9 @@ const ProductsPartial = ({
                                     />
                                     <AuthInput
                                         name="dicountPercent"
-                                        id={item.discountPercent}
-                                        value={item.discountPercent}
-                                        label="Discount Percentage (OPTIONAL)"
+                                        id={item?.discountPercent}
+                                        value={item?.discountPercent}
+                                        label="Percent Discount (If Available)"
                                         inputGridSm={12}
                                         inputType="number"
                                         mb={2}
@@ -88,8 +88,8 @@ const ProductsPartial = ({
                                     />
                                     <AuthInput
                                         name="productDesc"
-                                        id={item.productDesc}
-                                        value={item.productDesc}
+                                        id={item?.productDesc}
+                                        value={item?.productDesc}
                                         label="[If available] Describe your product"
                                         placeholder="[If available] Describe your product"
                                         multiline={true}
@@ -357,6 +357,19 @@ const ProductsPartial = ({
                         value={otherDeets?.missionVisionCore}
                         label="[If available] Mission: Vision: Core Values: "
                         placeholder="[If available] Mission: Vision: Core Values: "
+                        multiline={true}
+                        inputGridSm={12}
+                        mt={2}
+                        rows={4}
+                        maxRows={6}
+                        onChange={handleOtherDeetsChange("missionVisionCore")}
+                    />
+                    <AuthInput
+                        name={otherDeets?.awardRecog}
+                        id={otherDeets?.awardRecog}
+                        value={otherDeets?.awardRecog}
+                        label="[If available] Awards: Recognitions: "
+                        placeholder="[If available] Awards: Recognitions: "
                         multiline={true}
                         inputGridSm={12}
                         mt={2}

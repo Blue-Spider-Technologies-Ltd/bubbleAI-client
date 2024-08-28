@@ -14,10 +14,13 @@ import { ThreeCircles } from 'react-loader-spinner'
 import PasswordChecklist from "react-multiple-password-validator"
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setError } from "../../redux/states";
-import { errorAnimation } from "../../utils/client-functions";
+import { errorAnimation, fetchIp } from "../../utils/client-functions";
 import Carousel from "react-multi-carousel";
 import { reviewDetails } from '../../utils/reviews';
 import HelpIcon from "../UI/HelpIcon/HelpIcon";
+import SHA256 from 'crypto-js/sha256';
+import CryptoJS from 'crypto-js';
+// import base64 from 'crypto-js/enc-base64';
 
 
 const screenWidth = window.innerWidth
@@ -98,8 +101,53 @@ const Register = () => {
                 firstName: user.firstName,
                 lastName: user.lastName,
             }
+
             try {
                 const response = await axios.post('/auth/register', userData)
+
+                const eventId = CryptoJS.lib.WordArray.random(16).toString(CryptoJS.enc.Hex);
+                const clientIp = await fetchIp();
+                const fbConversionApiData = {
+                    "event_name": "CompleteRegistration",
+                    "event_id": eventId,
+                    "event_time": Math.floor(Date.now() / 1000),
+                    "action_source": "website",
+                    "event_source_url": window.location.href,
+                    "user_data": {
+                        "fn": [
+                            SHA256(user?.firstName).toString()
+                        ],
+                        "ln": [
+                            SHA256(user?.lastName).toString()
+                        ],
+                        "ph": [
+                            null
+                        ],
+                        "em": [
+                            SHA256(user.email).toString()
+                        ],
+                        "client_user_agent": navigator.userAgent,
+                        "client_ip_address": clientIp
+                    }
+                }
+                async function sendToFacebookConversionAPI(data) {
+                    try {
+                        const res = await fetch('https://graph.facebook.com/v20.0/1133510054551065/events', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer EAAGOA8VGfuwBO5tWGc2njMdXV5CqSBsyFQCCwEdXcgdZB4ZAG6uZAldREnbZAROzBZCyZAVRkOxxWpKC83rVjDBL0TKq90mnc9pZAma45pFioO5h5INQr6FcE2qHWcF9Oqfwqd6LWE0WcYsFTaIzliSmWWMw9szljshEMom12ahJsB41SAZCOclWVI6aJiBtPJCv3QZDZD`
+                            },
+                            body: JSON.stringify(data)
+                        });
+                  
+                    } catch (error) {
+                        console.error('Error sending data to Facebook Conversion API:', error);
+                    }
+                }
+                // Call the function with the provided data
+                sendToFacebookConversionAPI(fbConversionApiData);
+
                 setLoading(false)
                 //Set email to retrieve for verification
                 dispatch(setEmail(user.email))
