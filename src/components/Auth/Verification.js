@@ -42,7 +42,7 @@ const Verification = () => {
 
     //If email is not set for verification
     useEffect(() => {
-        console.log(location.search.slice(6));
+
         if (email === "" && location.search.slice(6) === "") {
             navigate('/join-bubble')
         } 

@@ -20,6 +20,7 @@ import { reviewDetails } from '../../utils/reviews';
 import HelpIcon from "../UI/HelpIcon/HelpIcon";
 import SHA256 from 'crypto-js/sha256';
 import CryptoJS from 'crypto-js';
+import { init, track } from 'fbq';
 // import base64 from 'crypto-js/enc-base64';
 
 
@@ -130,6 +131,8 @@ const Register = () => {
                         "client_ip_address": clientIp
                     }
                 }
+                init('1133510054551065');
+                track('CompleteRegistration', { eventID: eventId });
                 async function sendToFacebookConversionAPI(data) {
                     try {
                         const res = await fetch('https://graph.facebook.com/v20.0/1133510054551065/events', {
@@ -138,15 +141,19 @@ const Register = () => {
                                 'Content-Type': 'application/json',
                                 'Authorization': `Bearer EAAGOA8VGfuwBO5tWGc2njMdXV5CqSBsyFQCCwEdXcgdZB4ZAG6uZAldREnbZAROzBZCyZAVRkOxxWpKC83rVjDBL0TKq90mnc9pZAma45pFioO5h5INQr6FcE2qHWcF9Oqfwqd6LWE0WcYsFTaIzliSmWWMw9szljshEMom12ahJsB41SAZCOclWVI6aJiBtPJCv3QZDZD`
                             },
-                            body: JSON.stringify(data)
+                            body: JSON.stringify({
+                                "data": [
+                                    data
+                                ],
+                            })
                         });
-                  
+                        
                     } catch (error) {
                         console.error('Error sending data to Facebook Conversion API:', error);
                     }
                 }
                 // Call the function with the provided data
-                sendToFacebookConversionAPI(fbConversionApiData);
+                await sendToFacebookConversionAPI(fbConversionApiData);
 
                 setLoading(false)
                 //Set email to retrieve for verification
