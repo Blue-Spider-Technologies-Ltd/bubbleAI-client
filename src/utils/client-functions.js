@@ -286,3 +286,11 @@ export const getMonthShortName = (dateString) => {
     return monthShortName;
 }
 
+export const capitalizeWords = (sentence) => {
+    return sentence.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+
+export const capitalizeAllLetters = (str) => {
+    return str.replace(/[a-zA-Z]/g, (char) => char.toUpperCase());
+}

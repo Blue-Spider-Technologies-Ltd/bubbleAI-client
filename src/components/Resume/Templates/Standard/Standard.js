@@ -2,7 +2,7 @@ import React from "react";
 import standardCss from "./Standard.module.css"
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { getMonthShortName } from "../../../../utils/client-functions";
+import { getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../../../utils/client-functions";
 
 
 
@@ -10,7 +10,7 @@ const Standard = (props) => {
     return (
         <div className={standardCss.StandardContainer}>
             <div className={standardCss.basicInfo}>
-                <h1>{props.resume?.basicInfo?.firstName} {props.resume?.basicInfo?.lastName}</h1>
+                <h1>{capitalizeWords(props.resume?.basicInfo?.firstName)} {capitalizeWords(props.resume?.basicInfo?.lastName)}</h1>
                 <h3>{props.resume?.basicInfo?.jobPosition}</h3>
                 <span>{props.resume?.basicInfo?.mobile}</span> <span><a href={`mailto:${props.resume?.basicInfo?.email}`}>{props.resume?.basicInfo?.email}</a></span>
                 <div><span>{props.resume?.basicInfo?.city},</span> <span>{props.resume?.basicInfo?.country}.</span></div>
@@ -47,7 +47,7 @@ const Standard = (props) => {
                                 <div className={standardCss.FlexContainer}>
                                     <div>
                                         <h5 style={{ display: "inline" }}>
-                                            <span>{workInfo.position} - {workInfo.company}</span>{" "}
+                                            <span>{capitalizeWords(workInfo.position)} - {capitalizeAllLetters(workInfo?.company)}</span>{" "}
                                             {workInfo.workLink && <a href={workInfo.workLink}>({workInfo.workLink})</a>}
                                         </h5>
                                     </div>
@@ -71,9 +71,9 @@ const Standard = (props) => {
                         <h3>Education</h3>
                         {props.resume.eduArray.map((eduInfo, index) => (
                             <div key={index} className={standardCss.Education}>
-                                <h5>{eduInfo.institution}</h5>
+                                <h5>{capitalizeWords(eduInfo.institution)}</h5>
                                 <div className={standardCss.FlexContainer}>
-                                    <div><span>{eduInfo.degree}</span></div>
+                                    <div><span>{capitalizeWords(eduInfo.degree)}</span></div>
                                     <div>{getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}</div>
                                 </div>
                             </div>
@@ -90,9 +90,9 @@ const Standard = (props) => {
                                 <h3>Certifications & Awards</h3>
                                 {props.resume.awardArray.map((awardInfo, index) => (
                                     <div key={index} className={standardCss.Education}>
-                                        <h5>{awardInfo?.org}</h5>
+                                        <h5>{capitalizeWords(awardInfo?.org)}</h5>
                                         <div className={standardCss.FlexContainer}>
-                                            <div><span>{awardInfo?.award}</span></div>
+                                            <div><span>{capitalizeWords(awardInfo?.award)}</span></div>
                                             <div>{getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}</div>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@ const Standard = (props) => {
                                 <h3>Publications</h3>
                                 <ul>
                                     {props.resume.publications.map((publication, index) => (
-                                        <li key={index}>{publication.title + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}</li>
+                                        <li key={index}>{capitalizeWords(publication.title) + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}</li>
                                     ))}
                                 </ul>
                             </section>

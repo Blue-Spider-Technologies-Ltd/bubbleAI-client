@@ -7,7 +7,7 @@ import { MdOutlineAlternateEmail } from "react-icons/md";
 import { ImPushpin } from "react-icons/im";
 import { PiLinkSimpleDuotone } from "react-icons/pi";
 import { FaCircleDot } from "react-icons/fa6";
-import { getMonthShortName } from "../../../../utils/client-functions";
+import { getMonthShortName, capitalizeWords } from "../../../../utils/client-functions";
 
 
 const SwimmingElephant = (props) => {
@@ -21,8 +21,8 @@ const SwimmingElephant = (props) => {
                         {props.resume?.basicInfo?.jobPosition}
                     </div>
                     <div className={css.Names}>
-                        <h1 style={{marginTop: "0", marginBottom: "0", color: 'rgb(145, 145, 145)'}}>{props.resume?.basicInfo?.lastName}</h1>
-                        <h1 style={{marginTop: "0"}}>{props.resume?.basicInfo?.firstName}</h1>
+                        <h1 style={{marginTop: "0", marginBottom: "0", color: 'rgb(145, 145, 145)'}}>{capitalizeWords(props.resume?.basicInfo?.lastName)}</h1>
+                        <h1 style={{marginTop: "0"}}>{capitalizeWords(props.resume?.basicInfo?.firstName)}</h1>
                     </div>
                 
                     <section style={{paddingLeft: '1rem', paddingTop: '.3rem'}}>
@@ -42,7 +42,7 @@ const SwimmingElephant = (props) => {
                                                 <h4>
                                                     <span>{workInfo.position} </span><br />
                                                 </h4>
-                                                <h5>{workInfo.company}</h5>
+                                                <h5>{capitalizeWords(workInfo.company)}</h5>
                                             </div>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)", marginTop: '-3px' }}>
                                                 {getMonthShortName(workInfo?.dateFrom) + " " + workInfo.dateFrom.slice(0, 4)} - {workInfo.currently ? "Present" : getMonthShortName(workInfo?.dateTo) + " " + workInfo.dateTo.slice(0, 4)}
@@ -69,7 +69,7 @@ const SwimmingElephant = (props) => {
                                                 <div key={index} style={{marginBottom: "10px"}}>
                                                     
                                                     <h4>{awardInfo.award}</h4>
-                                                    <h5>{awardInfo.org}</h5>
+                                                    <h5>{capitalizeWords(awardInfo.org)}</h5>
                                                     <div style={{ color: "rgba(0, 0, 0, 0.454)", marginTop: '-3px' }}>
                                                         {getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}
                                                     </div>
@@ -87,7 +87,7 @@ const SwimmingElephant = (props) => {
                                             <h3>PUBLICATIONS</h3>
                                             <ul>
                                                 {props.resume.publications.map((publication, index) => (
-                                                    <li key={index}>{publication.title + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication.date.slice(0, 4)}</li>
+                                                    <li key={index}>{capitalizeWords(publication.title) + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication.date.slice(0, 4)}</li>
                                                 ))}
                                             </ul>
                                         </section>
@@ -147,7 +147,7 @@ const SwimmingElephant = (props) => {
                                         <div key={index}>
                                             
                                             <h4>{eduInfo.institution}</h4>
-                                            <h5>{eduInfo.degree}</h5>
+                                            <h5>{capitalizeWords(eduInfo.degree)}</h5>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)", marginTop: '-3px' }}>{getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}</div>
                                             
                                         </div>

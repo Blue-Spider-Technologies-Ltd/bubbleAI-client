@@ -3,7 +3,7 @@ import radiantCss from "./RadiantMoon.module.css"
 import BuildIcon from '@mui/icons-material/Build';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Grid } from "@mui/material";
-import { getMonthShortName } from "../../../../utils/client-functions";
+import { getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../../../utils/client-functions";
 
 
 
@@ -69,8 +69,8 @@ const RadiantMoon = (props) => {
                 </Grid>
 
                 <Grid item xs={8} className={radiantCss.RightBg}>
-                    <h1 style={{marginBottom: "0"}}>{props.resume?.basicInfo?.firstName}</h1>
-                    <h1 style={{marginBottom: "0", marginTop: "-0.6rem"}}>{props.resume?.basicInfo?.lastName}</h1>
+                    <h1 style={{marginBottom: "0"}}>{capitalizeWords(props.resume?.basicInfo?.firstName)}</h1>
+                    <h1 style={{marginBottom: "0", marginTop: "-0.6rem"}}>{capitalizeWords(props.resume?.basicInfo?.lastName)}</h1>
                     <h3>{props.resume?.basicInfo?.jobPosition}</h3>
 
                     <div style={{marginTop: "1rem"}}>
@@ -83,7 +83,7 @@ const RadiantMoon = (props) => {
                                         <div key={index}>
                                             
                                             <div className={radiantCss.FlexContainer}>
-                                                <h5>{eduInfo.institution}</h5>
+                                                <h5>{capitalizeWords(eduInfo.institution)}</h5>
                                                 <div>{getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}</div>
                                             </div>
                                             <div style={{marginBottom: "10px"}}><span>{eduInfo.degree}</span></div>
@@ -105,7 +105,7 @@ const RadiantMoon = (props) => {
                                             <div className={radiantCss.WorkInfoCont}>
                                                 <div>
                                                     <h5>
-                                                        <span>{workInfo.company} - {workInfo.position} </span>{" "}
+                                                        <span>{capitalizeWords(workInfo.company)} - {capitalizeAllLetters(workInfo.position)} </span>{" "}
                                                         {workInfo.workLink && <span sx={{float: "right"}}><a href={workInfo.workLink} className={radiantCss.link}>({workInfo.workLink})</a></span>}
                                                     </h5>
                                                 </div>
@@ -134,9 +134,9 @@ const RadiantMoon = (props) => {
                                             <hr />
                                             {props.resume.awardArray.map((awardInfo, index) => (
                                                 <div key={index} style={{marginBottom: "10px"}}>
-                                                    <h5>{awardInfo.org}</h5>
+                                                    <h5>{capitalizeWords(awardInfo.org)}</h5>
                                                     <div className={radiantCss.FlexContainer}>
-                                                        <div><span>{awardInfo.award}</span></div>
+                                                        <div><span>{capitalizeWords(awardInfo.award)}</span></div>
                                                         <div>{getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}</div>
                                                     </div>
                                                 </div>
@@ -153,7 +153,7 @@ const RadiantMoon = (props) => {
                                             <h4>Publications</h4>
                                             <hr />
                                             {props.resume.publications.map((publication, index) => (
-                                                <p key={index}>{publication.title + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}</p>
+                                                <p key={index}>{capitalizeWords(publication.title) + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}</p>
                                             ))}
                                         </section>
                                     )}

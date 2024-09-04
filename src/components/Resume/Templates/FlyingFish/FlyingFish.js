@@ -4,7 +4,7 @@ import { MdSettingsPhone } from "react-icons/md";
 import { MdEmail } from "react-icons/md";
 import { TbWorldWww } from "react-icons/tb";
 import { Grid } from "@mui/material";
-import { getMonthShortName } from "../../../../utils/client-functions";
+import { getMonthShortName, capitalizeWords } from "../../../../utils/client-functions";
 
 
 const FlyingFish = (props) => {
@@ -16,7 +16,7 @@ const FlyingFish = (props) => {
 
                 </Grid>
                 <Grid item xs={8} sx={{textAlign: 'center'}}>
-                    <h1>{props.resume?.basicInfo?.firstName + " " + props.resume?.basicInfo?.lastName}</h1>
+                    <h1>{capitalizeWords(props.resume?.basicInfo?.firstName) + " " + capitalizeWords(props.resume?.basicInfo?.lastName)}</h1>
                 </Grid>
             </Grid>
 
@@ -93,7 +93,7 @@ const FlyingFish = (props) => {
                                                 <span>{workInfo.position} </span><br />
                                             </h5>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)", marginBottom: '10px' }}>
-                                                {workInfo.company + " (" + getMonthShortName(workInfo?.dateFrom) + " " + workInfo.dateFrom.slice(0, 4)} - {workInfo.currently ? "Present)" : getMonthShortName(workInfo?.dateTo) + " " + workInfo.dateTo.slice(0, 4) + ") "}
+                                                {capitalizeWords(workInfo.company) + " (" + getMonthShortName(workInfo?.dateFrom) + " " + workInfo.dateFrom.slice(0, 4)} - {workInfo.currently ? "Present)" : getMonthShortName(workInfo?.dateTo) + " " + workInfo.dateTo.slice(0, 4) + ") "}
                                             </div>
                                             
                                             {workInfo.jobDesc.split(";").map((item, index) => (
@@ -111,10 +111,10 @@ const FlyingFish = (props) => {
                                     {props.resume?.eduArray?.map((eduInfo, index) => (
                                         <div key={index}>
                                             <h5>
-                                                <span>{eduInfo.degree} </span><br />
+                                                <span>{capitalizeWords(eduInfo.degree)} </span><br />
                                             </h5>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)", marginBottom: '25px' }}>
-                                                {eduInfo.institution + " | " + getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}
+                                                {capitalizeWords(eduInfo.institution) + " | " + getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}
                                             </div>
                                         </div>
                                     ))}
@@ -133,7 +133,7 @@ const FlyingFish = (props) => {
                                                         <span>{awardInfo.award} </span><br />
                                                     </h5>
                                                     <div style={{ color: "rgba(0, 0, 0, 0.454)", marginBottom: '25px' }}>
-                                                        {awardInfo.org + " | " + getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}
+                                                        {capitalizeWords(awardInfo.org) + " | " + getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}
                                                     </div>
                                                 
                                                 </div>
