@@ -47,7 +47,9 @@ const CustomizeProposal = () => {
     const [objInput, setObjInput] = useState("")
     const [productFaded, setProductFaded] = useState(true)
     const [serviceFaded, setServiceFaded] = useState(true)
-    const [projectFaded, setProjectFaded] = useState(true)
+    const [projectPhaseFaded, setProjectPhaseFaded] = useState(true)
+    const [proposalTitle, setProposalTitle] = useState("")
+    const [proposalTitleFaded, setProposalTitleFaded] = useState(true)
     const [partnershipFaded, setPartnershipFaded] = useState(true)
     const [researchFaded, setResearchFaded] = useState(true)
     const [grantFaded, setGrantFaded] = useState(true)
@@ -84,11 +86,13 @@ const CustomizeProposal = () => {
         }
     ]);
 
+
     const [projectArray, addProjectArray] = useState([
         {
-          projectName: "",
-          price: "",
-          projectDesc: "",
+          phaseName: "",
+          budget: "",
+          timeline: "",
+          phaseDesc: "",
         }
     ]);
 
@@ -214,36 +218,31 @@ const CustomizeProposal = () => {
 
     const handleProposalTypeForward = (prop) => {
         setPropTypeFaded(true)
+        setProposalTitleFaded(false)
         switch (prop) {
             case "product":
                 setSelectedIndex(1);
                 setProposalType("product")
-                setProductFaded(false)
                 break;
             case "service":
                 setSelectedIndex(2);
                 setProposalType("service")
-                setServiceFaded(false)
                 break;
             case "project":
                 setSelectedIndex(3);
                 setProposalType("project")
-                setProjectFaded(false)
                 break;
             case "partnership":
                 setSelectedIndex(4);
                 setProposalType("partnership")
-                setPartnershipFaded(false)
                 break;
             case "research":
                 setSelectedIndex(5);
                 setProposalType("research")
-                setResearchFaded(false)
                 break;
             case "grant":
                 setSelectedIndex(6);
                 setProposalType("grant")
-                setGrantFaded(false)
                 break;
             default:
                 setPropTypeFaded(false)
@@ -255,6 +254,249 @@ const CustomizeProposal = () => {
     const handleProposalTypeBackward = () => {
         setPropTypeFaded(true)
         setAddyFaded(false)
+    }
+
+    const proposalTitleForwardOrBackward = (arg) => {  
+        setProposalTitleFaded(true)
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setProductFaded(false)
+            setServiceFaded(false)
+            setProjectPhaseFaded(false)
+            setPartnershipFaded(false)
+            setResearchFaded(false)
+            setGrantFaded(false)
+            break;
+          case "backward":
+            setPropTypeFaded(false);
+
+            setProductFaded(true)
+            setServiceFaded(true)
+            setProjectPhaseFaded(true)
+            setPartnershipFaded(true)
+            setResearchFaded(true)
+            setGrantFaded(true)
+            break;
+        
+          default:
+            break;
+        }
+    }
+
+    const objForwardOrBackward = (arg) => {
+        setObjFaded(true)
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled, exempting two keys
+            // if (checkEmptyStrings(suggestedObj) === false ) {
+            //     return errorSetter("Complete required fields in this section to continue");
+            // }
+
+            setCustomersFaded(false)
+            break;
+          case "backward":
+
+            setProductFaded(false)
+            setServiceFaded(false)
+            setProjectPhaseFaded(false)
+            setPartnershipFaded(false)
+            setResearchFaded(false)
+            setGrantFaded(false)
+            break;
+        
+          default:
+            setObjFaded(false)
+            break;
+        }
+    }
+
+    
+
+    const handleOtherDeetsChange = (key) => (event) => {
+        setOtherDeets((prevState) => ({
+            ...prevState,
+            [key]: event.target.value,
+        }));
+    };
+
+    const productForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setProductFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setProductFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setProductFaded(false)
+            break;
+        }
+    }
+
+    const serviceForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setServiceFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setServiceFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setServiceFaded(false)
+            break;
+        }
+    }
+
+    const projectPhaseForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setProjectPhaseFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setProjectPhaseFaded(true)
+            setProposalTitleFaded(false);
+            break;
+        
+          default:
+            setProjectPhaseFaded(false)
+            break;
+        }
+    }
+
+    const partnershipForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setPartnershipFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setPartnershipFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setPartnershipFaded(false)
+            break;
+        }
+    }
+
+    const researchForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setResearchFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setResearchFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setResearchFaded(false)
+            break;
+        }
+    }
+
+    const grantForwardOrBackward = (arg) => {  
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled
+            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
+            //   return errorSetter("Complete required fields in this section to continue");    
+            // }
+            setGrantFaded(true)
+            setObjFaded(false)
+            break;
+          case "backward":
+            setGrantFaded(true)
+            setPropTypeFaded(false);
+            break;
+        
+          default:
+            setGrantFaded(false)
+            break;
+        }
+    }
+
+    const customersForwardOrBackward = (arg) => {
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled, exempting two keys
+            // if (checkEmptyStrings(suggestedObj) === false ) {
+            //     return errorSetter("Complete required fields in this section to continue");
+            // }
+            setCustomersFaded(true)
+            setOtherDeetsFaded(false)
+            break;
+          case "backward":
+            setCustomersFaded(true)
+            setObjFaded(false)
+            break;
+        
+          default:
+            setCustomersFaded(false)
+            break;
+        }
+    }
+
+    const otherDeetsForwardOrBackward = (arg) => {
+
+        switch (arg) {
+          case "forward":
+            //check if required fields are filled, exempting two keys
+            // if (checkEmptyStrings(suggestedObj) === false ) {
+            //     return errorSetter("Complete required fields in this section to continue");
+            // }
+            setOtherDeetsFaded(true)
+            // setOtherDeetsFaded(false)
+            break;
+          case "backward":
+            setOtherDeetsFaded(true)
+            setCustomersFaded(false)
+            break;
+        
+          default:
+            setOtherDeetsFaded(false)
+            break;
+        }
     }
 
     //PRODUCT FUNCTIONS
@@ -346,9 +588,10 @@ const CustomizeProposal = () => {
     //PROJECT FUNCTIONS
     const handleAddProject = () => {
         const newProject =         {
-            projectName: "",
-            price: "",
-            projectDesc: "",
+            phaseName: "",
+            budget: "",
+            timeline: "",
+            phaseDesc: "",
         }
         if (projectArray.length < 10) {
             return addProjectArray([...projectArray, newProject]);
@@ -366,16 +609,20 @@ const CustomizeProposal = () => {
     const handleProjectChange = (event, index) => {
         const prevProjects = [...projectArray];
         switch (event.target.name) {
-            case "projectName":
-                prevProjects[index].projectName = event.target.value;
+            case "phaseName":
+                prevProjects[index].phaseName = event.target.value;
                 addProjectArray(prevProjects);
                 break;            
-            case "price":
-                prevProjects[index].price = event.target.value;
+            case "budget":
+                prevProjects[index].budget = event.target.value;
+                addProjectArray(prevProjects);
+                break;            
+            case "timeline":
+                prevProjects[index].timeline = event.target.value;
                 addProjectArray(prevProjects);
                 break;
-            case "productDesc":
-                prevProjects[index].projectDesc = event.target.value;
+            case "phaseDesc":
+                prevProjects[index].phaseDesc = event.target.value;
                 addProjectArray(prevProjects);
                 break;
             default:
@@ -516,7 +763,6 @@ const CustomizeProposal = () => {
           })
           .catch(() => errorSetter("Not Deleted"));
     };
-
     const handleObjInputChange = (e) => {
         const { value } = e.target;
         const delimiters = [',', ';', '.'];
@@ -567,212 +813,8 @@ const CustomizeProposal = () => {
     };
 
 
-    const handleOtherDeetsChange = (key) => (event) => {
-        setOtherDeets((prevState) => ({
-            ...prevState,
-            [key]: event.target.value,
-        }));
-    };
 
-    const productForwardOrBackward = (arg) => {  
 
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled
-            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
-            //   return errorSetter("Complete required fields in this section to continue");    
-            // }
-            setProductFaded(true)
-            setObjFaded(false)
-            break;
-          case "backward":
-            setProductFaded(true)
-            setPropTypeFaded(false);
-            break;
-        
-          default:
-            setProductFaded(false)
-            break;
-        }
-    }
-
-    const serviceForwardOrBackward = (arg) => {  
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled
-            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
-            //   return errorSetter("Complete required fields in this section to continue");    
-            // }
-            setServiceFaded(true)
-            setObjFaded(false)
-            break;
-          case "backward":
-            setServiceFaded(true)
-            setPropTypeFaded(false);
-            break;
-        
-          default:
-            setServiceFaded(false)
-            break;
-        }
-    }
-
-    const projectForwardOrBackward = (arg) => {  
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled
-            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
-            //   return errorSetter("Complete required fields in this section to continue");    
-            // }
-            setProjectFaded(true)
-            setObjFaded(false)
-            break;
-          case "backward":
-            setProjectFaded(true)
-            setPropTypeFaded(false);
-            break;
-        
-          default:
-            setProjectFaded(false)
-            break;
-        }
-    }
-
-    const partnershipForwardOrBackward = (arg) => {  
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled
-            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
-            //   return errorSetter("Complete required fields in this section to continue");    
-            // }
-            setPartnershipFaded(true)
-            setObjFaded(false)
-            break;
-          case "backward":
-            setPartnershipFaded(true)
-            setPropTypeFaded(false);
-            break;
-        
-          default:
-            setPartnershipFaded(false)
-            break;
-        }
-    }
-
-    const researchForwardOrBackward = (arg) => {  
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled
-            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
-            //   return errorSetter("Complete required fields in this section to continue");    
-            // }
-            setResearchFaded(true)
-            setObjFaded(false)
-            break;
-          case "backward":
-            setResearchFaded(true)
-            setPropTypeFaded(false);
-            break;
-        
-          default:
-            setResearchFaded(false)
-            break;
-        }
-    }
-
-    const grantForwardOrBackward = (arg) => {  
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled
-            // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
-            //   return errorSetter("Complete required fields in this section to continue");    
-            // }
-            setGrantFaded(true)
-            setObjFaded(false)
-            break;
-          case "backward":
-            setGrantFaded(true)
-            setPropTypeFaded(false);
-            break;
-        
-          default:
-            setGrantFaded(false)
-            break;
-        }
-    }
-
-    const objForwardOrBackward = (arg) => {
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled, exempting two keys
-            // if (checkEmptyStrings(suggestedObj) === false ) {
-            //     return errorSetter("Complete required fields in this section to continue");
-            // }
-            setObjFaded(true)
-            setCustomersFaded(false)
-            break;
-          case "backward":
-            setObjFaded(true)
-            setProductFaded(false)
-            setServiceFaded(false)
-            setProjectFaded(false)
-            break;
-        
-          default:
-            setObjFaded(false)
-            break;
-        }
-    }
-
-    const customersForwardOrBackward = (arg) => {
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled, exempting two keys
-            // if (checkEmptyStrings(suggestedObj) === false ) {
-            //     return errorSetter("Complete required fields in this section to continue");
-            // }
-            setCustomersFaded(true)
-            setOtherDeetsFaded(false)
-            break;
-          case "backward":
-            setCustomersFaded(true)
-            setObjFaded(false)
-            break;
-        
-          default:
-            setCustomersFaded(false)
-            break;
-        }
-    }
-
-    const otherDeetsForwardOrBackward = (arg) => {
-
-        switch (arg) {
-          case "forward":
-            //check if required fields are filled, exempting two keys
-            // if (checkEmptyStrings(suggestedObj) === false ) {
-            //     return errorSetter("Complete required fields in this section to continue");
-            // }
-            setOtherDeetsFaded(true)
-            // setOtherDeetsFaded(false)
-            break;
-          case "backward":
-            setOtherDeetsFaded(true)
-            setCustomersFaded(false)
-            break;
-        
-          default:
-            setOtherDeetsFaded(false)
-            break;
-        }
-    }
 
     const ProposalPartialToDisplay = () => {
         let template;
@@ -832,7 +874,8 @@ const CustomizeProposal = () => {
                 break;
             case "project":
                 template = <ProjectPartial 
-                                projectFaded={projectFaded}
+                                projectPhaseFaded={projectPhaseFaded}
+                                proposalTitleFaded={proposalTitleFaded}
                                 objFaded={objFaded}
                                 customersFaded={customersFaded}
                                 otherDeetsFaded={otherDeetsFaded}
@@ -847,7 +890,7 @@ const CustomizeProposal = () => {
                                 handleProjectChange={handleProjectChange}
                                 handleDeleteProject={handleDeleteProject}
                                 handleAddProject={handleAddProject}
-                                projectForwardOrBackward={projectForwardOrBackward}
+                                projectPhaseForwardOrBackward={projectPhaseForwardOrBackward}
                             />
                 break;
             case "partnership":
@@ -942,6 +985,10 @@ const CustomizeProposal = () => {
         return template
     }
     
+    
+    const handleProposalTitleChange = (event) => {
+        setProposalTitle(event.target.value)
+    }
     
 
     return (
@@ -1235,6 +1282,55 @@ const CustomizeProposal = () => {
                             >
                                 <div className='prev-page' onClick={handleProposalTypeBackward}>
                                     <FaLongArrowAltLeft />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {/* PROJECT TITLE */}
+                        <div id="project-title" className={`Segment ${proposalTitleFaded ? "Faded" : "Faded-in"}`}>
+                            <h4>Proposal Title</h4>
+
+                            <div>
+                                <Grid
+                                    container
+                                    sx={{ display: "flex", justifyContent: "space-around" }}
+                                    mt={3}
+                                >
+                                    <AuthInput
+                                        name="proposalTitle"
+                                        id={proposalTitle}
+                                        value={proposalTitle}
+                                        label={``}
+                                        inputGridSm={12}
+                                        inputType="text"
+                                        mb={2}
+                                        required={true}
+                                        onChange={handleProposalTitleChange}
+                                    />
+                                </Grid>
+
+                            </div>
+
+                    
+                            {/* Project Visibility Buttons */}
+                            <div
+                                style={{
+                                    width: "100%",
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    marginBottom: "20px",
+                                }}
+                            >
+                                <div className='prev-page' onClick={() => {proposalTitleForwardOrBackward('backward')}}>
+                                    <FaLongArrowAltLeft />
+                                </div>
+                                <div style={{ width: "200px"}}>
+                                    <ButtonSubmitGreen type="button" onClick={() => {
+                                        proposalTitleForwardOrBackward('forward')
+                                    }}>
+                                        Phases &nbsp;&nbsp;<FaLongArrowAltRight />
+                                    </ButtonSubmitGreen>
                                 </div>
                             </div>
                         </div>

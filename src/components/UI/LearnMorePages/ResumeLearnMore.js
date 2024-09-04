@@ -233,7 +233,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={6} p={3} pt={screenWidth < 900 && 0}>
                         <h3>Customize</h3>
-                        <p>Answer few questions to create a professional CV with Ai in seconds.</p>
+                        <p>Answer short smart review.</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -241,11 +241,11 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Get your CV immediately, No waiting time.</Grid>
+                                <Grid item xs={8}>Review used to generate job-specific resume/CV.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Interaction used to generate job-specific resume/CV.</Grid>
+                                <Grid item xs={8}>Get your CV immediately, No waiting time.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -286,7 +286,7 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Choose from Ai suggested keywords after analysis of your answers.</Grid>
+                                <Grid item xs={8}>Choose from Ai suggested keywords after analysis of your generated CV.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -366,7 +366,7 @@ const ResumeLearnMore = () => {
                     )}
                     <Grid item xs={12} md={6} p={3}>
                         <h3>Automated Job Search</h3>
-                        <p>Bubble Ai does not just create a professional and job-specific CV for you, a pop up appears after download and Premium Users can BENEFIT from this as it offers:</p>
+                        <p>Review from the first stage is also used to automatically search jobs you are qualified for after CV download:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -378,7 +378,7 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Choice of Job-tailored Cover Letters for each job.</Grid>
+                                <Grid item xs={8}>Review also used to auto-generate tailored Cover Letters for each job.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -417,7 +417,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={6} p={3}>
                         <h3>Interview Preparations</h3>
-                        <p>Benefit from free interview preparations with Bubble Ai. On a random day or after you get a call for an interview, visit Bubble Ai home page and focus on the ASK ME ANYTHING input. You will get a JOB INTERVIEW PREPARATION suggestion. BENEFITS include:</p>
+                        <p>Benefit from free interview preparations with Bubble Ai. Use the ASK ME ANYTHING input on Homepage. You will get a JOB INTERVIEW PREPARATION suggestion. BENEFITS include:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>

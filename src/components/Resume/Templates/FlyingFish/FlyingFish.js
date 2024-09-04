@@ -4,7 +4,7 @@ import { MdSettingsPhone } from "react-icons/md";
 import { MdEmail } from "react-icons/md";
 import { TbWorldWww } from "react-icons/tb";
 import { Grid } from "@mui/material";
-
+import { getMonthShortName } from "../../../../utils/client-functions";
 
 
 const FlyingFish = (props) => {
@@ -93,7 +93,7 @@ const FlyingFish = (props) => {
                                                 <span>{workInfo.position} </span><br />
                                             </h5>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)", marginBottom: '10px' }}>
-                                                {workInfo.company + " (" + workInfo.dateFrom.slice(0, 7)} to {workInfo.currently ? "Present)" : workInfo.dateTo.slice(0, 7) + ") "}
+                                                {workInfo.company + " (" + getMonthShortName(workInfo?.dateFrom) + " " + workInfo.dateFrom.slice(0, 4)} - {workInfo.currently ? "Present)" : getMonthShortName(workInfo?.dateTo) + " " + workInfo.dateTo.slice(0, 4) + ") "}
                                             </div>
                                             
                                             {workInfo.jobDesc.split(";").map((item, index) => (
@@ -114,7 +114,7 @@ const FlyingFish = (props) => {
                                                 <span>{eduInfo.degree} </span><br />
                                             </h5>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)", marginBottom: '25px' }}>
-                                                {eduInfo.institution + " | " + eduInfo.date.slice(0, 4)}
+                                                {eduInfo.institution + " | " + getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}
                                             </div>
                                         </div>
                                     ))}
@@ -133,7 +133,7 @@ const FlyingFish = (props) => {
                                                         <span>{awardInfo.award} </span><br />
                                                     </h5>
                                                     <div style={{ color: "rgba(0, 0, 0, 0.454)", marginBottom: '25px' }}>
-                                                        {awardInfo.org + " | " + awardInfo.date.slice(0, 4)}
+                                                        {awardInfo.org + " | " + getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}
                                                     </div>
                                                 
                                                 </div>
@@ -149,7 +149,7 @@ const FlyingFish = (props) => {
                                         <section>
                                             <h4>PUBLICATIONS</h4>
                                             {props.resume.publications.map((publication, index) => (
-                                                <p key={index}>{publication.title + ", " + publication.source + ", " + publication.date.slice(0, 4)}</p>
+                                                <p key={index}>{publication.title + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication.date.slice(0, 4)}</p>
                                             ))}
                                         </section>
                                     )}

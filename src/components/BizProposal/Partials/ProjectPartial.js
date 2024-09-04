@@ -9,7 +9,8 @@ import { Grid } from "@mui/material";
 const screenWidth = window.innerWidth;
 
 const ProjectPartial = ({
-    projectFaded, 
+    projectPhaseFaded, 
+    proposalTitleFaded,
     objFaded, 
     customersFaded, 
     otherDeetsFaded, 
@@ -24,13 +25,15 @@ const ProjectPartial = ({
     handleProjectChange,
     handleDeleteProject,
     handleAddProject,
-    projectForwardOrBackward 
+    projectPhaseForwardOrBackward,
 }) => {
 
     return (
         <div>
+
+
             {/* PROJECT DETAILS */}
-            <div id="project-deets" className={`Segment ${projectFaded ? "Faded" : "Faded-in"}`}>
+            <div id="project-deets" className={`Segment ${projectPhaseFaded ? "Faded" : "Faded-in"}`}>
                 <h4>Project Details</h4>
 
                 <div>
@@ -50,10 +53,10 @@ const ProjectPartial = ({
                                     key={index}
                                 >
                                     <AuthInput
-                                        name="projectName"
-                                        id={item?.projectName}
-                                        value={item?.projectName}
-                                        label={`Project ${index + 1}`}
+                                        name="phaseName"
+                                        id={item?.phaseName}
+                                        value={item?.phaseName}
+                                        label={`Project Phase ${index + 1}`}
                                         inputGridSm={12}
                                         inputType="text"
                                         mb={2}
@@ -61,21 +64,31 @@ const ProjectPartial = ({
                                         onChange={(event) => handleProjectChange(event, index)}
                                     />
                                     <AuthInput
-                                        name="price"
-                                        id={item?.price}
-                                        value={item.price}
-                                        label="Per Project Price (Only If applicable)"
+                                        name="budget"
+                                        id={item?.budget}
+                                        value={item.budget}
+                                        label="Phase Budget (Only If applicable)"
+                                        inputGridSm={12}
+                                        inputType="number"
+                                        mb={2}
+                                        onChange={(event) => handleProjectChange(event, index)}
+                                    />
+                                    <AuthInput
+                                        name="timeline"
+                                        id={item?.timeline}
+                                        value={item.timeline}
+                                        label="Timeline (e.g 2 Weeks)"
                                         inputGridSm={12}
                                         inputType="text"
                                         mb={2}
                                         onChange={(event) => handleProjectChange(event, index)}
                                     />
                                     <AuthInput
-                                        name="projectDesc"
-                                        id={item?.projectDesc}
-                                        value={item?.projectDesc}
-                                        label="[If available] Describe project"
-                                        placeholder="[If available] Describe project"
+                                        name="phaseDesc"
+                                        id={item?.phaseDesc}
+                                        value={item?.phaseDesc}
+                                        label="[If available] Describe phase"
+                                        placeholder="[If available] Describe phase"
                                         multiline={true}
                                         inputGridSm={12}
                                         mt={2}
@@ -118,12 +131,12 @@ const ProjectPartial = ({
                         marginBottom: "20px",
                     }}
                 >
-                    <div className='prev-page' onClick={() => {projectForwardOrBackward('backward')}}>
+                    <div className='prev-page' onClick={() => {projectPhaseForwardOrBackward('backward')}}>
                         <FaLongArrowAltLeft />
                     </div>
                     <div style={{ width: "200px"}}>
                         <ButtonSubmitGreen type="button" onClick={() => {
-                            projectForwardOrBackward('forward')
+                            projectPhaseForwardOrBackward('forward')
                         }}>
                             Objectives &nbsp;&nbsp;<FaLongArrowAltRight />
                         </ButtonSubmitGreen>
@@ -140,7 +153,7 @@ const ProjectPartial = ({
                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                     severity="info"
                 >
-                    What need does your Project solve?
+                    What need(s) would your Project solve?
                 </Alert>
 
                 <div>
@@ -167,7 +180,7 @@ const ProjectPartial = ({
                     <AuthInput
                         name="objInput"
                         value={objInput}
-                        placeholder="Enter some objectives (Objectives are details of what your project will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
+                        placeholder="Enter some objectives (Objectives are details of the main goals you want to achieve with this project. Separate each sentence/word with a comma, semi-colon or full-stop)"
                         multiline={true}
                         inputGridSm={12}
                         mt={2}

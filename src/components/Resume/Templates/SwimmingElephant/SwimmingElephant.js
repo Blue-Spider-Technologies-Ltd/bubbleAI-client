@@ -7,7 +7,7 @@ import { MdOutlineAlternateEmail } from "react-icons/md";
 import { ImPushpin } from "react-icons/im";
 import { PiLinkSimpleDuotone } from "react-icons/pi";
 import { FaCircleDot } from "react-icons/fa6";
-
+import { getMonthShortName } from "../../../../utils/client-functions";
 
 
 const SwimmingElephant = (props) => {
@@ -45,7 +45,7 @@ const SwimmingElephant = (props) => {
                                                 <h5>{workInfo.company}</h5>
                                             </div>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)", marginTop: '-3px' }}>
-                                                {workInfo.dateFrom.slice(0, 7)} - {workInfo.currently ? "Present" : workInfo.dateTo.slice(0, 7)}
+                                                {getMonthShortName(workInfo?.dateFrom) + " " + workInfo.dateFrom.slice(0, 4)} - {workInfo.currently ? "Present" : getMonthShortName(workInfo?.dateTo) + " " + workInfo.dateTo.slice(0, 4)}
                                             </div>
                                             
                                             <ul>
@@ -71,7 +71,7 @@ const SwimmingElephant = (props) => {
                                                     <h4>{awardInfo.award}</h4>
                                                     <h5>{awardInfo.org}</h5>
                                                     <div style={{ color: "rgba(0, 0, 0, 0.454)", marginTop: '-3px' }}>
-                                                        {awardInfo.date.slice(0, 7)}
+                                                        {getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}
                                                     </div>
                                                 </div>
                                             ))}
@@ -87,7 +87,7 @@ const SwimmingElephant = (props) => {
                                             <h3>PUBLICATIONS</h3>
                                             <ul>
                                                 {props.resume.publications.map((publication, index) => (
-                                                    <li key={index}>{publication.title + ", " + publication.source + ", " + publication.date.slice(0, 4)}</li>
+                                                    <li key={index}>{publication.title + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication.date.slice(0, 4)}</li>
                                                 ))}
                                             </ul>
                                         </section>
@@ -148,7 +148,7 @@ const SwimmingElephant = (props) => {
                                             
                                             <h4>{eduInfo.institution}</h4>
                                             <h5>{eduInfo.degree}</h5>
-                                            <div style={{ color: "rgba(0, 0, 0, 0.454)", marginTop: '-3px' }}>{eduInfo.date.slice(0, 7)}</div>
+                                            <div style={{ color: "rgba(0, 0, 0, 0.454)", marginTop: '-3px' }}>{getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}</div>
                                             
                                         </div>
                                     ))}

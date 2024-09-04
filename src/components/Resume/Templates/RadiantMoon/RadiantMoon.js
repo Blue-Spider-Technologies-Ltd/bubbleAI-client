@@ -3,6 +3,7 @@ import radiantCss from "./RadiantMoon.module.css"
 import BuildIcon from '@mui/icons-material/Build';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Grid } from "@mui/material";
+import { getMonthShortName } from "../../../../utils/client-functions";
 
 
 
@@ -83,7 +84,7 @@ const RadiantMoon = (props) => {
                                             
                                             <div className={radiantCss.FlexContainer}>
                                                 <h5>{eduInfo.institution}</h5>
-                                                <div>{eduInfo.date.slice(0, 4)}</div>
+                                                <div>{getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}</div>
                                             </div>
                                             <div style={{marginBottom: "10px"}}><span>{eduInfo.degree}</span></div>
                                         </div>
@@ -113,7 +114,7 @@ const RadiantMoon = (props) => {
                                                 </div> */}
                                             </div>
                                             <div style={{ color: "rgba(0, 0, 0, 0.454)" }}>
-                                                {workInfo.dateFrom} - {workInfo.currently ? "Present" : workInfo.dateTo}
+                                                {getMonthShortName(workInfo?.dateFrom) + " " + workInfo.dateFrom.slice(0, 4)} - {workInfo.currently ? "Present" : getMonthShortName(workInfo?.dateTo) + " " + workInfo.dateTo.slice(0, 4)}
                                             </div>
                                             
                                             {workInfo.jobDesc.split(";").map((item, index) => (
@@ -136,7 +137,7 @@ const RadiantMoon = (props) => {
                                                     <h5>{awardInfo.org}</h5>
                                                     <div className={radiantCss.FlexContainer}>
                                                         <div><span>{awardInfo.award}</span></div>
-                                                        <div>{awardInfo.date.slice(0, 4)}</div>
+                                                        <div>{getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}</div>
                                                     </div>
                                                 </div>
                                             ))}
@@ -152,7 +153,7 @@ const RadiantMoon = (props) => {
                                             <h4>Publications</h4>
                                             <hr />
                                             {props.resume.publications.map((publication, index) => (
-                                                <p key={index}>{publication.title + ", " + publication.source + ", " + publication.date.slice(0, 4)}</p>
+                                                <p key={index}>{publication.title + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}</p>
                                             ))}
                                         </section>
                                     )}

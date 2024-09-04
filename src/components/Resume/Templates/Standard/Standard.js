@@ -2,6 +2,7 @@ import React from "react";
 import standardCss from "./Standard.module.css"
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { getMonthShortName } from "../../../../utils/client-functions";
 
 
 
@@ -51,7 +52,7 @@ const Standard = (props) => {
                                         </h5>
                                     </div>
                                     <div style={{ textAlign: "right" }}>
-                                        <span>{workInfo.dateFrom.slice(0, 7)} - {workInfo.currently ? "Present" : workInfo.dateTo.slice(0, 7)}</span>
+                                        <span>{getMonthShortName(workInfo?.dateFrom) + " " + workInfo.dateFrom.slice(0, 4)} - {workInfo.currently ? "Present" : getMonthShortName(workInfo?.dateTo) + " " + workInfo.dateTo.slice(0, 4)}</span>
                                     </div>
                                 </div>
                                 <div style={{ color: "rgba(0, 0, 0, 0.454)" }}>{workInfo.industry}</div>
@@ -73,7 +74,7 @@ const Standard = (props) => {
                                 <h5>{eduInfo.institution}</h5>
                                 <div className={standardCss.FlexContainer}>
                                     <div><span>{eduInfo.degree}</span></div>
-                                    <div>{eduInfo.date.slice(0, 7)}</div>
+                                    <div>{getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}</div>
                                 </div>
                             </div>
                         ))}
@@ -92,7 +93,7 @@ const Standard = (props) => {
                                         <h5>{awardInfo?.org}</h5>
                                         <div className={standardCss.FlexContainer}>
                                             <div><span>{awardInfo?.award}</span></div>
-                                            <div>{awardInfo?.date.slice(0, 7)}</div>
+                                            <div>{getMonthShortName(awardInfo?.date) + " " + awardInfo.date.slice(0, 4)}</div>
                                         </div>
                                     </div>
                                 ))}
@@ -108,7 +109,7 @@ const Standard = (props) => {
                                 <h3>Publications</h3>
                                 <ul>
                                     {props.resume.publications.map((publication, index) => (
-                                        <li key={index}>{publication.title + ", " + publication.source + ", " + publication.date.slice(0, 4)}</li>
+                                        <li key={index}>{publication.title + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}</li>
                                     ))}
                                 </ul>
                             </section>

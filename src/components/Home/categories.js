@@ -17,13 +17,13 @@ const categoriesData = [
         unAuthURL: '/popin?resume',
         image: resumeImg
     },
-    {
-        title: "Depositions (Beta)",
-        desc: "Minutes of Proceedings (Speech to Text & Voice Recognition) AI",
-        isAuthURL: '/user/dashboard/depositions',
-        unAuthURL: '/popin?depositions',
-        image: sttImg
-    },
+    // {
+    //     title: "Depositions (Beta)",
+    //     desc: "Minutes of Proceedings (Speech to Text & Voice Recognition) AI",
+    //     isAuthURL: '/user/dashboard/depositions',
+    //     unAuthURL: '/popin?depositions',
+    //     image: sttImg
+    // },
     // {
     //     title: "Mock Exams and Tutor",
     //     desc: "Take standard time-based CBT mock: JAMB, IELTS etc. and get tutored on weak areas",
