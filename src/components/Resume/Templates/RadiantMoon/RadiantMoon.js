@@ -71,7 +71,7 @@ const RadiantMoon = (props) => {
                 <Grid item xs={8} className={radiantCss.RightBg}>
                     <h1 style={{marginBottom: "0"}}>{capitalizeWords(props.resume?.basicInfo?.firstName)}</h1>
                     <h1 style={{marginBottom: "0", marginTop: "-0.6rem"}}>{capitalizeWords(props.resume?.basicInfo?.lastName)}</h1>
-                    <h3>{props.resume?.basicInfo?.jobPosition}</h3>
+                    <h3>{capitalizeWords(props.resume?.basicInfo?.jobPosition)}</h3>
 
                     <div style={{marginTop: "1rem"}}>
                         <section>

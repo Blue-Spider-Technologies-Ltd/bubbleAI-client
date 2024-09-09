@@ -1,6 +1,7 @@
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo, useRef } from "react";
 import ReactPixel from 'react-facebook-pixel';
 import resumeCss from "./Resume.module.css";
+import depoCss from "../Depositions/Depositions.module.css"
 import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
@@ -14,8 +15,8 @@ import {
   setError, 
   setResumeSubDuration } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+// import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import axios from "axios";
 import { Modal, PlainModalOverlay } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
@@ -24,6 +25,7 @@ import { useConfirm } from "material-ui-confirm";
 import Alert from '@mui/material/Alert';
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import { IoSparklesSharp } from "react-icons/io5";
 
 
 
@@ -32,6 +34,7 @@ const CustomizeResume = () => {
   const confirm = useConfirm();
   const { user, userResumesAll, error, successMini } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
+  const dragDropRef = useRef();
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
   const [progressPercentage, setProgressPercentage] = useState(0);
@@ -51,6 +54,9 @@ const CustomizeResume = () => {
   const [countryid, setCountryid] = useState(0);
   const [searchString, setSearchString] = useState("");
   const [resumeForSearch, setResumeForSearch] = useState("");
+  const [file, setFile] = useState(null);
+  const [fileError, setFileError] = useState(false);
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const screenWidth = window.innerWidth
 
 
@@ -244,8 +250,7 @@ const CustomizeResume = () => {
     },
   ]);
 
-
-/////////////////FIRST USER FUNCTIONS////////////////////////////////
+  /////////////////FIRST USER FUNCTIONS////////////////////////////////
   const handleDobFirstUserInputChange = event => {
     setDobFirstUser(event.target.value)
   }
@@ -583,7 +588,7 @@ const CustomizeResume = () => {
       });
       if (response.status === 500) {
         setLoading(false);
-        errorSetter("We are being throttled, try again after a while");
+        errorSetter("Throttling, try again after a while");
         return
       }
 
@@ -591,7 +596,7 @@ const CustomizeResume = () => {
       //save a copy for later incase user doesn't finish now
       let resumeObjforLocal = {
         resumeData: response.data.resumeData,
-        expiration: now + 24 * 60 * 60 * 1000, //current time + 24hr in milliseconds
+        expiration: now + 168 * 60 * 60 * 1000, //current time + 1 week in milliseconds
       };
       localStorage.setItem(
         "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@",
@@ -602,7 +607,7 @@ const CustomizeResume = () => {
       navigate("/user/dashboard/resume?preview");
     } catch (error) {
       setLoading(false);
-      errorSetter("We are being throttled, try again after a while");
+      errorSetter("Throttling, try again after a while");
       eventSource.close();
     }
   };
@@ -777,7 +782,166 @@ const CustomizeResume = () => {
         setResumeForSearch(filteredData);
     }
   };
+
+
+
+  ///////DRAG AND DROP & FILE FUNCTIONS
+  const handleUploadFile = (e) => {
+    setFileError(false);
+    const MAX_FILE_SIZE = 14 * 1024 * 1024;
+    const allowedTypes = ['.doc', '.docx', '.pdf', '.txt'];
+
+    let selectedFile;
+    if (e.type === "drop") {
+      selectedFile = e.dataTransfer.files[0];
+    } else {
+      selectedFile = e.target.files[0];
+    }
+
+    if (!selectedFile) {
+      errorSetter("No file detected");
+      setFileError(true);
+      return;
+    }
+
+    const fileExtension = selectedFile.name.toLowerCase().split('.').pop();
+    if (!allowedTypes.includes(`.${fileExtension}`)) {
+      errorSetter("Please drop only PDF, DOC, or TXT files.");
+      setFileError(true);
+      return;
+    }
+
+    if (selectedFile.size > MAX_FILE_SIZE) {
+      errorSetter(`"${selectedFile.name}" exceeds the maximum file size of ${MAX_FILE_SIZE / (1024 * 1024)} MB.`);
+      setFileError(true);
+      return;
+    }
   
+    setFile(selectedFile);
+  };
+  
+  const handleDrop = (e) => {
+    e.preventDefault();
+    handleUploadFile(e)
+  };
+
+  const handleFileResumeOptimize = async () => {
+    try {
+      //must await
+      await checkAuthenticatedUser()
+    } catch (error) {
+      return navigate("/popin?resume");      
+    }
+    if (!file) {
+      errorSetter("No file detected")
+      return
+    }
+    if (!basicInfo.jobPosition) {
+      errorSetter("Input Job Position")
+      return
+    }
+
+    if (!basicInfo.country) {
+      errorSetter("Select Country")
+      return
+    }
+    if (!basicInfo.city) {
+      errorSetter("Select State")
+      return
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('firstName', basicInfo.firstName);
+    formData.append('street', basicInfo.street);
+    formData.append('city', basicInfo.city);
+    formData.append('country', basicInfo.country);
+    formData.append('jobPosition', basicInfo.jobPosition);
+    formData.append('additionalInfo', additionalInfo);
+    //get event progress
+    const eventSource = new EventSource('/user/progress');
+    //listen for SSE
+    eventSource.onmessage = (event) =>  {
+        const progressUpdate = JSON.parse(event.data)
+        setProgressPercentage(progressUpdate.percent);
+        setProgressStatus(progressUpdate.status)
+    };
+
+    try {
+      setLoading(true);
+      dispatch(setResume({}));
+      const response = await axios.post(
+        "/user/optimize-uploaded-resume",
+        formData,
+        {
+          headers: {
+            "x-access-token": isAuth,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status === 500) {
+        setLoading(false);
+        errorSetter("Throttling, try again after a while");
+        return
+      }
+
+      const dataObject = response.data.resumeData;
+      // Convert the string to a JavaScript object
+      const myObject = (new Function(`return (${dataObject})`)());
+      
+      const now = new Date().getTime();
+      //save a copy for later incase user doesn't finish now
+      let resumeObjforLocal = {
+        resumeData: myObject,
+        expiration: now + 168 * 60 * 60 * 1000, //current time + 1 week in milliseconds
+      };
+      localStorage.setItem(
+        "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@",
+        JSON.stringify(resumeObjforLocal)
+      );
+      setLoading(false);
+      eventSource.close();
+      navigate("/user/dashboard/resume?preview");
+    } catch (error) {
+      setLoading(false);
+      errorSetter("Throttling, try again after a while");
+      eventSource.close();
+    }
+  }
+
+
+  const renderDragAndDrop = () => (
+    <div
+      className={`${depoCss.DragnDrop}`}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={handleDrop}
+      onClick={() => dragDropRef.current.click()}
+      style={{ border: fileError ? '4px dashed rgb(216, 7, 7)' : '4px dashed #c0d1d4' }}
+    >
+      {file ? (
+        <>
+          <h1>{file.name}</h1>
+          <h4 style={{ color: fileError ? 'rgb(216, 7, 7)' : '#56A8AC' }}>selected</h4>
+        </>
+      ) : (
+        <>
+          <h2>Drag & Drop File</h2>
+          <h4>or</h4>
+          <h2>click to select</h2>
+        </>
+      )}
+      <input
+        type="file"
+        accept=".doc,.docx,.pdf,.txt"
+        onChange={handleUploadFile}
+        hidden
+        ref={dragDropRef}
+      />
+    </div>
+  );
+  
+
 
   return (
     <div className="auth-container">
@@ -828,9 +992,104 @@ const CustomizeResume = () => {
                 {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>}
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have questions? <a className="link" target="_blank" href="/chat" style={{textDecoration: "underline"}}>Ask me anything!</a></Alert>
             </div>
+
+
+            {/* DRAG N DROP TO REWRITE RESUME */}
+            <div className={`Segment ${basicFaded ? 'Faded' : 'Faded-in'}`}>
+              <h4>Already have a Resume? Upload to Rewrite</h4>
+
+              {renderDragAndDrop()}
+
+              <Grid container mt={5}>
+                <AuthInput
+                  id={basicInfo.jobPosition}
+                  value={basicInfo.jobPosition}
+                  label="Job Position to optimise CV to"
+                  inputType="text"
+                  inputGridSm={12}
+                  inputGrid={12}
+                  mb={2}
+                  required={true}
+                  onChange={handleInputChange("jobPosition")}
+                />
+                <div style={{ width: "100%", marginBottom: "15px", textAlign: "center" }}>
+                  <div className={resumeCss.DetachedLabels}>
+                    Location (used for job search & on CV)
+                  </div>
+                </div>
+                <AuthInput
+                  id={basicInfo.street}
+                  value={basicInfo.street}
+                  label="City/District"
+                  inputType="text"
+                  inputGridSm={12}
+                  inputGrid={4}
+                  mb={2}
+                  onChange={handleInputChange("street")}
+                />
+                <AuthInput
+                  id={basicInfo.country}
+                  value={basicInfo.country}
+                  placeholder={basicInfo.country ? basicInfo.country : "Country"}
+                  inputType="country-select"
+                  inputGridSm={12}
+                  inputGrid={4}
+                  mb={2}
+                  required={true}
+                  onChange={handleInputChange("country")}
+                />
+                <AuthInput
+                  id={basicInfo.city}
+                  value={basicInfo.city}
+                  countryid={countryid}
+                  placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
+                  inputType="state-select"
+                  inputGridSm={12}
+                  inputGrid={4}
+                  mb={2}
+                  required={true}
+                  onChange={handleInputChange("city")}
+                />
+                <AuthInput
+                  id={additionalInfo}
+                  name="additionalInfo"
+                  value={additionalInfo}
+                  placeholder="[Optional] Include any extra info you would like to add to generated CV. Make sure to include dates: E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024."
+                  multiline={true}
+                  rows={3}
+                  inputGridSm={12}
+                  onChange={(event) => setAdditionalInfo(event.target.value)}
+                />
+              </Grid>
+
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                  marginTop: "10px",
+                }}
+              >
+                <div style={{ width: "150px"}}>
+                </div>
+                <div style={{ width: "150px"}}>
+                  <ButtonSubmitGreen type="button" onClick={handleFileResumeOptimize}>
+                    Optimize &nbsp;&nbsp;<IoSparklesSharp style={{color: "#F8E231", fontSize: "1.5rem"}} />
+                  </ButtonSubmitGreen>
+                </div>
+              </div>
+            </div>
+
+            <div style={{textAlign: "center"}} className={`${basicFaded ? "Faded" : "Faded-in"}`}>
+              <p></p>
+              <h1>OR</h1>
+              <p></p>
+            </div>
+            
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Answer few questions to generate your CV</h4>
+              <h4>Answer short profile to Generate CV</h4>
               <Grid container>
                 <AuthInput
                   id={basicInfo.firstName}
@@ -903,10 +1162,15 @@ const CustomizeResume = () => {
                   required={true}
                   onChange={handleInputChange("jobPosition")}
                 />
+                <div style={{ width: "100%", marginBottom: '15px', textAlign: "center"  }}>
+                  <div className={resumeCss.DetachedLabels}>
+                    Location (for job search & on CV)
+                  </div>
+                </div>
                 <AuthInput
                   id={basicInfo.street}
                   value={basicInfo.street}
-                  label="Apt No., Street & City"
+                  label="City/District"
                   inputType="text"
                   inputGridSm={12}
                   inputGrid={4}
@@ -1618,11 +1882,9 @@ const CustomizeResume = () => {
                 marginBottom: "20px",
               }}
             >
-              <div id="submit-button" style={{ width: "150px", display: "none" }}>
+              <div id="submit-button" style={{ width: "190px", display: "none" }}>
                 <ButtonSubmitGreen>
-                  <span style={{ marginRight: "5px", paddingTop: "1px" }}>
-                    Build & Preview
-                  </span>
+                    Build & Preview &nbsp;&nbsp;<IoSparklesSharp style={{color: "#F8E231", fontSize: "1.5rem"}} />
                 </ButtonSubmitGreen>
               </div>
             </div>

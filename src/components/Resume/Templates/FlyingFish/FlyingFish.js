@@ -71,7 +71,7 @@ const FlyingFish = (props) => {
                 </Grid>
 
                 <Grid item xs={8} className={css.RightBg}>
-                    <h3>{props.resume?.basicInfo?.jobPosition}</h3>
+                    <h3>{capitalizeWords(props.resume?.basicInfo?.jobPosition)}</h3>
                     <hr />
 
                     <div style={{marginTop: "1rem"}}>

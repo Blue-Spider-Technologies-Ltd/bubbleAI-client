@@ -18,7 +18,7 @@ const SwimmingElephant = (props) => {
                 <Grid item xs={7} className={css.LeftBg}>
 
                     <div className={css.Role}>
-                        {props.resume?.basicInfo?.jobPosition}
+                        {capitalizeWords(props.resume?.basicInfo?.jobPosition)}
                     </div>
                     <div className={css.Names}>
                         <h1 style={{marginTop: "0", marginBottom: "0", color: 'rgb(145, 145, 145)'}}>{capitalizeWords(props.resume?.basicInfo?.lastName)}</h1>

@@ -11,7 +11,7 @@ const Standard = (props) => {
         <div className={standardCss.StandardContainer}>
             <div className={standardCss.basicInfo}>
                 <h1>{capitalizeWords(props.resume?.basicInfo?.firstName)} {capitalizeWords(props.resume?.basicInfo?.lastName)}</h1>
-                <h3>{props.resume?.basicInfo?.jobPosition}</h3>
+                <h3>{capitalizeWords(props.resume?.basicInfo?.jobPosition)}</h3>
                 <span>{props.resume?.basicInfo?.mobile}</span> <span><a href={`mailto:${props.resume?.basicInfo?.email}`}>{props.resume?.basicInfo?.email}</a></span>
                 <div><span>{props.resume?.basicInfo?.city},</span> <span>{props.resume?.basicInfo?.country}.</span></div>
 
