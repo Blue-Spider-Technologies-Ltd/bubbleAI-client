@@ -252,7 +252,6 @@ const DownloadResume = () => {
             }
         } catch (error) {
             dispatch(setFetching(false));
-            console.log(error);
             errorSetter("Not saved to database, Try again")
         }
     }
