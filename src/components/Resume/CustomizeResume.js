@@ -968,7 +968,7 @@ const CustomizeResume = () => {
         <AuthHeader
           authMenuOpen={authMenuOpen}
           onClick={toggleResumes}
-          headerText="Create My Resume"
+          headerText="Create Resume"
         />
 
         <div className="BodyWrapper" onClick={() => setAuthMenuOpen(false)}>
@@ -996,7 +996,7 @@ const CustomizeResume = () => {
 
             {/* DRAG N DROP TO REWRITE RESUME */}
             <div className={`Segment ${basicFaded ? 'Faded' : 'Faded-in'}`}>
-              <h4>Already have a Resume? Upload to Rewrite</h4>
+              <h4>Have an old CV? Upload to Optimize</h4>
 
               {renderDragAndDrop()}
 
@@ -1054,7 +1054,7 @@ const CustomizeResume = () => {
                   id={additionalInfo}
                   name="additionalInfo"
                   value={additionalInfo}
-                  placeholder="[Optional] Include any extra info you would like to add to generated CV. Make sure to include dates: E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024."
+                  placeholder="[Optional] Tell me what to specifically add or remove or you can paste job requirements. E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024 OR Delete work history with Blanket Designs OR The job requirements are... "
                   multiline={true}
                   rows={3}
                   inputGridSm={12}

@@ -11,8 +11,8 @@ import sttImg from "../../images/stt2.jpg"
 
 const categoriesData = [
     {
-        title: "Resume Writer",
-        desc: "Professional Résumé/CV in PDF, Cover Letters and Job Apps in 5mins",
+        title: "Get A Job",
+        desc: "Professional Résumé Writer, Cover Letters and Job Apps in mins",
         isAuthURL: '/user/dashboard/resume',
         unAuthURL: '/popin?resume',
         image: resumeImg

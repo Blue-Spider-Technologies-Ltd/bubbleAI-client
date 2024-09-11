@@ -17,6 +17,7 @@ import Standard from './Templates/Standard/Standard'
 import RadiantMoon from './Templates/RadiantMoon/RadiantMoon';
 import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
 import FlyingFish from './Templates/FlyingFish/FlyingFish';
+import WaterTrain from './Templates/WaterTrain/WaterTrain';
 import Feedback from '../Dashboard/Feedback';
 import jwt_decode from "jwt-decode";
 import { SuccessFailureModal, Overlay, CheckoutSummaryModal } from '../UI/Modal/Modal';
@@ -277,7 +278,7 @@ const DownloadResume = () => {
         setCarouselName(selectedCarousel.title)
     
         let canPrintFlag = false;
-        if (selectedCarousel.title === "Radiant Moon" || selectedCarousel.title === "Swimming Elephant" || selectedCarousel.title === "Flying Fish") {
+        if (selectedCarousel.title === "Radiant Moon" || selectedCarousel.title === "Swimming Elephant" || selectedCarousel.title === "Flying Fish" || selectedCarousel.title === "Water Train") {
             setHasImg(true)
         } else {
             setHasImg(false)
@@ -298,6 +299,10 @@ const DownloadResume = () => {
                 break;
             case "Flying Fish":
                 setStorageDetails({ ...storageDetails, template: "Flying Fish" });
+                canPrintFlag = true;
+                break;
+            case "Water Train":
+                setStorageDetails({ ...storageDetails, template: "Water Train" });
                 canPrintFlag = true;
                 break;
             default:
@@ -425,7 +430,7 @@ const DownloadResume = () => {
 
             <div className="auth-container-inner">
                 {/* for TOP MENU */}
-                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Download My Resume" />
+                <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Download Resume" />
 
                 <div className="BodyWrapper">
                     <div className="BuildNavigator">
@@ -438,7 +443,7 @@ const DownloadResume = () => {
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
                             <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible</Alert>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Flip screen orientation to landscape to display template properly on mobile</Alert>}
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">ENABLE BROWSER POP-UP else CV MIGHT NOT SAVE ON MOBILE. Flip screen orientation to landscape to display template properly on mobile</Alert>}
                         </div>
                         <div className="Segment">
                             <h4>Save Resume Details</h4>

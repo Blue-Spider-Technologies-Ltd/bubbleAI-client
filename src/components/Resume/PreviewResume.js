@@ -240,7 +240,7 @@ const PreviewResume = () => {
           {/* <AuthHeader
             authMenuOpen={authMenuOpen}
             onClick={toggleResumes}
-            headerText="Create My Resume"
+            headerText="Preview Resume"
           /> */}
 
           <div className="BodyWrapper">
