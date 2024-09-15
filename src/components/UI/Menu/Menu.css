@@ -6,7 +6,6 @@
     margin: 0 ;
     padding: .8rem 4rem;
     align-items: center;
-    background-color: var(--snow);
     display: flex;
     justify-content: space-between;
     z-index: 999;

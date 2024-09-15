@@ -246,7 +246,6 @@ const CustomizeProposal = () => {
                 break;
             default:
                 setPropTypeFaded(false)
-                setProductFaded(true)
                 break;
         }
     }
@@ -254,9 +253,15 @@ const CustomizeProposal = () => {
     const handleProposalTypeBackward = () => {
         setPropTypeFaded(true)
         setAddyFaded(false)
+        setProductFaded(true)
+        setServiceFaded(true)
+        setProjectPhaseFaded(true)
+        setPartnershipFaded(true)
+        setResearchFaded(true)
+        setGrantFaded(true)
     }
 
-    const proposalTitleForwardOrBackward = (arg) => {  
+    const proposalTitleForwardOrBackward = (arg, segment) => {  
         setProposalTitleFaded(true)
         switch (arg) {
           case "forward":
@@ -264,22 +269,45 @@ const CustomizeProposal = () => {
             // if (checkEmptyStringsInObj(productArray, "price", "productDesc") === false ) {
             //   return errorSetter("Complete required fields in this section to continue");    
             // }
-            setProductFaded(false)
-            setServiceFaded(false)
-            setProjectPhaseFaded(false)
-            setPartnershipFaded(false)
-            setResearchFaded(false)
-            setGrantFaded(false)
+            if(proposalType === "product") {
+                setProductFaded(false)
+            }
+            if(proposalType === "service") {
+                setServiceFaded(false)
+            }
+            if(proposalType === "project") {
+                setProjectPhaseFaded(false)
+            }
+            if(proposalType === "partnership") {
+                setPartnershipFaded(false)
+            }
+            if(proposalType === "research") {
+                setResearchFaded(false)
+            }
+            if(proposalType === "grant") {
+                setGrantFaded(false)
+            }
             break;
           case "backward":
             setPropTypeFaded(false);
-
-            setProductFaded(true)
-            setServiceFaded(true)
-            setProjectPhaseFaded(true)
-            setPartnershipFaded(true)
-            setResearchFaded(true)
-            setGrantFaded(true)
+            if(proposalType === "product") {
+                setProductFaded(true)
+            }
+            if(proposalType === "service") {
+                setServiceFaded(true)
+            }
+            if(proposalType === "project") {
+                setProjectPhaseFaded(true)
+            }
+            if(proposalType === "partnership") {
+                setPartnershipFaded(true)
+            }
+            if(proposalType === "research") {
+                setResearchFaded(true)
+            }
+            if(proposalType === "grant") {
+                setGrantFaded(true)
+            }
             break;
         
           default:
@@ -300,12 +328,60 @@ const CustomizeProposal = () => {
             break;
           case "backward":
 
-            setProductFaded(false)
-            setServiceFaded(false)
-            setProjectPhaseFaded(false)
-            setPartnershipFaded(false)
-            setResearchFaded(false)
-            setGrantFaded(false)
+            if(proposalType === "product") {
+                setProductFaded(false)
+                
+                setServiceFaded(true)
+                setProjectPhaseFaded(true)
+                setPartnershipFaded(true)
+                setResearchFaded(true)
+                setGrantFaded(true)
+            }
+            if(proposalType === "service") {
+                setServiceFaded(false)
+                
+                setProductFaded(true)
+                setProjectPhaseFaded(true)
+                setPartnershipFaded(true)
+                setResearchFaded(true)
+                setGrantFaded(true)
+            }
+            if(proposalType === "project") {
+                setProjectPhaseFaded(false)
+                
+                setProductFaded(true)
+                setServiceFaded(true)
+                setPartnershipFaded(true)
+                setResearchFaded(true)
+                setGrantFaded(true)
+            }
+            if(proposalType === "partnership") {
+                setPartnershipFaded(false)
+                
+                setProductFaded(true)
+                setServiceFaded(true)
+                setProjectPhaseFaded(true)
+                setResearchFaded(true)
+                setGrantFaded(true)
+            }
+            if(proposalType === "research") {
+                setResearchFaded(false)
+
+                setProductFaded(true)
+                setServiceFaded(true)
+                setProjectPhaseFaded(true)
+                setPartnershipFaded(true)
+                setGrantFaded(true)
+            }
+            if(proposalType === "grant") {
+                setGrantFaded(false)
+                
+                setProductFaded(true)
+                setServiceFaded(true)
+                setProjectPhaseFaded(true)
+                setPartnershipFaded(true)
+                setResearchFaded(true)
+            }
             break;
         
           default:
