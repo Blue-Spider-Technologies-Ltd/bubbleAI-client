@@ -422,7 +422,7 @@ const AskMe = () => {
 
 
   return (
-    <div id="askme-bg" className="askme-bg">
+    <div id="askme-bg" className="askme-bg" onClick={handleFocus}>
         <AuthSideMenu
             opened={authMenuOpen}
             seacrhBarPlaceholder=""

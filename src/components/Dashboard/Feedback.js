@@ -58,11 +58,7 @@ const Feedback = (props) => {
                   "x-access-token": isAuth,
                 },
             });
-
-            if(response.status === 201) {
-                setFeedbackSent(true)
-            }
-
+            setFeedbackSent(true)
         } catch (error) {
             errorSetter("Something went wrong, please try again")
         }
@@ -70,7 +66,7 @@ const Feedback = (props) => {
     }
 
     const cancelFeedback = () => {
-        navigate("/")
+        setFeedbackSent(true)
     }
 
     const handleCommentChange = (e) => {
@@ -147,7 +143,7 @@ const Feedback = (props) => {
             ) : (
                 <SuccessFailureModal 
                     success={true} 
-                    notApaymentTextPositive="Review Sumbitted. Thank You!!!"
+                    notApaymentTextPositive="Thank You!!!"
                     notApayment={true}
                 />
             )}
