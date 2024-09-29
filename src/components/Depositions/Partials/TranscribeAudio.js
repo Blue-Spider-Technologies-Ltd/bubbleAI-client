@@ -2,17 +2,18 @@ import React, { useState, useRef } from "react";
 import depoCss from "../Depositions.module.css";
 import resumeTemplateCss from "../../Resume/Templates/Standard/Standard.module.css";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "../../UI/Modal/Modal";
-import { ButtonSubmitGreen } from "../../UI/Buttons/Buttons";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Alert from "@mui/material/Alert";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import { useReactToPrint } from "react-to-print";
 import { useConfirm } from "material-ui-confirm";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../../../redux/states";
 import { errorAnimation } from "../../../utils/client-functions";
+import { Modal } from "../../UI/Modal/Modal";
+import { ButtonSubmitGreen } from "../../UI/Buttons/Buttons";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Alert from "@mui/material/Alert";
+import axios from "axios";
+import {jwtDecode} from 'jwt-decode';;
+
 
 const TranscribeAudio = (props) => {
   const confirm = useConfirm();
@@ -66,7 +67,7 @@ const TranscribeAudio = (props) => {
 
   const handleAudioTranscription = async () => {
     const now = new Date().getTime();
-    const authUser = jwt_decode(isAuth);
+    const authUser = jwtDecode(isAuth);
     if (isAuth && now < authUser.expiration) {
       if (!file) {
         errorSetter("No file/audio selected");

@@ -1,6 +1,6 @@
 .OulineGreen {
     padding: .5rem 2rem;
-    border-radius: 15px;
+    border-radius: 50px !important;
     border: 2px solid var(--lightModeGreen);
     color: var(--lightModeGreen) !important;
     font-size: 18px !important;
@@ -14,7 +14,7 @@
 
 .LogOut {
     padding: .5rem 2rem;
-    border-radius: 15px;
+    border-radius: 50px !important;
     border: 2px solid var(--lightModeGreen);
     color: var(--lightModeGreen) !important;
     cursor: pointer;
@@ -31,7 +31,7 @@
 .ButtonSubmitBlack, .ButtonTransparent  {
     padding: 0 1.7rem;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 50px !important;
     box-sizing: border-box;
     cursor: pointer;
     height: 45px;
@@ -64,7 +64,7 @@
 }
 
 .ButtonSubmitGreen, .ButtonOutlineGreenWithDiffStyle {
-    border-radius: 8px;
+    border-radius: 50px !important;
     box-sizing: border-box;
     cursor: pointer;
     font-size: .9rem;
@@ -233,8 +233,6 @@
 }
 
 .ButtonThin {
-    background: rgb(62,143,147);
-    background: linear-gradient(0deg, rgba(62,143,147,1) 0%, rgba(192,209,212,1) 61%);
     border-radius: 20px;
     cursor: pointer;
     display: flex;
@@ -244,7 +242,7 @@
     font-size: .8rem;
     font-weight: 500;
     white-space: nowrap;
-    max-width: 22px;
+    /* max-width: 22px; */
 }
 
 /* Smaller Screens */

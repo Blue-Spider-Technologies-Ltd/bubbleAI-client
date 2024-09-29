@@ -5,7 +5,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../../../utils/client-functions";
 
 
-
 const Standard = (props) => {
     return (
         <div className={standardCss.StandardContainer}>
@@ -138,3 +137,9 @@ const Standard = (props) => {
 };
 
 export default Standard;
+
+
+
+
+
+

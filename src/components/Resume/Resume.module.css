@@ -64,6 +64,20 @@
     border: 5px solid var(--navColor2);
 }
 
+@media (min-width: 768px) {
+    .ResponsivePrintView {
+        width: 100%;
+        margin: 10px auto;
+    }
+}
+
+
+@media (min-width: 800px) {
+    .ResponsivePrintView {
+        width: 800px !important;
+    }
+}
+
 .ResponsivePrintView {
     background-color: white;
     box-shadow: outset;
@@ -72,17 +86,6 @@
     box-shadow: 0 0 0 1px gray, 0 0 10px gray;
 }                           
 
-  
-@media (min-width: 768px) {
-    .ResponsivePrintView {
-        width: 100%;
-        margin: 10px auto;
-    }
-}
 
-@media (min-width: 1024px) {
-    .ResponsivePrintView {
-        width: 70%;
-        margin: 15px auto;
-    }
-}
+
+  

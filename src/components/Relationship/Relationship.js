@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
-import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { populateUser } from '../../utils/functions'
 import { errorAnimation } from '../../utils/client-functions';
 import { setError } from '../../redux/states';
+import {jwtDecode} from 'jwt-decode';;
+
 
 const Relationship = () => {
     const navigate = useNavigate()
@@ -20,7 +21,7 @@ const Relationship = () => {
     useEffect(() => {
         const token = localStorage?.getItem('token')
         if(token) {
-            const user = jwt_decode(token)
+            const user = jwtDecode(token)
             if (!user) {
                 localStorage?.removeItem('token')
                 navigate('/popin')

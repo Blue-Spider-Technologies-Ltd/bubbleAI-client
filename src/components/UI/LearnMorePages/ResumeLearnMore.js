@@ -233,7 +233,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={6} p={3} pt={screenWidth < 900 && 0}>
                         <h3>Customize</h3>
-                        <p>Answer short smart review.</p>
+                        <p>Answer short smart profile or upload old CV.</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -241,11 +241,11 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Review used to generate job-specific resume/CV.</Grid>
+                                <Grid item xs={8}>Analysis used to generate job-specific resume/CV.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Get your CV immediately, No waiting time.</Grid>
+                                <Grid item xs={8}>Get your CV in seconds, No waiting time.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -512,9 +512,9 @@ const ResumeLearnMore = () => {
 
             </section>
 
-            <secttion>
+            <section>
                 <ResumePricing />
-            </secttion>
+            </section>
             {showCheckout && <CheckoutSummaryModal />}
             <HelpIcon />
         </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+import {jwtDecode} from 'jwt-decode';;
 
 export const generatePassword = () => {
     const length = 12;
@@ -19,7 +19,7 @@ export const checkAuthenticatedUser = async () => {
         const isAuth = localStorage?.getItem('token');
 
         if (isAuth) {
-            const authUser = jwt_decode(isAuth);
+            const authUser = jwtDecode(isAuth);
             const now = Date.now();
             if (now < authUser.expiration) {
                 return true
@@ -40,7 +40,7 @@ export const checkAuthenticatedUser = async () => {
 export const checkAuthenticatedAdmin = async () => {
     try {
         const isAdminAuth = sessionStorage?.getItem('afd8TvhsdjwiuuvsgjhsAfgsUhjs');
-        const authAdmin = jwt_decode(isAdminAuth);
+        const authAdmin = jwtDecode(isAdminAuth);
         const now = Date.now();
         if (isAdminAuth && now < authAdmin.expiration) {
             return true

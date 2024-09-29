@@ -16,7 +16,8 @@ const initialState = {
   transcriptActivityStarted: false,
   fetching: false,
   showCheckout: false,
-  resumeSubDuration: ""
+  resumeSubDuration: "",
+  isResumeSubbed: false
 }
 
 export const stateSlice = createSlice({
@@ -85,7 +86,10 @@ export const stateSlice = createSlice({
     },
     setResumeSubDuration: (state, action) => {
       state.resumeSubDuration = action.payload
-    }
+    },
+    setIsResumeSubbed: (state, action) => {
+      state.isResumeSubbed = action.payload;
+    },
   },
 })
 
@@ -108,7 +112,8 @@ export const {
   setFetching,
   setTranscriptActivityStarted,
   setShowCheckout, 
-  setResumeSubDuration
+  setResumeSubDuration,
+  setIsResumeSubbed
 } = stateSlice.actions
 
 export default stateSlice.reducer

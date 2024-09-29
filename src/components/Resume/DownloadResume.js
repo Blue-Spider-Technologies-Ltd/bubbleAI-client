@@ -1,5 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react'
 import resumeCss from './Resume.module.css'
+import { SuccessFailureModal, Overlay, CheckoutSummaryModal } from '../UI/Modal/Modal';
+import ResumePricing from '../Pricing/ResumePricing';
+import axios from 'axios';
+import { setError, setFetching, setSuccessMini } from "../../redux/states";
+import { checkAuthenticatedUser } from '../../utils/client-functions';
+import Alert from '@mui/material/Alert';
+import { pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+import ProtectedContent from "../UI/ProtectedContent/ProtectedContent ";
+import { useConfirm } from "material-ui-confirm";
+import avatarImg from '../../images/avatar.png'
 import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
@@ -9,28 +20,16 @@ import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
-import { errorAnimation, successMiniAnimation, getOrdinalDate } from "../../utils/client-functions";
+import { errorAnimation, successMiniAnimation, getOrdinalDate, getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../utils/client-functions";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
-import Standard from './Templates/Standard/Standard'
-import RadiantMoon from './Templates/RadiantMoon/RadiantMoon';
-import SwimmingElephant from './Templates/SwimmingElephant/SwimmingElephant';
-import FlyingFish from './Templates/FlyingFish/FlyingFish';
-import WaterTrain from './Templates/WaterTrain/WaterTrain';
+import StandardPDF from './Templates/Standard/StandardPDF'
+import EuroPass from './Templates/Europass/EuroPass';
 import Feedback from '../Dashboard/Feedback';
-import jwt_decode from "jwt-decode";
-import { SuccessFailureModal, Overlay, CheckoutSummaryModal } from '../UI/Modal/Modal';
-import ResumePricing from '../Pricing/ResumePricing';
-import axios from 'axios';
-import { useReactToPrint  } from 'react-to-print';
-import { setError, setFetching, setSuccessMini } from "../../redux/states";
-import { checkAuthenticatedUser } from '../../utils/client-functions';
-import Alert from '@mui/material/Alert';
-import ProtectedContent from "../UI/ProtectedContent/ProtectedContent ";
-import { useConfirm } from "material-ui-confirm";
-import avatarImg from '../../images/avatar.png'
+import {jwtDecode} from 'jwt-decode';;
 const screenWidth = window.innerWidth
+
 
 
 const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
@@ -78,7 +77,7 @@ const DownloadResume = () => {
         buildDate: ""
     })
     const isAuth = localStorage?.getItem('token')
-    const authUser = isAuth && jwt_decode(isAuth)
+    const authUser = isAuth && jwtDecode(isAuth)
     const hasDroppedFeedback = authUser && authUser.rated
 
     const errorSetter = (string) => {
@@ -202,17 +201,13 @@ const DownloadResume = () => {
    
         switch (carouselName) {
             case "Standard":
-                template  = <Standard resume={resume} />
+                template  = <StandardPDF resume={resume} />
                 break;
-            case "Radiant Moon":
-                template  = <RadiantMoon resume={resume} imgUrl={imgUrl} />
+            case "Euro Pass":
+                template  = <EuroPass resume={resume} imgUrl={imgUrl} />
                 break;
-            case "Swimming Elephant":
-                template  = <SwimmingElephant resume={resume} imgUrl={imgUrl} />
-                break;
+            case "Auckland":
             case "Flying Fish":
-                template  = <FlyingFish resume={resume} imgUrl={imgUrl} />
-                break;
             case "Water Train":
             case "Sinking Duck":
                 template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
@@ -227,9 +222,22 @@ const DownloadResume = () => {
     }
 
     const handleResumeSave = async () => {
+
         const completeResume = { ...resume, storageDetails }
+        dispatch(setFetching(true));
+    
         try {
-            dispatch(setFetching(true));
+            const fileName = storageDetails.name + '.pdf';
+            const blob = await pdf(selectTemplate()).toBlob();
+
+            if(screenWidth < 1000) {
+                // Mobile
+                const blobUrl = URL.createObjectURL(blob);
+                window.open(blobUrl, '_blank');
+            } else {
+                saveAs(blob, fileName);
+            }
+            
             const response = await axios.post('/user/save-resume', completeResume, {
                 headers: {
                     'x-access-token': isAuth
@@ -255,14 +263,11 @@ const DownloadResume = () => {
             dispatch(setFetching(false));
             errorSetter("Not saved to database, Try again")
         }
+
+        dispatch(setFetching(false));
     }
-    
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current,
-        onAfterPrint: () => handleResumeSave(),
-        documentTitle: storageDetails.name
-    });
-    
+
+
     const toggleResumes = () => {
         setAuthMenuOpen(!authMenuOpen)
     }
@@ -278,7 +283,7 @@ const DownloadResume = () => {
         setCarouselName(selectedCarousel.title)
     
         let canPrintFlag = false;
-        if (selectedCarousel.title === "Radiant Moon" || selectedCarousel.title === "Swimming Elephant" || selectedCarousel.title === "Flying Fish" || selectedCarousel.title === "Water Train") {
+        if (selectedCarousel.title === "Euro Pass" || selectedCarousel.title === "Swimming Elephant" || selectedCarousel.title === "Flying Fish" || selectedCarousel.title === "Water Train") {
             setHasImg(true)
         } else {
             setHasImg(false)
@@ -289,12 +294,12 @@ const DownloadResume = () => {
                 canPrintFlag = true;
                 setStorageDetails({ ...storageDetails, template: "Standard" });
                 break;
-            case "Radiant Moon":
-                setStorageDetails({ ...storageDetails, template: "Radiant Moon" });
+            case "Euro Pass":
+                setStorageDetails({ ...storageDetails, template: "Euro Pass" });
                 canPrintFlag = true;
                 break;
-            case "Swimming Elephant":
-                setStorageDetails({ ...storageDetails, template: "Swimming Elephant" });
+            case "Auckland":
+                setStorageDetails({ ...storageDetails, template: "Auckland" });
                 canPrintFlag = true;
                 break;
             case "Flying Fish":
@@ -406,12 +411,14 @@ const DownloadResume = () => {
         if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
             return errorSetter("Your Subscription tier can not use this template")
         }
+        const note = screenWidth < 900 ? 'As a mobile user, your resume will open in another tab, click the share (📤) button on your browser to save to files or share. RETURN BACK TO THIS TAB WHEN DONE FOR JOBS DISPLAY AND COVER LETTERS' : 'This action is irreversible, continue?'
         confirm({ 
-                description: "Click OK only if you are sure to download, You must save or print your resume if you click OK. You can SCALE FONT and ADD/REDUCE MARGIN in the advanced setting of the next pop up, but you CAN NOT return here",
-                title: "IRREVERSIBLE ACTION"
+                description: note,
+                title: "PLEASE NOTE"
             })
             .then(() => {
-                handlePrint()
+                // handlePrint()
+                handleResumeSave()
             })
             .catch(() => {
                 errorSetter("Resume not yet printed")
@@ -443,7 +450,7 @@ const DownloadResume = () => {
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
                             <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible</Alert>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">ENABLE BROWSER POP-UP else CV MIGHT NOT SAVE ON MOBILE. Flip screen orientation to landscape to display template properly on mobile</Alert>}
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">MOBILE USERS: Enable browser pop-ups to let CV download. Flip screen orientation to landscape to display template properly on mobile</Alert>}
                         </div>
                         <div className="Segment">
                             <h4>Save Resume Details</h4>
@@ -510,22 +517,24 @@ const DownloadResume = () => {
 
                         <div className="Segment">
                             <h4>View and Download</h4>
-                            <ProtectedContent>
-                                <div className={resumeCss.ResponsivePrintView}>
-                                    <div ref={componentRef}>
+                            
+                                <ProtectedContent>
+                                    <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
                                         {selectTemplate()}
                                     </div>
-                                </div>
-                            </ProtectedContent>
+                                </ProtectedContent>
+                            
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "150px" }}>
                                     <ButtonSubmitGreen 
                                         type="button"
                                         onClick={handleDownload}
                                     >
+                                    
                                         <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF </span>
                                     </ButtonSubmitGreen>
                                 </div>
+                                
                             </div>
                         </div>
 

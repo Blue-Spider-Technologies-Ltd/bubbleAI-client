@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
-import { ButtonCard } from '../UI/Buttons/Buttons';
-import { useSelector, useDispatch } from "react-redux";
-import { setHideCards, setFetching } from '../../redux/states';
-import { Grid } from "@mui/material"
-import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 import Meeting from './Partials/Meeting';
 import TranscribeAudio from './Partials/TranscribeAudio';
 import TranslateAudio from './Partials/TranslateAudio';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { ButtonCard } from '../UI/Buttons/Buttons';
+import { useSelector, useDispatch } from "react-redux";
+import { setHideCards, setFetching } from '../../redux/states';
+import { Grid } from "@mui/material"
+import {jwtDecode} from 'jwt-decode';;
+
 
 
 const Depositions = () => {
@@ -34,7 +35,7 @@ const Depositions = () => {
         dispatch(setFetching(true))
         const now = Date.now()
         if (isAuth) {              
-            const authUser = jwt_decode(isAuth)
+            const authUser = jwtDecode(isAuth)
             //logout if token expired
             if (now >= authUser.expiration) {
                 dispatch(setFetching(false))

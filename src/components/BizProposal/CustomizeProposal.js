@@ -22,7 +22,7 @@ import { errorAnimation, checkEmptyStringsInObj, checkEmptyStrings, successMiniA
 // import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 // import Feedback from '../Dashboard/Feedback';
-// import jwt_decode from "jwt-decode";
+// import jwt_decode from 'jwt-decode';;
 // import { SuccessFailureModal } from '../UI/Modal/Modal';
 // import axios from 'axios';
 import { setError, setFetching, setSuccessMini } from "../../redux/states";

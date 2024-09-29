@@ -4,11 +4,11 @@
     width: 100% !important;
     margin: 0 auto;
     background-color: #F5F5F5 !important;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
+    border-radius: 50px !important;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
     color: #14225188 !important;
     font-size: 16px !important;
     height: 2.2rem !important;
@@ -20,3 +20,11 @@
     font-size: 16px !important;
     color: #142251 !important;
 }
+
+.stateCountryCss {
+    border-radius: 50px !important
+}
+
+
+
+

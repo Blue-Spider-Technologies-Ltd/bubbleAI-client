@@ -2,28 +2,30 @@ import React, { useEffect, useState } from "react";
 import resumeCss from "./Resume.module.css";
 import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
-import { Grid } from "@mui/material";
+import { Grid, Grid2 } from "@mui/material";
 import { COUNTRIES } from "../../utils/countries";
 import { errorAnimation } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
-import { setResume, setFetching, setError } from "../../redux/states";
-import { ButtonSubmitGreen } from "../UI/Buttons/Buttons";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { setResume, setFetching, setError, setIsResumeSubbed } from "../../redux/states";
+import { ButtonSubmitGreen, ButtonThin } from "../UI/Buttons/Buttons";
 import Alert from '@mui/material/Alert';
+import { IoIosUnlock } from "react-icons/io";
 import { Modal, Overlay } from "../UI/Modal/Modal";
 import ResumePricing from "../Pricing/ResumePricing"
 import { CheckoutSummaryModal } from "../UI/Modal/Modal";
 import ProtectedContent from "../UI/ProtectedContent/ProtectedContent ";
 // import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
-import jwt_decode from "jwt-decode";
 import axios from "axios";
+import {jwtDecode} from 'jwt-decode';
+const screenWidth = window.innerWidth
+
 
 
 const PreviewResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, resume, error, showCheckout } = useSelector((state) => state.stateData);
+  const { user, resume, error, showCheckout, isResumeSubbed } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   // const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -55,11 +57,13 @@ const PreviewResume = () => {
   const [awardArray, setAwardArray] = useState([]);
   const [publications, setPublications] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(true);
+  const [countryid, setCountryid] = useState(0);
+
 
   useEffect(() => {
     dispatch(setFetching(true));
     const now = Date.now();
-    const authUser = jwt_decode(isAuth);
+    const authUser = jwtDecode(isAuth);
     const isResumePresent = localStorage?.getItem(
       "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
     );
@@ -101,6 +105,22 @@ const PreviewResume = () => {
   }, []);
 
   useEffect(() => {
+    const getSub = () => {
+      axios.get('/user/get-subscription', {
+        headers: { "x-access-token": isAuth },
+      })
+      .then((response) => {
+        dispatch(setIsResumeSubbed(response.data?.resumeSubscriptions));
+      })
+      .catch((error) => {
+        dispatch(setIsResumeSubbed(false));
+      });
+    };
+
+    getSub()
+  }, []);
+
+  useEffect(() => {
     if (user.isFirstFreeUsed) {
       const handleScroll = () => {
         const scrollPosition = window.scrollY || window.pageYOffset;
@@ -131,6 +151,7 @@ const PreviewResume = () => {
       };
     }
   }, [user.isFirstFreeUsed, dispatch, isAuth]);
+
   
 
 
@@ -165,6 +186,19 @@ const PreviewResume = () => {
       .catch(() => errorSetter("Not Deleted"));
   };
 
+  const handleEduExpChange = (event, index) => {
+    const updatedEduArray = eduArray.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          [event.target.name]: event.target.value,
+        };
+      }
+      return item;
+    });
+    setEduArray(updatedEduArray);
+  };
+
   //     /////WORK EXP HANDLERS
   const handleWorkExpChange = (event, index) => {
     const updatedWorkExpArray = workExpArray.map((item, i) => {
@@ -179,6 +213,36 @@ const PreviewResume = () => {
   
     setWorkExpArray(updatedWorkExpArray);
   };
+
+  const handleAwardChange = (event, index) => {
+    const updatedAwardArray = awardArray.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          [event.target.name]: event.target.value,
+        };
+      }
+      return item;
+    });
+    setAwardArray(updatedAwardArray)
+  };
+
+  const handlePubChange = (event, index) => {
+    const updatedPubs = publications.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          [event.target.name]: event.target.value,
+        };
+      }
+      return item;
+    });
+    setPublications(updatedPubs)
+  };
+
+  const handleUnlockEdit = () => {
+    window.open('/pricing')
+  }
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -218,8 +282,32 @@ const PreviewResume = () => {
   // };
 
   const handleInputChange = (prop) => (event) => {
-    setBasicInfo({ ...basicInfo, [prop]: event.target.value });
+    //if data is mobile number
+    if (prop === "mobile") {
+      return setBasicInfo({ ...basicInfo, [prop]: "+" + event });
+    }
+    if (prop === "country") {
+      setCountryid(event.id)
+      setBasicInfo({
+        ...basicInfo,
+        [prop]: event.name,
+      });
+      return
+    }
+    if (prop === "city") {
+      setBasicInfo({
+        ...basicInfo,
+        [prop]: event.name,
+      });
+      return
+    }
+    setBasicInfo({
+      ...basicInfo,
+      [prop]: event.target.value,
+    });
   };
+
+
 
   return (
     <ProtectedContent>
@@ -258,11 +346,26 @@ const PreviewResume = () => {
             <form method="post" onSubmit={handleFormSubmit}>
               <div className="error">{error}</div>
               <div className='explanation-points'>
-                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">On the job description field, make sure each point is separated by a semi colon (if you decide to edit it) to enable proper formatting on the download page.</Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">On the job description field, make sure each point is separated by a semi colon (<b>;</b>) (if you decide to edit it) to enable proper formatting on the download page.</Alert>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Always read the generated resume carefully and make edits to imprint your personal touch.</Alert>
               </div>
               <div className="Segment">
-                <h4>Basic Info</h4>
+                <Grid container>
+                  <Grid item md={2} >
+
+                  </Grid>
+                  <Grid item xs={12} md={8}>
+                    <h4>Basic Info</h4>
+                  </Grid>
+                  {!isResumeSubbed && (
+                    <Grid item md={2} xs={12} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: screenWidth < 900 && '10px'}}>
+                      <ButtonThin onClick={handleUnlockEdit} width={'120px'} height='20px' color='#EE7B1C'>
+                        unlock editing <IoIosUnlock />
+                      </ButtonThin>
+                    </Grid>
+                  )}
+                </Grid>
+
                 <Grid container>
                   <AuthInput
                     value={basicInfo.firstName}
@@ -271,7 +374,8 @@ const PreviewResume = () => {
                     inputGrid={4}
                     mb={2}
                     required={true}
-                    disabled={true}
+                    disabled={!isResumeSubbed}
+                    onChange={handleInputChange("firstName")}
                   />
                   <AuthInput
                     value={basicInfo.lastName}
@@ -280,7 +384,8 @@ const PreviewResume = () => {
                     inputGrid={4}
                     mb={2}
                     required={true}
-                    disabled={true}
+                    disabled={!isResumeSubbed}
+                    onChange={handleInputChange("lastName")}
                   />
                   <AuthInput
                     value={basicInfo.email}
@@ -289,7 +394,8 @@ const PreviewResume = () => {
                     inputGrid={4}
                     mb={0}
                     required={true}
-                    disabled={true}
+                    disabled={!isResumeSubbed}
+                    onChange={handleInputChange("email")}
                   />
                   <div style={{ width: "100%" }}>
                     <div className={resumeCss.DetachedLabels}>
@@ -314,11 +420,12 @@ const PreviewResume = () => {
                     inputGrid={4}
                     mb={2}
                     required={true}
-                    disabled={true}
+                    disabled={!isResumeSubbed}
+                    onChange={handleInputChange("mobile")}
                   />
                   <AuthInput
                     value={basicInfo.jobPosition}
-                    label="Job Position"
+                    label="Job Position (NOT editable)"
                     inputType="text"
                     inputGridSm={12}
                     inputGrid={4}
@@ -330,37 +437,40 @@ const PreviewResume = () => {
                     value={basicInfo.street}
                     label="Street Name"
                     inputType="text"
-                    inputGridSm={7}
-                    inputGrid={4}
-                    mb={2}
-                    required={true}
-                    disabled={true}
-                  />
-                  <AuthInput
-                    value={basicInfo.city}
-                    label="City"
-                    inputType="text"
-                    inputGridSm={5}
-                    inputGrid={4}
-                    mb={2}
-                    required={true}
-                    disabled={true}
-                  />
-                  <AuthInput
-                    value={basicInfo.country}
-                    label="Country"
-                    inputType="select2"
                     inputGridSm={12}
                     inputGrid={4}
                     mb={2}
-                    list={COUNTRIES}
                     required={true}
-                    disabled={true}
+                    disabled={!isResumeSubbed}
+                    onChange={handleInputChange("street")}
+                  />
+                  <AuthInput
+                    id={basicInfo.country}
+                    value={basicInfo.country}
+                    placeholder={basicInfo.country ? basicInfo.country : "Country"}
+                    inputType="country-select"
+                    inputGridSm={12}
+                    inputGrid={4}
+                    mb={2}
+                    disabled={!isResumeSubbed}
+                    onChange={handleInputChange("country")}
+                  />
+                  <AuthInput
+                    id={basicInfo.city}
+                    value={basicInfo.city}
+                    countryid={countryid}
+                    placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
+                    inputType="state-select"
+                    inputGridSm={12}
+                    inputGrid={4}
+                    mb={2}
+                    disabled={!isResumeSubbed}
+                    onChange={handleInputChange("city")}
                   />
 
+
                   <div style={{textAlign: 'center', width: '100%'}}>
-                    <h4 style={{display: 'inline'}}>Ai Generated Prof. Summary</h4>
-                    <h6 style={{display: 'inline'}}>(editable)</h6>
+                    <h4>Ai Generated Prof. Summary</h4>
                   </div>
                   <AuthInput
                     value={basicInfo.profSummary}
@@ -370,6 +480,7 @@ const PreviewResume = () => {
                     inputGridSm={12}
                     mb={2}
                     onChange={handleInputChange("profSummary")}
+                    disabled={!isResumeSubbed}
                   />
                   <Grid
                     item
@@ -444,7 +555,23 @@ const PreviewResume = () => {
               )}
               {eduArray ? (
                 <div className="Segment">
-                  <h4>Education Info</h4>
+                  
+                  <Grid container>
+                    <Grid item md={2} >
+
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                      <h4>Education Info</h4>
+                    </Grid>
+                    {!isResumeSubbed && (
+                      <Grid item md={2} xs={12} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: screenWidth < 900 && '10px'}}>
+                        <ButtonThin onClick={handleUnlockEdit} width={'120px'} height='20px' color='#EE7B1C'>
+                          unlock editing <IoIosUnlock />
+                        </ButtonThin>
+                      </Grid>
+                    )}
+                  </Grid>
+
                   <div>
                     {eduArray.map((info, index) => {
                       return (
@@ -458,7 +585,8 @@ const PreviewResume = () => {
                             inputGrid={4}
                             mb={2}
                             required={true}
-                            disabled={true}
+                            disabled={!isResumeSubbed}
+                            onChange={(event) => handleEduExpChange(event, index)}
                           />
                           <AuthInput
                             name="degree"
@@ -469,7 +597,8 @@ const PreviewResume = () => {
                             inputGrid={4}
                             mb={2}
                             required={true}
-                            disabled={true}
+                            disabled={!isResumeSubbed}
+                            onChange={(event) => handleEduExpChange(event, index)}
                           />
                           <label className={resumeCss.DetachedLabels} mr={4}>
                             Graduation Date *
@@ -482,7 +611,8 @@ const PreviewResume = () => {
                             inputGridSm={8}
                             inputGrid={2}
                             required={true}
-                            disabled={true}
+                            disabled={!isResumeSubbed}
+                            onChange={(event) => handleEduExpChange(event, index)}
                           />
                         </Grid>
                       );
@@ -492,7 +622,21 @@ const PreviewResume = () => {
               ) : null}
               {workExpArray && (
                 <div className="Segment">
-                  <h4>Work & Volunteering Experience</h4>
+                  <Grid container>
+                    <Grid item md={2} >
+
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                      <h4>Work & Volunteering Experience</h4>
+                    </Grid>
+                    {!isResumeSubbed && (
+                      <Grid item md={2} xs={12} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: screenWidth < 900 && '10px'}}>
+                        <ButtonThin onClick={handleUnlockEdit} width={'120px'} height='20px' color='#EE7B1C'>
+                          unlock editing <IoIosUnlock />
+                        </ButtonThin>
+                      </Grid>
+                    )}
+                  </Grid>                  
                   <div>
                     {workExpArray.map((info, index) => {
                       return (
@@ -509,7 +653,7 @@ const PreviewResume = () => {
                             onChange={(event) =>
                               handleWorkExpChange(event, index)
                             }
-                            disabled={true}
+                            disabled={!isResumeSubbed}
                           />
                           <AuthInput
                             name="position"
@@ -523,7 +667,7 @@ const PreviewResume = () => {
                             onChange={(event) =>
                               handleWorkExpChange(event, index)
                             }
-                            disabled={true}
+                            disabled={!isResumeSubbed}
                           />
                           <AuthInput
                             name="industry"
@@ -532,12 +676,12 @@ const PreviewResume = () => {
                             inputType="text"
                             inputGridSm={12}
                             inputGrid={3}
-                            disabled={true}
                             mb={2}
                             required={true}
                             onChange={(event) =>
                               handleWorkExpChange(event, index)
                             }
+                            disabled={!isResumeSubbed}
                           />
                           <AuthInput
                             name="workLink"
@@ -550,7 +694,7 @@ const PreviewResume = () => {
                             onChange={(event) =>
                               handleWorkExpChange(event, index)
                             }
-                            disabled={true}
+                            disabled={!isResumeSubbed}
                           />
                           <div
                             style={{
@@ -581,7 +725,7 @@ const PreviewResume = () => {
                                 onChange={(event) =>
                                   handleWorkExpChange(event, index)
                                 }
-                                disabled={true}
+                                disabled={!isResumeSubbed}
                               />
                             </div>
                             <div
@@ -608,7 +752,7 @@ const PreviewResume = () => {
                                 onChange={(event) =>
                                   handleWorkExpChange(event, index)
                                 }
-                                disabled={true}
+                                disabled={info.currently}
                               />
                             </div>
                           </div>
@@ -620,17 +764,16 @@ const PreviewResume = () => {
                               label="I currently work here"
                               inputType="checkbox"
                               inputGridSm={12}
-                              disabled={true}
                               mb={2}
                               onChange={(event) =>
                                 handleWorkExpChange(event, index)
                               }
+                              disabled={true}
                             />
                           </div>
 
                           <div style={{textAlign: 'center', width: '100%'}}>
-                            <h4 style={{display: 'inline'}}>Ai Generated Job Description</h4>
-                            <h6 style={{display: 'inline'}}>(editable)</h6>
+                            <h4>Ai Generated Job Description</h4>
                           </div>
                           <AuthInput
                             name="jobDesc"
@@ -642,6 +785,7 @@ const PreviewResume = () => {
                             onChange={(event) =>
                               handleWorkExpChange(event, index)
                             }
+                            disabled={!isResumeSubbed}
                           />
                         </Grid>
                       );
@@ -652,7 +796,21 @@ const PreviewResume = () => {
 
               {awardArray && (
                 <div className="Segment">
-                  <h4>Awards [If any]</h4>
+                  <Grid container>
+                    <Grid item md={2} >
+
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                      <h4>Awards [If any]</h4>
+                    </Grid>
+                    {!isResumeSubbed && (
+                      <Grid item md={2} xs={12} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: screenWidth < 900 && '10px'}}>
+                        <ButtonThin onClick={handleUnlockEdit} width={'120px'} height='20px' color='#EE7B1C'>
+                          unlock editing <IoIosUnlock />
+                        </ButtonThin>
+                      </Grid>
+                    )}
+                  </Grid>
                   <div>
                     <Grid
                       container
@@ -675,7 +833,8 @@ const PreviewResume = () => {
                               inputGridSm={12}
                               inputType="text"
                               mb={2}
-                              disabled={true}
+                              disabled={!isResumeSubbed}
+                              onChange={(event) => handleAwardChange(event, index)}
                             />
                             <AuthInput
                               name="award"
@@ -684,7 +843,8 @@ const PreviewResume = () => {
                               inputGridSm={12}
                               inputType="text"
                               mb={2}
-                              disabled={true}
+                              disabled={!isResumeSubbed}
+                              onChange={(event) => handleAwardChange(event, index)}
                             />
                             <label className={resumeCss.DetachedLabels}>
                               Date Awarded
@@ -695,7 +855,8 @@ const PreviewResume = () => {
                               placeholder="Date Awarded"
                               inputGridSm={12}
                               inputType="date"
-                              disabled={true}
+                              disabled={!isResumeSubbed}
+                              onChange={(event) => handleAwardChange(event, index)}
                             />
                           </Grid>
                         );
@@ -707,7 +868,22 @@ const PreviewResume = () => {
 
               {publications.length > 0 && (
                 <div className="Segment">
-                  <h4>Publications [If any]</h4>
+                  
+                  <Grid container>
+                    <Grid item md={2} >
+
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                      <h4>Publications [If any]</h4>
+                    </Grid>
+                    {!isResumeSubbed && (
+                      <Grid item md={2} xs={12} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: screenWidth < 900 && '10px'}}>
+                        <ButtonThin onClick={handleUnlockEdit} width={'120px'} height='20px' color='#EE7B1C'>
+                          unlock editing <IoIosUnlock />
+                        </ButtonThin>
+                      </Grid>
+                    )}
+                  </Grid>
                   <div>
                     <Grid
                       container
@@ -730,7 +906,8 @@ const PreviewResume = () => {
                               inputGridSm={12}
                               inputType="text"
                               mb={2}
-                              disabled={true}
+                              disabled={!isResumeSubbed}
+                              onChange={(event) => handlePubChange(event, index)}
                             />
                             <AuthInput
                               name="source"
@@ -739,7 +916,8 @@ const PreviewResume = () => {
                               inputGridSm={12}
                               inputType="text"
                               mb={2}
-                              disabled={true}
+                              disabled={!isResumeSubbed}
+                              onChange={(event) => handlePubChange(event, index)}
                             />
                             <label className={resumeCss.DetachedLabels}>
                               Date Awarded{" "}
@@ -750,7 +928,8 @@ const PreviewResume = () => {
                               placeholder="Date Awarded"
                               inputGridSm={12}
                               inputType="date"
-                              disabled={true}
+                              disabled={!isResumeSubbed}
+                              onChange={(event) => handlePubChange(event, index)}
                             />
                           </Grid>
                         );

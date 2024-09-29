@@ -13,7 +13,8 @@ import {
   setFetching, 
   setUserResumesAll, 
   setError, 
-  setResumeSubDuration } from "../../redux/states";
+  setResumeSubDuration,
+  setIsResumeSubbed } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
 // import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 // import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -32,7 +33,7 @@ import { IoSparklesSharp } from "react-icons/io5";
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, userResumesAll, error, successMini } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error, successMini, isResumeSubbed } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const dragDropRef = useRef();
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,6 @@ const CustomizeResume = () => {
   const [dobFirstUser, setDobFirstUser] = useState("")
   const [mobileFirstUser, setMobileFirstUser] = useState("")
   const [subDuration, setSubDuration] = useState("");
-  const [isResumeSubbed, setIsResumeSubbed] = useState(false);
   const [basicFaded, setBasicFaded] = useState(false)
   const [eduFaded, setEduFaded] = useState(true)
   const [workFaded, setWorkFaded] = useState(true)
@@ -57,7 +57,7 @@ const CustomizeResume = () => {
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(false);
   const [additionalInfo, setAdditionalInfo] = useState("");
-  const screenWidth = window.innerWidth
+  // const screenWidth = window.innerWidth
 
 
   const isAuth = localStorage?.getItem("token");
@@ -93,7 +93,10 @@ const CustomizeResume = () => {
     ReactPixel.init('1133510054551065', advancedMatching, options);
     ReactPixel.pageView();
   }, []);
-
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     dispatch(setFetching(true));
@@ -153,7 +156,7 @@ const CustomizeResume = () => {
         setResumeForSearch(resumes)
         setIsFirstTimeUserPopUp(isFirstTimeUser)
         setSubDuration(resumeSubscriptions?.duration)
-        setIsResumeSubbed(resumeSubscriptions?.subscribed)
+        dispatch(setIsResumeSubbed(resumeSubscriptions?.subscribed))
         dispatch(setResumeSubDuration(resumeSubscriptions?.duration))
         dispatch(setUser(response.data.user));
         dispatch(setFetching(false));
@@ -208,9 +211,7 @@ const CustomizeResume = () => {
     setResumeForSearch(userResumesAll)
   }, [userResumesAll])
   
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
 
   const [linkInfo, setLinkInfo] = useState([""]);
   const [skills, addSkills] = useState([""]);
@@ -928,7 +929,7 @@ const CustomizeResume = () => {
         <>
           <h2>Drag & Drop File</h2>
           <h4>or</h4>
-          <h2>click to select</h2>
+          <h2>Click to Select</h2>
         </>
       )}
       <input
@@ -989,7 +990,6 @@ const CustomizeResume = () => {
             <div className='explanation-points'>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">All fields with * are required</Alert>
-                {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">We STRONGLY recommend the use of Safari browser for iPhone users</Alert>}
                 <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have questions? <a className="link" target="_blank" href="/chat" style={{textDecoration: "underline"}}>Ask me anything!</a></Alert>
             </div>
 
@@ -1081,11 +1081,22 @@ const CustomizeResume = () => {
               </div>
             </div>
 
+
+
+
+
+
             <div style={{textAlign: "center"}} className={`${basicFaded ? "Faded" : "Faded-in"}`}>
               <p></p>
               <h1>OR</h1>
               <p></p>
             </div>
+
+
+
+
+
+            
             
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>

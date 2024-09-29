@@ -3,16 +3,17 @@ import { PlainModalOverlay } from "../UI/Modal/Modal";
 import { ButtonSubmitGreen, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Grid, Rating } from '@mui/material';
 import AuthInput from "../UI/Input/AuthInputs";
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from "react-redux";
-import { errorAnimation } from "../../utils/client-functions";
-import { setError } from "../../redux/states";
-import jwt_decode from "jwt-decode";
 import { checkAuthenticatedUser } from "../../utils/client-functions";
 import { SuccessFailureModal } from "../UI/Modal/Modal";
 import modalCss from "../UI/Modal/Modal.module.css";
 import axios from "axios";
 import successImg from '../../images/success.gif';
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from "react-redux";
+import { errorAnimation } from "../../utils/client-functions";
+import { setError } from "../../redux/states";
+import {jwtDecode} from 'jwt-decode';;
+
 
 const Feedback = (props) => {
     const navigate = useNavigate()
@@ -21,7 +22,7 @@ const Feedback = (props) => {
     const [comment, setComment] = useState("")
     const [feedbackSent, setFeedbackSent] = useState(false)
     const isAuth = localStorage?.getItem('token')
-    const authUser =  jwt_decode(isAuth)
+    const authUser =  jwtDecode(isAuth)
     const firstName = authUser.name.split(" ")[0]
 
 

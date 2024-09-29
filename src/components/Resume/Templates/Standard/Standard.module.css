@@ -1,26 +1,21 @@
 .StandardContainer {
     width: 100%;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 10px 25px;
     text-align: left;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
 }
 
 .basicInfo {
     text-align: center;
     line-height: 1.1;
-    margin-bottom: 10PX;
+    margin-bottom: 10px;
 }
 
 .basicInfo h3 {
     margin: 0;
     font-size: 1rem;
 }
-
-
-/* .resBody {
-
-} */
 
 .resBody h3 {
     text-transform: uppercase;
@@ -31,7 +26,11 @@
 h5 {
     margin: 0;
     margin-top: 5px;
-    font-size: .75rem;
+    font-size: 0.85rem;
+}
+
+a {
+    text-decoration: none;
 }
 
 .Education {
@@ -54,3 +53,62 @@ h5 {
     align-items: center;
     margin: 5px;
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .StandardContainer {
+        font-size: 0.3rem !important;
+        padding: 10px 15px;
+    }
+
+    li {
+        margin-left: 0;
+    }
+
+    ul {
+        padding-left: 15px;
+    }
+
+    .basicInfo h1 {
+        font-size: 1rem;
+        font-weight: 900;
+    }  
+    
+
+    .basicInfo h3 {
+        font-size: 0.6rem !important;
+        margin-bottom: 5px
+    }
+
+
+    h5 {
+        font-size: 0.3rem !important;
+    }
+
+    .Education {
+        margin-bottom: 5px;
+    }
+
+    .SkillItems {
+        margin: 1px;
+    }
+}
+
+/* @media (max-width: 480px) {
+    .StandardContainer {
+        padding: 3px;
+        font-size: 0.6rem;
+    }
+
+    .basicInfo h3 {
+        font-size: 0.8rem;
+    }
+
+    h5 {
+        font-size: 0.65rem;
+    }
+
+    .SkillItems {
+        margin: 2px;
+    }
+} */

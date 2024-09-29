@@ -3,19 +3,20 @@ import depoCss from '../Depositions.module.css';
 import resumeTemplateCss from '../../Resume/Templates/Standard/Standard.module.css';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { Modal } from '../../UI/Modal/Modal';
-import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import Alert from '@mui/material/Alert';
-import axios from  'axios';
-import jwt_decode from "jwt-decode";
 import { useReactToPrint  } from 'react-to-print';
 import { useConfirm } from "material-ui-confirm";
 import AuthInput from '../../UI/Input/AuthInputs';
 import { LANGUAGES } from '../../../utils/languages';
 import { setError } from '../../../redux/states';
 import { errorAnimation } from '../../../utils/client-functions';
+import { useSelector, useDispatch } from "react-redux";
+import { Modal } from '../../UI/Modal/Modal';
+import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Alert from '@mui/material/Alert';
+import axios from  'axios';
+import {jwtDecode} from 'jwt-decode';;
+
 
 
 
@@ -72,7 +73,7 @@ const TranslateAudio = (props) => {
     const handleAudioTranslation = async () => {
         setProgressPercentage(0)
         const now = new Date().getTime()
-        const authUser =  jwt_decode(isAuth)
+        const authUser =  jwtDecode(isAuth)
         if (isAuth && (now < authUser.expiration)) {
             if (!file) {
                 errorSetter('No file/audio selected');

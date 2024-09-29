@@ -14,7 +14,6 @@ import {
 } from "@mui/material"
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { makeStyles } from "@mui/styles";
 import Select from '@mui/material/Select';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
@@ -28,19 +27,27 @@ import {
   } from "react-country-state-city";
   
 import "react-country-state-city/dist/react-country-state-city.css";
+const screenWidth = window.innerWidth
 
 
 
 
-const useStyles = makeStyles({
-    root: {
-        width: '100%',
+const AuthInput = props => {
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+
+    const textFieldStyles = {
+        width: '100% !important',
         margin: '0 auto',
-        borderRadius: "5px",
+        borderRadius: "50px",
         fontSize: "16px",
         "& .MuiOutlinedInput-input": {
             backgroundColor: "#F5F5F5",
-            borderRadius: "5px",
+            borderRadius: "50px",
             paddingTop: ".35rem",
             paddingBottom: ".35rem",
             fontSize: "16px"
@@ -51,9 +58,8 @@ const useStyles = makeStyles({
             marginTop: "-.4rem"
         },
         "& .MuiOutlinedInput-root": {
-            borderRadius: "5px",
+            borderRadius: "50px",
             border: "1px solid #F5F5F5"
-            
         },
         "&:hover .MuiOutlinedInput-input": {
             // color: "rgb(240, 240, 240)"
@@ -81,31 +87,38 @@ const useStyles = makeStyles({
             border: "none",
             color: "white"
         }
-    },
-    customCheckbox: {
-        '& .MuiCheckbox-root': {
-          width: "25px",
-          height: "25px"
+    };
+
+    const textareaStyles = {
+        width: '100%',
+        margin: '0 auto',
+        borderRadius: screenWidth > 900 ? "50px" : '20px',
+        fontSize: "16px",
+        backgroundColor: "#F5F5F5",
+        padding: ".35rem",
+        "&:hover": {
+            border: "none"
+        },
+        "&:focus": {
+            color: "#142251",
+            border: "none",
+            backgroundColor: "white",
+            outline: "none",
+        }
+    };
+    
+    const checkboxStyles = {
+        width: "25px",
+        height: "25px",
+        '&.MuiCheckbox-colorSecondary.Mui-checked': {
+            color: '#56A8AC'
         },
         '& .MuiTypography-root': {
           fontSize: '.85rem', // Example: Change label font weight
+          lineHeight: '.85'
         },
-        '& .MuiCheckbox-colorSecondary.Mui-checked': {
-            color: '#56A8AC'
-        },
-    },
-
-});
-
-
-const AuthInput = props => {
-    const [showPassword, setShowPassword] = useState(false);
-    const classes = useStyles();
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-    const handleMouseDownPassword = (event) => {
-      event.preventDefault();
     };
+    
 
     return (
         <Grid item md={props.inputGrid} inputref={props.inputRef} onKeyDown={props.onKeyDown} xs={props.inputGridSm} px={1} mt={props.mt} mb={props.mb} sx={{boxSizing: "border-box"}}>
@@ -117,7 +130,7 @@ const AuthInput = props => {
                     // rows={props.rows}
                     minRows={props.rows}
                     maxRows={props.maxRows}
-                    className={classes.root} 
+                    style={textareaStyles} 
                     onChange={props.onChange}
                     autoComplete="off"
                     required={props.required}
@@ -130,11 +143,12 @@ const AuthInput = props => {
             props.inputType === "checkbox" ? 
                 <FormControlLabel
                     value="end"
-                    className={classes.customCheckbox} 
+                    sx={checkboxStyles} 
                     control={<Checkbox 
                                 name={props.name}
                                 checked={props.value}
                                 onChange={props.onChange}
+                                sx={checkboxStyles} 
                                 inputProps={{ 'aria-label': 'controlled' }}
                                 color="secondary"
                                 disabled={props.disabled}
@@ -144,8 +158,7 @@ const AuthInput = props => {
                 />
             :
             props.inputType === "password" ?
-                <FormControl variant="outlined" className={classes.root} required={props.required}>
-                    
+                <FormControl variant="outlined" sx={textFieldStyles} required={props.required}>
                     <OutlinedInput
                         id={props.id}
                         type={showPassword ? 'text' : 'password'}
@@ -175,7 +188,8 @@ const AuthInput = props => {
                     name={props.name}
                     onChange={props.onChange}
                     placeHolder={props.placeholder}
-                    inputClassName={classes.root}
+                    inputClassName={allInputCss.stateCountryCss}
+                    containerClassName={allInputCss.stateCountryCont}
                     value={props.value}
                     required={props.required}
                 />
@@ -186,13 +200,14 @@ const AuthInput = props => {
                     countryid={props.countryid}
                     onChange={props.onChange}
                     placeHolder={props.placeholder}
-                    inputClassName={classes.root}
+                    inputClassName={allInputCss.stateCountryCss}
+                    containerClassName={allInputCss.stateCountryCont}
                     value={props.value}
                     required={props.required}
                 />
             :
             props.inputType === "select" ?
-                <FormControl className={classes.root} required={props.required}>
+                <FormControl sx={textFieldStyles} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                         id={props.id}
@@ -212,7 +227,7 @@ const AuthInput = props => {
                 </FormControl>
             :
             props.inputType === "select2" ?
-                <FormControl className={classes.root} required={props.required}>
+                <FormControl sx={textFieldStyles} required={props.required}>
                     <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
                     <Select
                         id={props.id}
@@ -253,10 +268,10 @@ const AuthInput = props => {
                     sx={{display: props.hidden ? 'none' : 'flex', alignItems: 'center'}}
                 >
                     <InputBase
-                        sx={{ ml: 1, flex: 1 }}
+                        // sx={{ ml: 1, flex: 1 }}
                         placeholder={props.placeholder}
                         inputProps={{ 'aria-label': props.placeholder }}
-                        className={classes.root}
+                        sx={textFieldStyles}
                         value={props.value}
                         onChange={props.onChange}
                     />
@@ -270,7 +285,7 @@ const AuthInput = props => {
                     placeholder={props.placeholder} 
                     label={props.label}
                     variant="outlined" 
-                    className={classes.root}
+                    sx={textFieldStyles}
                     type={props.inputType}
                     width={props.width}
                     onChange={props.onChange}

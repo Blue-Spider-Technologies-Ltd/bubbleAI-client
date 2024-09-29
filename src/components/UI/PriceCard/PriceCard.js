@@ -100,6 +100,21 @@ const PriceCard = ({details}) => {
                             </ListItem>  
                         )} 
 
+                        {features.editPreview && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.editPreview.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.editPreview.text}
+                                </Typography>
+                            </ListItem>  
+                        )} 
+
                         {features.aiJobSuggestions && (
                             <ListItem >
                                 <ListItemIcon>

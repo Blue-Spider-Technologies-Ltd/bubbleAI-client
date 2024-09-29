@@ -63,6 +63,10 @@ const resumePricingDetails = [
                 available: false,
                 text: 'Tailored Cover Letters'
             },
+            editPreview: {
+                available: true,
+                text: 'Edit Ai Generated CV'
+            },
             sharableLink: {
                 available: false,
                 text: 'Sharable Link to Resume'
@@ -108,6 +112,10 @@ const resumePricingDetails = [
                 available: true,
                 text: 'Tailored Cover Letters'
             },
+            editPreview: {
+                available: true,
+                text: 'Edit Ai Generated CV'
+            },
             sharableLink: {
                 available: false,
                 text: 'Sharable Link to Resume'
@@ -152,6 +160,10 @@ const resumePricingDetails = [
             coverLetter: {
                 available: true,
                 text: 'Tailored Cover Letters'
+            },
+            editPreview: {
+                available: true,
+                text: 'Edit Ai Generated CV'
             },
             sharableLink: {
                 available: true,

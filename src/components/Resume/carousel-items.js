@@ -1,8 +1,6 @@
 import comingSoonImg from "../../images/soon.jpg"
-import standardTempImg from "../../images/resume-standard.png";
-import elephantImg from "../../images/swimming-elephant.png";
-import radiantImg from "../../images/radiant.jpg";
-import flyingFish from "../../images/flying-fish.png";
+import standardTempImg from "../../images/resume-standard.jpg";
+import euroPassImg from "../../images/2.jpg";
 
 const carouselData = [
     {
@@ -10,25 +8,25 @@ const carouselData = [
         image: standardTempImg
     },
     {
-        title: "Radiant Moon",
-        image: radiantImg
+        title: "Euro Pass",
+        image: euroPassImg
     },
-    {
-        title: "Swimming Elephant",
-        image: elephantImg
-    },
-    {
-        title: "Flying Fish",
-        image: flyingFish
-    },
-    {
-        title: "Water Train",
-        image: comingSoonImg
-    },
-    {
-        title: "Sinking Duck",
-        image: comingSoonImg
-    }
+    // {
+    //     title: "Auckland",
+    //     image: comingSoonImg
+    // },
+    // {
+    //     title: "Flying Fish",
+    //     image: comingSoonImg
+    // },
+    // {
+    //     title: "Water Train",
+    //     image: comingSoonImg
+    // },
+    // {
+    //     title: "Sinking Duck",
+    //     image: comingSoonImg
+    // }
 ];
 
 export default carouselData
