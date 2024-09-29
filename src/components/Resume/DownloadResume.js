@@ -411,10 +411,10 @@ const DownloadResume = () => {
         if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
             return errorSetter("Your Subscription tier can not use this template")
         }
-        const note = screenWidth < 900 ? 'As a mobile user, your resume will open in another tab, click the share (📤) button on your browser to save to files or share. RETURN BACK TO THIS TAB WHEN DONE FOR JOBS DISPLAY AND COVER LETTERS' : 'This action is irreversible, continue?'
+        const note = screenWidth < 900 ? 'Click OK only when instruction completed. MOBILE DETECTED! Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. After that, your resume will open in another tab, click the share (📤) button on your browser to save to files or share. RETURN BACK TO THIS TAB WHEN DONE FOR JOBS DISPLAY AND COVER LETTERS' : 'This action is irreversible, continue?'
         confirm({ 
                 description: note,
-                title: "PLEASE NOTE"
+                title: "⚠️⚠️⚠️PLEASE READ⚠️⚠️⚠️"
             })
             .then(() => {
                 // handlePrint()
@@ -449,8 +449,9 @@ const DownloadResume = () => {
                         <div className='error'>{error}</div>
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE USERS: Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. If you do not, you will lose your download and Bubble Ai will not be liable.</Alert>}
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">MOBILE USERS: Flip screen orientation to landscape to display template properly on mobile</Alert>}
                             <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible</Alert>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">MOBILE USERS: Enable browser pop-ups to let CV download. Flip screen orientation to landscape to display template properly on mobile</Alert>}
                         </div>
                         <div className="Segment">
                             <h4>Save Resume Details</h4>
