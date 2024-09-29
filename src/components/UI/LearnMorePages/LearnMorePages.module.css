@@ -32,7 +32,7 @@
 .TitleContainer h5 {
     font-family: "Bubblegum Sans", sans-serif;
     font-weight: 500;
-    font-size: 1.2rem;
+    font-size: 1rem !important;
     margin: -10px auto 10px;
 }
 
