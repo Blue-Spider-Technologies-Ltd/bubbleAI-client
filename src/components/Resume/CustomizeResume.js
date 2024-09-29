@@ -1035,7 +1035,6 @@ const CustomizeResume = () => {
                   inputGridSm={12}
                   inputGrid={4}
                   mb={2}
-                  required={true}
                   onChange={handleInputChange("country")}
                 />
                 <AuthInput
@@ -1047,7 +1046,6 @@ const CustomizeResume = () => {
                   inputGridSm={12}
                   inputGrid={4}
                   mb={2}
-                  required={true}
                   onChange={handleInputChange("city")}
                 />
                 <AuthInput
@@ -1197,7 +1195,6 @@ const CustomizeResume = () => {
                   inputGridSm={12}
                   inputGrid={4}
                   mb={2}
-                  required={true}
                   onChange={handleInputChange("country")}
                 />
                 <AuthInput
@@ -1209,7 +1206,6 @@ const CustomizeResume = () => {
                   inputGridSm={12}
                   inputGrid={4}
                   mb={2}
-                  required={true}
                   onChange={handleInputChange("city")}
                 />
 

@@ -137,7 +137,7 @@ h1 {
 
 .array-item {
   background-color: var(--lightModeGreen);
-  border-radius: 5px;
+  border-radius: 50px;
   box-sizing: border-box;
   color: black;
   display: flex;
@@ -146,10 +146,10 @@ h1 {
   font-size: .8rem;
   font-weight: 600;
   margin: 10px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
 }
 
 .itemDelete {
