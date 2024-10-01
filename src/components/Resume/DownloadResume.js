@@ -449,8 +449,7 @@ const DownloadResume = () => {
                         <div className='error'>{error}</div>
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE USERS: Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. If you do not, you will lose your download and Bubble Ai will not be liable.</Alert>}
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">MOBILE USERS: Flip screen orientation to landscape to display template properly on mobile</Alert>}
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE DETECTED: Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. If you do not, you will lose your download and Bubble Ai will not be liable.</Alert>}
                             <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible</Alert>
                         </div>
                         <div className="Segment">

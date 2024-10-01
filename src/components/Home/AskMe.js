@@ -24,9 +24,9 @@ import { errorAnimation, successMiniAnimation, checkAuthenticatedUser } from "..
 const screenWidth = window.innerWidth
 
 const suggestionOne = {
-      title: "Write professional email",
-      description: "Write a sample professional follow up email to a prospective client listing out why our products [mention products] are the best for them"
-  }
+      title: "Generate follow-up email",
+      description: `Generate a professional follow-up email to a recruiter using the following details: Recruiter's Name: [Recruiter's Name here], Recruiter's Email: [Recruiter's Email Address here], My full name: [Your Full Name here], Job Title: [The Job Title here], Date of application or interview: [Date of your application or interview], Reason for the follow-up: [Reason for Follow-Up], Specific questions to ask (optional): [Questions], Desired tone of the email: [professional]. Please generate the email based on the provided details`
+}
 
 const suggestionTwo = {
   title: "Job Interview Preparation",
@@ -146,13 +146,13 @@ const AskMe = () => {
   
     const generateSuggestions = async () => {
       try {
-        const data = {
-          suggestions: suggestionOne
-        }
+        // const data = {
+        //   suggestions: suggestionOne
+        // }
         setSuggestionDisplay(true)
-        let response = await axios.post("/suggestions", data);
-        const objectData = response.data
-        setAiSuggestions([objectData, suggestionTwo, suggestionThree])
+        // let response = await axios.post("/suggestions", data);
+        // const objectData = response.data
+        setAiSuggestions([suggestionOne, suggestionTwo, suggestionThree])
       } catch (error) {
         console.error(error);
       }

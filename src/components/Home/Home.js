@@ -99,7 +99,7 @@ const Home = () => {
               <AuthInput
                 name="askMe"
                 label="Ask a Question..."
-                placeholder="Free Job Interview Preps, Ask Questions etc..."
+                placeholder="Free Job Interview Mock, Follow Up Emails etc..."
                 multiline={true}
                 inputGridSm={10}
                 rows={2}
@@ -109,7 +109,7 @@ const Home = () => {
               <Grid
                 item
                 xs={2}
-                sx={{ textAlign: "right", marginTop: screenWidth > 900 && '-3px' }}
+                sx={{ textAlign: "right", marginTop: '2px' }}
               >
                 <ButtonSubmitBlack>
                   <SendIcon />
