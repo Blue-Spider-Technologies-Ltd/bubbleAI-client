@@ -264,7 +264,7 @@ export const fetchCountryData = async () => {
 export const fetchCurrency = async () => {
     try {
         const countryData = await fetchCountryData()
-        const userCurrency = countryData?.currency || 'USD'
+        const userCurrency = countryData?.currency || 'NGN'
         
         return userCurrency
     } catch (error) {
