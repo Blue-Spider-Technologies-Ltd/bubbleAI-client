@@ -250,7 +250,7 @@ const JobList = ({ aiSuggestedJobs, resume, template, errorSetter }) => {
             <div>
               {isPremium ? (
                 <div>
-                  You are not subscribed for our Ai Curated Jobs ({' '}
+                  To view Jobs that give you greater than 90% chance of being hired ({' '}
                   <a style={styles.linkStyle} href="/pricing" target="_blank" rel="noopener noreferrer">Upgrade</a>).
                 </div>
               ) : (

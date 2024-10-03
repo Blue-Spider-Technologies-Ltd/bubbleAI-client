@@ -229,35 +229,35 @@ const DownloadResume = () => {
         dispatch(setResume(resume));
     
         try {
-            // const fileName = storageDetails.name + '.pdf';
-            // const blob = await pdf(selectTemplate()).toBlob();
+            const fileName = storageDetails.name + '.pdf';
+            const blob = await pdf(selectTemplate()).toBlob();
 
-            // if(screenWidth < 1000) {
-            //     // Mobile
-            //     const blobUrl = URL.createObjectURL(blob);
-            //     window.open(blobUrl, '_blank');
-            // } else {
-            //     saveAs(blob, fileName);
-            // }
-            const jobs = [
-                {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
-                {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
-                {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
-            ]
-            // const response = await axios.post('/user/save-resume', completeResume, {
-            //     headers: {
-            //         'x-access-token': isAuth
-            //     }
-            // })
-            // ////run a CHECK HERE
-            // localStorage?.removeItem(
-            //     "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-            // );
-            // const data = response?.data?.shareableLink
+            if(screenWidth < 1000) {
+                // Mobile
+                const blobUrl = URL.createObjectURL(blob);
+                window.open(blobUrl, '_blank');
+            } else {
+                saveAs(blob, fileName);
+            }
+            // const jobs = [
+            //     {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
+            //     {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
+            //     {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
+            // ]
+            const response = await axios.post('/user/save-resume', completeResume, {
+                headers: {
+                    'x-access-token': isAuth
+                }
+            })
+            ////run a CHECK HERE
+            localStorage?.removeItem(
+                "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+            );
+            const data = response?.data?.shareableLink
             // const data2 = response?.data?.aiSuggestedJobs
 
-            // setShareableLink(data)
-            setAiSuggestedJobs(jobs)
+            setShareableLink(data)
+            // setAiSuggestedJobs(jobs)
             dispatch(setFetching(false));
             
             if(hasDroppedFeedback) {
