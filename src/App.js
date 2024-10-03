@@ -65,7 +65,6 @@ const App = () => {
         <Route path={'/user/dashboard/mock/toefl'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/mock/utme'} element={ <UnderConstruction /> } />
         <Route path={'/user/dashboard/mock/wassce'} element={ <UnderConstruction /> } />
-
         <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
         <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />
         <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
