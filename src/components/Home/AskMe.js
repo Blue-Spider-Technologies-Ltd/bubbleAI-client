@@ -134,15 +134,6 @@ const AskMe = () => {
   //Cover letter and Ai suggestions useeffect
  useEffect(() => {
     localStorage.removeItem("prevPath")
-
-    const createCoverLetter = async () => {
-      try {
-        setAskMeVal(coverLetterPrompt)
-        setSuggestionDisplay(true)
-      } catch (error) {
-        errorSetter("Failed to generate Cover Letter query")
-      }
-    }
   
     const generateSuggestions = async () => {
       try {
@@ -159,11 +150,7 @@ const AskMe = () => {
     }
   
     if (!isEffectExecuted.current) {
-      if(coverLetterPrompt) {
-        createCoverLetter()
-      } else {
-        generateSuggestions()
-      }
+      generateSuggestions()
       isEffectExecuted.current = true;
     }
   

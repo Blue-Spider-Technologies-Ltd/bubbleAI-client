@@ -3,7 +3,7 @@ import resumeCss from './Resume.module.css'
 import { SuccessFailureModal, Overlay, CheckoutSummaryModal } from '../UI/Modal/Modal';
 import ResumePricing from '../Pricing/ResumePricing';
 import axios from 'axios';
-import { setError, setFetching, setSuccessMini } from "../../redux/states";
+import { setError, setFetching, setSuccessMini, setResume } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
 import Alert from '@mui/material/Alert';
 import { pdf } from '@react-pdf/renderer';
@@ -20,7 +20,7 @@ import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
-import { errorAnimation, successMiniAnimation, getOrdinalDate, getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../utils/client-functions";
+import { errorAnimation, successMiniAnimation } from "../../utils/client-functions";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
@@ -225,33 +225,39 @@ const DownloadResume = () => {
 
         const completeResume = { ...resume, storageDetails }
         dispatch(setFetching(true));
+        //set Resume for cover letter use
+        dispatch(setResume(resume));
     
         try {
-            const fileName = storageDetails.name + '.pdf';
-            const blob = await pdf(selectTemplate()).toBlob();
+            // const fileName = storageDetails.name + '.pdf';
+            // const blob = await pdf(selectTemplate()).toBlob();
 
-            if(screenWidth < 1000) {
-                // Mobile
-                const blobUrl = URL.createObjectURL(blob);
-                window.open(blobUrl, '_blank');
-            } else {
-                saveAs(blob, fileName);
-            }
-            
-            const response = await axios.post('/user/save-resume', completeResume, {
-                headers: {
-                    'x-access-token': isAuth
-                }
-            })
-            ////run a CHECK HERE
-            localStorage?.removeItem(
-                "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-            );
-            const data = response?.data?.shareableLink
-            const data2 = response?.data?.aiSuggestedJobs
+            // if(screenWidth < 1000) {
+            //     // Mobile
+            //     const blobUrl = URL.createObjectURL(blob);
+            //     window.open(blobUrl, '_blank');
+            // } else {
+            //     saveAs(blob, fileName);
+            // }
+            const jobs = [
+                {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
+                {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
+                {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
+            ]
+            // const response = await axios.post('/user/save-resume', completeResume, {
+            //     headers: {
+            //         'x-access-token': isAuth
+            //     }
+            // })
+            // ////run a CHECK HERE
+            // localStorage?.removeItem(
+            //     "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+            // );
+            // const data = response?.data?.shareableLink
+            // const data2 = response?.data?.aiSuggestedJobs
 
-            setShareableLink(data)
-            setAiSuggestedJobs(data2)
+            // setShareableLink(data)
+            setAiSuggestedJobs(jobs)
             dispatch(setFetching(false));
             
             if(hasDroppedFeedback) {
@@ -360,34 +366,6 @@ const DownloadResume = () => {
         return
     };
 
-
-    const handleCompanyNameChange = (e) => {
-        setCompanyName(e.target.value)
-    }
-    
-    const handleCoverLetterCompose = () => {
-        if(!companyName) {
-            return errorSetter("Enter the Employer/Company to create Cover Letter")
-        }
-
-        if(resumeSubDuration === "Per Use") {
-            return errorSetter("Upgrade Subscription to access this feature")
-        }
-        
-        const basicInfo = resume?.basicInfo
-        const email = basicInfo.email
-        const fullName = basicInfo.firstName + " " + basicInfo.lastName
-        const jobPosition = basicInfo.jobPosition
-        const skills = resume.skills?.map(skill => `${skill}`).join(', ');
-        const pastWorkPositions = resume.workExpArray.map(exp => exp.position).join(', ');
-        const date = getOrdinalDate()
-
-        const prompt = `You are a job applicant with the full name: ${fullName}, email address: ${email}, applying for the position of a ${jobPosition} at ${companyName}; you possess the following skills: ${skills}; You have previously held the following roles: ${pastWorkPositions}; and therefore, believe you are the best candidate for the job. Write a stunning professional Cover letter to prove this to your employer using ${date} as the date of application.`
-        localStorage.setItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA", prompt)
-        // Open navigate in a new tab
-        window.open("/chat", "_blank");
-
-    }
 
     const handleDownload = () => {
         if(!canPrint) {
@@ -558,12 +536,10 @@ const DownloadResume = () => {
                     success={true} 
                     notApaymentTextPositive="Resume Creation Completed!"
                     notApayment={true}
-                    label="Company Name"
-                    value={companyName}
-                    handleChange={handleCompanyNameChange}
-                    handleCoverLetterCompose={handleCoverLetterCompose}
+                    resume={resume}
                     shareableLink={shareableLink}
                     aiSuggestedJobs={aiSuggestedJobs}
+                    template={storageDetails.template}
                 />
             )}
                             

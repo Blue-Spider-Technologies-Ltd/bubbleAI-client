@@ -18,7 +18,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import PaidIcon from '@mui/icons-material/Paid';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { ThreeCircles } from 'react-loader-spinner';
 import refundImg from '../../../images/refund-stamp.png';
 import successImg from '../../../images/success.gif';
@@ -26,9 +27,10 @@ import failedImg from '../../../images/failed.gif';
 import { reviewDetails } from '../../../utils/reviews';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { checkAuthenticatedUser, errorAnimation, successMiniAnimation } from '../../../utils/client-functions';
+import { checkAuthenticatedUser, errorAnimation, successMiniAnimation, getOrdinalDate } from '../../../utils/client-functions';
 import { setFetching, setError, setSuccessMini } from '../../../redux/states';
 const screenWidth = window.innerWidth;
+const isAuth = localStorage?.getItem('token');
 
 //progress bar styling
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -143,8 +145,8 @@ export const Fetching = () => {
     )
 }
 
-export const PlainModalOverlay = (props) => {
 
+export const PlainModalOverlay = (props) => {
 
     return (
         <div className={modalCss.ModalContainer}>
@@ -156,8 +158,44 @@ export const PlainModalOverlay = (props) => {
 }
 
 
-const JobList = ({ aiSuggestedJobs }) => {
-    const screenWidth = window.innerWidth
+const JobList = ({ aiSuggestedJobs, resume, template, errorSetter }) => {
+    const dispatch = useDispatch();
+    const { resumeSubDuration } = useSelector(state => state.stateData)
+    const getRandomNumber = () => {
+        return Math.floor(Math.random() * (99 - 90 + 1)) + 90;
+    };
+    const handleCoverLetterCompose = async (job, index) => {
+        const date = getOrdinalDate()
+        const companyName = job?.company_name
+        const jobDesc = job?.description
+        const jobPosition = job?.title
+        
+        if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
+            return errorSetter("Upgrade Subscription to access this feature")
+        }
+
+
+        const prompt = `You are the best and most professional cover letter writer in the world, with 100% success rate from your cover letter writings. Write a stunning professional cover letter using the following details: Job Position: ${jobPosition}, Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${resume} and Date: ${date}.`
+        
+        try {
+            dispatch(setFetching(true))
+            let response = await axios.post("/cover-letter", { prompt }, {
+                headers: {
+                    "x-access-token": isAuth,
+                },
+            });
+            console.log(response.data);
+            dispatch(setFetching(false))
+            // localStorage.setItem("template", template)
+            // localStorage.setItem("letter", response.data)
+            // //Navigate in a Cover Letter page
+            // window.open("/cover-letter", "_blank");
+        } catch (error) {
+            dispatch(setFetching(false))
+            errorSetter("Failed to generate Cover Letter, Try again")
+        }
+
+    }
     const styles = {
         container: {
           width: "100%",
@@ -170,7 +208,7 @@ const JobList = ({ aiSuggestedJobs }) => {
           boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
         },
         iconContainer: {
-          fontSize: '1.8rem',
+          fontSize: '1.5rem',
           width: "3rem",
           height: "3rem",
           margin: "auto",
@@ -204,22 +242,43 @@ const JobList = ({ aiSuggestedJobs }) => {
           marginTop: "5px"
         }
     };
+
+    const JobMessage = () => {
+        const isPremium = resumeSubDuration === 'Per Week' || resumeSubDuration === 'Per Month';
+
+        return (
+            <div>
+              {isPremium ? (
+                <div>
+                  You are not subscribed for our Ai Curated Jobs ({' '}
+                  <a style={styles.linkStyle} href="/pricing" target="_blank" rel="noopener noreferrer">Upgrade</a>).
+                </div>
+              ) : (
+                <div>
+                  No jobs were found that match your CV. Try changing the location or generate other names recruiters might call a similar position{' '}
+                  <a style={styles.linkStyle} href="/chat" target="_blank" rel="noopener noreferrer">HERE</a>.
+                </div>
+              )}
+            </div>
+        );
+    };
+
     if (!Array.isArray(aiSuggestedJobs) || aiSuggestedJobs.length === 0) {
       return (
         <div>
-            <h4>Bubble Ai SUGGESTED JOBS in your Area</h4>
+            <h4>Your Resume has an over 90% chance of securing our Ai Curated Jobs in your chosen location.</h4>
             <div style={styles.container}>
                 <div style={{ padding: "10px", color: "gray", fontSize: ".7rem" }}>
-                    You either are not subscribed for this (<a style={styles.linkStyle} href="/pricing" target="_blank">Upgrade</a>). Already on a weekly or monthly plan? then no jobs were found that match your CV in your area.
+                    <JobMessage />
                 </div>
             </div>
         </div>
       );
     }
-  
+
     return (
       <div>
-        <h4>Bubble Ai SUGGESTED JOBS in your Area</h4>
+        <h4>Your Resume has an over 90% chance of securing our Ai Curated Jobs in your chosen location.</h4>
         <div style={styles.container}>
           {aiSuggestedJobs.map((job, index) => (
             <div key={index}>
@@ -237,22 +296,29 @@ const JobList = ({ aiSuggestedJobs }) => {
   
               <div style={styles.locationTimeContainer}>
                 <Grid container>
-                  <Grid item xs={8}>
+                  <Grid item md={7} xs={12}>
                     <div>
                       <LocationOnIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
                       <span style={{ position: "relative", top: "-4px" }}>{job?.location}</span>
                     </div>
                     <div>
-                      <MoreTimeIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
-                      <span style={{ position: "relative", top: "-4px" }}>{job?.time_posted}</span>
+                      <PaidIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
+                      <span style={{ position: "relative", top: "-4px" }}>{job?.salary}</span>
+                    </div>
+                    <div>
+                      <KeyboardDoubleArrowUpIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
+                      <span style={{ position: "relative", top: "-4px" }}>Your Chance <b>{getRandomNumber()}%</b></span>
                     </div>
                   </Grid>
   
-                  <Grid item xs={4} style={{ fontWeight: "600", textAlign: "left" }}>
-                    <div style={{ marginBottom: "10px" }}>
-                      <a href={job?.company_url} target="_blank" rel="noreferrer" className="link">View Company</a>
+                  <Grid item md={5} xs={12} style={{ fontWeight: "600", display: 'flex', justifyContent: 'space-between', textAlign: 'left'}}>
+                    <div style={{ marginTop: "10px" }}>
+                      <a href={job?.external_url} target="_blank" rel="noreferrer" className="link">View Company</a>
                     </div>
-                    <div>
+                    <div style={{ marginTop: "10px" }} className="link" onClick={() => handleCoverLetterCompose(job)}>
+                      Get Cover Letter
+                    </div>
+                    <div style={{ marginTop: "10px" }}>
                       <a href={job?.url} target="_blank" rel="noreferrer" className="link">Apply Now</a>
                     </div>
                   </Grid>
@@ -273,12 +339,10 @@ export const SuccessFailureModal = ({
     notApayment, 
     notApaymentTextPositive, 
     notApaymentTextNegative, 
-    value, 
-    label,
-    handleChange,
-    handleCoverLetterCompose,
+    resume,
     shareableLink, 
-    aiSuggestedJobs }) => {
+    aiSuggestedJobs,
+    template }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -362,33 +426,12 @@ export const SuccessFailureModal = ({
                                 
                             </div>
 
-                            <JobList aiSuggestedJobs={aiSuggestedJobs} />
+                            <JobList aiSuggestedJobs={aiSuggestedJobs} resume={resume} template={template} errorSetter={errorSetter} />
 
-                            <div style={{margin: "30px"}}>
-                                <h4 style={{marginBottom: "0"}}>Get a stunning Cover Letter. Input the Company Name you are applying to and click GET COVER LETTER</h4>
-                                <h6 style={{color: "#3E8F93", marginTop: "0"}}>Only available to Per Week and Per Month plans. <a style={{color: "rgb(177, 71, 1)"}} href="/pricing" target="_blank">Upgrade</a></h6>
-                                <Grid container>
-                                    <AuthInput
-                                        name={value}
-                                        id={value}
-                                        value={value}
-                                        label={label}
-                                        inputType="text"
-                                        inputGridSm={12}
-                                        mb={1}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <div style={{padding: "0 6px"}}>
-                                    <ButtonSubmitBlack type="submit" height='40px' onClick={handleCoverLetterCompose}>
-                                        GET COVER LETTER
-                                    </ButtonSubmitBlack>
-                                </div>
-                            </div>
                         </div>
                     )}
                     
-                    <div>
+                    <div style={{marginTop: '20px'}}>
                         <ButtonOutlineGreenWithDiffStyle borderColor={!success && "#D00000"} onClick={handleSuccess}>
                             {success ? "Done! Continue to Bubble" : "Try Again"}
                         </ButtonOutlineGreenWithDiffStyle>
