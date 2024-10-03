@@ -198,17 +198,17 @@ export const fetchPrice = async (category, usage) => {
 
                 if (usage === "priceOne") {
                     //convert naira to user currency
-                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceOne_Africa}`)  
+                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceOne_Africa}`)  
                     finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 if (usage === "priceTwo") {
                     //convert naira to user currency
-                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceTwo_Africa}`)  
+                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceTwo_Africa}`)  
                     finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 if (usage === "priceThree") {
                     //convert naira to user currency
-                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/64c27b2f8d0a61534c6da6d4/pair/NGN/${userCurrency}/${comparativePriceThree_Africa}`)  
+                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceThree_Africa}`)  
                     finalPrice = Math.round(rate?.data?.conversion_result)
                 }
                 break;
