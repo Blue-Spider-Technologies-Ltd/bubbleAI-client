@@ -62,7 +62,6 @@ const DownloadResume = () => {
     const [carouselName, setCarouselName] = useState("");
     const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || avatarImg);
     const [hasImg, setHasImg] = useState(false);
-    const [companyName, setCompanyName] = useState("");
     const [resumeNameExist, setResumeNameExist] = useState(false);
     const [shareableLink, setShareableLink] = useState("");
     const [aiSuggestedJobs, setAiSuggestedJobs] = useState([]);
@@ -239,11 +238,6 @@ const DownloadResume = () => {
             } else {
                 saveAs(blob, fileName);
             }
-            // const jobs = [
-            //     {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
-            //     {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
-            //     {title: 'Senior Software Engineer', company_name: "Blue Spider Tech", location: 'Abuja Nigeria', salary: '$120,000 - $150,000', company_url: '/chat', url: '/chat'},
-            // ]
             const response = await axios.post('/user/save-resume', completeResume, {
                 headers: {
                     'x-access-token': isAuth
@@ -254,10 +248,10 @@ const DownloadResume = () => {
                 "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
             );
             const data = response?.data?.shareableLink
-            // const data2 = response?.data?.aiSuggestedJobs
+            const data2 = response?.data?.aiSuggestedJobs
 
             setShareableLink(data)
-            // setAiSuggestedJobs(jobs)
+            setAiSuggestedJobs(data2)
             dispatch(setFetching(false));
             
             if(hasDroppedFeedback) {
@@ -540,6 +534,7 @@ const DownloadResume = () => {
                     shareableLink={shareableLink}
                     aiSuggestedJobs={aiSuggestedJobs}
                     template={storageDetails.template}
+                    imgUrl={imgUrl}
                 />
             )}
                             

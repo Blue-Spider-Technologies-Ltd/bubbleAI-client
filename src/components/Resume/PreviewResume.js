@@ -440,7 +440,6 @@ const PreviewResume = () => {
                     inputGridSm={12}
                     inputGrid={4}
                     mb={2}
-                    required={true}
                     disabled={!isResumeSubbed}
                     onChange={handleInputChange("street")}
                   />

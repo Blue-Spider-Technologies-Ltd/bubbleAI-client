@@ -37,6 +37,7 @@ import Terms from './components/Home/Terms';
 // import HowIWork from './components/Home/HowIWork';
 import ContactUsPage from './components/Home/ContactUsPage';
 import AskMe from "./components/Home/AskMe"
+import DownloadCoverLetter from './components/Resume/CoverLetters/DownloadCoverLetter';
 import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
@@ -90,6 +91,7 @@ const App = () => {
         <Route path={'/support'} element={<ContactUsPage />} />
         <Route path={'/transaction'} element={<TransactionDone />} />
         <Route path={'/chat'} element={<AskMe />} />
+        <Route path={'/cover-letter'} element={<DownloadCoverLetter />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
