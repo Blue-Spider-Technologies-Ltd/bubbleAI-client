@@ -497,13 +497,13 @@ const DownloadResume = () => {
                                 </ProtectedContent>
                             
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
-                                <div style={{ width: "150px" }}>
+                                <div style={{ width: "250px" }}>
                                     <ButtonSubmitGreen 
                                         type="button"
                                         onClick={handleDownload}
                                     >
                                     
-                                        <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF </span>
+                                        <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF and View Jobs </span>
                                     </ButtonSubmitGreen>
                                 </div>
                                 
