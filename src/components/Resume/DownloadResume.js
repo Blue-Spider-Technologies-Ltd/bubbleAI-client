@@ -27,7 +27,8 @@ import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import StandardPDF from './Templates/Standard/StandardPDF'
 import EuroPass from './Templates/Europass/EuroPass';
 import Feedback from '../Dashboard/Feedback';
-import {jwtDecode} from 'jwt-decode';;
+import {jwtDecode} from 'jwt-decode';
+import ChatwootWidget from "../../utils/chatwoot";
 const screenWidth = window.innerWidth
 
 
@@ -539,7 +540,7 @@ const DownloadResume = () => {
             )}
                             
             
-
+            <ChatwootWidget />
         </div>
     )
 }

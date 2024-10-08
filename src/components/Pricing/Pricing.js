@@ -7,6 +7,7 @@ import ResumePricing from './ResumePricing';
 // import FileTranscriptionPricing from './FileTranscriptionPricing';
 import { CheckoutSummaryModal } from '../UI/Modal/Modal';
 import { useSelector } from "react-redux";
+import ChatwootWidget from '../../utils/chatwoot';
 
 //////This page contains CSS from HOME.CSS and INDEX.CSS
 const Pricing = () => {
@@ -57,6 +58,8 @@ const Pricing = () => {
             <FileTranscriptionPricing /> */}
          
             {showCheckout && <CheckoutSummaryModal />}
+
+            <ChatwootWidget />
         </div>
     )
 }

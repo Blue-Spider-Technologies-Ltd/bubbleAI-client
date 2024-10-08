@@ -27,6 +27,7 @@ import Alert from '@mui/material/Alert';
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { IoSparklesSharp } from "react-icons/io5";
+import ChatwootWidget from "../../utils/chatwoot";
 
 
 
@@ -84,6 +85,12 @@ const CustomizeResume = () => {
   const advancedMatching = { 
     em: user.email
   }
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const options = {
     autoConfig: true,
     debug: false, // enable logs
@@ -92,10 +99,6 @@ const CustomizeResume = () => {
   useEffect(() => {
     ReactPixel.init('1133510054551065', advancedMatching, options);
     ReactPixel.pageView();
-  }, []);
-  
-  useEffect(() => {
-    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -1953,7 +1956,7 @@ const CustomizeResume = () => {
           </PlainModalOverlay>
       )}
 
-
+      <ChatwootWidget />
     </div>
   );
 };

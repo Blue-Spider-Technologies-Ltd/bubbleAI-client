@@ -12,7 +12,7 @@ import categoriesData from "./categories";
 import { useSelector, useDispatch } from "react-redux";
 import { setMessages, setUser, setError, setAllMessagesArray } from "../../redux/states";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
-import HelpIcon from "../UI/HelpIcon/HelpIcon";
+import ChatwootWidget from "../../utils/chatwoot";
 import axios from "axios";
 
 
@@ -141,7 +141,7 @@ const Home = () => {
           </Grid>
         </div>
       </section>
-      <HelpIcon />
+      <ChatwootWidget />
     </div>
   );
 };
