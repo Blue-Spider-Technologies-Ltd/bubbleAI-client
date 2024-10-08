@@ -79,6 +79,7 @@ const Home = () => {
 
 
   const handleFocus = () => {
+    localStorage.setItem('woot', true)
     navigate("/chat")
   };
 
@@ -90,11 +91,11 @@ const Home = () => {
       <MenuBar />
 
       <section id="ask-me" className="container" style={{ marginTop: "100px" }}>
-        <div className="container-inner" onFocus={handleFocus}>
+        <div className="container-inner">
           <h1 className="ask-me-h2">Ask me anything</h1>
           <div className="error">{error}</div>
           <form className="form-ask-anything">
-            <Grid container>
+            <Grid container onFocus={handleFocus}>
 
               <AuthInput
                 name="askMe"

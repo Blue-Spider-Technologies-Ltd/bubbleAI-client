@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Home.css";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import { Grid } from "@mui/material";
@@ -20,6 +20,7 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { errorAnimation, successMiniAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
+
 
 const screenWidth = window.innerWidth
 
@@ -50,6 +51,7 @@ const AskMe = () => {
   const item = JSON.parse(countItemJson);
   const useCount = item ? item.cu78tgGgivhcountJVGIbGguguGhgh : 0;
   const expiration = item?.UYiygc768FYexpUVIirationHi87f86DCCC;
+  const woot = localStorage?.getItem('woot')
 
   const [authMenuOpen, setAuthMenuOpen] = useState(false)
   const [askMeVal, setAskMeVal] = useState("")
@@ -60,6 +62,7 @@ const AskMe = () => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioTranscribed, setAudioTranscribed] = useState(false)
   const [transcribing, setTranscribing] = useState(false)
+
 
   const isEffectExecuted = useRef(false);
   let coverLetterPrompt = localStorage.getItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA")
@@ -78,6 +81,13 @@ const AskMe = () => {
     role: 'assistant',
     content:  "I am currently throttling requests, try again in a moment"
   }
+
+  useEffect(() => {
+    if (woot) {
+      localStorage?.removeItem('woot')
+      window.location.reload()
+    }
+  }, []);
 
   //fetch messages for auth user
   useEffect(() => {
@@ -549,7 +559,6 @@ const AskMe = () => {
               </Grid>
             </div>
         </div>
-
     </div>
   );
 };

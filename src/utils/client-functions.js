@@ -140,7 +140,7 @@ export const fetchPrice = async (category, usage) => {
         const countryData = countryDataRaw.data
         const continent = countryData.continent_code || 'NA'
         //if you change currency here manually change it in fetchCurrency function too
-        const userCurrency = countryData.currency || 'USD'
+        const userCurrency = countryData.currency || 'NGN'
         let finalPrice;
         let comparativePriceOne_Africa;
         let comparativePriceTwo_Africa;
@@ -195,22 +195,34 @@ export const fetchPrice = async (category, usage) => {
 
         switch (continent) {
             case 'AF':
+                if(userCurrency !== "NGN") {
+                    if (usage === "priceOne") {
+                        //convert naira to user currency
+                        const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceOne_Africa}`)  
+                        finalPrice = Math.round(rate?.data?.conversion_result)
+                    }
+                    if (usage === "priceTwo") {
+                        //convert naira to user currency
+                        const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceTwo_Africa}`)  
+                        finalPrice = Math.round(rate?.data?.conversion_result)
+                    }
+                    if (usage === "priceThree") {
+                        //convert naira to user currency
+                        const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceThree_Africa}`)  
+                        finalPrice = Math.round(rate?.data?.conversion_result)
+                    }
+                } else {
+                    if (usage === "priceOne") {
+                        finalPrice = comparativePriceOne_Africa
+                    }
+                    if (usage === "priceTwo") {
+                        finalPrice = comparativePriceTwo_Africa
+                    }
+                    if (usage === "priceThree") {
+                        finalPrice = comparativePriceThree_Africa
+                    }
+                }
 
-                if (usage === "priceOne") {
-                    //convert naira to user currency
-                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceOne_Africa}`)  
-                    finalPrice = Math.round(rate?.data?.conversion_result)
-                }
-                if (usage === "priceTwo") {
-                    //convert naira to user currency
-                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceTwo_Africa}`)  
-                    finalPrice = Math.round(rate?.data?.conversion_result)
-                }
-                if (usage === "priceThree") {
-                    //convert naira to user currency
-                    const rate = await axios.get(`https://v6.exchangerate-api.com/v6/23326c90a265332f0762fc20/pair/NGN/${userCurrency}/${comparativePriceThree_Africa}`)  
-                    finalPrice = Math.round(rate?.data?.conversion_result)
-                }
                 break;
         
             default:

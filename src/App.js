@@ -93,7 +93,7 @@ const App = () => {
         <Route path={'/chat'} element={<AskMe />} />
         <Route path={'/cover-letter'} element={<DownloadCoverLetter />} />
         <Route path="/not-found" element={<NotFound />} />
-        <Route path={'/'} element={<Home />} />
+        <Route exact path={'/'} element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       
