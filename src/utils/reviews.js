@@ -4,7 +4,7 @@ export const reviewDetails = [
     { 
         img: refundImg, 
         name: 'Chijioke', 
-        review: 'The AI resume creator is amazing! It helped me create a professional resume in just a few minutes. Highly recommended.', 
+        review: 'It helped me create a professional resume in just a few minutes. Highly recommended.', 
         rating: 5 
     }, 
     // { 
@@ -15,7 +15,7 @@ export const reviewDetails = [
     // }, 
     { 
         img: refundImg, 
-        name: 'John', 
+        name: 'Temi', 
         review: "I use the resume generator for my resume writing business, now I can generate more professional resumes in minutes. And in my business, more resumes mean more money. and all with little energy.", 
         rating: 5 
     }, 
@@ -25,12 +25,12 @@ export const reviewDetails = [
         review: "The AI resume creator is a lifesaver! It made the daunting task of creating a resume so much easier. The templates provided were modern and eye-catching. I would definitely recommend it to anyone in need of a professional resume.", 
         rating: 5 
     }, 
-    // { 
-    //     img: refundImg, 
-    //     name: 'Wale', 
-    //     review: "The AI meeting minutes generator is fantastic. It accurately captures all the important points discussed in the meeting and generates well-structured minutes. It has made my job as a secretary much easier. I would rate it 4 out of 5.", 
-    //     rating: 4 
-    // }, 
+    { 
+        img: refundImg, 
+        name: 'Wale', 
+        review: "Whoa, it’s so fast. Usually career people write my CVs in days with several corrections and review sessions. This took seconds and was even more professional. Ai is scary.", 
+        rating: 4 
+    }, 
     { 
         img: refundImg, 
         name: 'Lisa', 

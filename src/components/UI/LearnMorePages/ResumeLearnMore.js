@@ -24,11 +24,11 @@ import downloadImg from "../../../images/download.jpg"
 import previewImg from "../../../images/preview.jpg"
 import Blob from '../Blob/Blob';
 import { Grid, Rating } from "@mui/material";
-import HelpIcon from '../HelpIcon/HelpIcon';
 import { faqs } from '../../../utils/faqs';
 import ResumePricing from '../../Pricing/ResumePricing';
 import { CheckoutSummaryModal } from '../Modal/Modal';
 import { useSelector } from "react-redux";
+import ChatwootWidget from '../../../utils/chatwoot';
 const screenWidth = window.innerWidth
 
 const ResumeLearnMore = () => {
@@ -516,7 +516,7 @@ const ResumeLearnMore = () => {
                 <ResumePricing />
             </section>
             {showCheckout && <CheckoutSummaryModal />}
-            <HelpIcon />
+            <ChatwootWidget />
         </div>
     )
 }
