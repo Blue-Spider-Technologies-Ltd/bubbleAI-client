@@ -158,7 +158,7 @@ const MenuBarSmall = () => {
                         <li id="nav-2"><a href="/pricing">Pricing</a></li>
                         <li id="nav-3"><a href="/how-i-work">How I Work</a></li>
                         <li id="nav-4"><a href="/support">Support</a></li>
-                        <li id="nav-5"><a href="/terms">Terms</a></li>
+                        <li id="nav-5"><a href="/privacy">Terms</a></li>
                     </ul>
                 </nav>
             </div>

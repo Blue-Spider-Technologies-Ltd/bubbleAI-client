@@ -305,7 +305,6 @@ const Register = () => {
                                     console.log('Login Failed');
                                 }}
                                 shape='pill'
-                                width={'90%'}
                             /> */}
                         </div>
                         {/* <p><strong>Or</strong></p> */}

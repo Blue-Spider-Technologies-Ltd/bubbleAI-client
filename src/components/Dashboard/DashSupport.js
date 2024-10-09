@@ -75,7 +75,7 @@ const DashSupport = (props) => {
                         iconImg={termsIcon}
                         title="Terms & Conditions"
                         description="Understand all legally binding agreements for the usage of Bubble AI"
-                        onClick={() => openNewTab("/terms")}
+                        onClick={() => openNewTab("/privacy")}
                     />
                 </Grid>
                                 

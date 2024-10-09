@@ -145,7 +145,7 @@ const Home = () => {
       <div 
         style={{color: "#56A8AC", fontSize: ".7rem", fontWeight: '500', textAlign: "center", textDecoration: "underline", marginBottom: "20px"}}
       >
-        <a style={{color: "#56A8AC"}} href="/terms" noreferrer>privacy</a>
+        <a style={{color: "#56A8AC"}} href="/privacy">privacy</a>
       </div>
       <ChatwootWidget />
     </div>

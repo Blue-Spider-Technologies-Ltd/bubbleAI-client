@@ -88,7 +88,7 @@ const App = () => {
           <Route path={'/reset-password'} element={ <PwdRecovery /> } />
           <Route path={'/join-bubble'} element={<Register />} />
           <Route path={'/pricing'} element={<Pricing />} />
-          <Route path={'/terms'} element={<Terms />} />
+          <Route path={'/privacy'} element={<Terms />} />
           <Route path={'/how-i-work'} element={<ResumeLearnMore />} />
           <Route path={'/support'} element={<ContactUsPage />} />
           <Route path={'/transaction'} element={<TransactionDone />} />

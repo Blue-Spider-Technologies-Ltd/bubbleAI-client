@@ -733,7 +733,7 @@ export const CheckoutSummaryModal = () => {
                                 <h5>100% Refund</h5>
                                 <h2>GUARANTEED</h2>
                                 <a 
-                                    href='/terms' 
+                                    href='/privacy' 
                                     target='_blank'
                                     style={{fontSize: '.65rem', color: '#3E8F93', position: 'relative', top: '-20px'}}
                                 >
