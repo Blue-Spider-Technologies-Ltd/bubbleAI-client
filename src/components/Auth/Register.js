@@ -172,14 +172,8 @@ const Register = () => {
         }
     }
 
-    const handleGoogleLogin = async () => {
-        try {
-            console.log("clicked");
-            const response = await axios.get('/auth/google-register');
-            window.location.href = response.data.authUrl;
-        } catch (error) {
-            console.error('Error initiating Google OAuth:', error);
-        }
+    const handleGoogleLogin = async (credentialResponse) => {
+        console.log(credentialResponse);
     };
 
     const handleInputChange = (prop) => (event) => {
@@ -297,17 +291,15 @@ const Register = () => {
                     <form method="post" onSubmit={handleFormSubmit}>
                     
                         <div style={{padding: '150px !important'}}>
-                            {/* <GoogleLogin
-                                onSuccess={credentialResponse => {
-                                    console.log(credentialResponse);
-                                }}
+                            <GoogleLogin
+                                onSuccess={handleGoogleLogin}
                                 onError={() => {
-                                    console.log('Login Failed');
+                                    errorSetter('Login Failed');
                                 }}
                                 shape='pill'
-                            /> */}
+                            />
                         </div>
-                        {/* <p><strong>Or</strong></p> */}
+                        <p><strong>OR</strong></p>
                         <Grid container>
                             <Input placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 
                             <Input placeholder="Last name..." value={user.lastName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('lastName')} /> 
