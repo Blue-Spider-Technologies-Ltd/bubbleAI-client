@@ -21,6 +21,7 @@ import HelpIcon from "../UI/HelpIcon/HelpIcon";
 import SHA256 from 'crypto-js/sha256';
 import CryptoJS from 'crypto-js';
 import { init, track } from 'fbq';
+import { GoogleLogin } from '@react-oauth/google';
 // import base64 from 'crypto-js/enc-base64';
 
 
@@ -171,15 +172,15 @@ const Register = () => {
         }
     }
 
-    // const handleGoogleLogin = async () => {
-    //     try {
-    //         console.log("clicked");
-    //         const response = await axios.get('/auth/google-register');
-    //         window.location.href = response.data.authUrl;
-    //     } catch (error) {
-    //         console.error('Error initiating Google OAuth:', error);
-    //     }
-    // };
+    const handleGoogleLogin = async () => {
+        try {
+            console.log("clicked");
+            const response = await axios.get('/auth/google-register');
+            window.location.href = response.data.authUrl;
+        } catch (error) {
+            console.error('Error initiating Google OAuth:', error);
+        }
+    };
 
     const handleInputChange = (prop) => (event) => {
         setUser({ ...user, [prop]: event.target.value});
@@ -294,6 +295,20 @@ const Register = () => {
                     </div> 
 
                     <form method="post" onSubmit={handleFormSubmit}>
+                    
+                        <div style={{padding: '150px !important'}}>
+                            {/* <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    console.log(credentialResponse);
+                                }}
+                                onError={() => {
+                                    console.log('Login Failed');
+                                }}
+                                shape='pill'
+                                width={'90%'}
+                            /> */}
+                        </div>
+                        {/* <p><strong>Or</strong></p> */}
                         <Grid container>
                             <Input placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 
                             <Input placeholder="Last name..." value={user.lastName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('lastName')} /> 
@@ -339,8 +354,7 @@ const Register = () => {
                             </ButtonSubmitBlack>
                         </div>
                     </form>
-                    {/* <p><strong>Or</strong></p> */}
-                    {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#940101" }}><Google /></span><span>et with Google</span></ButtonTransparent> */}
+
                     <p></p>
                     {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#333333" }}><Apple /></span><span>et with Apple</span></ButtonTransparent> */}
                 </div>
