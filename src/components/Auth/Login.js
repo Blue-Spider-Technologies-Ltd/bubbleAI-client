@@ -217,7 +217,7 @@ const Login = () => {
                                     />
                                 </div>
                                 <p><strong>OR</strong></p>
-                                <hr style={{width: '90%', margin: 'auto'}}></hr>
+                                <hr style={{width: '90%', margin: 'auto', borderColor: '#c0d1d457'}}></hr>
                                 <p></p>
                             </div>
                         }

@@ -369,7 +369,7 @@ const Register = () => {
                             />
                         </div>
                         <p><strong>OR</strong></p>
-                        <hr style={{width: '90%', margin: 'auto'}}></hr>
+                        <hr style={{width: '90%', margin: 'auto', borderColor: '#c0d1d457'}}></hr>
                         <p></p>
                         <Grid container>
                             <Input placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 
