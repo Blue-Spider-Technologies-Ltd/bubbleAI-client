@@ -213,10 +213,12 @@ const Login = () => {
                                         auto_select={true}
                                         shape='pill'
                                         text="continue_with"
-                                        width={screenWidth < 500 ? '400px' : '470px'}
+                                        width={screenWidth < 450 ? '350px' : '470px'}
                                     />
                                 </div>
                                 <p><strong>OR</strong></p>
+                                <hr style={{width: '90%', margin: 'auto'}}></hr>
+                                <p></p>
                             </div>
                         }
                         <Input placeholder="Email..." inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 

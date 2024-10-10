@@ -365,10 +365,12 @@ const Register = () => {
                                 auto_select={true}
                                 shape='pill'
                                 text="continue_with"
-                                width={screenWidth < 500 ? '400px' : '470px'}
+                                width={screenWidth < 450 ? '350px' : '470px'}
                             />
                         </div>
                         <p><strong>OR</strong></p>
+                        <hr style={{width: '90%', margin: 'auto'}}></hr>
+                        <p></p>
                         <Grid container>
                             <Input placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 
                             <Input placeholder="Last name..." value={user.lastName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('lastName')} /> 
