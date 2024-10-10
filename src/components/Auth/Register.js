@@ -179,8 +179,11 @@ const Register = () => {
         dispatch(setFetching(true))
         try {
             const token = credentialResponse.credential
+            console.log(token);
             if(token) {
                 const decodedToken = jwtDecode(token)
+                console.log("Decoded Token: " + decodedToken);
+                
                 const userData = {
                     email: decodedToken.email,
                     firstName: decodedToken.given_name,
