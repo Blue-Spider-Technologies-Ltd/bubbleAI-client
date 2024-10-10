@@ -362,9 +362,10 @@ const Register = () => {
                                 onError={() => {
                                     errorSetter('Login Failed');
                                 }}
+                                auto_select={true}
                                 shape='pill'
                                 text="continue_with"
-                                width={screenWidth < 500 ? '320px' : '450px'}
+                                width={screenWidth < 500 ? '400px' : '470px'}
                             />
                         </div>
                         <p><strong>OR</strong></p>
