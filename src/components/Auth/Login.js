@@ -4,15 +4,17 @@ import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
 import bubbleBgAuthImg from "../../images/bubblebg-auth.jpg";
 import { Input } from "../UI/Input/Input";
-import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
-import { Send, Google, Apple } from '@mui/icons-material';
+import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
+import { Send } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setError } from "../../redux/states";
+import { setEmail, setError, setFetching } from "../../redux/states";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 import HelpIcon from "../UI/HelpIcon/HelpIcon";
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from '@react-oauth/google';
 
 
 const screenWidth = window.innerWidth
@@ -124,6 +126,49 @@ const Login = () => {
 
     }
 
+    const handleGoogleLogin = async (credentialResponse) => {
+        dispatch(setFetching(true))
+        try {
+            const token = credentialResponse.credential
+            if(token) {
+                const decodedToken = jwtDecode(token)
+                
+                const userData = {
+                    email: decodedToken.email,
+                    firstName: decodedToken.given_name,
+                    lastName: decodedToken.family_name,
+                    password: decodedToken.jti
+                }
+                const response = await axios.post('/auth/google-register', userData)
+                let userDetails = response?.data?.user
+                localStorage.setItem('token', userDetails)
+               
+
+                dispatch(setFetching(false))
+
+                if (queryString.length >= 1)  {
+                
+                    if (queryString === 'pricing') {
+                        navigate(`/pricing`)
+                    } else {
+                        navigate(`/user/dashboard/${queryString}`)
+                    }
+                    
+                } else {
+                    navigate('/')
+                }
+            } else {
+                dispatch(setFetching(false))
+                errorSetter('Process Failed, Try Again')
+            }
+
+            
+        } catch (error) {
+            dispatch(setFetching(false))
+            errorSetter('Bad Response, Try Again')
+        }
+    };
+
 
     const goToRegister = () => {
         navigate("/join-bubble")
@@ -157,6 +202,22 @@ const Login = () => {
                     <h2>{!pwdRec ? "Pop back in" : "Enter Email"}</h2>
                     <div className="error">{error}</div>
                     <form onSubmit={!pwdRec ? handleFormSubmitLogin : handleFormSubmitPwdRecovery}>
+                        {!pwdRec && 
+                            <div>
+                                <div style={{display: 'flex', justifyContent: 'center', width: '100%', marginTop: '10px'}}>
+                                    <GoogleLogin
+                                        onSuccess={handleGoogleLogin}
+                                        onError={() => {
+                                            errorSetter('Login Failed');
+                                        }}
+                                        shape='pill'
+                                        text="continue_with"
+                                        width={screenWidth < 500 ? '320px' : '450px'}
+                                    />
+                                </div>
+                                <p><strong>OR</strong></p>
+                            </div>
+                        }
                         <Input placeholder="Email..." inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
                         
                         {!pwdRec && 

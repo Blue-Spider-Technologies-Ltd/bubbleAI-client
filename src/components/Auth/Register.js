@@ -5,10 +5,10 @@ import MenuBar from "../UI/Menu/Menu";
 import Blob from "../UI/Blob/Blob";
 import bubbleBgAuthImg from "../../images/bubblebg-auth.jpg"
 import { Input } from "../UI/Input/Input";
-import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
-import { Send, Google, Apple } from '@mui/icons-material';
+import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
+import { Send } from '@mui/icons-material';
 import { Link, Grid, Rating } from "@mui/material";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner'
 import PasswordChecklist from "react-multiple-password-validator"
@@ -26,7 +26,7 @@ import { jwtDecode } from "jwt-decode";
 // import base64 from 'crypto-js/enc-base64';
 
 
-const screenWidth = window.innerWidth
+
 
 //Option for carousel in resume template section
 const responsive = {
@@ -47,7 +47,6 @@ const responsive = {
 const Register = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const location = useLocation();
     const { error } = useSelector(state => state.stateData)
     const [user, setUser] = useState({
         firstName: '',
@@ -62,18 +61,21 @@ const Register = () => {
     const minLength = 8
     const numberLength = 1
     const capitalLength = 1
+    const screenWidth = window.innerWidth
 
     const errorSetter = (string) => {
         dispatch(setError(string))
         errorAnimation()
     }
-    const queryString = location.search.slice(1)
 
     useEffect(() => {
         const isAuth = localStorage?.getItem('token')
         const prevPath = localStorage?.getItem('prevPath')
         if (isAuth) {
-            navigate(prevPath)
+            if(prevPath) {
+                navigate(prevPath)
+            }
+            navigate('/')
         }
     })
 
@@ -88,6 +90,26 @@ const Register = () => {
             isValid = false;
         }
     };
+
+    async function sendToFacebookConversionAPI(data) {
+        try {
+            const res = await fetch('https://graph.facebook.com/v20.0/1133510054551065/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer EAAGOA8VGfuwBO5tWGc2njMdXV5CqSBsyFQCCwEdXcgdZB4ZAG6uZAldREnbZAROzBZCyZAVRkOxxWpKC83rVjDBL0TKq90mnc9pZAma45pFioO5h5INQr6FcE2qHWcF9Oqfwqd6LWE0WcYsFTaIzliSmWWMw9szljshEMom12ahJsB41SAZCOclWVI6aJiBtPJCv3QZDZD`
+                },
+                body: JSON.stringify({
+                    "data": [
+                        data
+                    ],
+                })
+            });
+            
+        } catch (error) {
+            // console.error('Error sending data to Facebook Conversion API:', error);
+        }
+    }
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
@@ -137,25 +159,7 @@ const Register = () => {
                 }
                 init('1133510054551065');
                 track('CompleteRegistration', { eventID: eventId });
-                async function sendToFacebookConversionAPI(data) {
-                    try {
-                        const res = await fetch('https://graph.facebook.com/v20.0/1133510054551065/events', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer EAAGOA8VGfuwBO5tWGc2njMdXV5CqSBsyFQCCwEdXcgdZB4ZAG6uZAldREnbZAROzBZCyZAVRkOxxWpKC83rVjDBL0TKq90mnc9pZAma45pFioO5h5INQr6FcE2qHWcF9Oqfwqd6LWE0WcYsFTaIzliSmWWMw9szljshEMom12ahJsB41SAZCOclWVI6aJiBtPJCv3QZDZD`
-                            },
-                            body: JSON.stringify({
-                                "data": [
-                                    data
-                                ],
-                            })
-                        });
-                        
-                    } catch (error) {
-                        // console.error('Error sending data to Facebook Conversion API:', error);
-                    }
-                }
+
                 // Call the function with the provided data
                 await sendToFacebookConversionAPI(fbConversionApiData);
 
@@ -179,10 +183,8 @@ const Register = () => {
         dispatch(setFetching(true))
         try {
             const token = credentialResponse.credential
-            console.log(token);
             if(token) {
                 const decodedToken = jwtDecode(token)
-                console.log("Decoded Token: " + decodedToken);
                 
                 const userData = {
                     email: decodedToken.email,
@@ -193,19 +195,40 @@ const Register = () => {
                 const response = await axios.post('/auth/google-register', userData)
                 let userDetails = response?.data?.user
                 localStorage.setItem('token', userDetails)
-                dispatch(setFetching(false))
-                //If user was redirected to login from a page because of a service request to a protected route
-                if (queryString.length >= 1)  {
-                    
-                    if (queryString === 'pricing') {
-                        navigate(`/pricing`)
-                    } else {
-                        navigate(`/user/dashboard/${queryString}`)
+                const eventId = CryptoJS.lib.WordArray.random(16).toString(CryptoJS.enc.Hex);
+                const clientIp = await fetchIp();
+                const fbConversionApiData = {
+                    "event_name": "CompleteRegistration",
+                    "event_id": eventId,
+                    "event_time": Math.floor(Date.now() / 1000),
+                    "action_source": "website",
+                    "event_source_url": window.location.href,
+                    "user_data": {
+                        "fn": [
+                            SHA256(decodedToken?.given_name).toString()
+                        ],
+                        "ln": [
+                            SHA256(decodedToken?.family_name).toString()
+                        ],
+                        "ph": [
+                            null
+                        ],
+                        "em": [
+                            SHA256(decodedToken.email).toString()
+                        ],
+                        "client_user_agent": navigator.userAgent,
+                        "client_ip_address": clientIp
                     }
-                    
-                } else {
-                    navigate('/')
                 }
+                init('1133510054551065');
+                track('CompleteRegistration', { eventID: eventId });
+
+                // Call the function with the provided data
+                await sendToFacebookConversionAPI(fbConversionApiData);
+
+                dispatch(setFetching(false))
+
+                navigate('/')
             } else {
                 dispatch(setFetching(false))
                 errorSetter('Process Failed, Try Again')
@@ -333,14 +356,15 @@ const Register = () => {
 
                     <form method="post" onSubmit={handleFormSubmit}>
                     
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <div style={{display: 'flex', justifyContent: 'center', width: '100%', marginTop: '10px'}}>
                             <GoogleLogin
                                 onSuccess={handleGoogleLogin}
                                 onError={() => {
                                     errorSetter('Login Failed');
                                 }}
                                 shape='pill'
-                                width='300px'
+                                text="continue_with"
+                                width={screenWidth < 500 ? '320px' : '450px'}
                             />
                         </div>
                         <p><strong>OR</strong></p>
