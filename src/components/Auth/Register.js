@@ -8,12 +8,12 @@ import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack, ButtonTransparent } from "../UI/Buttons/Buttons";
 import { Send, Google, Apple } from '@mui/icons-material';
 import { Link, Grid, Rating } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner'
 import PasswordChecklist from "react-multiple-password-validator"
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setError } from "../../redux/states";
+import { setEmail, setError, setFetching } from "../../redux/states";
 import { errorAnimation, fetchIp } from "../../utils/client-functions";
 import Carousel from "react-multi-carousel";
 import { reviewDetails } from '../../utils/reviews';
@@ -22,6 +22,7 @@ import SHA256 from 'crypto-js/sha256';
 import CryptoJS from 'crypto-js';
 import { init, track } from 'fbq';
 import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 // import base64 from 'crypto-js/enc-base64';
 
 
@@ -46,6 +47,7 @@ const responsive = {
 const Register = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation();
     const { error } = useSelector(state => state.stateData)
     const [user, setUser] = useState({
         firstName: '',
@@ -65,6 +67,7 @@ const Register = () => {
         dispatch(setError(string))
         errorAnimation()
     }
+    const queryString = location.search.slice(1)
 
     useEffect(() => {
         const isAuth = localStorage?.getItem('token')
@@ -150,7 +153,7 @@ const Register = () => {
                         });
                         
                     } catch (error) {
-                        console.error('Error sending data to Facebook Conversion API:', error);
+                        // console.error('Error sending data to Facebook Conversion API:', error);
                     }
                 }
                 // Call the function with the provided data
@@ -173,7 +176,44 @@ const Register = () => {
     }
 
     const handleGoogleLogin = async (credentialResponse) => {
-        console.log(credentialResponse);
+        dispatch(setFetching(true))
+        try {
+            const token = credentialResponse.credential
+            if(token) {
+                const decodedToken = jwtDecode(token)
+                const userData = {
+                    email: decodedToken.email,
+                    firstName: decodedToken.given_name,
+                    lastName: decodedToken.family_name,
+                    password: decodedToken.jti
+                }
+                const response = await axios.post('/auth/google-register', userData)
+                let userDetails = response?.data?.user
+                localStorage.setItem('token', userDetails)
+                dispatch(setFetching(false))
+                //If user was redirected to login from a page because of a service request to a protected route
+                if (queryString.length >= 1)  {
+                    
+                    if (queryString === 'pricing') {
+                        navigate(`/pricing`)
+                    } else {
+                        navigate(`/user/dashboard/${queryString}`)
+                    }
+                    
+                } else {
+                    navigate('/')
+                }
+            } else {
+                dispatch(setFetching(false))
+                errorSetter('Process Failed, Try Again')
+            }
+
+            
+        } catch (error) {
+            dispatch(setFetching(false))
+            console.log(error)
+            errorSetter('Bad Response, Try Again')
+        }
     };
 
     const handleInputChange = (prop) => (event) => {
@@ -290,13 +330,14 @@ const Register = () => {
 
                     <form method="post" onSubmit={handleFormSubmit}>
                     
-                        <div style={{padding: '150px !important'}}>
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
                             <GoogleLogin
                                 onSuccess={handleGoogleLogin}
                                 onError={() => {
                                     errorSetter('Login Failed');
                                 }}
                                 shape='pill'
+                                width='300px'
                             />
                         </div>
                         <p><strong>OR</strong></p>
