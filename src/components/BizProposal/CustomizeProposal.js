@@ -1130,7 +1130,7 @@ const CustomizeProposal = () => {
                                             name="writerIndustry"
                                             id="writerIndustry"
                                             value={writerIndustry}
-                                            label="Your Industry e.g Engineering"
+                                            label="Your Industry e.g Manufacturing"
                                             inputGridSm={12}
                                             inputType="text"
                                             mb={2}

@@ -1504,7 +1504,7 @@ const CustomizeResume = () => {
                         id={info.jobDesc}
                         name="jobDesc"
                         value={info.jobDesc}
-                        placeholder="I will craft out 7 job descriptions after careful analysis of your provided work info. You can edit it in the Preview section."
+                        placeholder="I will craft out job descriptions with the right keywords after careful analysis. You can edit it in the Preview section."
                         multiline={true}
                         rows={2}
                         disabled={true}
@@ -1559,7 +1559,7 @@ const CustomizeResume = () => {
             <div id="skills" className={`Segment ${skillFaded ? "Faded" : "Faded-in"}`}>
               <h4>Relevant Skills</h4>
               <div className='explanation-points'>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem', marginBottom: "10px", justifyContent: "center"}} severity="info">Write a skill and i will suggest others in the preview section for you, or use the + button to add several skills and I will optimize them, also in the preview.</Alert>
+                <Alert sx={{padding: '0 5px', fontSize: '.7rem', marginBottom: "10px", justifyContent: "center"}} severity="info">Write a skill and i will suggest others in the preview section for you, or use the + button to add several skills and I will optimize them with the right keywords.</Alert>
               </div>
               <Grid container>
                 <Grid container item xs={9}>
@@ -1631,7 +1631,7 @@ const CustomizeResume = () => {
 
             {/* CERT AND AWARDS */}
             <div id="certs" className={`Segment ${certFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Professional Certifications & Awards [Optional]</h4>
+              <h4>Certifications, Awards & Accomplishments [Optional]</h4>
               <div>
                 <Grid
                   container
@@ -1726,7 +1726,7 @@ const CustomizeResume = () => {
 
             {/* PUBLICATIONS */}
             <div id="publications" className={`Segment ${pubFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Publications [Optional]</h4>
+              <h4>Publications & Projects [Optional]</h4>
               <div>
                 <Grid
                   container
@@ -1746,7 +1746,7 @@ const CustomizeResume = () => {
                           name="title"
                           id={info.title}
                           value={info.title}
-                          label="Publication Title"
+                          label="Title"
                           inputGridSm={12}
                           inputType="text"
                           mb={2}

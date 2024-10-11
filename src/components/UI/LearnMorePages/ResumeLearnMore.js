@@ -138,7 +138,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={4} mb={2}>
                         <div className={css.ShowOffCont}>
-                            <h2>Free Ai Resume Builder</h2>
+                            <h2>Ai Resume Builder</h2>
                             <div className={css.ShowOffBody}>
                                 <img className={css.ShowOffImg} src={resumeImg} alt="" />
                             </div>
@@ -325,7 +325,7 @@ const ResumeLearnMore = () => {
                     </Grid>
                     <Grid item xs={12} md={6} p={3}>
                         <h3>Download</h3>
-                        <p>After clicking the download button, a pop where you can scale the document margin, font and opt for direct print or save is displayed allowing for choice formating. But before that you can:</p>
+                        <p>On the download page you can:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -337,7 +337,7 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Per Week & Per Month subscribers get access to SAVE & REACCESS all resumes.</Grid>
+                                <Grid item xs={8}>Premium subscribers get access to SAVE & REACCESS all resumes.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -366,7 +366,7 @@ const ResumeLearnMore = () => {
                     )}
                     <Grid item xs={12} md={6} p={3}>
                         <h3>Automated Job Search</h3>
-                        <p>Review from the first stage is also used to automatically search jobs you are qualified for after CV download:</p>
+                        <p>Ai analysis is also used to automatically search JOBS THAT FIT YOU after CV download:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
@@ -374,11 +374,11 @@ const ResumeLearnMore = () => {
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Automatically Searches jobs around your chosen location (location set during CV customization). You stand more than a 90% chance of securing these jobs from Ai analysis.</Grid>
+                                <Grid item xs={8}>Automatically Searches jobs where you stand more than a 90% chance of being called, around your chosen location.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Review also used to auto-generate tailored Cover Letters for each job.</Grid>
+                                <Grid item xs={8}>One-click Cover Letter Generator for each job.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
