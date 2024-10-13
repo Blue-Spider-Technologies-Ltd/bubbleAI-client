@@ -873,7 +873,7 @@ const PreviewResume = () => {
 
                     </Grid>
                     <Grid item xs={12} md={8}>
-                      <h4>Publications [If any]</h4>
+                      <h4>Publications & Projects</h4>
                     </Grid>
                     {!isResumeSubbed && (
                       <Grid item md={2} xs={12} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: screenWidth < 900 && '10px'}}>

@@ -3,16 +3,22 @@ import refundImg from '../images/refund-stamp.png';
 export const reviewDetails = [ 
     { 
         img: refundImg, 
+        name: 'Olanrewaju', 
+        review: "I had been unemployed for a while, and I was starting to lose hope. Bubble AI gave me a new lease on life. They helped me identify my strengths and find jobs that aligned with my career goals. I'm now working in a fulfilling role.", 
+        rating: 5 
+    }, 
+    { 
+        img: refundImg, 
         name: 'Chijioke', 
         review: 'It helped me create a professional resume in just a few minutes. Highly recommended.', 
         rating: 5 
     }, 
-    // { 
-    //     img: refundImg, 
-    //     name: 'Sarah', 
-    //     review: 'I used the AI Resume generator for my team meetings and it saved me a lot of time. The generated resume gave me the right skills, they were accurate as magic.', 
-    //     rating: 4 
-    // }, 
+    { 
+        img: refundImg, 
+        name: 'Oluwatoyin', 
+        review: "I was struggling to find a job that aligned with my skills and passions. Bubble AI changed everything. They created a resume that perfectly showcased my abilities, and within weeks, I had multiple interview offers. I'm now working in my dream role!", 
+        rating: 5 
+    }, 
     { 
         img: refundImg, 
         name: 'Temi', 
@@ -22,7 +28,7 @@ export const reviewDetails = [
     { 
         img: refundImg, 
         name: 'Emily', 
-        review: "The AI resume creator is a lifesaver! It made the daunting task of creating a resume so much easier. The templates provided were modern and eye-catching. I would definitely recommend it to anyone in need of a professional resume.", 
+        review: "The AI resume creator is a lifesaver! It made the daunting task of creating a resume so much easier. The templates provided were professional. I would definitely recommend it to anyone in need of a professional resume.", 
         rating: 5 
     }, 
     { 
@@ -49,30 +55,24 @@ export const reviewDetails = [
         review: "It is good because you can really get job in days or few weeks depending on your drive.", 
         rating: 4 
     }, 
-    // { 
-    //     img: refundImg, 
-    //     name: 'David Wilson', 
-    //     review: "The AI business plan creator is a must-have for startups. It provides a structured approach to creating a business plan and offers valuable insights. The templates are professional and customizable. I would rate it 5 out of 5.", 
-    //     rating: 5 
-    // }, 
+    { 
+        img: refundImg, 
+        name: 'Ifeoma', 
+        review: "I was struggling to stand out in a competitive job market. Bubble AI helped me create a resume that was truly unique. I landed multiple interviews and ultimately accepted a job offer with a great company. I highly recommend Bubble AI to anyone looking for a job.", 
+        rating: 5 
+    }, 
     { 
         img: refundImg, 
         name: 'Aisha', 
         review: "Wow, it gave me a CV with wonderful job descriptions and metrics that i could edit to fit my specific case. cover letter was tailored to my needs too. Nice project.", 
         rating: 5 
     }, 
-    // { 
-    //     img: refundImg, 
-    //     name: 'Mark Johnson', 
-    //     review: "The AI meeting minutes generator is a valuable tool for our team. It saves us a lot of time and ensures that all the important points are captured accurately. I would rate it 4 out of 5.", 
-    //     rating: 4 
-    // }, 
-    // { 
-    //     img: refundImg, 
-    //     name: 'Emma Davis', 
-    //     review: "The AI business plan creator is a game-changer for entrepreneurs. It provides a step-by-step guide and offers valuable suggestions. The templates are professional and customizable. I would highly recommend it. Rating: 5 out of 5.", 
-    //     rating: 5 
-    // }, 
+    { 
+        img: refundImg, 
+        name: 'Chijindu', 
+        review: "I had been applying for jobs for months with no luck. Bubble AI's targeted job matching was a game-changer. They connected me with opportunities I wouldn't have found on my own. I landed a great job in a field I'm passionate about.", 
+        rating: 4.5 
+    }, 
     { 
         img: refundImg, 
         name: 'Jay', 

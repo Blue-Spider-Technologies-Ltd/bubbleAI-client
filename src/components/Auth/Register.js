@@ -283,8 +283,9 @@ const Register = () => {
                     <h2>Get a Bubble</h2>
                     <div className="error">{error}</div>
                     <div className="description-box">
-                        <p>Join thousands of successful job seekers who have transformed their careers with Bubble Ai's powerful <strong>resume</strong>, <strong>cover letters</strong> and <strong>job application tools in minutes</strong>. Our Users see real results with over 75% of them being called for an interview in the first week!</p>
-                        <p><strong>REGISTER NOW</strong> to benefit from our 200 available discount coupons, get the perfect resume and apply to fitted high-paying jobs in choice locations in a matter of minutes.</p>
+                        <p>Career coaches and resume writers often try to fake-fit you to limited available jobs they know about. Bubble Ai, on the other hand analyzes your history to finds JOBS THAT FIT YOU, giving you over a 90% chance due to its authentic approach. 
+                        Transform your career in minutes with Bubble Ai's powerful <strong>CV</strong>, <strong>cover letters</strong> and <strong>job tools</strong>. Users see real results with over 90% of them being called for an interview in the first Month!</p>
+                        <p><strong>REGISTER NOW</strong> to benefit from our Independence giveaway, get the perfect resume and apply to fitted high-paying jobs in choice locations specially curated for you.</p>
                     </div>
 
                     <div style={{width: '100%', textAlign: 'center'}}>
@@ -293,7 +294,7 @@ const Register = () => {
                                 {/* <img src={refundImg} alt='Refund Guaranteed' style={{width: '60px', borderRadius: '50%'}} /> */}
 
                                 <div style={{marginTop: screenWidth > 900 ? "20px" : "-10px"}}>
-                                    <h5>A better life</h5>
+                                    <h5 style={{fontSize: '.8rem'}}>A better life</h5>
                                     <h2>GUARANTEED</h2>
                                     <a 
                                         href='/how-i-work' 
@@ -308,7 +309,7 @@ const Register = () => {
                                 <div className='Segment'>
                                     <Carousel
                                         autoPlay={true}
-                                        autoPlaySpeed={6000}
+                                        autoPlaySpeed={10000}
                                         arrows={false}
                                         responsive={responsive}
                                         swipeable={true}

@@ -967,6 +967,8 @@ const CustomizeProposal = () => {
                                 handleDeleteProject={handleDeleteProject}
                                 handleAddProject={handleAddProject}
                                 projectPhaseForwardOrBackward={projectPhaseForwardOrBackward}
+                                otherDeets={otherDeets}
+                                handleOtherDeetsChange={handleOtherDeetsChange}
                             />
                 break;
             case "partnership":
@@ -1365,7 +1367,7 @@ const CustomizeProposal = () => {
 
                         {/* PROJECT TITLE */}
                         <div id="project-title" className={`Segment ${proposalTitleFaded ? "Faded" : "Faded-in"}`}>
-                            <h4>Proposal Title</h4>
+                            <h4>Basic Details</h4>
 
                             <div>
                                 <Grid
@@ -1377,12 +1379,25 @@ const CustomizeProposal = () => {
                                         name="proposalTitle"
                                         id={proposalTitle}
                                         value={proposalTitle}
-                                        label={``}
+                                        label={`Proposal Title`}
                                         inputGridSm={12}
                                         inputType="text"
                                         mb={2}
                                         required={true}
                                         onChange={handleProposalTitleChange}
+                                    />
+                                    <AuthInput
+                                        name="objInput"
+                                        value={objInput}
+                                        placeholder="Enter brief description"
+                                        multiline={true}
+                                        inputGridSm={12}
+                                        mb={2}
+                                        rows={4}
+                                        maxRows={6}
+                                        required={true}
+                                        onChange={(e) => handleObjInputChange(e)}
+                                        onKeyDown={(e) => handleObjInputChange(e)}
                                     />
                                 </Grid>
 

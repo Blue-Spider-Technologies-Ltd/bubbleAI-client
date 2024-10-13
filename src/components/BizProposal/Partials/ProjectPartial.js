@@ -26,6 +26,8 @@ const ProjectPartial = ({
     handleDeleteProject,
     handleAddProject,
     projectPhaseForwardOrBackward,
+    otherDeets,
+    handleOtherDeetsChange
 }) => {
 
     return (
@@ -216,7 +218,7 @@ const ProjectPartial = ({
             {/* CUSTOMERS/PARTNERS */}
             <div id="obj" className={`Segment ${customersFaded ? "Faded" : "Faded-in"}`}>
             
-                <h4>Customers/Partners</h4>
+                <h4>Previous Projects/Partners</h4>
                 <Alert 
                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                     severity="info"
@@ -285,15 +287,67 @@ const ProjectPartial = ({
             {/* OTHER DETAILS */}
             <div id="addy" className={`Segment ${otherDeetsFaded ? "Faded" : "Faded-in"}`}>
                 <h4>Other Details</h4>
-                <Alert 
+                {/* <Alert 
                     sx={{padding: '0 5px', display: 'flex', justifyContent: "center", fontSize: '.8rem', width: '300px', margin: "5px auto"}} 
                     severity="info"
                 >
                     What need does your project solve?
-                </Alert>
-                <div>
+                </Alert> */}
+                <Grid
+                    container
+                    sx={{ display: "flex", justifyContent: "space-around" }}
+                    mt={3}
+                >  
+                    <AuthInput
+                        name={otherDeets?.teamSize}
+                        id={otherDeets?.teamSize}
+                        value={otherDeets?.teamSize}
+                        label="Team Size"
+                        inputGridSm={12}
+                        inputGrid={6}
+                        inputType="number"
+                        mb={2}
+                        onChange={handleOtherDeetsChange("teamSize")}
+                    />
+                    <AuthInput
+                        name={otherDeets?.yearsInBiz}
+                        id={otherDeets?.yearsInBiz}
+                        value={otherDeets?.yearsInBiz}
+                        label="Cummulative Years of Experience"
+                        inputGridSm={12}
+                        inputGrid={6}
+                        inputType="number"
+                        mb={2}
+                        onChange={handleOtherDeetsChange("yearsInBiz")}
+                    />
+                    <AuthInput
+                        name={otherDeets?.missionVisionCore}
+                        id={otherDeets?.missionVisionCore}
+                        value={otherDeets?.missionVisionCore}
+                        label="[If available] Mission: Vision: Core Values: "
+                        placeholder="[If available] Mission: Vision: Core Values: "
+                        multiline={true}
+                        inputGridSm={12}
+                        mt={2}
+                        rows={4}
+                        maxRows={6}
+                        onChange={handleOtherDeetsChange("missionVisionCore")}
+                    />
+                    <AuthInput
+                        name={otherDeets?.awardRecog}
+                        id={otherDeets?.awardRecog}
+                        value={otherDeets?.awardRecog}
+                        label="[If available] Awards: Recognitions: "
+                        placeholder="[If available] Awards: Recognitions: "
+                        multiline={true}
+                        inputGridSm={12}
+                        mt={2}
+                        rows={4}
+                        maxRows={6}
+                        onChange={handleOtherDeetsChange("missionVisionCore")}
+                    />
 
-                </div>
+                </Grid>
 
                 {/* Visibility Buttons */}
                 <div
