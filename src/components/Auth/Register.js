@@ -17,7 +17,7 @@ import { setEmail, setError, setFetching } from "../../redux/states";
 import { errorAnimation, fetchIp } from "../../utils/client-functions";
 import Carousel from "react-multi-carousel";
 import { reviewDetails } from '../../utils/reviews';
-import HelpIcon from "../UI/HelpIcon/HelpIcon";
+import ChatwootWidget from "../../utils/chatwoot";
 import SHA256 from 'crypto-js/sha256';
 import CryptoJS from 'crypto-js';
 import { init, track } from 'fbq';
@@ -283,8 +283,8 @@ const Register = () => {
                     <h2>Get a Bubble</h2>
                     <div className="error">{error}</div>
                     <div className="description-box">
-                        <p>Career coaches and resume writers often try to fake-fit you to limited available jobs they know about. Bubble Ai, on the other hand analyzes your history to finds JOBS THAT FIT YOU, giving you over a 90% chance due to its authentic approach. 
-                        Transform your career in minutes with Bubble Ai's powerful <strong>CV</strong>, <strong>cover letters</strong> and <strong>job tools</strong>. Users see real results with over 90% of them being called for an interview in the first Month!</p>
+                        <p>Career coaches and CV writers often try to fake-fit you to limited available jobs they know about. Bubble Ai, on the other hand analyzes your history to finds JOBS THAT FIT YOU, giving you over a 90% chance due to its authentic approach. 
+                        Transform your career in minutes with Bubble Ai's powerful <strong>CV</strong>, <strong>cover letters</strong> and <strong>job tools</strong>. </p>
                         <p><strong>REGISTER NOW</strong> to benefit from our Independence giveaway, get the perfect resume and apply to fitted high-paying jobs in choice locations specially curated for you.</p>
                     </div>
 
@@ -422,7 +422,7 @@ const Register = () => {
                     {/* <ButtonTransparent onClick={handleGoogleLogin}><span style={{ color: "#333333" }}><Apple /></span><span>et with Apple</span></ButtonTransparent> */}
                 </div>
             </div>
-            <HelpIcon />
+            <ChatwootWidget />
         </div>        
     )
 }
