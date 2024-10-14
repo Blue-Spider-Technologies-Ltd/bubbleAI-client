@@ -1389,7 +1389,7 @@ const CustomizeProposal = () => {
                                     <AuthInput
                                         name="objInput"
                                         value={objInput}
-                                        placeholder="Enter brief description"
+                                        placeholder="Enter brief description: [Why is it being undertaken? Describe an opportunity or problem that it is to address]."
                                         multiline={true}
                                         inputGridSm={12}
                                         mb={2}
