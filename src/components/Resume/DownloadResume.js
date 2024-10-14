@@ -539,7 +539,6 @@ const DownloadResume = () => {
                 />
             )}
                             
-            
             <ChatwootWidget />
         </div>
     )
