@@ -1,4 +1,5 @@
 .ContainerOpen {
+    box-sizing: border-box;
     position: fixed;
     top: 0;
     background-color: white;
@@ -20,8 +21,9 @@
 
 .ContainerClose {
     position: absolute;
-    left: -110vw;
-    top: -160vh;
+    width: 350px;
+    left: -350px;
+    height: 100vh;
 }
 
 .InnerContainer {
