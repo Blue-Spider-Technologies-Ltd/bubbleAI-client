@@ -1055,7 +1055,7 @@ const CustomizeResume = () => {
                   id={additionalInfo}
                   name="additionalInfo"
                   value={additionalInfo}
-                  placeholder="[Optional] Tell me what to specifically add or remove or you can paste job requirements. E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024 OR Delete work history with Blanket Designs OR The job requirements are... "
+                  placeholder="[Optional] Tell me what to specifically add or remove or you can paste job requirements. E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024 OR Delete work history with Blanket Designs OR [Paste job description here] "
                   multiline={true}
                   rows={3}
                   inputGridSm={12}

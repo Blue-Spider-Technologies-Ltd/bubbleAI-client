@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import bubbleBgAuthImg from '../../../images/bubblebg-auth.png';
 import logoImg from "../../../images/bubble-logo.png";
+import secureImg from "../../../images/secure.png";
 import { Rings, Watch } from 'react-loader-spinner';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -572,7 +573,11 @@ export const CheckoutSummaryModal = () => {
                 product: pricingDetails.product,
                 duration: pricingDetails.duration
             } 
-            const response = await axios.post("/pricing/check-coupon", data);
+            const response = await axios.post("/pricing/check-coupon", data, {
+                headers: {
+                  "x-access-token": localStorage?.getItem('token'),
+                },
+            });
             // const 
             if(response.status !== 200) {
                 setLoading(false) 
@@ -601,7 +606,11 @@ export const CheckoutSummaryModal = () => {
                     <img src={logoImg} alt='Bubble Ai' style={{width: '100%'}} />
                 </div>
 
-                <h2>Checkout</h2>
+                <h2>Secure Checkout</h2>
+
+                <div style={{width: '100%', display: 'flex', justifyContent: 'center', borderRadius: '5px', overflow: 'hidden'}}>
+                    <img src={secureImg} alt='Bubble Ai' style={{width: '60%', height: '60px'}} />
+                </div>
 
                 <div className="error">{error}</div>
                 <div className="success-mini">{successMini}</div>
