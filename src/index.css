@@ -298,6 +298,10 @@ h5 {
   -moz-box-shadow: -1px 1px 44px -3px rgba(0, 0, 0, 0.16);
 }
 
+.Segment h5 {
+  font-size: .9rem !important;
+}
+
 .Faded {
   opacity: 0;
   height: 0;
@@ -347,6 +351,7 @@ h5 {
 
 .align-right-bold {
   font-weight: 600;
+  margin-top: 3px;
 }
 
 .detached-label {

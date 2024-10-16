@@ -97,6 +97,7 @@
 }
 
 .ButtonSubmitGreen:before {
+    border-radius: 50px !important;
     content: "";
     position: absolute;
     left: 0;
