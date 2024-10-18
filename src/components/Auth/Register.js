@@ -310,6 +310,7 @@ const Register = () => {
                                     <Carousel
                                         autoPlay={true}
                                         autoPlaySpeed={10000}
+                                        transitionDuration={1000}
                                         arrows={false}
                                         responsive={responsive}
                                         swipeable={true}

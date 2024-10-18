@@ -85,7 +85,7 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: false,
-                text: 'Choice Location Job Search Automation'
+                text: 'Job Connections'
             },
             recommendation: {
                 available: true,
@@ -134,7 +134,7 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: true,
-                text: 'Choice Location Job Search Automation'
+                text: 'Job Connections'
             },
             recommendation: {
                 available: true,
@@ -183,7 +183,7 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: true,
-                text: 'Choice Location Job Search Automation'
+                text: 'Job Connections'
             },
             recommendation: {
                 available: true,

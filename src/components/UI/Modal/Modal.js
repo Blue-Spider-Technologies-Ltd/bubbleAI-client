@@ -281,7 +281,7 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
     if (!Array.isArray(aiSuggestedJobs) || aiSuggestedJobs.length === 0) {
       return (
         <div>
-            <h4>Your Resume has an over 90% chance of securing our Ai Curated Jobs in your chosen location.</h4>
+            <h4>Your Job Connections (Offering over 90% Chance of success)</h4>
             <div style={styles.container}>
                 <div style={{ padding: "10px", color: "gray", fontSize: ".7rem" }}>
                     <JobMessage />
@@ -467,6 +467,7 @@ export const CheckoutSummaryModal = () => {
     const [loading, setLoading] = useState(false)
     const [discount, setDiscount] = useState(0)
     const [couponCode, setCouponCode] = useState("")
+    const [isCouponApplied, setIsCouponApplied] = useState(false)
     const formattedDiscount = discount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const formattedPrice = pricingDetails.price?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const vat = pricingDetails.price * 0.075;
@@ -565,6 +566,9 @@ export const CheckoutSummaryModal = () => {
         if (!couponCode) {
             return errorSetter("Input your Discount Code")
         }
+        if (isCouponApplied) {
+            return errorSetter("Discount already applied")
+        }
 
         try {
             setLoading(true) 
@@ -589,6 +593,7 @@ export const CheckoutSummaryModal = () => {
             setDiscount(newDiscount)
             setLoading(false) 
             successSetter(`Congrats! ${response?.data?.discountPercent}% discount on product applied`)
+            setIsCouponApplied(true)
 
 
         } catch (error) {
@@ -752,7 +757,8 @@ export const CheckoutSummaryModal = () => {
                                 <div className='Segment'>
                                     <Carousel
                                         autoPlay={true}
-                                        autoPlaySpeed={3000}
+                                        autoPlaySpeed={10000}
+                                        transitionDuration={1000}
                                         arrows={false}
                                         responsive={responsive}
                                         swipeable={true}

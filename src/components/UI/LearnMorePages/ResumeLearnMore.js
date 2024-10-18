@@ -456,14 +456,14 @@ const ResumeLearnMore = () => {
                     infinite={true}
                     keyBoardControl={true}
                     customTransition="all .5 ease-out"
-                    transitionDuration={500}
+                    transitionDuration={1000}
                     containerClass="carousel-container"
-                    autoPlaySpeed={4000}
+                    autoPlaySpeed={10000}
                     dotListClass="custom-dot-list-style"
                     itemClass="carousel-item-padding-40-px"
                     autoPlay={true}
                     centerMode={ screenWidth > 900 ? false : true}
-                    focusOnSelect={screenWidth < 900}
+                    focusOnSelect={true}
                 >
                     {reviewDetails?.map((detail, index) => {
                         return (
