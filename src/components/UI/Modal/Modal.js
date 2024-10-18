@@ -293,7 +293,7 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
 
     return (
       <div>
-        <h4>Your Resume has an over 90% chance of securing our Ai Curated Jobs in your chosen location.</h4>
+        <h4>Your Job Connections (Offering over 90% Chance of success)</h4>
         <div style={styles.container}>
           {aiSuggestedJobs.map((job, index) => (
             <div key={index}>
