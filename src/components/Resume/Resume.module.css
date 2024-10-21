@@ -64,24 +64,20 @@
     border: 5px solid var(--navColor2);
 }
 
-@media (min-width: 768px) {
+
+@media (max-width: 800px) {
     .ResponsivePrintView {
         width: 120%;
-        margin: 10px auto;
+        box-shadow: outset;
+        overflow-x: scroll;
         position: relative;
-    }
-}
-
-
-@media (min-width: 800px) {
-    .ResponsivePrintView {
-        width: 800px !important;
-        position: relative;
+        height: auto;
     }
 }
 
 .ResponsivePrintView {
     background-color: white;
+    width: 800px;
     box-shadow: outset;
     height: auto;
     margin: 20px auto;
