@@ -51,7 +51,7 @@ const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
 const styles = StyleSheet.create({
     viewerContainer: {
         width: '100%',
-        height: 700
+        height: 900
     },
     StandardContainer: {
         display: "block",
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
         lineHeight: 1.2,
         fontSize: 20,
         fontWeight: '900',
+        paddingTop: 50
     },
 });
 
@@ -226,7 +227,7 @@ const DownloadResume = () => {
             case "Sinking Duck":
                 template  = (<Document>
                                 <Page style={styles.StandardContainer}>
-                                    <Text style={{textAlign: "center"}}>Template coming soon</Text>
+                                    <Text style={{textAlign: "left"}}>Template coming soon</Text>
                                 </Page>
                             </Document>)
                 break;
@@ -234,7 +235,7 @@ const DownloadResume = () => {
             default:
                 template  = (<Document>
                                 <Page style={styles.StandardContainer}>
-                                    <Text style={{textAlign: "center"}}>Pick a template to display here</Text>
+                                    <Text style={{textAlign: "left"}}>Pick a template to display here</Text>
                                 </Page>
                             </Document>)
                 break;
@@ -517,7 +518,7 @@ const DownloadResume = () => {
 
                                 <ProtectedContent>
                                     <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
-                                        <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: '#323639', zIndex: 20}}>
+                                        <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 800 ? '#323639' : 'white', zIndex: 20}}>
 
                                         </div>
                                         <PDFViewer style={styles.viewerContainer} >
