@@ -11,22 +11,22 @@ const carouselData = [
         title: "Euro Pass",
         image: euroPassImg
     },
-    // {
-    //     title: "Auckland",
-    //     image: comingSoonImg
-    // },
-    // {
-    //     title: "Flying Fish",
-    //     image: comingSoonImg
-    // },
-    // {
-    //     title: "Water Train",
-    //     image: comingSoonImg
-    // },
-    // {
-    //     title: "Sinking Duck",
-    //     image: comingSoonImg
-    // }
+    {
+        title: "Auckland",
+        image: comingSoonImg
+    },
+    {
+        title: "Flying Fish",
+        image: comingSoonImg
+    },
+    {
+        title: "Water Train",
+        image: comingSoonImg
+    },
+    {
+        title: "Sinking Duck",
+        image: comingSoonImg
+    }
 ];
 
 export default carouselData

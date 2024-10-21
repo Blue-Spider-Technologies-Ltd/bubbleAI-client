@@ -6,7 +6,7 @@ import axios from 'axios';
 import { setError, setFetching, setSuccessMini, setResume } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
 import Alert from '@mui/material/Alert';
-import { pdf, PDFViewer, StyleSheet, Text } from '@react-pdf/renderer';
+import { pdf, PDFViewer, StyleSheet, Text, Document, Page } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import ProtectedContent from "../UI/ProtectedContent/ProtectedContent ";
 import { useConfirm } from "material-ui-confirm";
@@ -52,7 +52,14 @@ const styles = StyleSheet.create({
     viewerContainer: {
         width: '100%',
         height: 700
-    }
+    },
+    StandardContainer: {
+        display: "block",
+        padding: 20,
+        lineHeight: 1.2,
+        fontSize: 20,
+        fontWeight: '900',
+    },
 });
 
 
@@ -217,11 +224,19 @@ const DownloadResume = () => {
             case "Flying Fish":
             case "Water Train":
             case "Sinking Duck":
-                template  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
+                template  = (<Document>
+                                <Page style={styles.StandardContainer}>
+                                    <Text style={{textAlign: "center"}}>Template coming soon</Text>
+                                </Page>
+                            </Document>)
                 break;
         
             default:
-                template  = <Text style={{textAlign: "center"}}>Pick a template to display here</Text>
+                template  = (<Document>
+                                <Page style={styles.StandardContainer}>
+                                    <Text style={{textAlign: "center"}}>Pick a template to display here</Text>
+                                </Page>
+                            </Document>)
                 break;
         }
 
@@ -308,15 +323,15 @@ const DownloadResume = () => {
                 break;
             case "Auckland":
                 setStorageDetails({ ...storageDetails, template: "Auckland" });
-                canPrintFlag = true;
+                canPrintFlag = false;
                 break;
             case "Flying Fish":
                 setStorageDetails({ ...storageDetails, template: "Flying Fish" });
-                canPrintFlag = true;
+                canPrintFlag = false;
                 break;
             case "Water Train":
                 setStorageDetails({ ...storageDetails, template: "Water Train" });
-                canPrintFlag = true;
+                canPrintFlag = false;
                 break;
             default:
                 canPrintFlag = false;
@@ -340,8 +355,10 @@ const DownloadResume = () => {
             }
         })
         .then(response => {
-            setImgUrl(response.data.url)
-            setStorageDetails({ ...storageDetails, imgUrl: response.data.url });
+            const imageUrl = response.data.url
+            const secureImageUrl = imageUrl.slice(0, 4) + 's' + imageUrl.slice(4);
+            setImgUrl(secureImageUrl)
+            setStorageDetails({ ...storageDetails, imgUrl: secureImageUrl });
             setFetching(false)
             successSetter(`Image uploaded successfully!`);
             return
