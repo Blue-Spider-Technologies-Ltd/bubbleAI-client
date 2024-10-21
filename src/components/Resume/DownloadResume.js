@@ -51,7 +51,7 @@ const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
 const styles = StyleSheet.create({
     viewerContainer: {
         width: '100%',
-        height: 900
+        height: 1200
     },
     StandardContainer: {
         display: "block",
@@ -104,6 +104,19 @@ const DownloadResume = () => {
         dispatch(setSuccessMini(string))
         successMiniAnimation()
     }
+
+    useEffect(() => {
+        const handleContextMenu = (event) => {
+            event.preventDefault(); // Prevent the default right-click context menu
+        };
+
+        document.addEventListener('contextmenu', handleContextMenu);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            document.removeEventListener('contextmenu', handleContextMenu);
+        };
+    }, []);
 
     useEffect(() => {
         const checkIfAuthUser = async () => {
@@ -423,6 +436,10 @@ const DownloadResume = () => {
             });
     }
 
+    const handleContextMenu = (event) => {
+        event.preventDefault(); // Prevent the default right-click context menu
+    };
+
     return (
         <div className="auth-container">
             {/* For SIDE MENU */}
@@ -447,7 +464,7 @@ const DownloadResume = () => {
                         <div className='error'>{error}</div>
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE DETECTED: Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. If you do not, you will lose your download and Bubble Ai will not be liable.</Alert>}
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE DETECTED: Enable browser pop-ups to allow CV download. Go to Phone settings ⚙️; Search pop-up and allow it. If you do not, you will lose your download and Bubble Ai will not be liable.</Alert>}
                             <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible</Alert>
                         </div>
                         <div className="Segment">
@@ -515,17 +532,39 @@ const DownloadResume = () => {
 
                         <div className="Segment">
                             <h4>View and Download</h4>
+                            <Alert 
+                                sx={{ 
+                                    width: '100%',  
+                                    padding: '0 5px', 
+                                    display: 'flex', 
+                                    justifyContent: 'center', 
+                                    fontSize: '.7rem'
+                                }} 
+                                severity="info"
+                            >
+                                <div>Only first page is displayed. Download for complete view</div>
+                            </Alert>
 
-                                <ProtectedContent>
-                                    <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
-                                        <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 800 ? '#323639' : 'white', zIndex: 20}}>
-
-                                        </div>
-                                        <PDFViewer style={styles.viewerContainer} >
-                                            {selectTemplate()}
-                                        </PDFViewer>
+                            <ProtectedContent>
+                                <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
+                                    <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 700 ? '#323639' : 'white', zIndex: 20}}>
                                     </div>
-                                </ProtectedContent>
+                                    <PDFViewer style={styles.viewerContainer} >
+                                        {selectTemplate()}
+                                    </PDFViewer>
+                                    <div 
+                                        onContextMenu={handleContextMenu} 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: 0, 
+                                            left: 0, 
+                                            right: 0, 
+                                            bottom: 0, 
+                                            zIndex: 1 
+                                        }} 
+                                    />
+                                </div>
+                            </ProtectedContent>
                             
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "250px" }}>
