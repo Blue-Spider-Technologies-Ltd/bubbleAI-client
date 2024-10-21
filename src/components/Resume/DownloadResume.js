@@ -514,10 +514,13 @@ const DownloadResume = () => {
 
                         <div className="Segment">
                             <h4>View and Download</h4>
-                            
+
                                 <ProtectedContent>
                                     <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
-                                        <PDFViewer style={styles.viewerContainer}>
+                                        <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: '#323639', zIndex: 20}}>
+
+                                        </div>
+                                        <PDFViewer style={styles.viewerContainer} >
                                             {selectTemplate()}
                                         </PDFViewer>
                                     </div>
