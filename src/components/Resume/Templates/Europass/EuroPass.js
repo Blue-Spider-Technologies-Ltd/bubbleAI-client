@@ -210,7 +210,7 @@ const EuroPass = ({resume, imgUrl}) => (
                                         <Text style={styles.company}>
                                             {capitalizeAllLetters(workInfo?.company)}
                                         </Text>
-                                        {workInfo.workLink && <Text style={styles.link} href={workInfo.workLink}>({workInfo.workLink})</Text>} 
+                                        {workInfo.workLink && <Text style={styles.link} href={workInfo.workLink}> ({workInfo.workLink})</Text>} 
 
                                         <View style={styles.jobDescGroup}>
                                             {workInfo.jobDesc.split(";").map((item, index) => (

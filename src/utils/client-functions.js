@@ -306,3 +306,33 @@ export const capitalizeWords = (sentence) => {
 export const capitalizeAllLetters = (str) => {
     return str.replace(/[a-zA-Z]/g, (char) => char.toUpperCase());
 }
+
+const toBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
+};
+
+export const fetchImageAndConvert = async (imageUrl) => {
+    try {
+        // Fetch the image as a Blob
+        const response = await fetch(imageUrl);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const originalBlob = await response.blob();
+        
+        // Create a new Blob with the desired MIME type (image/png)
+        const newBlob = new Blob([originalBlob], { type: 'image/png' });
+        
+        // Now you can use the newBlob as needed
+        const base64String = await toBase64(newBlob);
+        return base64String;
+
+    } catch (error) {
+        console.error('Error fetching or converting image:', error);
+    }
+};
+

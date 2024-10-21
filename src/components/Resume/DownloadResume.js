@@ -6,7 +6,7 @@ import axios from 'axios';
 import { setError, setFetching, setSuccessMini, setResume } from "../../redux/states";
 import { checkAuthenticatedUser } from '../../utils/client-functions';
 import Alert from '@mui/material/Alert';
-import { pdf } from '@react-pdf/renderer';
+import { pdf, PDFViewer, StyleSheet, Text } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import ProtectedContent from "../UI/ProtectedContent/ProtectedContent ";
 import { useConfirm } from "material-ui-confirm";
@@ -47,6 +47,13 @@ const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
         </div>
     );
 };
+
+const styles = StyleSheet.create({
+    viewerContainer: {
+        width: '100%',
+        height: 700
+    }
+});
 
 
 const DownloadResume = () => {
@@ -214,7 +221,7 @@ const DownloadResume = () => {
                 break;
         
             default:
-                template  = <h5 style={{textAlign: "center"}}>Pick a template to display here</h5>
+                template  = <Text style={{textAlign: "center"}}>Pick a template to display here</Text>
                 break;
         }
 
@@ -493,7 +500,9 @@ const DownloadResume = () => {
                             
                                 <ProtectedContent>
                                     <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
-                                        {selectTemplate()}
+                                        <PDFViewer style={styles.viewerContainer}>
+                                            {selectTemplate()}
+                                        </PDFViewer>
                                     </div>
                                 </ProtectedContent>
                             

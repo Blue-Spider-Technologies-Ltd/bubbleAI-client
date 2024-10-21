@@ -166,11 +166,13 @@ const StandardPDF = ({resume}) => (
                             <Text style={styles.sectionHeader}>Skills & Expertise</Text>
                             <View style={styles.SkillContainer}>
                                 {resume.skills.map((skill, index) => (
-                                    <Text key={index} style={styles.SkillItems}><Image style={styles.icon} src={psychIcon} />{skill}</Text>
+                                    <Text key={index} style={styles.SkillItems}><Image style={styles.icon} src={psychIcon} /> {skill}</Text>
                                 ))}
                             </View>
                         </View>
                     )}
+
+
                     {resume?.workExpArray && (
                         <View>
                             <Text style={styles.sectionHeader}>Relevant Experience</Text>
@@ -179,7 +181,7 @@ const StandardPDF = ({resume}) => (
                                     <View style={styles.FlexContainer}>
                                         <Text style={styles.workInfo}>
                                             <Text>{capitalizeWords(workInfo.position)} - {capitalizeAllLetters(workInfo?.company)} 
-                                                {workInfo.workLink && <Text style={styles.link} href={workInfo.workLink}>({workInfo.workLink})</Text>} 
+                                                {workInfo.workLink && <Text style={styles.link} href={workInfo.workLink}> ({workInfo.workLink})</Text>} 
                                             </Text>
                                         </Text>
                                         <Text style={styles.date}>
@@ -199,6 +201,8 @@ const StandardPDF = ({resume}) => (
                             ))}
                         </View>
                     )}
+
+
                     {resume?.eduArray && (
                         <View>
                             <Text style={styles.sectionHeader}>Education</Text>
@@ -213,6 +217,8 @@ const StandardPDF = ({resume}) => (
                             ))}
                         </View>
                     )}
+
+
                     {resume?.awardArray && (
                         <View>
                             {resume.awardArray.length > 0 && (
@@ -231,6 +237,8 @@ const StandardPDF = ({resume}) => (
                             )}
                         </View>
                     )}
+
+
                     {resume?.publications && (
                         <View>
                             {resume.publications.length > 0 && (
@@ -248,6 +256,8 @@ const StandardPDF = ({resume}) => (
                             )}
                         </View>
                     )}
+
+
                     {resume?.interests && (
                         <View>
                             {resume.interests.length > 0 && (
@@ -262,6 +272,8 @@ const StandardPDF = ({resume}) => (
                             )}
                         </View>
                     )}
+
+                    
                 </View>
             </View>
         </Page>

@@ -999,7 +999,7 @@ const CustomizeResume = () => {
 
             {/* DRAG N DROP TO REWRITE RESUME */}
             <div className={`Segment ${basicFaded ? 'Faded' : 'Faded-in'}`}>
-              <h4>Have an old CV? Upload to Optimize</h4>
+              <h4>Optimize an old CV</h4>
 
               {renderDragAndDrop()}
 
@@ -1101,7 +1101,7 @@ const CustomizeResume = () => {
             
             {/* BASIC INFO */}
             <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Answer short profile to Generate CV</h4>
+              <h4>Generate CV from scratch</h4>
               <Grid container>
                 <AuthInput
                   id={basicInfo.firstName}
