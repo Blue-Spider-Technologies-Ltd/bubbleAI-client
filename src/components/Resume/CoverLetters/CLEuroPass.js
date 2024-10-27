@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
 
 
 
-const EuroPass = ({resume, letter, imgUrl}) => (
+const CLEuroPass = ({resume, letter, imgUrl}) => (
     <Document>
         <Page size="A4" style={styles.StandardContainer}>
             <View>
@@ -197,4 +197,4 @@ const EuroPass = ({resume, letter, imgUrl}) => (
     </Document>
 );
 
-export default EuroPass;
+export default CLEuroPass;

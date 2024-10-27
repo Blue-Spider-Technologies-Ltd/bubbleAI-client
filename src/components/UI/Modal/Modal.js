@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { setShowCheckout } from "../../../redux/states"
 import AuthInput from '../Input/AuthInputs';
-import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/Buttons';
+import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle, ButtonThin } from '../Buttons/Buttons';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -171,8 +171,6 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
         const companyName = job?.company_name
         const jobDesc = job?.description
         const jobPosition = job?.title
-        console.log(job?.external_url);
-        console.log(job?.description);
         
         
         if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
@@ -196,7 +194,6 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
                     "x-access-token": isAuth,
                 },
             });
-            console.log(response.data);
 
             localStorage.setItem("template", template)            
             localStorage.setItem("resume", JSON.stringify(resume))            
@@ -293,7 +290,7 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
 
     return (
       <div>
-        <h4>Your Job Connections (Offering over 90% Chance of success)</h4>
+        <h4>Your Job Connections (Offering over 90% chance of success)</h4>
         <div style={styles.container}>
           {aiSuggestedJobs.map((job, index) => (
             <div key={index}>
@@ -311,7 +308,7 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
   
               <div style={styles.locationTimeContainer}>
                 <Grid container>
-                  <Grid item md={7} xs={12}>
+                  <Grid item md={6} xs={12}>
                     <div>
                       <LocationOnIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
                       <span style={{ position: "relative", top: "-4px" }}>{job?.location}</span>
@@ -326,15 +323,40 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
                     </div>
                   </Grid>
   
-                  <Grid item md={5} xs={12} style={{ fontWeight: "600", display: 'flex', justifyContent: 'space-between', textAlign: 'left'}}>
-                    <div style={{ marginTop: "10px", cursor: 'pointer' }}>
-                      <a href={job?.external_url} target="_blank" rel="noreferrer" className="link">View Company</a>
+                  <Grid item md={6} xs={12} style={{ fontWeight: "600", display: 'flex', justifyContent: 'space-between'}}>
+                    <div style={{ marginTop: "10px"}}>
+                        <ButtonThin
+                            fontSize='.6rem' 
+                            border='1px solid rgb(177, 144, 13)' 
+                            width={'100%'} 
+                            height='25px' 
+                            color='rgb(177, 144, 13)'
+                        >
+                            <a href={job?.external_url} target="_blank" rel="noreferrer" className="link">View Company</a>
+                        </ButtonThin>
                     </div>
-                    <div style={{ marginTop: "10px", cursor: 'pointer' }} className="link" onClick={() => handleCoverLetterCompose(job)}>
-                      Ai Cover Letter
+                    <div style={{ marginTop: "10px"}}>
+                        <ButtonThin 
+                            onClick={() => handleCoverLetterCompose(job)} 
+                            fontSize='.6rem' 
+                            border='1px solid rgb(177, 144, 13)' 
+                            width={'100%'} 
+                            height='25px' 
+                            color='rgb(177, 144, 13)'
+                        >
+                            Get Cover Letter
+                        </ButtonThin>
                     </div>
-                    <div style={{ marginTop: "10px" }}>
-                      <a href={job?.url} target="_blank" rel="noreferrer" className="link">Apply Now</a>
+                    <div style={{ marginTop: "10px"}}>
+                        <ButtonThin
+                            fontSize='.6rem' 
+                            border='1px solid rgb(177, 144, 13)' 
+                            width={'100%'} 
+                            height='25px' 
+                            color='rgb(177, 144, 13)'
+                        >
+                            <a href={job?.url} target="_blank" rel="noreferrer" className="link">Apply Now</a>
+                        </ButtonThin>
                     </div>
                   </Grid>
                 </Grid>
@@ -379,6 +401,7 @@ export const SuccessFailureModal = ({
             navigate('/pricing')
         } else {
             navigate(prevPath)
+            localStorage?.removeItem('prevPath')
         }
     }
 

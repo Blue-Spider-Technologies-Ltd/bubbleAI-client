@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import resumeCss from '../Resume.module.css'
 import { setError, setFetching, setSuccessMini } from "../../../redux/states";
-import { pdf } from '@react-pdf/renderer';
+import { pdf, PDFViewer, StyleSheet } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 // import ProtectedContent from "../../UI/ProtectedContent/ProtectedContent";
 import { useConfirm } from "material-ui-confirm";
-import { useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import "react-multi-carousel/lib/styles.css";
@@ -15,10 +14,17 @@ import { errorAnimation, successMiniAnimation } from "../../../utils/client-func
 import AuthHeader from '../../UI/AuthHeader/AuthHeader';
 import CLStandardPDF from './CLStandardPDF';
 import CLEuroPass from './CLEuroPass';
+import CLAuckland from './CLAuckland';
 const screenWidth = window.innerWidth
 
 
 
+const styles = StyleSheet.create({
+    viewerContainer: {
+        width: '100%',
+        height: screenWidth > 800 ? 1200 : 900
+    }
+});
 
 
 
@@ -61,6 +67,8 @@ const DownloadCoverLetter = () => {
                 selectedTemplate  = <CLEuroPass resume={resume} imgUrl={imgUrl} letter={letter} />
                 break;
             case "Auckland":
+                selectedTemplate  = <CLAuckland resume={resume} imgUrl={imgUrl} letter={letter} />
+                break;
             case "Flying Fish":
             case "Water Train":
             case "Sinking Duck":
@@ -141,8 +149,12 @@ const DownloadCoverLetter = () => {
                         <div className="Segment">
                             <h4>View and Download</h4>
                             
-                                    <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
-                                        {selectTemplate()}
+                                    <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView} style={{width: '100%'}}>
+                                        <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 700 ? '#323639' : 'white', zIndex: 20}}>
+                                        </div>
+                                        <PDFViewer style={styles.viewerContainer} >
+                                            {selectTemplate()}
+                                        </PDFViewer>
                                     </div>
                             
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>

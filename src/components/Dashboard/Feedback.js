@@ -60,6 +60,7 @@ const Feedback = (props) => {
                 },
             });
             setFeedbackSent(true)
+            localStorage.setItem('token', response?.data?.token)
         } catch (error) {
             errorSetter("Something went wrong, please try again")
         }

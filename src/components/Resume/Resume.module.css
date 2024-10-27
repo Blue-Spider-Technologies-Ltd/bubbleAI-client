@@ -67,7 +67,7 @@
 
 @media (max-width: 800px) {
     .ResponsivePrintView {
-        width: 120%;
+        width: 100%;
         box-shadow: outset;
         overflow-x: scroll;
         position: relative;

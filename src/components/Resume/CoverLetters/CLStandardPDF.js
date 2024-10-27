@@ -7,6 +7,7 @@ import emailIcon from '../../../images/email.png'
 import linkIcon from '../../../images/link.png'
 
 
+
 const styles = StyleSheet.create({
     StandardContainer: {
         display: "block",
@@ -125,8 +126,6 @@ const styles = StyleSheet.create({
         marginRight: 4
     },
 });
-
-
 
 
 

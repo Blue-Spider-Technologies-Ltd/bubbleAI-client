@@ -1,5 +1,6 @@
 import comingSoonImg from "../../images/soon.jpg"
 import standardTempImg from "../../images/resume-standard.jpg";
+import aucklandTempImg from "../../images/auckland-temp.png";
 import euroPassImg from "../../images/2.jpg";
 
 const carouselData = [
@@ -13,7 +14,7 @@ const carouselData = [
     },
     {
         title: "Auckland",
-        image: comingSoonImg
+        image: aucklandTempImg
     },
     {
         title: "Flying Fish",

@@ -26,6 +26,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import StandardPDF from './Templates/Standard/StandardPDF'
 import EuroPass from './Templates/Europass/EuroPass';
+import Auckland from './Templates/Auckland/Auckland';
 import Feedback from '../Dashboard/Feedback';
 import {jwtDecode} from 'jwt-decode';
 import ChatwootWidget from "../../utils/chatwoot";
@@ -235,6 +236,8 @@ const DownloadResume = () => {
                 template  = <EuroPass resume={resume} imgUrl={imgUrl} />
                 break;
             case "Auckland":
+                template  = <Auckland resume={resume} imgUrl={imgUrl} />
+                break;
             case "Flying Fish":
             case "Water Train":
             case "Sinking Duck":
@@ -320,7 +323,7 @@ const DownloadResume = () => {
         setCarouselName(selectedCarousel.title)
     
         let canPrintFlag = false;
-        if (selectedCarousel.title === "Euro Pass" || selectedCarousel.title === "Swimming Elephant" || selectedCarousel.title === "Flying Fish" || selectedCarousel.title === "Water Train") {
+        if (selectedCarousel.title === "Euro Pass" || selectedCarousel.title === "Auckland" || selectedCarousel.title === "Flying Fish" || selectedCarousel.title === "Water Train") {
             setHasImg(true)
         } else {
             setHasImg(false)
@@ -337,7 +340,7 @@ const DownloadResume = () => {
                 break;
             case "Auckland":
                 setStorageDetails({ ...storageDetails, template: "Auckland" });
-                canPrintFlag = false;
+                canPrintFlag = true;
                 break;
             case "Flying Fish":
                 setStorageDetails({ ...storageDetails, template: "Flying Fish" });
@@ -420,7 +423,7 @@ const DownloadResume = () => {
             return errorSetter('Please change the resume name')
         }
         if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
-            return errorSetter("Your Subscription tier can not use this template")
+            return errorSetter("Upgrade to Monthly or Weeekly for this template")
         }
         const note = screenWidth < 900 ? 'Click OK only when instruction completed. MOBILE DETECTED! Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. After that, your resume will open in another tab, click the share (📤) button on your browser to save to files or share. RETURN BACK TO THIS TAB WHEN DONE FOR JOBS DISPLAY AND COVER LETTERS' : 'This action is irreversible, continue?'
         confirm({ 
@@ -532,18 +535,37 @@ const DownloadResume = () => {
 
                         <div className="Segment">
                             <h4>View and Download</h4>
-                            <Alert 
-                                sx={{ 
-                                    width: '100%',  
-                                    padding: '0 5px', 
-                                    display: 'flex', 
-                                    justifyContent: 'center', 
-                                    fontSize: '.7rem'
-                                }} 
-                                severity="info"
-                            >
-                                <div>Only first page is displayed. Download for complete view</div>
-                            </Alert>
+
+                            {screenWidth < 900 && (
+                                <Alert 
+                                    sx={{ 
+                                        width: '100%',  
+                                        padding: '0 5px', 
+                                        display: 'flex', 
+                                        justifyContent: 'center', 
+                                        fontSize: '.7rem'
+                                    }} 
+                                    severity="info"
+                                >
+                                    <div>Only first page is displayed on mobile. Download for complete view</div>
+                                </Alert>
+                            )}
+                            {!isSubscribed && (
+                                <Alert 
+                                    sx={{ 
+                                        width: '100%',  
+                                        padding: '0 5px', 
+                                        display: 'flex', 
+                                        justifyContent: 'center', 
+                                        fontSize: '.7rem',
+                                        marginTop: '10px'
+                                    }} 
+                                    severity="info"
+                                >
+                                    <div><a href='/pricing' className='link' target='_blank'>Upgrade Subscription Here</a> to enable resume scrolling</div>
+                                </Alert>
+                            )}
+
 
                             <ProtectedContent>
                                 <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
@@ -552,17 +574,19 @@ const DownloadResume = () => {
                                     <PDFViewer style={styles.viewerContainer} >
                                         {selectTemplate()}
                                     </PDFViewer>
-                                    <div 
-                                        onContextMenu={handleContextMenu} 
-                                        style={{ 
-                                            position: 'absolute', 
-                                            top: 0, 
-                                            left: 0, 
-                                            right: 0, 
-                                            bottom: 0, 
-                                            zIndex: 1 
-                                        }} 
-                                    />
+                                    {!isSubscribed && (
+                                        <div 
+                                            onContextMenu={handleContextMenu} 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                top: 0, 
+                                                left: 0, 
+                                                right: 0, 
+                                                bottom: 0, 
+                                                zIndex: 1 
+                                            }} 
+                                        />
+                                    )}
                                 </div>
                             </ProtectedContent>
                             
