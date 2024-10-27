@@ -15,8 +15,9 @@ import { useNavigate } from 'react-router-dom'
 import AuthInput from '../UI/Input/AuthInputs'
 import { Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { ButtonSubmitGreen } from '../UI/Buttons/Buttons';
+import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
+import { PiPlugsConnected } from "react-icons/pi";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
@@ -73,6 +74,7 @@ const DownloadResume = () => {
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
     const [completed, setCompleted] = useState(false)
+    const [hasDownloadedCv, setHasDownloadedCv] = useState(false)
     const [isFeedbackTime, setIsFeedbackTime] = useState(false)
     const [canPrint, setCanPrint] = useState(false)
     const [activeIndex, setActiveIndex] = useState(null);
@@ -260,54 +262,6 @@ const DownloadResume = () => {
         return template
     }
 
-    const handleResumeSave = async () => {
-
-        const completeResume = { ...resume, storageDetails }
-        dispatch(setFetching(true));
-        //set Resume for cover letter use
-        dispatch(setResume(resume));
-    
-        try {
-            const fileName = storageDetails.name + '.pdf';
-            const blob = await pdf(selectTemplate()).toBlob();
-
-            if(screenWidth < 1000) {
-                // Mobile
-                const blobUrl = URL.createObjectURL(blob);
-                window.open(blobUrl, '_blank');
-            } else {
-                saveAs(blob, fileName);
-            }
-            const response = await axios.post('/user/save-resume', completeResume, {
-                headers: {
-                    'x-access-token': isAuth
-                }
-            })
-            ////run a CHECK HERE
-            localStorage?.removeItem(
-                "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
-            );
-            const data = response?.data?.shareableLink
-            const data2 = response?.data?.aiSuggestedJobs
-
-            setShareableLink(data)
-            setAiSuggestedJobs(data2)
-            dispatch(setFetching(false));
-            
-            if(hasDroppedFeedback) {
-                setCompleted(true)
-            } else {
-                setIsFeedbackTime(true)
-            }
-        } catch (error) {
-            dispatch(setFetching(false));
-            errorSetter("Not saved to database, Try again")
-        }
-
-        dispatch(setFetching(false));
-    }
-
-
     const toggleResumes = () => {
         setAuthMenuOpen(!authMenuOpen)
     }
@@ -402,6 +356,66 @@ const DownloadResume = () => {
         return
     };
 
+        
+    const handleJobConnect = () => {
+        if(hasDownloadedCv) {
+            setCompleted(true)
+        } else {
+            errorSetter("Download resume to proceed")
+        }
+    }
+    
+
+    const handleResumeSave = async () => {
+        const completeResume = { ...resume, storageDetails }
+        dispatch(setFetching(true));
+        //set Resume for cover letter use
+        dispatch(setResume(resume));
+    
+        try {
+            const fileName = storageDetails.name + '.pdf';
+            const blob = await pdf(selectTemplate()).toBlob();
+
+            if(screenWidth < 1000) {
+                // Mobile
+                const blobUrl = URL.createObjectURL(blob);
+                window.open(blobUrl, '_blank');
+            } else {
+                saveAs(blob, fileName);
+            }
+
+            if(!hasDownloadedCv) {
+                const response = await axios.post('/user/save-resume', completeResume, {
+                    headers: {
+                        'x-access-token': isAuth
+                    }
+                })
+                ////run a CHECK HERE
+                localStorage?.removeItem(
+                    "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
+                );
+                const data = response?.data?.shareableLink
+                const data2 = response?.data?.aiSuggestedJobs
+    
+                setShareableLink(data)
+                setAiSuggestedJobs(data2)
+                dispatch(setFetching(false));
+                
+                if(!hasDroppedFeedback) {
+                    setIsFeedbackTime(true)
+                }
+                setHasDownloadedCv(true)
+            }
+            successSetter("CV Downloaded Successfully")
+
+        } catch (error) {
+            dispatch(setFetching(false));
+            errorSetter("Not saved to database, Try again")
+        }
+
+        dispatch(setFetching(false));
+    }
+
 
     const handleDownload = () => {
         if(!canPrint) {
@@ -431,7 +445,6 @@ const DownloadResume = () => {
                 title: "⚠️⚠️⚠️PLEASE READ⚠️⚠️⚠️"
             })
             .then(() => {
-                // handlePrint()
                 handleResumeSave()
             })
             .catch(() => {
@@ -589,19 +602,28 @@ const DownloadResume = () => {
                                     )}
                                 </div>
                             </ProtectedContent>
-                            
+
+
+                            <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "10px" }}>
+                                <div style={{ width: screenWidth < 500 ? "250px" : "350px" }}>
+                                    <ButtonOutlineGreenWithDiffStyle type="button" onClick={handleDownload}>
+                                        <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', paddingTop: "1px" }}>Download Resume </span>
+                                    </ButtonOutlineGreenWithDiffStyle>
+                                </div>
+                            </div>
+
+
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
-                                <div style={{ width: "250px" }}>
+                                <div style={{ width: screenWidth <= 500 ? "250px" : "350px" }}>
                                     <ButtonSubmitGreen 
                                         type="button"
-                                        onClick={handleDownload}
+                                        onClick={handleJobConnect}
                                     >
-                                    
-                                        <DownloadForOfflineIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Download PDF and View Jobs </span>
+                                        <PiPlugsConnected style={{color: "#F8E231", fontSize: "1.5rem"}} /><span style={{ marginLeft: '5px', paddingTop: "1px" }}>Bubble AI Jobs Connect</span>
                                     </ButtonSubmitGreen>
                                 </div>
-                                
                             </div>
+
                         </div>
 
                     </form>
