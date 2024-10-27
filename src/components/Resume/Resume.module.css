@@ -65,16 +65,6 @@
 }
 
 
-@media (max-width: 800px) {
-    .ResponsivePrintView {
-        width: 100%;
-        box-shadow: outset;
-        overflow-x: scroll;
-        position: relative;
-        height: auto;
-    }
-}
-
 .ResponsivePrintView {
     background-color: white;
     width: 800px;
@@ -85,6 +75,17 @@
     position: relative;
 }                           
 
+
+
+@media (max-width: 800px) {
+    .ResponsivePrintView {
+        width: 100%;
+        box-shadow: outset;
+        overflow-x: scroll;
+        position: relative;
+        height: auto;
+    }
+}
 
 
   
