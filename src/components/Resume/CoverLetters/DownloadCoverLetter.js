@@ -149,7 +149,7 @@ const DownloadCoverLetter = () => {
                         <div className="Segment">
                             <h4>View and Download</h4>
                             
-                                    <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView} style={{width: '100%'}}>
+                                    <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
                                         <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 700 ? '#323639' : 'white', zIndex: 20}}>
                                         </div>
                                         <PDFViewer style={styles.viewerContainer} >

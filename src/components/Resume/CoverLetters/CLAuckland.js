@@ -1,11 +1,10 @@
 import React from "react";
-import { getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../../utils/client-functions";
+import { capitalizeAllLetters } from "../../../utils/client-functions";
 import { Document, Page, View, Text, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import mobileIcon from '../../../images/phone.png'
 import pinIcon from '../../../images/pin2.png'
 import emailIcon from '../../../images/mail.png'
 import linkIcon from '../../../images/globe.png'
-import arrowIcon from '../../../images/arrow.png'
 
 ////FONTS
 import TinosRegular from '../../../assets/fonts/tinos/Tinos-Regular.ttf';
