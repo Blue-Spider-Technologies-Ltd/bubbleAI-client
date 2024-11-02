@@ -43,7 +43,7 @@ const PriceCard = ({details}) => {
                 {offer && <div 
                     style={{fontSize: '.7rem', color: '#F0E68C', fontWeight: '700', position: 'relative'}}
                 >
-                    <span>50% OFF TODAY </span> <span><img src={offerStarImg} alt='discount' style={{ width: '1rem', marginLeft: '1px' }} /></span>
+                    <span><img src={offerStarImg} alt='discount' style={{ width: '1rem', marginRight: '1px' }} /></span> <span>50% OFF TODAY </span> <span><img src={offerStarImg} alt='discount' style={{ width: '1rem', marginLeft: '1px' }} /></span>
                 </div>}
                 
             </div>
