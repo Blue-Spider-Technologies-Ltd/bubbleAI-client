@@ -38,12 +38,12 @@ const PriceCard = ({details}) => {
             {/* <hr /> */}
             <div className={cardCss.PriceTag}>
 
-                {offer && <div style={{color: '#2C3E50', textDecoration: 'line-through', fontSize: '.7rem', fontWeight: '700', justifyContent: 'flex-start'}}>{twicePriceFormatted + " " + currency}</div>}
+                {offer && <div style={{color: '#2C3E50', textDecoration: 'line-through', fontSize: '.8rem', fontWeight: '700', justifyContent: 'flex-start'}}>{twicePriceFormatted + " " + currency}</div>}
                 <div>{formattedPrice + " " + currency}</div>
                 {offer && <div 
-                    style={{fontSize: '.9rem', color: '#F0E68C', fontWeight: '700', position: 'relative'}}
+                    style={{fontSize: '.7rem', color: '#F0E68C', fontWeight: '700', position: 'relative'}}
                 >
-                    <span>50% OFF TODAY </span> <span><img src={offerStarImg} alt='discount' style={{ width: '1.3rem', marginLeft: '3px' }} /></span>
+                    <span>50% OFF TODAY </span> <span><img src={offerStarImg} alt='discount' style={{ width: '1rem', marginLeft: '1px' }} /></span>
                 </div>}
                 
             </div>
@@ -208,7 +208,7 @@ const PriceCard = ({details}) => {
                             <img style={{width: "1rem"}} src={fullRefundImg} alt='ref' />
                         </ListItemIcon>
                         <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                            Money-Back Guaranteed (T&C)
+                            Money-Back Guarantee (T&C)
                         </Typography>
                     </ListItem> 
                 </List>}

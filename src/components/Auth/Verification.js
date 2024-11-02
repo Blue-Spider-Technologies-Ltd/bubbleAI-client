@@ -6,7 +6,6 @@ import bubbleBgAuthImg from "../../images/bubblebg-auth.jpg";
 import { Input } from "../UI/Input/Input";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import { Send} from '@mui/icons-material';
-import { Link } from "@mui/material";
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -14,7 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { errorAnimation } from "../../utils/client-functions";
 import { setError } from "../../redux/states";
-import { setEmail } from "../../redux/states";
+
 
 
 const screenWidth = window.innerWidth
@@ -159,21 +158,14 @@ const Verification = () => {
                             <div style={styles.container}>
                                 <div>
                                     <p>Dear {firstName},</p>
-                                    <h2>INDEPENDENCE GIVEAWAY!!! 5 SPOTS LEFT</h2>
+                                    <h2>NEW USER GIVEAWAY!!!</h2>
                                 </div>
-                                <p>Use this discount code, <strong>(OFFER LIMITED FOR 7 DAYS)</strong>, to pay 3000 Naira Only: <span style={{fontSize: '1.5rem', fontWeight: 600, color: '#3E8F93'}}>{couponCode}</span> on our PER WEEK PLAN only.</p>
-                                <p style={{textAlign: 'left', marginLeft: '10px'}}><b>BENEFITS YOU GET FOR THE WEEK:</b></p>
-                                <ul style={{textAlign: 'left', lineHeight: 1.5}}>
-                                    <li>Get any amount of CVs you need for different jobs</li>
-                                    <li>Ai searched Jobs that give you over 90% chance (remote and on-site)</li>
-                                    <li>Cover Letter for each job</li>
-                                    <li>Interview prep</li>
-                                    <li>Follow Up Emails</li>
-                                </ul>
+                                <p>Use this discount code, <strong>(OFFER LIMITED FOR 7 DAYS)</strong>, to GET extra 20% OFF: <span style={{fontSize: '1.5rem', fontWeight: 600, color: '#3E8F93'}}>{couponCode}</span> on our PER MONTH PLAN only.</p>
+
                                 
                                 <div style={{textAlign: 'center', lineHeight: 2}}>
                                     <h2>Your Next Steps:</h2>
-                                    <a href='/pricing' style={styles.link} target="_blank">I want this Giveaway</a> <br />
+                                    <a href='/pricing' style={styles.link} target="_blank">CLAIM Giveaway</a> <br />
                                     <a href='/user/dashboard/resume' style={styles.link} target="_blank">Try FOR FREE (Limited Experience)</a> <br />
                                     <a href='https://www.instagram.com/reel/C8pHqBfIuUY/?igsh=MW9qYnV0em40YW1zdw==' style={styles.link} target="_blank" rel="noreferrer">Earn with Bubble Ai</a> 
                                 </div> 
