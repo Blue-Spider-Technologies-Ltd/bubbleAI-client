@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.29228f77.css",
-    "main.js": "/static/js/main.719e386d.js",
+    "main.css": "/static/css/main.308a8b25.css",
+    "main.js": "/static/js/main.1206698c.js",
     "static/js/29.1dc24455.chunk.js": "/static/js/29.1dc24455.chunk.js",
     "static/js/118.290d15af.chunk.js": "/static/js/118.290d15af.chunk.js",
     "static/js/568.2ab9919e.chunk.js": "/static/js/568.2ab9919e.chunk.js",
@@ -33,6 +33,7 @@
     "static/media/2.jpg": "/static/media/2.208b96f80fdadd2cd4c7.jpg",
     "static/media/customize.jpg": "/static/media/customize.6a79e4b9bcd64980a5d8.jpg",
     "static/media/refund-stamp.png": "/static/media/refund-stamp.19654e7aecd4136b31aa.png",
+    "static/media/offer-star.png": "/static/media/offer-star.596a1fcda7b175fea9fe.png",
     "static/media/globe.png": "/static/media/globe.951a5a7263e537774bc7.png",
     "static/media/unavailable.png": "/static/media/unavailable.5084bb9c1fdd048c677b.png",
     "static/media/arrow.png": "/static/media/arrow.0e5a6fd1a864a235002c.png",
@@ -50,14 +51,14 @@
     "static/media/microsoft.png": "/static/media/microsoft.204345df7313cd2dc55b.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.29228f77.css.map": "/static/css/main.29228f77.css.map",
-    "main.719e386d.js.map": "/static/js/main.719e386d.js.map",
+    "main.308a8b25.css.map": "/static/css/main.308a8b25.css.map",
+    "main.1206698c.js.map": "/static/js/main.1206698c.js.map",
     "29.1dc24455.chunk.js.map": "/static/js/29.1dc24455.chunk.js.map",
     "118.290d15af.chunk.js.map": "/static/js/118.290d15af.chunk.js.map",
     "568.2ab9919e.chunk.js.map": "/static/js/568.2ab9919e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.29228f77.css",
-    "static/js/main.719e386d.js"
+    "static/css/main.308a8b25.css",
+    "static/js/main.1206698c.js"
   ]
 }

@@ -50,6 +50,7 @@ const resumePricingDetails = [
         price: pricePerUse,
         currency: currency,
         popular: false,
+        offer: false,
         features: {
             reAccessSaved: {
                 available: false,
@@ -73,7 +74,7 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: true,
-                text: 'Create CV for Anyone'
+                text: 'Change CV Name'
             },
             downloadablePDF: {
                 available: true,
@@ -98,7 +99,8 @@ const resumePricingDetails = [
         duration: 'Per Week',
         price: pricePerWeek,
         currency: currency,
-        popular: true,
+        popular: false,
+        offer: true,
         features: {
             reAccessSaved: {
                 available: true,
@@ -122,7 +124,7 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: false,
-                text: 'Create CV for Anyone'
+                text: 'Change CV Name'
             },
             downloadablePDF: {
                 available: true,
@@ -134,11 +136,11 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: true,
-                text: 'Job Connections'
+                text: '50+ Job Connections'
             },
             recommendation: {
                 available: true,
-                text: '(Apply to Jobs Quick)'
+                text: 'Connect to Hottest Jobs this Week'
             }
         }
     },
@@ -147,7 +149,8 @@ const resumePricingDetails = [
         duration: 'Per Month',
         price: pricePerMonth,
         currency: currency,
-        popular: false,
+        popular: true,
+        offer: true,
         features: {
             reAccessSaved: {
                 available: true,
@@ -171,7 +174,7 @@ const resumePricingDetails = [
             },
             changeName: {
                 available: true,
-                text: 'Create CV for Anyone'
+                text: 'Change CV Name'
             },
             downloadablePDF: {
                 available: true,
@@ -183,11 +186,11 @@ const resumePricingDetails = [
             },
             aiJobSuggestions: {
                 available: true,
-                text: 'Job Connections'
+                text: '200+ Job Connections'
             },
             recommendation: {
                 available: true,
-                text: '(Recommended for Business)'
+                text: 'Get a Job by Next Month'
             }
         }
     }

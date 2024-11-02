@@ -53,7 +53,7 @@ const CarouselItem = ({ item, index, activeIndex, handleItemClick }) => {
 const styles = StyleSheet.create({
     viewerContainer: {
         width: '100%',
-        height: screenWidth > 800 ? 1200 : 900
+        height: screenWidth > 800 ? 1000 : 700
     },
     StandardContainer: {
         display: "block",

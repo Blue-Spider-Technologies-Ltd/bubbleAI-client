@@ -6,12 +6,16 @@ import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/B
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
 import { setShowCheckout, setPricingDetails } from "../../../redux/states";
-
+import { IoSparklesSharp } from "react-icons/io5";
+import offerStarImg from '../../../images/offer-star.png'
+import fullRefundImg from '../../../images/refund-stamp.png'
 
 //////This page contains CSS from HOME.CSS and INDEX.CSS
 const PriceCard = ({details}) => {
-    const { product, duration, price, currency, popular, features } = details;
+    const { product, duration, price, currency, popular, offer, features } = details;
     const formattedPrice = price?.toLocaleString('en-US');
+    const twicePrice = price * 1.97
+    const twicePriceFormatted = twicePrice?.toLocaleString('en-US');
     const dispatch = useDispatch()
 
     const pricingObject = {
@@ -31,12 +35,20 @@ const PriceCard = ({details}) => {
                 <h3>{duration}</h3>
             </div>
 
-            <hr />
+            {/* <hr /> */}
             <div className={cardCss.PriceTag}>
-                {formattedPrice + " " + currency}
+
+                {offer && <div style={{color: '#2C3E50', textDecoration: 'line-through', fontSize: '.7rem', fontWeight: '700', justifyContent: 'flex-start'}}>{twicePriceFormatted + " " + currency}</div>}
+                <div>{formattedPrice + " " + currency}</div>
+                {offer && <div 
+                    style={{fontSize: '.9rem', color: '#F0E68C', fontWeight: '700', position: 'relative'}}
+                >
+                    <span>50% OFF TODAY </span> <span><img src={offerStarImg} alt='discount' style={{ width: '1.3rem', marginLeft: '3px' }} /></span>
+                </div>}
+                
             </div>
             <div className={cardCss.CardBottom}>
-            {features.recommendation && <div className='link' style={{fontSize: '.75rem', marginTop: '.2rem', marginBottom: '.2rem'}}>{features.recommendation.text}</div>}
+            
                 <Grid item xs={12}>
 
                     <List>
@@ -177,6 +189,29 @@ const PriceCard = ({details}) => {
               
                     </List>
                 </Grid>
+                {features.recommendation && 
+                    <List className='link' style={{ marginTop: '-10px'}}> 
+                        <ListItem >
+                            <ListItemIcon>
+                                <IoSparklesSharp style={{color: "#F8E231", fontSize: "1rem"}} />
+                            </ListItemIcon>
+                            <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                {features.recommendation.text}
+                            </Typography>
+                        </ListItem> 
+                    </List>
+                }
+
+                {duration === 'Per Month' && <List style={{ marginTop: '-10px'}}> 
+                    <ListItem >
+                        <ListItemIcon style={{width: "1rem"}}>
+                            <img style={{width: "1rem"}} src={fullRefundImg} alt='ref' />
+                        </ListItemIcon>
+                        <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                            Money-Back Guaranteed (T&C)
+                        </Typography>
+                    </ListItem> 
+                </List>}
 
                 <div style={{ width: "100%", display: 'flex', justifyContent: 'center'}}>
                     <div style={{ width: "85%"}}>

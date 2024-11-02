@@ -20,30 +20,39 @@
 .CardContainer hr {
     border: 3px solid var(--navColor1);
     margin: 0;
+    border-radius: 15px;
 }
 
 .CardTop {
     background-color: var(--lightBlueGrey);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
     color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100px;
+    height: 150px;
     width: 100%;
+    border-bottom: 3px solid var(--navColor1);
 }
 
 .PriceTag {
+    box-sizing: border-box;
     background-color: var(--navColor1);
     border-radius: 20px;
     color: white;
     font-weight: 500;
-    height: 40px;
+    height: 100px;
+    line-height: 2;
     width: 75%;
-    margin: -22px auto auto;
+    margin: -50px auto auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    box-shadow: 20px 70px 500px rgba(0, 0, 0, 0.25), 
+                0 10px 10px rgba(0, 0, 0, 0.5);
 }
 
 .CardBottom {

@@ -4,7 +4,7 @@ import { Link } from "@mui/material";
 import { Sling as Hamburger } from 'hamburger-react'
 import "./Menu.css"
 import logoImg from "../../../images/bubble-logo.png"
-import { ButtonOutlineGreen, ButtonLogOut } from '../Buttons/Buttons';
+import { ButtonSubmitGreen, ButtonLogOut } from '../Buttons/Buttons';
 import { useLocation, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { setUser } from '../../../redux/states';
@@ -44,9 +44,9 @@ const MenuBarLarge = () => {
                     <Link href='/pricing' className="ListItem">
                         <div>Pricing</div>
                     </Link>
-                    <div style={{marginTop: '20px', marginLeft: '20px'}}>
-                        {location.pathname === "/popin" ? <ButtonOutlineGreen link="/join-bubble">Register</ButtonOutlineGreen> 
-                        : isAuth ? <ButtonLogOut clicked={handleLogout}>Logout</ButtonLogOut> : <div><ButtonOutlineGreen link="/popin">Login</ButtonOutlineGreen></div>}
+                    <div style={{marginTop: '11px', width: '150px', marginLeft: '20px'}}>
+                        {location.pathname === "/popin" ? <ButtonSubmitGreen><a href="/join-bubble" style={{textDecoration: 'none', color: 'white'}}>Register</a></ButtonSubmitGreen> 
+                        : isAuth ? <div style={{marginTop: '12px'}}><ButtonLogOut clicked={handleLogout}>Logout</ButtonLogOut></div> : <div><ButtonSubmitGreen><a href="/popin" style={{textDecoration: 'none', color: 'white'}}>Login</a></ButtonSubmitGreen></div>}
                     </div>
                 </div>
             </div>
