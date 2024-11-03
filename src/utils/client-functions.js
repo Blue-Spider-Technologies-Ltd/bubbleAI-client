@@ -156,7 +156,7 @@ export const fetchPrice = async (category, usage) => {
                 comparativePriceTwo_Africa = 10000;
                 comparativePriceThree_Africa = 25000;
 
-                comparativePriceOne_RestOfWorld = 4000;
+                comparativePriceOne_RestOfWorld = 6500;
                 comparativePriceTwo_RestOfWorld = 20000;
                 comparativePriceThree_RestOfWorld = 60000;
                 break;

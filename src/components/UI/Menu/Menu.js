@@ -45,8 +45,8 @@ const MenuBarLarge = () => {
                         <div>Pricing</div>
                     </Link>
                     <div style={{marginTop: '11px', width: '150px', marginLeft: '20px'}}>
-                        {location.pathname === "/popin" ? <ButtonSubmitGreen><a href="/join-bubble" style={{textDecoration: 'none', color: 'white'}}>Register</a></ButtonSubmitGreen> 
-                        : isAuth ? <div style={{marginTop: '12px'}}><ButtonLogOut clicked={handleLogout}>Logout</ButtonLogOut></div> : <div><ButtonSubmitGreen><a href="/popin" style={{textDecoration: 'none', color: 'white'}}>Login</a></ButtonSubmitGreen></div>}
+                        {location.pathname === "/popin" ? <ButtonSubmitGreen><a href="/join-bubble" className="regLoginLink">Register</a></ButtonSubmitGreen> 
+                        : isAuth ? <div style={{marginTop: '12px'}}><ButtonLogOut clicked={handleLogout}>Logout</ButtonLogOut></div> : <ButtonSubmitGreen><a href="/popin" className="regLoginLink">Login</a></ButtonSubmitGreen>}
                     </div>
                 </div>
             </div>
