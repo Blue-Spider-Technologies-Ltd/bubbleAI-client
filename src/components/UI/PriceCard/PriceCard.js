@@ -36,7 +36,7 @@ const PriceCard = ({details}) => {
             </div>
 
             {/* <hr /> */}
-            <div className={cardCss.PriceTag}>
+            <div className={cardCss.PriceTag} onClick={showCheckoutFunction}>
 
                 {offer && <div style={{color: '#2C3E50', textDecoration: 'line-through', fontSize: '.8rem', fontWeight: '700', justifyContent: 'flex-start'}}>{twicePriceFormatted + " " + currency}</div>}
                 <div>{formattedPrice + " " + currency}</div>

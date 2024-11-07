@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.e4ad93eb.css",
-    "main.js": "/static/js/main.aeae2837.js",
+    "main.js": "/static/js/main.3e18e255.js",
     "static/js/29.1dc24455.chunk.js": "/static/js/29.1dc24455.chunk.js",
     "static/js/118.290d15af.chunk.js": "/static/js/118.290d15af.chunk.js",
     "static/js/568.2ab9919e.chunk.js": "/static/js/568.2ab9919e.chunk.js",
@@ -25,6 +25,7 @@
     "static/media/interview-prep.jpg": "/static/media/interview-prep.46fb8d310c0d5dd1ed9e.jpg",
     "static/media/cover-letter.jpg": "/static/media/cover-letter.95c36fb1b52b7dbb2ef0.jpg",
     "static/media/email.png": "/static/media/email.1c3d25dd5fe5bd93fd1d.png",
+    "static/media/black-friday.png": "/static/media/black-friday.7b30b4282ffcda18eb2f.png",
     "static/media/resume-standard.jpg": "/static/media/resume-standard.e71f1986a936fd038a78.jpg",
     "static/media/preview.jpg": "/static/media/preview.1315be4f62fd38efd818.jpg",
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.7a4d0bbbe53cc081ca37.png",
@@ -52,13 +53,13 @@
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
     "main.e4ad93eb.css.map": "/static/css/main.e4ad93eb.css.map",
-    "main.aeae2837.js.map": "/static/js/main.aeae2837.js.map",
+    "main.3e18e255.js.map": "/static/js/main.3e18e255.js.map",
     "29.1dc24455.chunk.js.map": "/static/js/29.1dc24455.chunk.js.map",
     "118.290d15af.chunk.js.map": "/static/js/118.290d15af.chunk.js.map",
     "568.2ab9919e.chunk.js.map": "/static/js/568.2ab9919e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e4ad93eb.css",
-    "static/js/main.aeae2837.js"
+    "static/js/main.3e18e255.js"
   ]
 }
