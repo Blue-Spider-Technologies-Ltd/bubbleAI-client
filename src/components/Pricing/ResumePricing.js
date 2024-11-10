@@ -154,7 +154,7 @@ const resumePricingDetails = [
         features: {
             reAccessSaved: {
                 available: true,
-                text: 'Resume Storage for Later Accesss'
+                text: 'Resume Storage for Later Access'
             },
             createSeveral: {
                 available: true,

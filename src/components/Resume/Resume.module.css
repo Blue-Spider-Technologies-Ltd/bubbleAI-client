@@ -75,8 +75,6 @@
     position: relative;
 }                           
 
-
-
 @media (max-width: 800px) {
     .ResponsivePrintView {
         width: 100%;

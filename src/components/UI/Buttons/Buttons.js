@@ -79,22 +79,23 @@ export const ButtonTransparent = ({type, children, onClick}) => {
     )
 }
 
-export const ButtonTransparentSquare = ({ type, onClick, color, width, height, bgColor, children, borderRadius }) => { 
+export const ButtonTransparentSquare = ({ title, style, type, onClick, color, width, height, bgColor, children, borderRadius }) => { 
 
     const buttonStyle = {
         color: color,
         width: width,
         height: height,
         backgroundColor: bgColor && bgColor,
-        borderRadius: borderRadius
+        borderRadius: borderRadius,
     };
 
     return (
         <button 
+            title={title}
             type={type} 
             className={buttonCss.ButtonTransparentSquare} 
             onClick={onClick}
-            style={buttonStyle}
+            style={style ? style : buttonStyle}
         >
             {children}
         </button>
