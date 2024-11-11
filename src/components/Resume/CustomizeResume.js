@@ -647,8 +647,24 @@ const CustomizeResume = () => {
   const basicInfoForward = (arg) => {
     //check if required fields are filled
     const { dob, mobile, jobPosition, street, city, country } = basicInfo
-    if (dob === "" || mobile === "" || jobPosition === "" || street === "" || city === "" || city === "State/Region" || country === "" || country === "Country") {
-      errorSetter("Complete required fields in this section to continue");
+    if (dob === "") {
+      errorSetter("Complete Date of Birth to continue");
+      return;
+    }
+    if ( mobile === "") {
+      errorSetter("Enter Mobile to continue");
+      return;
+    }
+    if (jobPosition === "") {
+      errorSetter("Enter Job Position to continue");
+      return;
+    }
+    if (street === "") {
+      errorSetter("Enter City/District to continue");
+      return;
+    }
+    if (city === "" || city === "State/Region" || country === "" || country === "Country") {
+      errorSetter("Choose Country first, then choose State/Region next, to continue");
       return;
     }
     setBasicFaded(true)
@@ -846,11 +862,11 @@ const CustomizeResume = () => {
     }
 
     if (!basicInfo.country) {
-      errorSetter("Select Country")
+      errorSetter("Choose Country first, then choose State/Region next, to continue")
       return
     }
     if (!basicInfo.city) {
-      errorSetter("Select State")
+      errorSetter("Choose Country first, then choose State/Region next, to continue")
       return
     }
 
