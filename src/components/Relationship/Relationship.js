@@ -43,6 +43,7 @@ const Relationship = () => {
         <div>
             <div className="error">{error}</div>
 
+
         </div>
     )
 }

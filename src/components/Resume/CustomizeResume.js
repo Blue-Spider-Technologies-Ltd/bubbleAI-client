@@ -53,8 +53,6 @@ const CustomizeResume = () => {
   const [pubFaded, setPubFaded] = useState(true)
   const [interestFaded, setInterestFaded] = useState(true)
   const [countryid, setCountryid] = useState(0);
-  const [searchString, setSearchString] = useState("");
-  const [resumeForSearch, setResumeForSearch] = useState("");
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(false);
   const [additionalInfo, setAdditionalInfo] = useState("");
@@ -156,7 +154,6 @@ const CustomizeResume = () => {
         });
         // console.log(response.data.user);
         dispatch(setUserResumesAll(resumes))
-        setResumeForSearch(resumes)
         setIsFirstTimeUserPopUp(isFirstTimeUser)
         setSubDuration(resumeSubscriptions?.duration)
         dispatch(setIsResumeSubbed(resumeSubscriptions?.subscribed))
@@ -209,10 +206,6 @@ const CustomizeResume = () => {
 
     } 
   }, [confirm, dispatch, navigate])
-
-  useEffect(() => {
-    setResumeForSearch(userResumesAll)
-  }, [userResumesAll])
   
 
 
@@ -788,21 +781,6 @@ const CustomizeResume = () => {
     }
   }
 
-  const handleSearch = (e) => {
-    const newSearchString = e.target.value;
-    setSearchString(newSearchString);
-
-    if (newSearchString.length < 1) {
-        setResumeForSearch(userResumesAll);
-    } else  {
-        // Filter the resumes based on the search string
-        const filteredData = resumeForSearch.filter(item =>
-          item.storageDetails.name.includes(newSearchString)
-        );
-        setResumeForSearch(filteredData);
-    }
-  };
-
 
 
   ///////DRAG AND DROP & FILE FUNCTIONS
@@ -968,15 +946,13 @@ const CustomizeResume = () => {
       {/* For SIDE MENU */}
       <AuthSideMenu
         opened={authMenuOpen}
-        seacrhBarPlaceholder="Search by resume name"
-        onChange={handleSearch}
-        value={searchString}
         hidden={!authMenuOpen}
         resumeSubDuration={subDuration}
         isResumeSubbed={isResumeSubbed}
-        arrayDetails={resumeForSearch}
+        arrayDetails={userResumesAll}
         error={error}
         successMini={successMini}
+        firstName={basicInfo.firstName}
       />
 
       <div style={{ width: "100%", padding: "0" }}>

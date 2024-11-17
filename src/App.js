@@ -17,6 +17,9 @@ import Pricing from './components/Pricing/Pricing';
 import TransactionDone from './components/TransactionDone/TransactionDone';
 import Profile from './components/Dashboard/Profile';
 import DashSupport from './components/Dashboard/DashSupport';
+import ResumeHub from './components/Resume/Items/ResumeHub';
+import JobHub from './components/Resume/Items/JobHub';
+import ReferralHub from './components/Resume/Items/ReferralHub';
 import Acca from "./components/MockTests/Exams/Acca"
 import Cee from "./components/MockTests/Exams/Cee"
 import Ceh from "./components/MockTests/Exams/Ceh"
@@ -71,6 +74,9 @@ const App = () => {
           <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
           <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />
           <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
+          <Route path={'/user/dashboard/resume-hub'} element={ <ResumeHub /> } />
+          <Route path={'/user/dashboard/job-hub'} element={ <JobHub /> } />
+          <Route path={'/user/dashboard/referral-hub'} element={ <ReferralHub /> } />
 
           <Route path={'/user/dashboard/resume'} element={ <Resume /> } />
           <Route path={'/user/dashboard/depositions'} element={ <Depositions /> } />

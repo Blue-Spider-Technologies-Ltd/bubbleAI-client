@@ -265,7 +265,7 @@ const AuthInput = props => {
             props.inputType === "search" ?
                 <Paper
                     component="form"
-                    sx={{display: props.hidden ? 'none' : 'flex', alignItems: 'center'}}
+                    sx={{display: props.hidden ? 'none' : 'flex', alignItems: 'center', borderRadius: '50px', padding: '0 10px'}}
                 >
                     <InputBase
                         // sx={{ ml: 1, flex: 1 }}

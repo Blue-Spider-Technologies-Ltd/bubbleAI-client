@@ -35,11 +35,11 @@
 }
 
 .SideMenuItems li:hover {
-    background-color: rgb(51, 49, 49);
+    background-color: #3E8F93;
 }
 
 .Active {
-    background-color: rgb(51, 49, 49);
+    background-color: #3E8F93;
 }
 
 .Active > a {

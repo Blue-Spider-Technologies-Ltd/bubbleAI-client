@@ -193,7 +193,7 @@ export const ButtonCard = props => {
     )
 }
 
-export const ButtonThin = ({color, width, height, bgColor, borderRadius, children, onClick, fontSize }) => {
+export const ButtonThin = ({border, color, width, height, bgColor, borderRadius, children, onClick, fontSize }) => {
 
     const buttonStyle = {
         color: color,
@@ -201,7 +201,7 @@ export const ButtonThin = ({color, width, height, bgColor, borderRadius, childre
         height: height,
         backgroundColor: bgColor && bgColor,
         borderRadius: borderRadius,
-        border: `1px solid ${color}`,
+        border: border,
         fontSize: fontSize && fontSize,
     };
     

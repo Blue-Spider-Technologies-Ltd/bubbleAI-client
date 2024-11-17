@@ -1,34 +1,41 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import authMenuCss from './AuthMenu.module.css'
+import adminSideMenuCss from '../AdminSideMenu/AdminSideMenu.module.css'
 import AuthInputs from '../Input/AuthInputs';
 import { Grid } from "@mui/material";
 import { ButtonTransparentSquare, ButtonOutlineGreen } from '../Buttons/Buttons';
-import DownloadIcon from '@mui/icons-material/Download';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import unavailableImg from "../../../images/unavailable.png";
-import { setResume, setFetching, setUserResumesAll, setError, setAllMessagesArray, setMessages, setSuccessMini } from '../../../redux/states';
+import { 
+    Work, 
+    PictureAsPdf, 
+    GroupAdd,
+} from '@mui/icons-material';
+import welcomeImg from "../../../images/welcome.png";
+import { setFetching, setError, setAllMessagesArray, setMessages, setSuccessMini } from '../../../redux/states';
 import { useDispatch } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import { useNavigate, useLocation } from "react-router-dom";
 import { checkAuthenticatedUser, errorAnimation, successMiniAnimation } from '../../../utils/client-functions';
+import { Link } from 'react-router-dom';
 
 
 
-const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resumeSubDuration, isResumeSubbed, value, onChange, error, successMini }) => {
+const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const navigate = useNavigate();
     const location = useLocation();
-    const copyLink = useRef(null);
     const isAuth = localStorage?.getItem("token")
     const [activeIndex, setActiveIndex] = useState(null);
+
+
+    
     const errorSetter = (string) => {
         dispatch(setError(string))
         errorAnimation()
@@ -68,75 +75,6 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
         localStorage?.setItem("prevPath", prevPath)
         navigate("/user/dashboard/dash-support")
     }
-
-
-    const handleDeleteResume = async (index, imgUrl) => {
-        try {
-            //must await
-            await checkAuthenticatedUser()
-        } catch (error) {
-            dispatch(setFetching(false));
-            return navigate("/popin?resume");      
-        }
-        confirm({
-            title: `Delete "${arrayDetails[index].storageDetails.name}" Resume?`,
-            description: `Click OK to delete the selected resume forever`,
-        })
-        .then(async () => {
-            dispatch(setFetching(true))
-            let body;
-            if(imgUrl) {
-                const urlParts = new URL(imgUrl);
-                const pathname = urlParts.pathname;
-                const pathParts = pathname.split('/');
-                const fileName = pathParts[pathParts.length - 1];
-                body = {
-                    nameOfResume: arrayDetails[index].storageDetails.name,
-                    fileName: fileName
-                }
-            } else {
-                body = {
-                    nameOfResume: arrayDetails[index].storageDetails.name,
-                }
-            }
-
-            try {
-                const response = await axios.post("/user/delete-resume", body, {
-                    headers: {
-                        "x-access-token": isAuth,
-                    },
-                });
-                dispatch(setUserResumesAll(response.data.resume))
-                dispatch(setFetching(false))
-                successSetter("Resume Deleted")
-            } catch (error) {
-                dispatch(setFetching(false))
-                errorSetter(error.response.data.error)
-            }
-        })
-        .catch(() => {
-            return    
-        });
-    }
-
-    
-        
-    const handleReDownload = (index) => {
-        // setTrueOpened(true)
-        confirm({
-            title: `Download "${arrayDetails[index].storageDetails.name}" Resume?`,
-            description: `Click OK to continue to download preview`,
-        })
-        .then(() => {
-            //set only one resume to download
-            dispatch(setResume(arrayDetails[index]))
-            navigate("/user/dashboard/resume?download");
-        })
-        .catch(() => {
-            return    
-        });
-    }
-
 
     
     const handleDeleteMsgSession = async (index, item) => {
@@ -193,56 +131,30 @@ const AuthSideMenu = ({opened, seacrhBarPlaceholder, hidden, arrayDetails, resum
             return    
         });
     }
-
-const handleCopy = () => {
-    if (copyLink.current) {
-        const textToCopy = copyLink.current.textContent;
-  
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(textToCopy)
-            .then(() => {
-              successSetter("Link copied to clipboard");
-            })
-            .catch((err) => {
-              errorSetter("Failed to copy Link: ", err);
-            });
-        } else {
-          // For older browsers
-          const tempTextArea = document.createElement("textarea");
-          tempTextArea.value = textToCopy;
-          document.body.appendChild(tempTextArea);
-          tempTextArea.select();
-          document.execCommand("copy");
-          document.body.removeChild(tempTextArea);
-  
-          successSetter("Link copied to clipboard");
-        }
-    }
-};
     
 
 
-    const NonMonthlySubDisplay = () => {
-        return (
-            <div className={authMenuCss.NonMonthlySubDisplay}>
+    // const NonMonthlySubDisplay = () => {
+    //     return (
+    //         <div className={authMenuCss.NonMonthlySubDisplay}>
 
-                <div className={authMenuCss.UnavailableImg}>
-                    <img src={unavailableImg} alt='unavailable' width={"100%"} height={"100%"} style={{borderRadius: "50%"}} />
-                </div>
+    //             <div className={authMenuCss.UnavailableImg}>
+    //                 <img src={unavailableImg} alt='unavailable' width={"100%"} height={"100%"} style={{borderRadius: "50%"}} />
+    //             </div>
 
-                <h5>This feature is unavailable for your subscription tier. 
-                Upgrade to view all items in this category you've ever created. Plus much more!</h5>
+    //             <h5>This feature is unavailable for your subscription tier. 
+    //             Upgrade to view all items in this category you've ever created. Plus much more!</h5>
 
-                <div style={{marginTop: "50px"}}>
-                    <ButtonOutlineGreen link="/pricing" target="_blank">
-                        View Offers
-                    </ButtonOutlineGreen>
-                </div>
+    //             <div style={{marginTop: "50px"}}>
+    //                 <ButtonOutlineGreen link="/pricing" target="_blank">
+    //                     View Offers
+    //                 </ButtonOutlineGreen>
+    //             </div>
 
                 
-            </div>
-        )
-    }
+    //         </div>
+    //     )
+    // }
 
     const ItemsNamesArray = () => { 
         return ( 
@@ -277,43 +189,27 @@ const handleCopy = () => {
                         ))
                     )
                 ) : (
-                    arrayDetails.map((item, index) => (
-                        <div key={index} className={authMenuCss.Item} style={{height: !item?.storageDetails?.resumeLink && "50px"}}>
-                            <div className="error">{error}</div>
-                            <div className="success-mini">{successMini}</div>
-                            <div className={authMenuCss.ItemInnerTop}>
-                                <div onClick={() => handleReDownload(index)} style={{ width: "90%" }}>
-                                    <span style={{ position: "relative", top: ".6rem", fontWeight: "700", whiteSpace: 'nowrap', overflow: "hidden" }}>
-                                        {item?.storageDetails?.name ? item.storageDetails.name.length > 18 ? `${item.storageDetails.name.slice(0, 18)}...` : item.storageDetails.name : 'Unnamed'}
-                                    </span>
-                                    <span style={{ color: 'white', margin: '4px 4px 0 10px', float: "right" }}>
-                                        <DownloadIcon fontSize='medium' />
-                                    </span>
-                                </div>
-                                <div>
-                                    <span onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)} style={{ color: 'rgba(158, 9, 9, 0.733)', margin: '4px 4px 0 10px' }}>
-                                        <DeleteForeverIcon fontSize='small' />
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            {item?.storageDetails?.buildDate && (
-                                <div className={authMenuCss.buildDate}>
-                                    {item?.storageDetails?.buildDate}
-                                </div>
-                            )}
-                            {item?.storageDetails?.resumeLink && (
-                                <Grid container className={authMenuCss.ItemInnerBottom} title="Copy Resume Link" onClick={handleCopy}>
-                                    <Grid item xs={11} ref={copyLink} sx={{overflow: 'hidden', whiteSpace: 'nowrap'}}>
-                                        {item?.storageDetails?.resumeLink}
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <ContentCopyIcon fontSize='small' />
-                                    </Grid>
-                                </Grid>
-                            )}
-                        </div>
-                    ))
+
+                    <ul className={adminSideMenuCss.SideMenuItems}>
+                        <li>
+                            <Link to="/user/dashboard/resume-hub">
+                                <PictureAsPdf />
+                                <span>Resume Hub</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/user/dashboard/job-hub">
+                                <Work />
+                                <span>Job Hub</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/user/dashboard/referral-hub" >
+                                <GroupAdd />
+                                <span>Referral Hub</span>
+                            </Link>
+                        </li>
+                    </ul>
                 )}
             </div>
             
@@ -324,20 +220,21 @@ const handleCopy = () => {
     return (
         <div className={opened ? authMenuCss.ContainerOpen : authMenuCss.ContainerClose}>
 
-            <AuthInputs 
-                placeholder={seacrhBarPlaceholder} 
-                hidden={hidden} 
-                inputType="search" 
-                inputGridSm={12} 
-                inputGrid={4} 
-                mb={2} 
-                required={true} 
-                value={value}
-                onChange={onChange}
-            />
+            <div className={authMenuCss.TopCont}>
+
+                <div className={authMenuCss.LeftTopCont}>
+                   <h4>Welcome</h4> 
+                   <h1>{firstName}</h1>
+                </div>
+
+                <div className={authMenuCss.RightTopCont}>
+                    <img src={welcomeImg} width='100px' alt="Welcome" />
+                </div>
+            </div>
             
             <div className={authMenuCss.InnerContainer}>
-                {(() => {
+                <ItemsNamesArray />
+                {/* {(() => {
                     if (
                         (isResumeSubbed && resumeSubDuration === "Per Month") ||
                         (isResumeSubbed && resumeSubDuration === "Per Week") ||
@@ -347,7 +244,7 @@ const handleCopy = () => {
                     } else {
                         return <NonMonthlySubDisplay />;
                     }
-                })()}
+                })()} */}
             </div>
 
             <Grid container sx={{height: "60px"}}>
