@@ -41,7 +41,7 @@ const suggestionThree = {
 
 
 const AskMe = () => {
-  const { messages, error, successMini, allMessagesArray } = useSelector((state) => state.stateData);
+  const { messages, error, successMini, allMessagesArray, user } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
   const navigate = useNavigate();
@@ -424,7 +424,7 @@ const AskMe = () => {
             opened={authMenuOpen}
             seacrhBarPlaceholder=""
             hidden={!authMenuOpen}
-            // resumeSubDuration={subDuration}
+            firstName={user.firstName}
             arrayDetails={allMessagesArray}
         />
         <div className="error">{error}</div>

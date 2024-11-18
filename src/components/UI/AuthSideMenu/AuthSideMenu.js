@@ -134,38 +134,38 @@ const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
     
 
 
-    // const NonMonthlySubDisplay = () => {
-    //     return (
-    //         <div className={authMenuCss.NonMonthlySubDisplay}>
-
-    //             <div className={authMenuCss.UnavailableImg}>
-    //                 <img src={unavailableImg} alt='unavailable' width={"100%"} height={"100%"} style={{borderRadius: "50%"}} />
-    //             </div>
-
-    //             <h5>This feature is unavailable for your subscription tier. 
-    //             Upgrade to view all items in this category you've ever created. Plus much more!</h5>
-
-    //             <div style={{marginTop: "50px"}}>
-    //                 <ButtonOutlineGreen link="/pricing" target="_blank">
-    //                     View Offers
-    //                 </ButtonOutlineGreen>
-    //             </div>
-
-                
-    //         </div>
-    //     )
-    // }
+    const MenuDisplay = () => {
+        return (                    
+            <ul className={adminSideMenuCss.SideMenuItems}>
+                <li>
+                    <Link to="/user/dashboard/resume-hub">
+                        <PictureAsPdf />
+                        <span>Resume Hub</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/user/dashboard/job-hub">
+                        <Work />
+                        <span>Job Hub</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/user/dashboard/referral-hub" >
+                        <GroupAdd />
+                        <span>Referral Hub</span>
+                    </Link>
+                </li>
+            </ul>
+        )
+    }
 
     const ItemsNamesArray = () => { 
         return ( 
            <div className={authMenuCss.Items}>
                 {arrayDetails?.length < 1 ? (
-                    <div className={authMenuCss.NonMonthlySubDisplay}>
-                        {location.pathname !== "/chat" ? 
-                            <p>You have no resumes to display. Please create one.</p>
-                        :
-                            <p>Login below to display chat history here.</p>}
-                    </div>
+                    location.pathname === "/chat" ? <div className={authMenuCss.NonMonthlySubDisplay}>
+                        <p>Login below to display chat history here.</p>
+                    </div> : <MenuDisplay />
                 ) : location.pathname === "/chat" ? (
                     arrayDetails[0]?.length < 1 ? (
                         <div className={authMenuCss.NonMonthlySubDisplay}>
@@ -189,27 +189,7 @@ const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
                         ))
                     )
                 ) : (
-
-                    <ul className={adminSideMenuCss.SideMenuItems}>
-                        <li>
-                            <Link to="/user/dashboard/resume-hub">
-                                <PictureAsPdf />
-                                <span>Resume Hub</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/user/dashboard/job-hub">
-                                <Work />
-                                <span>Job Hub</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/user/dashboard/referral-hub" >
-                                <GroupAdd />
-                                <span>Referral Hub</span>
-                            </Link>
-                        </li>
-                    </ul>
+                    <MenuDisplay />
                 )}
             </div>
             
