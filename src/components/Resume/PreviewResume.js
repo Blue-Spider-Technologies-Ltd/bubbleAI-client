@@ -505,7 +505,7 @@ const PreviewResume = () => {
 
                 <Grid container>
                   <AuthInput
-                    value={basicInfo.firstName}
+                    value={basicInfo?.firstName}
                     inputType="text"
                     inputGridSm={12}
                     inputGrid={4}
@@ -515,7 +515,7 @@ const PreviewResume = () => {
                     onChange={handleInputChange("firstName")}
                   />
                   <AuthInput
-                    value={basicInfo.lastName}
+                    value={basicInfo?.lastName}
                     inputType="text"
                     inputGridSm={12}
                     inputGrid={4}
@@ -525,7 +525,7 @@ const PreviewResume = () => {
                     onChange={handleInputChange("lastName")}
                   />
                   <AuthInput
-                    value={basicInfo.email}
+                    value={basicInfo?.email}
                     inputType="email"
                     inputGridSm={12}
                     inputGrid={4}
@@ -540,7 +540,7 @@ const PreviewResume = () => {
                     </div>
                   </div>
                   <AuthInput
-                    value={basicInfo.dob}
+                    value={basicInfo?.dob}
                     placeholder="Date of Birth"
                     inputType="date"
                     inputGridSm={12}
@@ -550,7 +550,7 @@ const PreviewResume = () => {
                     disabled={true}
                   />
                   <AuthInput
-                    value={basicInfo.mobile}
+                    value={basicInfo?.mobile}
                     label="Mobile"
                     inputType="mobile"
                     inputGridSm={12}
@@ -561,7 +561,7 @@ const PreviewResume = () => {
                     onChange={handleInputChange("mobile")}
                   />
                   <AuthInput
-                    value={basicInfo.jobPosition}
+                    value={basicInfo?.jobPosition}
                     label="Job Position (NOT editable)"
                     inputType="text"
                     inputGridSm={12}
@@ -571,7 +571,7 @@ const PreviewResume = () => {
                     disabled={true}
                   />
                   <AuthInput
-                    value={basicInfo.street}
+                    value={basicInfo?.street}
                     label="Street Name"
                     inputType="text"
                     inputGridSm={12}
@@ -581,9 +581,9 @@ const PreviewResume = () => {
                     onChange={handleInputChange("street")}
                   />
                   <AuthInput
-                    id={basicInfo.country}
-                    value={basicInfo.country}
-                    placeholder={basicInfo.country ? basicInfo.country : "Country"}
+                    id={basicInfo?.country}
+                    value={basicInfo?.country}
+                    placeholder={basicInfo?.country ? basicInfo.country : "Country"}
                     inputType="country-select"
                     inputGridSm={12}
                     inputGrid={4}
@@ -592,10 +592,10 @@ const PreviewResume = () => {
                     onChange={handleInputChange("country")}
                   />
                   <AuthInput
-                    id={basicInfo.city}
-                    value={basicInfo.city}
+                    id={basicInfo?.city}
+                    value={basicInfo?.city}
                     countryid={countryid}
-                    placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
+                    placeholder={basicInfo?.city ? basicInfo.city : "State/Region"}
                     inputType="state-select"
                     inputGridSm={12}
                     inputGrid={4}
@@ -609,7 +609,7 @@ const PreviewResume = () => {
                     <h4>Ai Generated Prof. Summary</h4>
                   </div>
                   <AuthInput
-                    value={basicInfo.profSummary}
+                    value={basicInfo?.profSummary}
                     label="AI Generated Prof. Summary"
                     multiline={true}
                     rows={2}
@@ -623,7 +623,7 @@ const PreviewResume = () => {
                     xs={12}
                     style={{ display: "flex", flexDirection: "column" }}
                   >
-                    {linkInfo.length > 0 && (
+                    {linkInfo?.length > 0 && (
                       <div>
                         <div className={resumeCss.DetachedLabels}>Your Links</div>
 
@@ -634,7 +634,7 @@ const PreviewResume = () => {
                             flexWrap: "wrap",
                           }}
                         >
-                          {linkInfo.map((link, index) => {
+                          {linkInfo?.map((link, index) => {
                             return (
                               <span key={index} className="array-item">
                                 {link}
@@ -656,7 +656,7 @@ const PreviewResume = () => {
                   </Grid>
                 </Grid>
               </div>
-              {skills.length > 0 && (
+              {skills?.length > 0 && (
                 <div className="Segment">
                   <h4>Relevant Skills</h4>
                   <Grid container>
@@ -669,7 +669,7 @@ const PreviewResume = () => {
                         flexWrap: "wrap",
                       }}
                     >
-                      {skills.map((skill, index) => {
+                      {skills?.map((skill, index) => {
                         return (
                           <span key={index} className="array-item">
                             {skill}
@@ -709,7 +709,7 @@ const PreviewResume = () => {
                   </Grid>
 
                   <div>
-                    {eduArray.map((info, index) => {
+                    {eduArray?.map((info, index) => {
                       return (
                         <Grid container key={index} className="segment">
 
@@ -754,7 +754,7 @@ const PreviewResume = () => {
                             />
                           </Grid>
                           
-                        {eduArray.length > 1 && (
+                        {eduArray?.length > 1 && (
                           <Grid
                             item
                             xs={3}
@@ -812,7 +812,7 @@ const PreviewResume = () => {
                     )}
                   </Grid>                  
                   <div>
-                    {workExpArray.map((info, index) => {
+                    {workExpArray?.map((info, index) => {
                       return (
                         <Grid container className="segment" key={index}>
                       
@@ -965,7 +965,7 @@ const PreviewResume = () => {
                             />
                           </Grid>
 
-                          {workExpArray.length > 1 && (
+                          {workExpArray?.length > 1 && (
                             <Grid
                               item
                               xs={3}
@@ -1028,7 +1028,7 @@ const PreviewResume = () => {
                       container
                       sx={{ display: "flex", justifyContent: "space-around" }}
                     >
-                      {awardArray.map((info, index) => {
+                      {awardArray?.map((info, index) => {
                         return (
                           <Grid
                             item
@@ -1073,7 +1073,7 @@ const PreviewResume = () => {
                               />
                             </Grid>
 
-                            {awardArray.length > 1 && (
+                            {awardArray?.length > 1 && (
                               <Grid
                                 item
                                 xs={4}
@@ -1115,7 +1115,7 @@ const PreviewResume = () => {
                 </div>
               )}
 
-              {publications.length > 0 && (
+              {publications?.length > 0 && (
                 <div className="Segment">
                   
                   <Grid container>
@@ -1138,7 +1138,7 @@ const PreviewResume = () => {
                       container
                       sx={{ display: "flex", justifyContent: "space-around" }}
                     >
-                      {publications.map((info, index) => {
+                      {publications?.map((info, index) => {
                         return (
                           <Grid
                             item
@@ -1226,7 +1226,7 @@ const PreviewResume = () => {
                 </div>
               )}
 
-              {interests.length > 0 && (
+              {interests?.length > 0 && (
                 <div className="Segment">
                   <h4>Interests</h4>
                   <Grid container>

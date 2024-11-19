@@ -203,12 +203,12 @@ const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
             <div className={authMenuCss.TopCont}>
 
                 <div className={authMenuCss.LeftTopCont}>
-                   <h4>Welcome</h4> 
-                   <h1>{firstName}</h1>
+                    <h4>Welcome</h4> 
+                    <h1>{firstName}</h1>
                 </div>
 
                 <div className={authMenuCss.RightTopCont}>
-                    <img src={welcomeImg} width='100px' alt="Welcome" />
+                    <img src={welcomeImg} width='80px' alt="Welcome" />
                 </div>
             </div>
             

@@ -92,12 +92,12 @@ const ResumeHub = () => {
     const handleReDownload = (index) => {
         // setTrueOpened(true)
         confirm({
-            title: `Open "${userResumesAll[index].storageDetails.name}" Resume?`,
+            title: `Open "${resumeForSearch[index].storageDetails.name}" Resume?`,
             description: `Click OK to preview`,
         })
         .then(() => {
             //set only one resume to download
-            dispatch(setResume(userResumesAll[index]))
+            dispatch(setResume(resumeForSearch[index]))
             navigate("/user/dashboard/resume?download");
         })
         .catch(() => {
@@ -114,7 +114,7 @@ const ResumeHub = () => {
             return navigate("/popin?resume");      
         }
         confirm({
-            title: `Delete "${userResumesAll[index].storageDetails.name}" Resume?`,
+            title: `Delete "${resumeForSearch[index].storageDetails.name}" Resume?`,
             description: `Click OK to delete selected resume forever`,
         })
         .then(async () => {
@@ -126,12 +126,12 @@ const ResumeHub = () => {
                 const pathParts = pathname.split('/');
                 const fileName = pathParts[pathParts.length - 1];
                 body = {
-                    nameOfResume: userResumesAll[index].storageDetails.name,
+                    nameOfResume: resumeForSearch[index].storageDetails.name,
                     fileName: fileName
                 }
             } else {
                 body = {
-                    nameOfResume: userResumesAll[index].storageDetails.name,
+                    nameOfResume: resumeForSearch[index].storageDetails.name,
                 }
             }
 
@@ -142,6 +142,7 @@ const ResumeHub = () => {
                     },
                 });
                 dispatch(setUserResumesAll(response.data.resume))
+                setResumeForSearch(response.data.resume)
                 dispatch(setFetching(false))
                 successSetter("Resume Deleted")
             } catch (error) {

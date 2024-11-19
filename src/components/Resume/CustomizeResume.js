@@ -885,10 +885,12 @@ const CustomizeResume = () => {
       }
 
       const dataObject = response.data.resumeData;
+      
       // Convert the string to a JavaScript object
       const myObject = (new Function(`return (${dataObject})`)());
-      
+
       const now = new Date().getTime();
+      
       //save a copy for later incase user doesn't finish now
       let resumeObjforLocal = {
         resumeData: myObject,

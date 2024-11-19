@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.39a0759a.css",
-    "main.js": "/static/js/main.84d124b4.js",
+    "main.css": "/static/css/main.9b7c4083.css",
+    "main.js": "/static/js/main.215406fc.js",
     "static/js/29.1dc24455.chunk.js": "/static/js/29.1dc24455.chunk.js",
     "static/js/118.290d15af.chunk.js": "/static/js/118.290d15af.chunk.js",
     "static/js/568.2ab9919e.chunk.js": "/static/js/568.2ab9919e.chunk.js",
     "static/media/chat-land.gif": "/static/media/chat-land.3ed0618beca84091d782.gif",
-    "static/media/cool.png": "/static/media/cool.1f044a3506ae4b9e75d2.png",
     "static/media/chat-portrait.gif": "/static/media/chat-portrait.059a9f96976a2f7a85fb.gif",
-    "static/media/welcome.png": "/static/media/welcome.75db9160ba7598063a91.png",
     "static/media/contact-desk2.jpg": "/static/media/contact-desk2.3f8d1759f53e881527ba.jpg",
     "static/media/contact-desk1.jpg": "/static/media/contact-desk1.cc63ebc0cd5ae137ad11.jpg",
     "static/media/contact-mobile.jpg": "/static/media/contact-mobile.e503c5d550546e93a62e.jpg",
     "static/media/TwemojiMozilla.ttf": "/static/media/TwemojiMozilla.c993f93bd40b647e0b38.ttf",
+    "static/media/cool.png": "/static/media/cool.8450a935d263a869456d.png",
+    "static/media/welcome.png": "/static/media/welcome.4d418bee900b99ccdbec.png",
     "static/media/Tinos-Regular.ttf": "/static/media/Tinos-Regular.83a9accf4fde7027b6d2.ttf",
     "static/media/Tinos-Bold.ttf": "/static/media/Tinos-Bold.662a7db453c400fa9397.ttf",
     "static/media/failed.gif": "/static/media/failed.6627106d63a9dade2c9f.gif",
@@ -53,14 +53,14 @@
     "static/media/microsoft.png": "/static/media/microsoft.204345df7313cd2dc55b.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.39a0759a.css.map": "/static/css/main.39a0759a.css.map",
-    "main.84d124b4.js.map": "/static/js/main.84d124b4.js.map",
+    "main.9b7c4083.css.map": "/static/css/main.9b7c4083.css.map",
+    "main.215406fc.js.map": "/static/js/main.215406fc.js.map",
     "29.1dc24455.chunk.js.map": "/static/js/29.1dc24455.chunk.js.map",
     "118.290d15af.chunk.js.map": "/static/js/118.290d15af.chunk.js.map",
     "568.2ab9919e.chunk.js.map": "/static/js/568.2ab9919e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.39a0759a.css",
-    "static/js/main.84d124b4.js"
+    "static/css/main.9b7c4083.css",
+    "static/js/main.215406fc.js"
   ]
 }
