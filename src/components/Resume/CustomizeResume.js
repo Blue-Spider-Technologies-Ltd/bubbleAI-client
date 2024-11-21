@@ -102,6 +102,9 @@ const CustomizeResume = () => {
   useEffect(() => {
     dispatch(setFetching(true));
     localStorage.removeItem("prevPath");
+    const description = localStorage?.getItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription")
+    const jobTitle = localStorage?.getItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle")
+    
     
     const populateUser = async () => {
       try {
@@ -146,7 +149,7 @@ const CustomizeResume = () => {
           email: email,
           dob: dob || "",
           mobile: mobile || "",
-          jobPosition: jobPosition || "",
+          jobPosition: jobTitle || jobPosition || "",
           street: streetCity || "",
           city: stateRegion || "",
           country: country || "",
@@ -168,7 +171,13 @@ const CustomizeResume = () => {
     };
 
     populateUser();
-      
+
+    if(description) {
+      setAdditionalInfo(`The following is a full job description of the job i am applying for, optimize the resume to fit the job description; 
+        making sure that keywords from the description appears strategically and professionally in the skills, professional 
+        summary and work history of the resultant ATS friendly resume: ` + description)
+    }
+
   }, [navigate, dispatch, isAuth]);
 
   //to redirect user if previously unfinished resume
@@ -900,6 +909,8 @@ const CustomizeResume = () => {
         "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@",
         JSON.stringify(resumeObjforLocal)
       );
+      localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription")
+      localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle")
       setLoading(false);
       eventSource.close();
       navigate("/user/dashboard/resume?preview");
