@@ -21,6 +21,7 @@ import { IoSparklesSharp } from "react-icons/io5";
 import { VscChecklist } from "react-icons/vsc";
 import { FaSuitcase } from "react-icons/fa6";
 import { IoMdRemoveCircle } from "react-icons/io";
+import { TypeAnimation } from 'react-type-animation';
 import iconImg from '../../../images/bubble icon.jpg'
 import axios from "axios";
 const screenWidth = window.innerWidth
@@ -41,6 +42,87 @@ const JobHub = () => {
     const [jobs, setJobs] = useState([])
     const [img, setImg] = useState('')
     const [activeIndex, setActiveIndex] = useState(0)
+    const [textColor, setTextColor] = useState('black');
+
+    const styles = {
+        cardGrid: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '10px auto'
+        },
+        card: { 
+            backgroundColor: '#c0d1d457',
+            borderRadius: '20px',
+            color: 'black',
+            display: 'flex', 
+            maxHeight: '500px',
+            width: screenWidth < 900 ? '100%' : '90%',
+            overflow: 'hidden', // Hide overflow to ensure smooth transition
+            transition: 'all 3s ease-in-out',
+        },
+        cardLarge: { 
+            backgroundColor: '#c0d1d457',
+            borderRadius: '20px',
+            color: 'black',
+            display: 'flex', 
+            maxHeight: 'none',
+            width: screenWidth < 900 ? '100%' : '90%',
+            overflow: 'visible', // Hide overflow to ensure smooth transition
+            transition: 'all 3s ease-in-out',
+        },
+        link: {
+            borderRadius: '20px',
+            color: 'rgba(0, 0, 0, 0.634)',
+            display: 'flex',
+            alignItems:'center',
+            justifyContent: 'space-between',
+            backgroundColor: 'rgba(255, 250, 250, 0.625)',
+            cursor: 'copy',
+            margin: '5px 0',
+            width: '100%',
+            padding: '5px',
+            zIndex: '1',
+            fontSize: '.75rem',
+        },
+        img: {
+            borderRadius: '50%',
+            margin: '20px',
+            maxWidth: '60px',
+            maxHeight: '60px'
+        },
+        animText: {
+            width: 'auto',
+            margin: '15px auto',
+            fontSize: '.85rem',
+            textAlign: 'center',
+            fontWeight: '600',
+            color: textColor,
+            backgroundColor: '#c0d1d4',
+            borderRadius: '20px',
+            padding: '15px 10px'
+        },
+        noResumes: {
+            boxSizing: 'border-box',
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            height: '30vh', 
+            width: '100%'
+        },
+        key: {
+            fontWeight: '700'
+        },
+        unlock: {
+            textDecoration: 'underline',
+            fontSize: '.7rem'
+        }, 
+        desc: {
+            fontSize: '.74rem',
+            padding: '10px 0'
+        }
+    }
 
     const errorSetter = (string) => {
         dispatch(setError(string))
@@ -171,6 +253,23 @@ const JobHub = () => {
                 />
             </div>  */}
 
+            <div style={styles.animText}>
+                <TypeAnimation
+                    sequence={[
+                        () => setTextColor('#3E8F93'),
+                        'Greater Than 90% Chance of Interview',
+                        1000,
+                        'Greater Than 90% Chance of Employment',
+                        300,
+                        () => setTextColor('black'),
+                        'Real Company Data Used in Interview Prep',
+                        1000,
+                        'Real Company Data Used in Generating All Application Requirements',
+                    ]}
+                    repeat={Infinity}
+                />
+            </div>
+
             {jobs.length < 1 ? (
                 <div style={styles.noResumes}>
                     <h4>Create Resume to get Job Connections</h4>
@@ -290,86 +389,12 @@ const JobHub = () => {
         </div>
     </div>
   );
+
+  
 };
+
+
 
 export default JobHub;
 
-const styles = {
-    cardGrid: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '10px auto'
-    },
-    card: { 
-        backgroundColor: '#c0d1d457',
-        borderRadius: '20px',
-        color: 'black',
-        display: 'flex', 
-        maxHeight: '500px',
-        width: screenWidth < 900 ? '100%' : '90%',
-        overflow: 'hidden', // Hide overflow to ensure smooth transition
-        transition: 'all 3s ease-in-out',
-    },
-    cardLarge: { 
-        backgroundColor: '#c0d1d457',
-        borderRadius: '20px',
-        color: 'black',
-        display: 'flex', 
-        maxHeight: 'none',
-        width: screenWidth < 900 ? '100%' : '90%',
-        overflow: 'visible', // Hide overflow to ensure smooth transition
-        transition: 'all 3s ease-in-out',
-    },
-    buildDate: {
-        marginTop: '10px',
-        marginBottom: '-10px',
-        textAlign: 'right',
-        fontSize: '.6rem',
-        width: '100%'
-    },
-    link: {
-        borderRadius: '20px',
-        color: 'rgba(0, 0, 0, 0.634)',
-        display: 'flex',
-        alignItems:'center',
-        justifyContent: 'space-between',
-        backgroundColor: 'rgba(255, 250, 250, 0.625)',
-        cursor: 'copy',
-        margin: '5px 0',
-        width: '100%',
-        padding: '5px',
-        zIndex: '1',
-        fontSize: '.75rem',
-    },
-    img: {
-        borderRadius: '50%',
-        margin: '20px',
-        maxWidth: '60px',
-        maxHeight: '60px'
-    },
-    greenBtnCont: {
-        width: '100px',
-        height: '25px'
-    },
-    noResumes: {
-        boxSizing: 'border-box',
-        display: 'flex', 
-        flexDirection: 'column',
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        height: '30vh', 
-        width: '100%'
-    },
-    key: {
-        fontWeight: '700'
-    },
-    unlock: {
-        textDecoration: 'underline',
-        fontSize: '.7rem'
-    }, 
-    desc: {
-        fontSize: '.74rem',
-        padding: '10px 0'
-    }
-}
+

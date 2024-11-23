@@ -177,6 +177,8 @@ const CustomizeResume = () => {
         making sure that keywords from the description appears strategically and professionally in the skills, professional 
         summary and work history of the resultant ATS friendly resume: ` + description)
     }
+    localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription")
+    localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle")
 
   }, [navigate, dispatch, isAuth]);
 
@@ -909,8 +911,7 @@ const CustomizeResume = () => {
         "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@",
         JSON.stringify(resumeObjforLocal)
       );
-      localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription")
-      localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle")
+
       setLoading(false);
       eventSource.close();
       navigate("/user/dashboard/resume?preview");
