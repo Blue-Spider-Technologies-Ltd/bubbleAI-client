@@ -13,6 +13,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { IoMdRemoveCircle } from "react-icons/io";
+import { FaEye } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import { errorAnimation, successMiniAnimation, checkAuthenticatedUser } from "../../../utils/client-functions";
@@ -194,7 +196,7 @@ const ResumeHub = () => {
 
             <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
                 <AuthInputs 
-                    placeholder="Search for a resume" 
+                    placeholder="Search resume by name" 
                     inputType="search" 
                     mb={3} 
                     mt={5} 
@@ -256,13 +258,13 @@ const ResumeHub = () => {
                                         <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1 }}>
                                             <ButtonThin
                                                 fontSize='.6rem' 
-                                                border='2px solid black' 
+                                                border='2px solid #3E8F93' 
                                                 width={'100px'} 
                                                 height='25px' 
                                                 color='black'
                                                 onClick={() => handleReDownload(index)}
                                             >
-                                                View 
+                                                <FaEye style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; View 
                                             </ButtonThin>
 
                             
@@ -275,7 +277,7 @@ const ResumeHub = () => {
                                                 color='rgba(158, 9, 9, 0.733)'
                                                 onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)}
                                             >
-                                                Delete
+                                                <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
                                             </ButtonThin>
                                         </Box>
                                     </Box>

@@ -262,9 +262,12 @@ const JobHub = () => {
                         'Greater Than 90% Chance of Employment',
                         300,
                         () => setTextColor('black'),
+                        'Real Company Data Used in Generating Resume',
+                        1000,
+                        'Real Company Data Used in Generating Cover',
+                        1000,
                         'Real Company Data Used in Interview Prep',
                         1000,
-                        'Real Company Data Used in Generating All Application Requirements',
                     ]}
                     repeat={Infinity}
                 />
