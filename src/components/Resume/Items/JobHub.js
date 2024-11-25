@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import { ButtonSubmitGreen, ButtonThin } from "../../UI/Buttons/Buttons";
 import { 
     errorAnimation, 
     successMiniAnimation, 
-    checkAuthenticatedUser 
+    checkAuthenticatedUser,
+    getOrdinalDate 
 } from "../../../utils/client-functions";
 import { setFetching, setError, setSuccessMini, setResumeSubDuration, setIsResumeSubbed } from "../../../redux/states";
+import Alert from '@mui/material/Alert';
 import { Grid } from "@mui/material";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -21,7 +24,11 @@ import { IoSparklesSharp } from "react-icons/io5";
 import { VscChecklist } from "react-icons/vsc";
 import { FaSuitcase } from "react-icons/fa6";
 import { IoMdRemoveCircle } from "react-icons/io";
+import { SlEnvolopeLetter } from "react-icons/sl";
+import { MdMarkEmailRead } from "react-icons/md";
 import { TypeAnimation } from 'react-type-animation';
+import { FaLongArrowAltLeft } from "react-icons/fa";
+import { GrStatusGood } from "react-icons/gr";
 import iconImg from '../../../images/bubble icon.jpg'
 import axios from "axios";
 const screenWidth = window.innerWidth
@@ -43,6 +50,12 @@ const JobHub = () => {
     const [img, setImg] = useState('')
     const [activeIndex, setActiveIndex] = useState(0)
     const [textColor, setTextColor] = useState('black');
+    const [modalOpen, setModalOpen] = useState(false)
+    const [allResumes, setAllResumes] = useState([])
+    const [singleResume, setSingleResume] =  useState({})
+    const [chosenJob, setChosenJob] =  useState({})
+    const [actionString, setActionString] = useState('')
+    const [activeResIndex, setActiveResIndex] = useState(0)
 
     const styles = {
         cardGrid: {
@@ -121,6 +134,49 @@ const JobHub = () => {
         desc: {
             fontSize: '.74rem',
             padding: '10px 0'
+        },
+        modalInner: {
+            width: '100%',
+            textAlign: 'center'
+        },
+        resumesCont: {
+            width: "100%",
+            maxHeight: '200px',
+            overflowY: 'scroll',
+            textAlign: "left",
+            padding: "15px 5px",
+            backgroundColor: "#c0d1d457",
+            borderRadius: "10px",
+            margin: '15px auto',
+            wordBreak: "break-word",
+            lineHeight: "1",
+            boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
+        },
+        eachResume: {
+            width: '100%',
+            border: '1px dashed black',
+            padding: '10px',
+            borderRadius: '6px',
+            fontSize: '.65rem',
+            marginBottom: '5px',
+            cursor: 'pointer',
+            transition: 'all 0.4s ease-out'
+        },
+        activeResume: {
+            color: '#3E8F93',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            border: '1px solid #3E8F93',
+            padding: '10px',
+            borderRadius: '6px',
+            fontSize: '.65rem',
+            fontWeight: '500',
+            marginBottom: '5px',
+            cursor: 'pointer', 
+            transition: 'all 0.4s ease-in-out'
         }
     }
 
@@ -165,6 +221,7 @@ const JobHub = () => {
                 dispatch(setResumeSubDuration(data?.subDuration));
                 dispatch(setIsResumeSubbed(data?.resumeSub));
                 setJobs(data?.jobs)
+                setAllResumes(data.resumes)
                 dispatch(setFetching(false));
     
             } catch (error) {
@@ -216,6 +273,86 @@ const JobHub = () => {
 
     const deleteJob = async (id) => {
 
+    }
+
+    const chooseActStr = async (str, item) => {
+        setActionString(str)
+        setModalOpen(true)
+        setChosenJob(item)
+    }
+
+    const chooseResume = (index) => {
+        setActiveResIndex(index + 1)
+        setSingleResume(allResumes[index])
+    }
+
+    const handleGenerate = async () => {
+        
+        switch (actionString) {
+            case "Cover Letter":
+                const date = getOrdinalDate()
+                const companyName = chosenJob?.company_name
+                const jobDesc = chosenJob?.description
+                const jobPosition = chosenJob?.title
+                const imgUrl = singleResume?.storageDetails?.imgUrl
+                const template = singleResume?.storageDetails?.template
+
+                localStorage?.removeItem("template")            
+                localStorage?.removeItem("imgUrl")
+                localStorage?.removeItem("resume")
+                localStorage?.removeItem("letter")
+                
+                
+                if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
+                    return errorSetter("Upgrade Subscription to access this feature")
+                }
+                
+                const prompt = `You are the best and most professional cover letter writer in the world, 
+                    with 100% success rate from your cover letter writings. Write a stunning professional 
+                    cover letter using the following details: Job Position: ${jobPosition}, 
+                    Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${JSON.stringify(singleResume)}, 
+                    pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
+                    the basicInfo object of the resume; pick out the candidate's work history and all other elements 
+                    needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
+                    links or addressing or contact details or place holders e.g [Your Email] [Your Mobile] [Hiring Manager’s Name] to the cover letter. 
+                    Start with Date, then Dear Hiring Manager and return just the cover letter, with no explanations`
+                
+                try {
+                    dispatch(setFetching(true))
+                    let response = await axios.post("/cover-letter", { prompt }, {
+                        headers: {
+                            "x-access-token": isAuth,
+                        },
+                    });
+                    
+                    localStorage.setItem("template", template)            
+                    localStorage.setItem("resume", JSON.stringify(singleResume))            
+                    localStorage.setItem("imgUrl", imgUrl)
+                    localStorage.setItem("letter", response.data)
+                    dispatch(setFetching(false))
+                    successSetter("You Cover Letter Will open in a new tab in 3 seconds")
+                    //Navigate in a Cover Letter page
+                    setTimeout(() => {
+                        window.open("/cover-letter", "_blank");
+                    }, 3000);
+                } catch (error) {
+                    dispatch(setFetching(false))
+                    errorSetter("Failed to generate Cover Letter, Try again")
+                }
+                break;
+                
+            case "Email":
+                
+                break;
+
+            
+            case "Interview":
+            
+                break;
+        
+            default:
+                break;
+        }
     }
 
 
@@ -275,7 +412,7 @@ const JobHub = () => {
                         1000,
                         '.',
                         1000,
-                        () => setTextColor('rgb(177, 144, 13)'),
+                        () => setTextColor('#987070'),
                         'Enhances User Data to Generate Resume',
                         1000,
                         'Enhances User Data to Generate Cover',
@@ -356,6 +493,19 @@ const JobHub = () => {
                                             </ButtonThin>
                                         </div>
 
+                                        <div style={{marginBottom: "10px", marginRight: '3px'}}>
+                                            <ButtonThin
+                                                fontSize='.6rem' 
+                                                border='2px solid #987070' 
+                                                width={'110px'} 
+                                                height='25px' 
+                                                color='black'
+                                                onClick={() => chooseActStr("Cover Letter", item)}
+                                            >
+                                                <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
+                                            </ButtonThin>
+                                        </div>
+
                                         <div style={{marginBottom: "10px"}}>
                                             <ButtonThin
                                                 fontSize='.6rem' 
@@ -368,6 +518,19 @@ const JobHub = () => {
                                                 <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
                                             </ButtonThin>
                                         </div>
+
+                                        <div style={{marginBottom: "10px"}}>
+                                            <ButtonThin
+                                                fontSize='.6rem' 
+                                                border='2px solid #68A7AD' 
+                                                width={'110px'} 
+                                                height='25px' 
+                                                color='black'
+                                                onClick={() => chooseActStr("Email")}
+                                            >
+                                                <MdMarkEmailRead style={{color: "#68A7AD", fontSize: ".9rem"}} />&nbsp;&nbsp; Email Follow-up
+                                            </ButtonThin>
+                                        </div>
                                         
                                         <div style={{marginBottom: "10px"}}>
                                             <ButtonThin
@@ -376,6 +539,7 @@ const JobHub = () => {
                                                 width={'110px'} 
                                                 height='25px' 
                                                 color='black'
+                                                onClick={() => chooseActStr("Interview")}
                                             >
                                                 <VscChecklist style={{color: "black", fontSize: ".9rem"}} />&nbsp;&nbsp; Interview Prep
                                             </ButtonThin>
@@ -403,9 +567,38 @@ const JobHub = () => {
                 </Grid>
             )}
 
-
-
         </div>
+
+        {modalOpen && (
+            <PlainModalOverlay>
+                <div style={styles.modalInner}>
+                    <div className='prev-page' onClick={() => setModalOpen(false)}>
+                        <FaLongArrowAltLeft />
+                    </div>
+                    <h4>Choose a resume for me to optimize your {actionString}, together with this job's real data.</h4>
+                    <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Using the "Get Resume" button on each job to optimize your resume per-job gives your application materials more relevance and hence, gives you a surer chance.</Alert>
+
+                    <div style={styles.resumesCont}>
+                        {allResumes.length > 0 && (
+                            allResumes.map((resume, index) => {
+                                return (
+                                    <div key={index} style={activeResIndex === index + 1 ? styles.activeResume : styles.eachResume} onClick={() => chooseResume(index)}>
+                                        <div>{resume?.storageDetails?.name}</div> {activeResIndex === index + 1 && <div><GrStatusGood style={{color: "#3E8F93", fontSize: ".9rem"}} /> </div>}
+                                    </div>
+                                )
+                            })
+                        )}
+                    </div>
+
+                    <div style={{width: '100%'}}>
+                        <ButtonSubmitGreen onClick={handleGenerate} >Get {actionString}</ButtonSubmitGreen>
+                    </div>
+
+                </div>
+            </PlainModalOverlay>
+        )}
+
+
     </div>
   );
 

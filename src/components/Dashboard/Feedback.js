@@ -79,10 +79,10 @@ const Feedback = (props) => {
         <div>
             {!feedbackSent ? (
                 <PlainModalOverlay>
-                <div className={modalCss.CheckoutLogoWrapper}>
-                    <img src={successImg} alt='Bubble Ai' style={{width: '100%'}} />
-                    <h4>Completed!</h4>
-                </div>
+                    <div className={modalCss.CheckoutLogoWrapper}>
+                        <img src={successImg} alt='Bubble Ai' style={{width: '100%'}} />
+                        <h4>Completed!</h4>
+                    </div>
                     <h2>Kindly leave me a review!</h2>
                     <p>Only your first name will be used</p>
 

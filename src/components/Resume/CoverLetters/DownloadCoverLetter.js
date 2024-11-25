@@ -3,6 +3,7 @@ import resumeCss from '../Resume.module.css'
 import { setError, setFetching, setSuccessMini } from "../../../redux/states";
 import { pdf, PDFViewer, StyleSheet } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
+import Alert from '@mui/material/Alert';
 // import ProtectedContent from "../../UI/ProtectedContent/ProtectedContent";
 import { useConfirm } from "material-ui-confirm";
 import { useDispatch } from "react-redux";
@@ -15,6 +16,7 @@ import AuthHeader from '../../UI/AuthHeader/AuthHeader';
 import CLStandardPDF from './CLStandardPDF';
 import CLEuroPass from './CLEuroPass';
 import CLAuckland from './CLAuckland';
+import avatarImg from '../../../images/avatar.png'
 const screenWidth = window.innerWidth
 
 
@@ -36,7 +38,7 @@ const DownloadCoverLetter = () => {
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
     const template = localStorage?.getItem("template")
-    const imgUrl = localStorage?.getItem("imgUrl")
+    const imgUrl = localStorage?.getItem("imgUrl") ? localStorage?.getItem("imgUrl") : avatarImg
     const letter = localStorage?.getItem("letter")
 
     const errorSetter = (string) => {
@@ -148,6 +150,11 @@ const DownloadCoverLetter = () => {
                     <form>
                         <div className="Segment">
                             <h4>View and Download</h4>
+                            <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                <Alert sx={{padding: '0 5px', width: 'auto', margin: '0 auto', fontSize: '.7rem'}} severity="warning">Reload this page if your cover letter does not display in 10 seconds.</Alert>
+                            </div>
+                            
+
                             
                                     <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
                                         <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 700 ? '#323639' : 'white', zIndex: 20}}>

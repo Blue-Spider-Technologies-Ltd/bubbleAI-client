@@ -172,6 +172,10 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
         const jobDesc = job?.description
         const jobPosition = job?.title
         
+        localStorage?.removeItem("template")            
+        localStorage?.removeItem("imgUrl")
+        localStorage?.removeItem("resume")
+        localStorage?.removeItem("letter")
         
         if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
             return errorSetter("Upgrade Subscription to access this feature")
@@ -201,7 +205,10 @@ const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => 
             localStorage.setItem("letter", response.data)
             dispatch(setFetching(false))
             //Navigate in a Cover Letter page
-            window.open("/cover-letter", "_blank");
+            setTimeout(() => {
+                window.open("/cover-letter", "_blank");
+            }, 3000);
+ 
         } catch (error) {
             dispatch(setFetching(false))
             errorSetter("Failed to generate Cover Letter, Try again")
