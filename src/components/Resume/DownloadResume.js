@@ -359,7 +359,7 @@ const DownloadResume = () => {
         
     const handleJobConnect = () => {
         if(hasDownloadedCv) {
-            setCompleted(true)
+            navigate('/user/dashboard/job-hub')
         } else {
             errorSetter("Download resume to proceed")
         }
