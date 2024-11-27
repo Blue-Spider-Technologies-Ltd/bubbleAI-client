@@ -152,9 +152,9 @@ export const fetchPrice = async (category, usage) => {
 
         switch (category) {
             case 'resume':
-                comparativePriceOne_Africa = 3500;
-                comparativePriceTwo_Africa = 10000;
-                comparativePriceThree_Africa = 25000;
+                comparativePriceOne_Africa = 2000;
+                comparativePriceTwo_Africa = 7000;
+                comparativePriceThree_Africa = 20000;
 
                 comparativePriceOne_RestOfWorld = 6500;
                 comparativePriceTwo_RestOfWorld = 20000;
