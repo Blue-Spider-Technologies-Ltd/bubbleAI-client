@@ -10,7 +10,9 @@ import {
     NotificationsActive, 
     Group, 
     AdminPanelSettings,
-    ReceiptLong 
+    ReceiptLong,
+    AutoFixHigh,
+    UploadFile
 } from '@mui/icons-material';
 
 export const ButtonOutlineGreen = ({ link, target, children }) => {
@@ -171,7 +173,13 @@ export const ButtonCard = props => {
                 break;
             case 'translate':
                 iconImg = <TranslateIcon sx={{fontSize: '4rem'}} />
-                break;        
+                break; 
+            case 'optimize-resume':
+                iconImg = <UploadFile sx={{color: "#F8E231", fontSize: '4rem'}} />
+                break; 
+            case 'new-resume':
+                iconImg = <AutoFixHigh sx={{color: "#F8E231", fontSize: '4rem'}} />
+                break;          
             default:
                 iconImg = <Groups3Icon sx={{fontSize: '4rem'}} />
                 break;

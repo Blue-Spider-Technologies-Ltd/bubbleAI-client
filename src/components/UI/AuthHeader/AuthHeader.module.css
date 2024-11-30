@@ -10,8 +10,8 @@
     cursor: pointer;
     font-size: .8rem;
     font-weight: 500;
-    padding: 5px;
     z-index: 9999;
+    transition: all .5s ease-in-out;
 }
 
 .showOptions {
@@ -20,13 +20,8 @@
 }
 
 .hideOptions {
-    background-color: var(--navColor2);
+    color: var(--navColor2);
     position: fixed;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
-    -o-border-radius: 2px;
 }
 
 

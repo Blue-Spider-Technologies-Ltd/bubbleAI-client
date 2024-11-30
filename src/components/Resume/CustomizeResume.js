@@ -14,10 +14,13 @@ import {
   setUserResumesAll, 
   setError, 
   setResumeSubDuration,
-  setIsResumeSubbed } from "../../redux/states";
-import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from "../UI/Buttons/Buttons";
+  setIsResumeSubbed,
+  setHideCards 
+} from "../../redux/states";
+import { ButtonSubmitGreen, ButtonCard } from "../UI/Buttons/Buttons";
 // import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 // import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import axios from "axios";
 import { Modal, PlainModalOverlay } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
@@ -34,7 +37,7 @@ import ChatwootWidget from "../../utils/chatwoot";
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, userResumesAll, error, successMini, isResumeSubbed } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error, successMini, isResumeSubbed, hideCards } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const dragDropRef = useRef();
   const [loading, setLoading] = useState(false);
@@ -55,6 +58,7 @@ const CustomizeResume = () => {
   const [countryid, setCountryid] = useState(0);
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(false);
+  const [creatorDisplay, setCreatorDisplay] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
   // const screenWidth = window.innerWidth
 
@@ -84,9 +88,18 @@ const CustomizeResume = () => {
     em: user.email
   }
 
+  const resetButtonCardBoleans = () => {
+    dispatch(setHideCards(false))
+  }
+
+  const selectBuildType = (str) => {
+    dispatch(setHideCards(true))
+    setCreatorDisplay(str)
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    resetButtonCardBoleans()
   }, []);
 
   const options = {
@@ -981,6 +994,8 @@ const CustomizeResume = () => {
           headerText="Create Resume"
         />
 
+        <div className="error">{error}</div>
+
         <div className="BodyWrapper" onClick={() => setAuthMenuOpen(false)}>
           <div className="BuildNavigator">
             <div className="ActiveNav">
@@ -994,917 +1009,922 @@ const CustomizeResume = () => {
             </div>
           </div>
 
-          <form method="post" onSubmit={handleFormSubmit}>
-            <div className="error">{error}</div>
-            <div className='explanation-points'>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">All fields with * are required</Alert>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have questions? <a className="link" target="_blank" href="/chat" style={{textDecoration: "underline"}}>Ask me anything!</a></Alert>
-            </div>
-
-
-            {/* DRAG N DROP TO REWRITE RESUME */}
-            <div className={`Segment ${basicFaded ? 'Faded' : 'Faded-in'}`}>
-              <h4>Optimize an old CV</h4>
-
-              {renderDragAndDrop()}
-
-              <Grid container mt={5}>
-                <AuthInput
-                  id={basicInfo.jobPosition}
-                  value={basicInfo.jobPosition}
-                  label="Job Position to optimise CV to"
-                  inputType="text"
-                  inputGridSm={12}
-                  inputGrid={12}
-                  mb={2}
-                  required={true}
-                  onChange={handleInputChange("jobPosition")}
-                />
-                <div style={{ width: "100%", marginBottom: "15px", textAlign: "center" }}>
-                  <div className={resumeCss.DetachedLabels}>
-                    Location (used for job search & on CV)
-                  </div>
-                </div>
-                <AuthInput
-                  id={basicInfo.street}
-                  value={basicInfo.street}
-                  label="City/District"
-                  inputType="text"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  onChange={handleInputChange("street")}
-                />
-                <AuthInput
-                  id={basicInfo.country}
-                  value={basicInfo.country}
-                  placeholder={basicInfo.country ? basicInfo.country : "Country"}
-                  inputType="country-select"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  onChange={handleInputChange("country")}
-                />
-                <AuthInput
-                  id={basicInfo.city}
-                  value={basicInfo.city}
-                  countryid={countryid}
-                  placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
-                  inputType="state-select"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  onChange={handleInputChange("city")}
-                />
-                <AuthInput
-                  id={additionalInfo}
-                  name="additionalInfo"
-                  value={additionalInfo}
-                  placeholder="[Optional] Tell me what to specifically add or remove or you can paste job requirements. E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024 OR Delete work history with Blanket Designs OR [Paste job description here] "
-                  multiline={true}
-                  rows={3}
-                  inputGridSm={12}
-                  onChange={(event) => setAdditionalInfo(event.target.value)}
-                />
+          {!hideCards ? (
+            <Grid container sx={{padding: '50px 30px'}}>
+              <Grid item md={6} xs={12}>
+                  <ButtonCard icon="optimize-resume" title="Optimize Old Resume" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Have an old resume? This option will help you optimize it to ATS and industry standard in seconds, with the right keywords and metrics." />
               </Grid>
+          
+              <Grid item md={6} xs={12}>
+                  <ButtonCard icon="new-resume" title="Create From Scratch" width={'350px'} onClick={() => selectBuildType("")} description="New to the Job market or just want to start afresh? Fill a short profile in 2 minutes and I will generate a professional resume in seconds." />
+              </Grid>
+            </Grid>
+          ) : (
+            <form method="post" onSubmit={handleFormSubmit}>
 
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "20px",
-                  marginTop: "10px",
-                }}
-              >
-                <div style={{ width: "150px"}}>
-                </div>
-                <div style={{ width: "150px"}}>
-                  <ButtonSubmitGreen type="button" onClick={handleFileResumeOptimize}>
-                    Optimize &nbsp;&nbsp;<IoSparklesSharp style={{color: "#F8E231", fontSize: "1.5rem"}} />
-                  </ButtonSubmitGreen>
-                </div>
+              <div className='explanation-points'>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">All fields with * are required</Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have questions? <a className="link" target="_blank" href="/chat" style={{textDecoration: "underline"}}>Ask me anything!</a></Alert>
               </div>
-            </div>
 
+              <div className='prev-page' onClick={resetButtonCardBoleans} >
+                <FaLongArrowAltLeft />
+              </div>
 
+              {/* DRAG N DROP TO REWRITE RESUME */}
 
+              {creatorDisplay === "Optimize" ? (
+                <div className={`Segment ${basicFaded ? 'Faded' : 'Faded-in'}`}>
+                  <h4>Optimize an old CV</h4>
 
+                  {renderDragAndDrop()}
 
-
-            <div style={{textAlign: "center"}} className={`${basicFaded ? "Faded" : "Faded-in"}`}>
-              <p></p>
-              <h1>OR</h1>
-              <p></p>
-            </div>
-
-
-
-
-
-            
-            
-            {/* BASIC INFO */}
-            <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Generate CV from scratch</h4>
-              <Grid container>
-                <AuthInput
-                  id={basicInfo.firstName}
-                  value={basicInfo.firstName}
-                  inputType="text"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  required={true}
-                  disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
-                  onChange={handleInputChange("firstName")}
-                />
-                <AuthInput
-                  id={basicInfo.lastName}
-                  value={basicInfo.lastName}
-                  inputType="text"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  required={true}
-                  disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
-                  onChange={handleInputChange("lastName")}
-                />
-                <AuthInput
-                  id={basicInfo.email}
-                  value={basicInfo.email}
-                  inputType="email"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={0}
-                  required={true}
-                  disabled={false}
-                  onChange={handleInputChange("email")}
-                />
-                <div style={{ width: "100%" }}>
-                  <div className={resumeCss.DetachedLabels}>
-                    Date of Birth * (Might not be visible on resume)
-                  </div>
-                </div>
-                <AuthInput
-                  id={basicInfo.dob}
-                  value={basicInfo.dob}
-                  placeholder="Date of Birth"
-                  inputType="date"
-                  inputGridSm={12}
-                  inputGrid={3}
-                  mb={2}
-                  required={true}
-                  onChange={handleInputChange("dob")}
-                />
-                <AuthInput
-                  id={basicInfo.mobile}
-                  value={basicInfo.mobile}
-                  label="Mobile"
-                  inputType="mobile"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  required={true}
-                  onChange={handleInputChange("mobile")}
-                />
-                <AuthInput
-                  id={basicInfo.jobPosition}
-                  value={basicInfo.jobPosition}
-                  label="Job Position"
-                  inputType="text"
-                  inputGridSm={12}
-                  inputGrid={5}
-                  mb={2}
-                  required={true}
-                  onChange={handleInputChange("jobPosition")}
-                />
-                <div style={{ width: "100%", marginBottom: '15px', textAlign: "center"  }}>
-                  <div className={resumeCss.DetachedLabels}>
-                    Location (for job search & on CV)
-                  </div>
-                </div>
-                <AuthInput
-                  id={basicInfo.street}
-                  value={basicInfo.street}
-                  label="City/District"
-                  inputType="text"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  required={true}
-                  onChange={handleInputChange("street")}
-                />
-                <AuthInput
-                  id={basicInfo.country}
-                  value={basicInfo.country}
-                  placeholder={basicInfo.country ? basicInfo.country : "Country"}
-                  inputType="country-select"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  onChange={handleInputChange("country")}
-                />
-                <AuthInput
-                  id={basicInfo.city}
-                  value={basicInfo.city}
-                  countryid={countryid}
-                  placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
-                  inputType="state-select"
-                  inputGridSm={12}
-                  inputGrid={4}
-                  mb={2}
-                  onChange={handleInputChange("city")}
-                />
-
-                {linkInfo.map((info, index) => {
-                  return (
+                  <Grid container mt={5}>
                     <AuthInput
-                      key={index}
-                      label="[Optional] Add a link e.g linkedin, github or your website"
-                      id={info}
-                      value={info}
+                      id={basicInfo.jobPosition}
+                      value={basicInfo.jobPosition}
+                      label="Job Position to optimise CV to"
                       inputType="text"
-                      inputGridSm={8}
-                      inputGrid={8}
+                      inputGridSm={12}
+                      inputGrid={12}
                       mb={2}
-                      required={false}
-                      onChange={(event) => handleLinkChange(event, index)}
+                      required={true}
+                      onChange={handleInputChange("jobPosition")}
                     />
-                  );
-                })}
+                    <div style={{ width: "100%", marginBottom: "15px", textAlign: "center" }}>
+                      <div className={resumeCss.DetachedLabels}>
+                        Location (used for job search & on CV)
+                      </div>
+                    </div>
+                    <AuthInput
+                      id={basicInfo.street}
+                      value={basicInfo.street}
+                      label="City/District"
+                      inputType="text"
+                      inputGridSm={12}
+                      inputGrid={4}
+                      mb={2}
+                      onChange={handleInputChange("street")}
+                    />
+                    <AuthInput
+                      id={basicInfo.country}
+                      value={basicInfo.country}
+                      placeholder={basicInfo.country ? basicInfo.country : "Country"}
+                      inputType="country-select"
+                      inputGridSm={12}
+                      inputGrid={4}
+                      mb={2}
+                      onChange={handleInputChange("country")}
+                    />
+                    <AuthInput
+                      id={basicInfo.city}
+                      value={basicInfo.city}
+                      countryid={countryid}
+                      placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
+                      inputType="state-select"
+                      inputGridSm={12}
+                      inputGrid={4}
+                      mb={2}
+                      onChange={handleInputChange("city")}
+                    />
+                    <AuthInput
+                      id={additionalInfo}
+                      name="additionalInfo"
+                      value={additionalInfo}
+                      placeholder="[Optional] Tell me what to specifically add or remove or you can paste job requirements. E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024 OR Delete work history with Blanket Designs OR [Paste job description here] "
+                      multiline={true}
+                      rows={3}
+                      inputGridSm={12}
+                      onChange={(event) => setAdditionalInfo(event.target.value)}
+                    />
+                  </Grid>
 
-                <Grid
-                  item
-                  xs={4}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
                   <div
-                    style={{ marginRight: "10px" }}
-                    className="delete"
-                    title="Delete Link"
-                    onClick={handleDeleteLinks}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: "20px",
+                      marginTop: "10px",
+                    }}
                   >
-                    -
+                    <div style={{ width: "150px"}}>
+                    </div>
+                    <div style={{ width: "150px"}}>
+                      <ButtonSubmitGreen type="button" onClick={handleFileResumeOptimize}>
+                        Optimize &nbsp;&nbsp;<IoSparklesSharp style={{color: "#F8E231", fontSize: "1.5rem"}} />
+                      </ButtonSubmitGreen>
+                    </div>
                   </div>
-                  <div
-                    className="add"
-                    title="Add More Links"
-                    onClick={handleAddLinks}
-                  >
-                    +
-                  </div>
-                </Grid>
-                
-                {/* <AuthInput
-                  id={basicInfo.profSummary}
-                  value={basicInfo.profSummary}
-                  placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful"
-                  multiline={true}
-                  rows={2}
-                  inputGridSm={12}
-                  mb={2}
-                  onChange={handleInputChange("profSummary")}
-                /> */}
-              </Grid>
-
-              {/* Visibility Buttons */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "20px",
-                }}
-              >
-                <div style={{ width: "150px"}}>
                 </div>
-                <div style={{ width: "150px"}}>
-                  <ButtonSubmitGreen type="button" onClick={() => basicInfoForward("forward")}>
-                    Education &nbsp;&nbsp;<FaLongArrowAltRight />
-                  </ButtonSubmitGreen>
-                </div>
-              </div>
-            </div>
-
-            {/* EDUCATION INFO */}
-            <div id="edu-info" className={`Segment ${eduFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Education Info (most recent first)</h4>
-              <div>
-                {eduArray.map((info, index) => {
-                  return (
-                    <Grid container key={index} className="segment">
+              ) : (
+                <div>
+                  {/* BASIC INFO */}
+                  <div id="basic-info" className={`Segment ${basicFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Generate CV from scratch</h4>
+                    <Grid container>
                       <AuthInput
-                        name="institution"
-                        id={info.institution}
-                        value={info.institution}
-                        label="Name of Institution"
+                        id={basicInfo.firstName}
+                        value={basicInfo.firstName}
                         inputType="text"
                         inputGridSm={12}
                         inputGrid={4}
                         mb={2}
                         required={true}
-                        onChange={(event) => handleEduExpChange(event, index)}
+                        disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
+                        onChange={handleInputChange("firstName")}
                       />
                       <AuthInput
-                        name="degree"
-                        id={info.degree}
-                        value={info.degree}
-                        label="Degree Obtained & Course"
+                        id={basicInfo.lastName}
+                        value={basicInfo.lastName}
                         inputType="text"
                         inputGridSm={12}
                         inputGrid={4}
                         mb={2}
                         required={true}
-                        onChange={(event) => handleEduExpChange(event, index)}
+                        disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
+                        onChange={handleInputChange("lastName")}
                       />
-                      <label className={resumeCss.DetachedLabels} mr={4}>
-                        Graduation Date *
-                      </label>
                       <AuthInput
-                        name="date"
-                        id={info.date}
-                        value={info.date}
-                        placeholder="Graduation Date"
+                        id={basicInfo.email}
+                        value={basicInfo.email}
+                        inputType="email"
+                        inputGridSm={12}
+                        inputGrid={4}
+                        mb={0}
+                        required={true}
+                        disabled={false}
+                        onChange={handleInputChange("email")}
+                      />
+                      <div style={{ width: "100%" }}>
+                        <div className={resumeCss.DetachedLabels}>
+                          Date of Birth * (Might not be visible on resume)
+                        </div>
+                      </div>
+                      <AuthInput
+                        id={basicInfo.dob}
+                        value={basicInfo.dob}
+                        placeholder="Date of Birth"
                         inputType="date"
-                        inputGridSm={8}
-                        inputGrid={2}
+                        inputGridSm={12}
+                        inputGrid={3}
+                        mb={2}
                         required={true}
-                        onChange={(event) => handleEduExpChange(event, index)}
+                        onChange={handleInputChange("dob")}
                       />
+                      <AuthInput
+                        id={basicInfo.mobile}
+                        value={basicInfo.mobile}
+                        label="Mobile"
+                        inputType="mobile"
+                        inputGridSm={12}
+                        inputGrid={4}
+                        mb={2}
+                        required={true}
+                        onChange={handleInputChange("mobile")}
+                      />
+                      <AuthInput
+                        id={basicInfo.jobPosition}
+                        value={basicInfo.jobPosition}
+                        label="Job Position"
+                        inputType="text"
+                        inputGridSm={12}
+                        inputGrid={5}
+                        mb={2}
+                        required={true}
+                        onChange={handleInputChange("jobPosition")}
+                      />
+                      <div style={{ width: "100%", marginBottom: '15px', textAlign: "center"  }}>
+                        <div className={resumeCss.DetachedLabels}>
+                          Location (for job search & on CV)
+                        </div>
+                      </div>
+                      <AuthInput
+                        id={basicInfo.street}
+                        value={basicInfo.street}
+                        label="City/District"
+                        inputType="text"
+                        inputGridSm={12}
+                        inputGrid={4}
+                        mb={2}
+                        required={true}
+                        onChange={handleInputChange("street")}
+                      />
+                      <AuthInput
+                        id={basicInfo.country}
+                        value={basicInfo.country}
+                        placeholder={basicInfo.country ? basicInfo.country : "Country"}
+                        inputType="country-select"
+                        inputGridSm={12}
+                        inputGrid={4}
+                        mb={2}
+                        onChange={handleInputChange("country")}
+                      />
+                      <AuthInput
+                        id={basicInfo.city}
+                        value={basicInfo.city}
+                        countryid={countryid}
+                        placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
+                        inputType="state-select"
+                        inputGridSm={12}
+                        inputGrid={4}
+                        mb={2}
+                        onChange={handleInputChange("city")}
+                      />
+
+                      {linkInfo.map((info, index) => {
+                        return (
+                          <AuthInput
+                            key={index}
+                            label="[Optional] Add a link e.g linkedin, github or your website"
+                            id={info}
+                            value={info}
+                            inputType="text"
+                            inputGridSm={8}
+                            inputGrid={8}
+                            mb={2}
+                            required={false}
+                            onChange={(event) => handleLinkChange(event, index)}
+                          />
+                        );
+                      })}
+
+                      <Grid
+                        item
+                        xs={4}
+                        sx={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <div
+                          style={{ marginRight: "10px" }}
+                          className="delete"
+                          title="Delete Link"
+                          onClick={handleDeleteLinks}
+                        >
+                          -
+                        </div>
+                        <div
+                          className="add"
+                          title="Add More Links"
+                          onClick={handleAddLinks}
+                        >
+                          +
+                        </div>
+                      </Grid>
+                      
+                      {/* <AuthInput
+                        id={basicInfo.profSummary}
+                        value={basicInfo.profSummary}
+                        placeholder="[Optionally] write a professional summary and see how I optimise it for you. Leave blank to allow me craft something beautiful"
+                        multiline={true}
+                        rows={2}
+                        inputGridSm={12}
+                        mb={2}
+                        onChange={handleInputChange("profSummary")}
+                      /> */}
                     </Grid>
-                  );
-                })}
-                <div className={resumeCss.CenteredElem}>
-                  <div
-                    style={{ marginRight: "10px" }}
-                    className="delete"
-                    title="Delete Educational Info"
-                    onClick={handleDeleteEduInfo}
-                  >
-                    -
-                  </div>
-                  <div
-                    className="add"
-                    title="Add Educational Info"
-                    onClick={handleAddEduInfo}
-                  >
-                    +
-                  </div>
-                </div>
-              </div>
 
-              {/* Visibility Buttons */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "20px",
-                }}
-              >
-                <div className='prev-page' onClick={() => {eduInfoForwardOrBackward('backward')}}>
-                    <FaLongArrowAltLeft />
-                </div>
-                <div style={{ width: "150px"}}>
-                  <ButtonSubmitGreen type="button" onClick={() => {
-                    eduInfoForwardOrBackward('forward')
-                  }}>
-                    Experiences &nbsp;&nbsp;<FaLongArrowAltRight />
-                  </ButtonSubmitGreen>
-                </div>
-              </div>
-            </div>
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div style={{ width: "150px"}}>
+                      </div>
+                      <div style={{ width: "150px"}}>
+                        <ButtonSubmitGreen type="button" onClick={() => basicInfoForward("forward")}>
+                          Education &nbsp;&nbsp;<FaLongArrowAltRight />
+                        </ButtonSubmitGreen>
+                      </div>
+                    </div>
+                  </div>
 
-            {/* WORK EXPERIENCE */}
-            <div id="work-exp" className={`Segment ${workFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Work & Volunteering Experience (most recent first)</h4>
-              <div>
-                {workExpArray.map((info, index) => {
-                  return (
-                    <Grid container className="segment" key={index}>
-                      <AuthInput
-                        name="company"
-                        id={info.company}
-                        value={info.company}
-                        label="Company/Org. Name"
-                        inputType="text"
-                        inputGridSm={12}
-                        inputGrid={3}
-                        mb={2}
-                        required={true}
-                        onChange={(event) => handleWorkExpChange(event, index)}
-                      />
-                      <AuthInput
-                        name="position"
-                        id={info.position}
-                        value={info.position}
-                        label="Position Held"
-                        inputType="text"
-                        inputGridSm={12}
-                        inputGrid={3}
-                        mb={2}
-                        required={true}
-                        onChange={(event) => handleWorkExpChange(event, index)}
-                      />
-                      <AuthInput
-                        name="industry"
-                        id={info.industry}
-                        value={info.industry}
-                        label="Industry e.g IT"
-                        inputType="text"
-                        inputGridSm={12}
-                        inputGrid={3}
-                        mb={2}
-                        required={true}
-                        onChange={(event) => handleWorkExpChange(event, index)}
-                      />
-                      <AuthInput
-                        name="workLink"
-                        id={info.workLink}
-                        value={info.workLink}
-                        label="Related Link"
-                        inputType="text"
-                        inputGridSm={12}
-                        inputGrid={3}
-                        mb={2}
-                        onChange={(event) => handleWorkExpChange(event, index)}
-                      />
-                      <div
-                        style={{
-                          width: "50%",
-                          margin: "0 auto 5px",
+                  {/* EDUCATION INFO */}
+                  <div id="edu-info" className={`Segment ${eduFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Education Info (most recent first)</h4>
+                    <div>
+                      {eduArray.map((info, index) => {
+                        return (
+                          <Grid container key={index} className="segment">
+                            <AuthInput
+                              name="institution"
+                              id={info.institution}
+                              value={info.institution}
+                              label="Name of Institution"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={4}
+                              mb={2}
+                              required={true}
+                              onChange={(event) => handleEduExpChange(event, index)}
+                            />
+                            <AuthInput
+                              name="degree"
+                              id={info.degree}
+                              value={info.degree}
+                              label="Degree Obtained & Course"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={4}
+                              mb={2}
+                              required={true}
+                              onChange={(event) => handleEduExpChange(event, index)}
+                            />
+                            <label className={resumeCss.DetachedLabels} mr={4}>
+                              Graduation Date *
+                            </label>
+                            <AuthInput
+                              name="date"
+                              id={info.date}
+                              value={info.date}
+                              placeholder="Graduation Date"
+                              inputType="date"
+                              inputGridSm={8}
+                              inputGrid={2}
+                              required={true}
+                              onChange={(event) => handleEduExpChange(event, index)}
+                            />
+                          </Grid>
+                        );
+                      })}
+                      <div className={resumeCss.CenteredElem}>
+                        <div
+                          style={{ marginRight: "10px" }}
+                          className="delete"
+                          title="Delete Educational Info"
+                          onClick={handleDeleteEduInfo}
+                        >
+                          -
+                        </div>
+                        <div
+                          className="add"
+                          title="Add Educational Info"
+                          onClick={handleAddEduInfo}
+                        >
+                          +
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div className='prev-page' onClick={() => {eduInfoForwardOrBackward('backward')}}>
+                          <FaLongArrowAltLeft />
+                      </div>
+                      <div style={{ width: "150px"}}>
+                        <ButtonSubmitGreen type="button" onClick={() => {
+                          eduInfoForwardOrBackward('forward')
+                        }}>
+                          Experiences &nbsp;&nbsp;<FaLongArrowAltRight />
+                        </ButtonSubmitGreen>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* WORK EXPERIENCE */}
+                  <div id="work-exp" className={`Segment ${workFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Work & Volunteering Experience (most recent first)</h4>
+                    <div>
+                      {workExpArray.map((info, index) => {
+                        return (
+                          <Grid container className="segment" key={index}>
+                            <AuthInput
+                              name="company"
+                              id={info.company}
+                              value={info.company}
+                              label="Company/Org. Name"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={3}
+                              mb={2}
+                              required={true}
+                              onChange={(event) => handleWorkExpChange(event, index)}
+                            />
+                            <AuthInput
+                              name="position"
+                              id={info.position}
+                              value={info.position}
+                              label="Position Held"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={3}
+                              mb={2}
+                              required={true}
+                              onChange={(event) => handleWorkExpChange(event, index)}
+                            />
+                            <AuthInput
+                              name="industry"
+                              id={info.industry}
+                              value={info.industry}
+                              label="Industry e.g IT"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={3}
+                              mb={2}
+                              required={true}
+                              onChange={(event) => handleWorkExpChange(event, index)}
+                            />
+                            <AuthInput
+                              name="workLink"
+                              id={info.workLink}
+                              value={info.workLink}
+                              label="Related Link"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={3}
+                              mb={2}
+                              onChange={(event) => handleWorkExpChange(event, index)}
+                            />
+                            <div
+                              style={{
+                                width: "50%",
+                                margin: "0 auto 5px",
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: "100%",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <label className={resumeCss.DetachedLabels}>
+                                  From *
+                                </label>
+                                <AuthInput
+                                  name="dateFrom"
+                                  id={info.DateFrom}
+                                  value={info.DateFrom}
+                                  placeholder="Start Date"
+                                  inputType="date"
+                                  inputGridSm={12}
+                                  inputGrid={12}
+                                  required={true}
+                                  onChange={(event) =>
+                                    handleWorkExpChange(event, index)
+                                  }
+                                />
+                              </div>
+                              <div
+                                style={{
+                                  width: "100%",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <label
+                                  className={resumeCss.DetachedLabels}
+                                  style={{ marginRight: "10px" }}
+                                >
+                                  To *
+                                </label>
+                                <AuthInput
+                                  name="dateTo"
+                                  id={info.dateTo}
+                                  value={info.dateTo}
+                                  placeholder="End Date"
+                                  inputType="date"
+                                  inputGridSm={12}
+                                  disabled={info.currently}
+                                  inputGrid={12}
+                                  onChange={(event) =>
+                                    handleWorkExpChange(event, index)
+                                  }
+                                />
+
+                              </div>
+                            </div>
+                            <div style={{width: "100%", textAlign: "center"}}>
+                              <AuthInput
+                                name="currently"
+                                id={info.currently}
+                                value={info.currently}
+                                label="I currently work here"
+                                inputType="checkbox"
+                                inputGridSm={12}
+                                mb={2}
+                                onChange={(event) =>
+                                  handleWorkExpChange(event, index)
+                                }
+                              />
+                            </div>
+                            <AuthInput
+                              id={info.jobDesc}
+                              name="jobDesc"
+                              value={info.jobDesc}
+                              placeholder="I will craft out job descriptions with the right keywords after careful analysis. You can edit it in the Preview section."
+                              multiline={true}
+                              rows={2}
+                              disabled={true}
+                              inputGridSm={12}
+                              onChange={(event) => handleWorkExpChange(event, index)}
+                            />
+                          </Grid>
+                        );
+                      })}
+                      <div className={resumeCss.CenteredElem}>
+                        <div
+                          style={{ marginRight: "10px" }}
+                          className="delete"
+                          title="Delete Experience"
+                          onClick={handleDeleteExp}
+                        >
+                          -
+                        </div>
+                        <div
+                          className="add"
+                          title="Add Experience"
+                          onClick={handleAddExp}
+                        >
+                          +
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div className='prev-page' onClick={() => {workExpForwardOrBackward('backward')}}>
+                          <FaLongArrowAltLeft />
+                      </div>
+                      <div style={{ width: "150px"}}>
+                        <ButtonSubmitGreen type="button" onClick={() => {
+                          workExpForwardOrBackward('forward')
+                        }}>
+                          Skills &nbsp;&nbsp;<FaLongArrowAltRight />
+                        </ButtonSubmitGreen>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RELEVANT SKILLS */}
+                  <div id="skills" className={`Segment ${skillFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Relevant Skills</h4>
+                    <div className='explanation-points'>
+                      <Alert sx={{padding: '0 5px', fontSize: '.7rem', marginBottom: "10px", justifyContent: "center"}} severity="info">Write a skill and i will suggest others in the preview section for you, or use the + button to add several skills and I will optimize them with the right keywords.</Alert>
+                    </div>
+                    <Grid container>
+                      <Grid container item xs={9}>
+                        {skills.map((skill, index) => {
+                          return (
+                            <AuthInput
+                              key={index}
+                              id={skill}
+                              value={skill}
+                              label="Add a Skill"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={6}
+                              mb={2}
+                              required={true}
+                              onChange={(event) => handleSkillChange(event, index)}
+                            />
+                          );
+                        })}
+                      </Grid>
+                      <Grid
+                        item
+                        xs={3}
+                        sx={{
                           display: "flex",
                           justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
                         <div
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
+                          style={{ marginRight: "10px" }}
+                          className="delete"
+                          title="Delete Skill"
+                          onClick={handleDeleteSkill}
                         >
-                          <label className={resumeCss.DetachedLabels}>
-                            From *
-                          </label>
-                          <AuthInput
-                            name="dateFrom"
-                            id={info.DateFrom}
-                            value={info.DateFrom}
-                            placeholder="Start Date"
-                            inputType="date"
-                            inputGridSm={12}
-                            inputGrid={12}
-                            required={true}
-                            onChange={(event) =>
-                              handleWorkExpChange(event, index)
-                            }
-                          />
+                          -
                         </div>
                         <div
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
+                          className="add"
+                          title="Add a Skill"
+                          onClick={handleAddSkill}
                         >
-                          <label
-                            className={resumeCss.DetachedLabels}
-                            style={{ marginRight: "10px" }}
-                          >
-                            To *
-                          </label>
-                          <AuthInput
-                            name="dateTo"
-                            id={info.dateTo}
-                            value={info.dateTo}
-                            placeholder="End Date"
-                            inputType="date"
-                            inputGridSm={12}
-                            disabled={info.currently}
-                            inputGrid={12}
-                            onChange={(event) =>
-                              handleWorkExpChange(event, index)
-                            }
-                          />
+                          +
+                        </div>
+                      </Grid>
+                    </Grid>
 
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div className='prev-page' onClick={() => {skillsForwardOrBackward('backward')}}>
+                          <FaLongArrowAltLeft />
+                      </div>
+                      <div style={{ width: "150px"}}>
+                        <ButtonSubmitGreen type="button" onClick={() => {
+                          skillsForwardOrBackward('forward')
+                        }}>
+                          Certifications &nbsp;&nbsp;<FaLongArrowAltRight />
+                        </ButtonSubmitGreen>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CERT AND AWARDS */}
+                  <div id="certs" className={`Segment ${certFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Certifications, Awards & Accomplishments [Optional]</h4>
+                    <div>
+                      <Grid
+                        container
+                        sx={{ display: "flex", justifyContent: "space-around" }}
+                      >
+                        {awardArray.map((info, index) => {
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              md={5}
+                              mb={2}
+                              className="segment"
+                              key={index}
+                            >
+                              <AuthInput
+                                name="org"
+                                id={info.org}
+                                value={info.org}
+                                label="Awarding Organization"
+                                inputGridSm={12}
+                                inputType="text"
+                                mb={2}
+                                onChange={(event) => handleAwardChange(event, index)}
+                              />
+                              <AuthInput
+                                name="award"
+                                id={info.award}
+                                value={info.award}
+                                label="Award Received"
+                                inputGridSm={12}
+                                inputType="text"
+                                mb={2}
+                                onChange={(event) => handleAwardChange(event, index)}
+                              />
+                              <label className={resumeCss.DetachedLabels}>
+                                Date Awarded
+                              </label>
+                              <AuthInput
+                                name="date"
+                                id={info.date}
+                                value={info.date}
+                                placeholder="Date Awarded"
+                                inputGridSm={12}
+                                inputType="date"
+                                onChange={(event) => handleAwardChange(event, index)}
+                              />
+                            </Grid>
+                          );
+                        })}
+                      </Grid>
+                      <div className={resumeCss.CenteredElem}>
+                        <div
+                          style={{ marginRight: "10px" }}
+                          className="delete"
+                          title="Delete Award"
+                          onClick={handleDeleteAward}
+                        >
+                          -
+                        </div>
+                        <div
+                          className="add"
+                          title="Add Award"
+                          onClick={handleAddAward}
+                        >
+                          +
                         </div>
                       </div>
-                      <div style={{width: "100%", textAlign: "center"}}>
-                        <AuthInput
-                          name="currently"
-                          id={info.currently}
-                          value={info.currently}
-                          label="I currently work here"
-                          inputType="checkbox"
-                          inputGridSm={12}
-                          mb={2}
-                          onChange={(event) =>
-                            handleWorkExpChange(event, index)
-                          }
-                        />
+                    </div>
+
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div className='prev-page' onClick={() => {certsForwardOrBackward('backward')}}>
+                          <FaLongArrowAltLeft />
                       </div>
-                      <AuthInput
-                        id={info.jobDesc}
-                        name="jobDesc"
-                        value={info.jobDesc}
-                        placeholder="I will craft out job descriptions with the right keywords after careful analysis. You can edit it in the Preview section."
-                        multiline={true}
-                        rows={2}
-                        disabled={true}
-                        inputGridSm={12}
-                        onChange={(event) => handleWorkExpChange(event, index)}
-                      />
+                      <div style={{ width: "150px"}}>
+                        <ButtonSubmitGreen type="button" onClick={() => {
+                          certsForwardOrBackward('forward')
+                        }}>
+                          Publications &nbsp;&nbsp;<FaLongArrowAltRight />
+                        </ButtonSubmitGreen>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PUBLICATIONS */}
+                  <div id="publications" className={`Segment ${pubFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Publications & Projects [Optional]</h4>
+                    <div>
+                      <Grid
+                        container
+                        sx={{ display: "flex", justifyContent: "space-around" }}
+                      >
+                        {publications.map((info, index) => {
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              md={5}
+                              mb={2}
+                              className="segment"
+                              key={index}
+                            >
+                              <AuthInput
+                                name="title"
+                                id={info.title}
+                                value={info.title}
+                                label="Title"
+                                inputGridSm={12}
+                                inputType="text"
+                                mb={2}
+                                onChange={(event) => handlePubChange(event, index)}
+                              />
+                              <AuthInput
+                                name="source"
+                                id={info.source}
+                                value={info.source}
+                                label="Source"
+                                inputGridSm={12}
+                                inputType="text"
+                                mb={2}
+                                onChange={(event) => handlePubChange(event, index)}
+                              />
+                              <label className={resumeCss.DetachedLabels}>
+                                Date Awarded{" "}
+                              </label>
+                              <AuthInput
+                                name="date"
+                                value={info.date}
+                                id={info.date}
+                                placeholder="Date Awarded"
+                                inputGridSm={12}
+                                inputType="date"
+                                onChange={(event) => handlePubChange(event, index)}
+                              />
+                            </Grid>
+                          );
+                        })}
+                      </Grid>
+                      <div className={resumeCss.CenteredElem}>
+                        <div
+                          style={{ marginRight: "10px" }}
+                          className="delete"
+                          title="Delete Publication"
+                          onClick={handleDeletePublication}
+                        >
+                          -
+                        </div>
+                        <div
+                          className="add"
+                          title="Add Publication"
+                          onClick={handleAddPublication}
+                        >
+                          +
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div className='prev-page' onClick={() => {pubForwardOrBackward('backward')}}>
+                          <FaLongArrowAltLeft />
+                      </div>
+                      <div style={{ width: "150px"}}>
+                        <ButtonSubmitGreen type="button" onClick={() => {
+                          pubForwardOrBackward('forward')
+                        }}>
+                          Hobbies &nbsp;&nbsp;<FaLongArrowAltRight />
+                        </ButtonSubmitGreen>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* INTERESTS */}
+                  <div id="interests" className={`Segment ${interestFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Interests/Hobbies</h4>
+                    <Grid container>
+                      <Grid container item xs={9}>
+                        {interests.map((interest, index) => {
+                          return (
+                            <AuthInput
+                              id={interest}
+                              key={index}
+                              value={interest}
+                              label="Add an Interest"
+                              inputType="text"
+                              inputGridSm={12}
+                              inputGrid={6}
+                              mb={2}
+                              required={true}
+                              onChange={(event) => handleInterestChange(event, index)}
+                            />
+                          );
+                        })}
+                      </Grid>
+                      <Grid
+                        item
+                        xs={3}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div
+                          style={{ marginRight: "10px" }}
+                          className="delete"
+                          title="Delete an Interest"
+                          onClick={handleDeleteInterests}
+                        >
+                          -
+                        </div>
+                        <div
+                          className="add"
+                          title="Add an Interest"
+                          onClick={handleAddInterests}
+                        >
+                          +
+                        </div>
+                      </Grid>
                     </Grid>
-                  );
-                })}
-                <div className={resumeCss.CenteredElem}>
-                  <div
-                    style={{ marginRight: "10px" }}
-                    className="delete"
-                    title="Delete Experience"
-                    onClick={handleDeleteExp}
-                  >
-                    -
-                  </div>
-                  <div
-                    className="add"
-                    title="Add Experience"
-                    onClick={handleAddExp}
-                  >
-                    +
-                  </div>
-                </div>
-              </div>
 
-              {/* Visibility Buttons */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "20px",
-                }}
-              >
-                <div className='prev-page' onClick={() => {workExpForwardOrBackward('backward')}}>
-                    <FaLongArrowAltLeft />
-                </div>
-                <div style={{ width: "150px"}}>
-                  <ButtonSubmitGreen type="button" onClick={() => {
-                    workExpForwardOrBackward('forward')
-                  }}>
-                    Skills &nbsp;&nbsp;<FaLongArrowAltRight />
-                  </ButtonSubmitGreen>
-                </div>
-              </div>
-            </div>
-
-            {/* RELEVANT SKILLS */}
-            <div id="skills" className={`Segment ${skillFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Relevant Skills</h4>
-              <div className='explanation-points'>
-                <Alert sx={{padding: '0 5px', fontSize: '.7rem', marginBottom: "10px", justifyContent: "center"}} severity="info">Write a skill and i will suggest others in the preview section for you, or use the + button to add several skills and I will optimize them with the right keywords.</Alert>
-              </div>
-              <Grid container>
-                <Grid container item xs={9}>
-                  {skills.map((skill, index) => {
-                    return (
-                      <AuthInput
-                        key={index}
-                        id={skill}
-                        value={skill}
-                        label="Add a Skill"
-                        inputType="text"
-                        inputGridSm={12}
-                        inputGrid={6}
-                        mb={2}
-                        required={true}
-                        onChange={(event) => handleSkillChange(event, index)}
-                      />
-                    );
-                  })}
-                </Grid>
-                <Grid
-                  item
-                  xs={3}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{ marginRight: "10px" }}
-                    className="delete"
-                    title="Delete Skill"
-                    onClick={handleDeleteSkill}
-                  >
-                    -
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "left",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div className='prev-page' onClick={() => {interestsBackward('backward')}}>
+                          <FaLongArrowAltLeft />
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    className="add"
-                    title="Add a Skill"
-                    onClick={handleAddSkill}
-                  >
-                    +
-                  </div>
-                </Grid>
-              </Grid>
 
-              {/* Visibility Buttons */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "20px",
-                }}
-              >
-                <div className='prev-page' onClick={() => {skillsForwardOrBackward('backward')}}>
-                    <FaLongArrowAltLeft />
-                </div>
-                <div style={{ width: "150px"}}>
-                  <ButtonSubmitGreen type="button" onClick={() => {
-                    skillsForwardOrBackward('forward')
-                  }}>
-                    Certifications &nbsp;&nbsp;<FaLongArrowAltRight />
-                  </ButtonSubmitGreen>
-                </div>
-              </div>
-            </div>
-
-            {/* CERT AND AWARDS */}
-            <div id="certs" className={`Segment ${certFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Certifications, Awards & Accomplishments [Optional]</h4>
-              <div>
-                <Grid
-                  container
-                  sx={{ display: "flex", justifyContent: "space-around" }}
-                >
-                  {awardArray.map((info, index) => {
-                    return (
-                      <Grid
-                        item
-                        xs={12}
-                        md={5}
-                        mb={2}
-                        className="segment"
-                        key={index}
-                      >
-                        <AuthInput
-                          name="org"
-                          id={info.org}
-                          value={info.org}
-                          label="Awarding Organization"
-                          inputGridSm={12}
-                          inputType="text"
-                          mb={2}
-                          onChange={(event) => handleAwardChange(event, index)}
-                        />
-                        <AuthInput
-                          name="award"
-                          id={info.award}
-                          value={info.award}
-                          label="Award Received"
-                          inputGridSm={12}
-                          inputType="text"
-                          mb={2}
-                          onChange={(event) => handleAwardChange(event, index)}
-                        />
-                        <label className={resumeCss.DetachedLabels}>
-                          Date Awarded
-                        </label>
-                        <AuthInput
-                          name="date"
-                          id={info.date}
-                          value={info.date}
-                          placeholder="Date Awarded"
-                          inputGridSm={12}
-                          inputType="date"
-                          onChange={(event) => handleAwardChange(event, index)}
-                        />
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-                <div className={resumeCss.CenteredElem}>
+                  {/* SUBMIT BUTTON */}
                   <div
-                    style={{ marginRight: "10px" }}
-                    className="delete"
-                    title="Delete Award"
-                    onClick={handleDeleteAward}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "right",
+                      marginBottom: "20px",
+                    }}
                   >
-                    -
-                  </div>
-                  <div
-                    className="add"
-                    title="Add Award"
-                    onClick={handleAddAward}
-                  >
-                    +
+                    <div id="submit-button" style={{ width: "190px", display: "none" }}>
+                      <ButtonSubmitGreen>
+                          Build & Preview &nbsp;&nbsp;<IoSparklesSharp style={{color: "#F8E231", fontSize: "1.5rem"}} />
+                      </ButtonSubmitGreen>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              {/* Visibility Buttons */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "20px",
-                }}
-              >
-                <div className='prev-page' onClick={() => {certsForwardOrBackward('backward')}}>
-                    <FaLongArrowAltLeft />
-                </div>
-                <div style={{ width: "150px"}}>
-                  <ButtonSubmitGreen type="button" onClick={() => {
-                    certsForwardOrBackward('forward')
-                  }}>
-                    Publications &nbsp;&nbsp;<FaLongArrowAltRight />
-                  </ButtonSubmitGreen>
-                </div>
-              </div>
-            </div>
+            </form>
+          )}
 
-            {/* PUBLICATIONS */}
-            <div id="publications" className={`Segment ${pubFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Publications & Projects [Optional]</h4>
-              <div>
-                <Grid
-                  container
-                  sx={{ display: "flex", justifyContent: "space-around" }}
-                >
-                  {publications.map((info, index) => {
-                    return (
-                      <Grid
-                        item
-                        xs={12}
-                        md={5}
-                        mb={2}
-                        className="segment"
-                        key={index}
-                      >
-                        <AuthInput
-                          name="title"
-                          id={info.title}
-                          value={info.title}
-                          label="Title"
-                          inputGridSm={12}
-                          inputType="text"
-                          mb={2}
-                          onChange={(event) => handlePubChange(event, index)}
-                        />
-                        <AuthInput
-                          name="source"
-                          id={info.source}
-                          value={info.source}
-                          label="Source"
-                          inputGridSm={12}
-                          inputType="text"
-                          mb={2}
-                          onChange={(event) => handlePubChange(event, index)}
-                        />
-                        <label className={resumeCss.DetachedLabels}>
-                          Date Awarded{" "}
-                        </label>
-                        <AuthInput
-                          name="date"
-                          value={info.date}
-                          id={info.date}
-                          placeholder="Date Awarded"
-                          inputGridSm={12}
-                          inputType="date"
-                          onChange={(event) => handlePubChange(event, index)}
-                        />
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-                <div className={resumeCss.CenteredElem}>
-                  <div
-                    style={{ marginRight: "10px" }}
-                    className="delete"
-                    title="Delete Publication"
-                    onClick={handleDeletePublication}
-                  >
-                    -
-                  </div>
-                  <div
-                    className="add"
-                    title="Add Publication"
-                    onClick={handleAddPublication}
-                  >
-                    +
-                  </div>
-                </div>
-              </div>
-
-              {/* Visibility Buttons */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "20px",
-                }}
-              >
-                <div className='prev-page' onClick={() => {pubForwardOrBackward('backward')}}>
-                    <FaLongArrowAltLeft />
-                </div>
-                <div style={{ width: "150px"}}>
-                  <ButtonSubmitGreen type="button" onClick={() => {
-                    pubForwardOrBackward('forward')
-                  }}>
-                    Hobbies &nbsp;&nbsp;<FaLongArrowAltRight />
-                  </ButtonSubmitGreen>
-                </div>
-              </div>
-            </div>
-
-            {/* INTERESTS */}
-            <div id="interests" className={`Segment ${interestFaded ? "Faded" : "Faded-in"}`}>
-              <h4>Interests/Hobbies</h4>
-              <Grid container>
-                <Grid container item xs={9}>
-                  {interests.map((interest, index) => {
-                    return (
-                      <AuthInput
-                        id={interest}
-                        key={index}
-                        value={interest}
-                        label="Add an Interest"
-                        inputType="text"
-                        inputGridSm={12}
-                        inputGrid={6}
-                        mb={2}
-                        required={true}
-                        onChange={(event) => handleInterestChange(event, index)}
-                      />
-                    );
-                  })}
-                </Grid>
-                <Grid
-                  item
-                  xs={3}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{ marginRight: "10px" }}
-                    className="delete"
-                    title="Delete an Interest"
-                    onClick={handleDeleteInterests}
-                  >
-                    -
-                  </div>
-                  <div
-                    className="add"
-                    title="Add an Interest"
-                    onClick={handleAddInterests}
-                  >
-                    +
-                  </div>
-                </Grid>
-              </Grid>
-
-              {/* Visibility Buttons */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "left",
-                  marginBottom: "20px",
-                }}
-              >
-                <div className='prev-page' onClick={() => {interestsBackward('backward')}}>
-                    <FaLongArrowAltLeft />
-                </div>
-              </div>
-            </div>
-
-            {/* SUBMIT BUTTON */}
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "right",
-                marginBottom: "20px",
-              }}
-            >
-              <div id="submit-button" style={{ width: "190px", display: "none" }}>
-                <ButtonSubmitGreen>
-                    Build & Preview &nbsp;&nbsp;<IoSparklesSharp style={{color: "#F8E231", fontSize: "1.5rem"}} />
-                </ButtonSubmitGreen>
-              </div>
-            </div>
-          </form>
         </div>
       </div>
 

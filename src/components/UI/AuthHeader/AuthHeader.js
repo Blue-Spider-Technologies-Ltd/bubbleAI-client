@@ -11,9 +11,9 @@ const AuthHeader = (props) => {
             <div className={!props.authMenuOpen ? authHeaderCss.showOptions : authHeaderCss.hideOptions} onClick={props.onClick}>
                 {!props.noAuthMenu ?
                     !props.authMenuOpen ? 
-                        <ArrowCircleRightIcon fontSize='large' sx={{transform: "rotate(45deg)"}} />
+                        <ArrowCircleRightIcon fontSize='large' />
                     :
-                        <ArrowCircleLeftIcon fontSize='large' sx={{transform: "rotate(45deg)"}} />
+                        <ArrowCircleLeftIcon fontSize='large' />
                 : ""
                 }
             </div>
