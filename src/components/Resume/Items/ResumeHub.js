@@ -173,126 +173,126 @@ const ResumeHub = () => {
     };
 
 
-  return (
-    <div className="auth-container">
-        {/* For SIDE MENU */}
-        <div style={{ width: "100%", padding: "0" }}>
-            <div className="auth-bg-blob"></div>
-        </div>
-        <div className='go-back' style={{position: "absolute", top: "1.3rem", left: "1rem"}}>
-            <div onClick={goBackPrevPage} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '80px'}}>
-                <ArrowCircleLeftIcon fontSize='large' />
+    return (
+        <div className="auth-container">
+            {/* For SIDE MENU */}
+            <div style={{ width: "100%", padding: "0" }}>
+                <div className="auth-bg-blob"></div>
             </div>
-        </div>
-
-        <div className="auth-container-inner">
-            {/* for TOP MENU */}
-            <AuthHeader
-                noAuthMenu={true}
-                headerText="My Resumes"
-            />
-            <div className="error">{error}</div>
-            <div className="success-mini">{successMini}</div>
-
-            <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
-                <AuthInputs 
-                    placeholder="Search resume by name" 
-                    inputType="search" 
-                    mb={3} 
-                    mt={5} 
-                    required={true} 
-                    value={searchString}
-                    onChange={handleSearch}
-                />
-            </div> 
-
-            {Object.keys(userResumesAll).length < 1 ? (
-                <div style={styles.noResumes}>
-                    <h4>Your Resumes Appear here</h4>
-                    <div style={{width: '200px'}}>
-                        <ButtonSubmitGreen onClick={goBackPrevPage}>Create Resume</ButtonSubmitGreen>
-                    </div>
+            <div className='go-back' style={{position: "absolute", top: "1.3rem", left: "1rem"}}>
+                <div onClick={goBackPrevPage} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '80px'}}>
+                    <ArrowCircleLeftIcon fontSize='large' />
                 </div>
-            ) : (
-                Object.keys(resumeForSearch).length < 1 ? (
+            </div>
+
+            <div className="auth-container-inner">
+                {/* for TOP MENU */}
+                <AuthHeader
+                    noAuthMenu={true}
+                    headerText="My Resumes"
+                />
+                <div className="error">{error}</div>
+                <div className="success-mini">{successMini}</div>
+
+                <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
+                    <AuthInputs 
+                        placeholder="Search resume by name" 
+                        inputType="search" 
+                        mb={3} 
+                        mt={5} 
+                        required={true} 
+                        value={searchString}
+                        onChange={handleSearch}
+                    />
+                </div> 
+
+                {Object.keys(userResumesAll).length < 1 ? (
                     <div style={styles.noResumes}>
-                        <h4>No resume found</h4>
+                        <h4>Your Resumes Appear here</h4>
+                        <div style={{width: '200px'}}>
+                            <ButtonSubmitGreen onClick={goBackPrevPage}>Create Resume</ButtonSubmitGreen>
+                        </div>
                     </div>
                 ) : (
-                    <Grid container>
-                        {resumeForSearch.map((item, index) => (
-                            <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
-                                <Card sx={styles.card}>
-                                    <CardMedia
-                                        component="img"
-                                        sx={styles.img}
-                                        image={item?.storageDetails?.imgUrl ? item?.storageDetails?.imgUrl : img}
-                                        alt="Avatar"
-                                    />
-                                    
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
-                                        <CardContent sx={{ flex: '1 0 auto' }}>
-                                            <Typography component="div" variant="h5">
-                                                {item?.storageDetails?.name ? item.storageDetails.name.length > 18 ? `${item.storageDetails.name.slice(0, 18)}...` : item.storageDetails.name : 'Unnamed'}
-                                            </Typography>
-                                            {item?.storageDetails?.resumeLink && (
-                                                <div style={styles.link} title="Copy Resume Link" onClick={handleCopy}>
-                                                    <div style={{overflowX: 'hidden', whiteSpace: 'nowrap'}}>
-                                                        <span>Copy Share Link</span> 
-                                                        <span style={{ display: 'none'}} ref={copyLink}>
-                                                            {item?.storageDetails?.resumeLink}
-                                                        </span>
-                                                    </div>
-                                                    <div >
-                                                        <ContentCopyIcon fontSize='small' />
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {item?.storageDetails?.buildDate && (
-                                                <Typography sx={styles.buildDate}>
-                                                    {item?.storageDetails?.buildDate}
+                    Object.keys(resumeForSearch).length < 1 ? (
+                        <div style={styles.noResumes}>
+                            <h4>No resume found</h4>
+                        </div>
+                    ) : (
+                        <Grid container>
+                            {resumeForSearch.map((item, index) => (
+                                <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
+                                    <Card sx={styles.card}>
+                                        <CardMedia
+                                            component="img"
+                                            sx={styles.img}
+                                            image={item?.storageDetails?.imgUrl ? item?.storageDetails?.imgUrl : img}
+                                            alt="Avatar"
+                                        />
+                                        
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
+                                            <CardContent sx={{ flex: '1 0 auto' }}>
+                                                <Typography component="div" variant="h5">
+                                                    {item?.storageDetails?.name ? item.storageDetails.name.length > 18 ? `${item.storageDetails.name.slice(0, 18)}...` : item.storageDetails.name : 'Unnamed'}
                                                 </Typography>
-                                            )}
+                                                {item?.storageDetails?.resumeLink && (
+                                                    <div style={styles.link} title="Copy Resume Link" onClick={handleCopy}>
+                                                        <div style={{overflowX: 'hidden', whiteSpace: 'nowrap'}}>
+                                                            <span>Copy Share Link</span> 
+                                                            <span style={{ display: 'none'}} ref={copyLink}>
+                                                                {item?.storageDetails?.resumeLink}
+                                                            </span>
+                                                        </div>
+                                                        <div >
+                                                            <ContentCopyIcon fontSize='small' />
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {item?.storageDetails?.buildDate && (
+                                                    <Typography sx={styles.buildDate}>
+                                                        {item?.storageDetails?.buildDate}
+                                                    </Typography>
+                                                )}
 
-                                        </CardContent>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1 }}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid #3E8F93' 
-                                                width={'100px'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => handleReDownload(index)}
-                                            >
-                                                <FaEye style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; View 
-                                            </ButtonThin>
+                                            </CardContent>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1 }}>
+                                                <ButtonThin
+                                                    fontSize='.6rem' 
+                                                    border='2px solid #3E8F93' 
+                                                    width={'100px'} 
+                                                    height='25px' 
+                                                    color='black'
+                                                    onClick={() => handleReDownload(index)}
+                                                >
+                                                    <FaEye style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; View 
+                                                </ButtonThin>
 
-                            
+                                
 
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid rgba(158, 9, 9, 0.733)' 
-                                                width={'100px'} 
-                                                height='25px' 
-                                                color='rgba(158, 9, 9, 0.733)'
-                                                onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)}
-                                            >
-                                                <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
-                                            </ButtonThin>
+                                                <ButtonThin
+                                                    fontSize='.6rem' 
+                                                    border='2px solid rgba(158, 9, 9, 0.733)' 
+                                                    width={'100px'} 
+                                                    height='25px' 
+                                                    color='rgba(158, 9, 9, 0.733)'
+                                                    onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)}
+                                                >
+                                                    <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
+                                                </ButtonThin>
+                                            </Box>
                                         </Box>
-                                    </Box>
 
-                                </Card>
-                            </Grid>
-                        ))}          
-                    </Grid>
-                )
+                                    </Card>
+                                </Grid>
+                            ))}          
+                        </Grid>
+                    )
 
-            )}
+                )}
 
+            </div>
         </div>
-    </div>
-  );
+    );
 };
 
 export default ResumeHub;

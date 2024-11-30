@@ -26,17 +26,38 @@
 .SideMenuItems li {
     box-sizing: border-box;
     border-radius: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.454);
     list-style-type: none;
     height: 3rem;
     margin: 2px 0;
     font-size: .93rem;
     font-weight: 600;
-    transition: all 0.3s ease-in-out;
+    transition: all .4s ease-out;
     width: 100%;
 }
 
 .SideMenuItems li:hover {
     background-color: #3E8F93;
+}
+
+
+.newFeat {
+    background-color: var(--navColor1);
+    width: 60px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: snow;
+    font-size: .7rem;
+    font-weight: 500;
+    transition: all .4s ease-out;
+}
+
+.SideMenuItems li:hover .newFeat {
+    background-color: white !important;
+    color: var(--navColor1) !important;
+    border-radius: 20px;
 }
 
 .Active {

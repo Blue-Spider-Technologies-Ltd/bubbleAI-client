@@ -15,6 +15,8 @@ import {
     Work, 
     PictureAsPdf, 
     GroupAdd,
+    PersonSearch,
+    ConnectWithoutContact,
 } from '@mui/icons-material';
 import welcomeImg from "../../../images/welcome.png";
 import { setFetching, setError, setAllMessagesArray, setMessages, setSuccessMini } from '../../../redux/states';
@@ -146,12 +148,18 @@ const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
                 <li>
                     <Link to="/user/dashboard/job-hub">
                         <Work />
-                        <span>Job Hub</span>
+                        <span>Ai Job Connect</span> <span className={adminSideMenuCss.newFeat}>NEW</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/user/dashboard/recruiter">
+                        <PersonSearch />
+                        <span>Ai Recruiter</span>
                     </Link>
                 </li>
                 <li>
                     <Link to="/user/dashboard/referral-hub" >
-                        <GroupAdd />
+                        <ConnectWithoutContact />
                         <span>Referral Hub</span>
                     </Link>
                 </li>
