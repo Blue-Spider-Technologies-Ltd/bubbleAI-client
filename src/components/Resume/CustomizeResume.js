@@ -1012,7 +1012,7 @@ const CustomizeResume = () => {
           {!hideCards ? (
             <Grid container sx={{padding: '50px 30px'}}>
               <Grid item md={6} xs={12}>
-                  <ButtonCard icon="optimize-resume" title="Optimize Old Resume" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Have an old resume? This option will help you optimize it to ATS and industry standard in seconds, with the right keywords and metrics." />
+                  <ButtonCard icon="optimize-resume" title="Optimize Old Resume" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Have an old resume? This option will help you optimize it to ATS and industry standards in seconds, with the right keywords and metrics." />
               </Grid>
           
               <Grid item md={6} xs={12}>

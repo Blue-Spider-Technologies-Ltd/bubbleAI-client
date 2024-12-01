@@ -271,8 +271,42 @@ const JobHub = () => {
         window.open(companyUrl, '_blank')
     }
 
-    const deleteJob = async (id) => {
+    const deleteJob = async (id, jobName) => {
+        try {
+            //must await
+            await checkAuthenticatedUser()
+        } catch (error) {
+            dispatch(setFetching(false));
+            return navigate("/popin?resume");      
+        }
+        confirm({
+            title: `Delete "${jobName}"?`,
+            description: `Click OK to delete selected job from your hub`,
+        })
+        .then(async () => {
+            dispatch(setFetching(true))
 
+            const body = {
+                jobId: id
+            }
+            
+            try {
+                const response = await axios.post("/user/delete-job", body, {
+                    headers: {
+                        "x-access-token": isAuth,
+                    },
+                });
+                setJobs(response.data.jobs)
+                dispatch(setFetching(false))
+                successSetter("Job Deleted")
+            } catch (error) {
+                dispatch(setFetching(false))
+                errorSetter(error.response.data.error)
+            }
+        })
+        .catch(() => {
+            return
+        });
     }
 
     const chooseActStr = async (str, item) => {
@@ -552,7 +586,7 @@ const JobHub = () => {
                                                 width={'110px'} 
                                                 height='25px' 
                                                 color='rgba(158, 9, 9, 0.733)'
-                                                onClick={() => deleteJob(item?.id)}
+                                                onClick={() => deleteJob(item?.id, item.title)}
                                             >
                                                 <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
                                             </ButtonThin>

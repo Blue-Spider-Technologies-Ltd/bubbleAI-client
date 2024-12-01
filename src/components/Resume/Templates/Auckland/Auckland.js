@@ -5,7 +5,6 @@ import arrowIcon from '../../../../images/arrow.png'
 import mobileIcon from '../../../../images/phone.png'
 import pinIcon from '../../../../images/pin2.png'
 import emailIcon from '../../../../images/mail.png'
-import pointIcon from '../../../../images/point.png'
 import linkIcon from '../../../../images/globe.png'
 
 ////FONTS
@@ -385,7 +384,7 @@ const Auckland = ({ resume, imgUrl }) => {
                                                         <View style={styles.jobDescGroup}>
                                                             {workInfo.jobDesc.split(";").map((item, index) => (
                                                                 <View key={index} style={styles.jobDesc}>
-                                                                    <Text><Image style={styles.bulletIcon} src={pointIcon} /></Text>
+                                                                    <Text>• </Text>
                                                                     <Text style={styles.jobText}>{item.trim()}</Text>
                                                                 </View>
                                                             ))}

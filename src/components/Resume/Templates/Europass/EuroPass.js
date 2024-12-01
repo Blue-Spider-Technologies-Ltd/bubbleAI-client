@@ -4,7 +4,6 @@ import { Document, Page, View, Text, StyleSheet, Image } from '@react-pdf/render
 import mobileIcon from '../../../../images/mobile.png'
 import pinIcon from '../../../../images/pin.png'
 import emailIcon from '../../../../images/email.png'
-import pointIcon from '../../../../images/point.png'
 import linkIcon from '../../../../images/link.png'
 import diamondIcon from '../../../../images/diamond.png'
 
@@ -215,7 +214,7 @@ const EuroPass = ({resume, imgUrl}) => (
                                         <View style={styles.jobDescGroup}>
                                             {workInfo.jobDesc.split(";").map((item, index) => (
                                                 <View key={index} style={styles.jobDesc}>
-                                                    <Text><Image style={styles.bulletIcon} src={pointIcon} /></Text>
+                                                    <Text>• </Text>
                                                     <Text style={styles.jobText}>{item.trim()}</Text>
                                                 </View>
                                             ))}
@@ -301,7 +300,7 @@ const EuroPass = ({resume, imgUrl}) => (
                                     <View>
                                         {resume.publications.map((publication, index) => (
                                             <View key={index} style={styles.jobDesc}>
-                                                <Text><Image style={styles.bulletIcon} src={pointIcon} /></Text>
+                                                <Text>• </Text>
                                                 <Text style={styles.jobText}>{capitalizeWords(publication.title) + ", " + publication.source + ", " + getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}</Text>
                                             </View>
                                         ))}
