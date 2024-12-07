@@ -201,9 +201,8 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         marginRight: 12,
         marginTop: 6,
-        marginBottom: 10,
-        borderBottom: '1.2px solid #323033',
-        paddingBottom: 25
+        marginBottom: 8,
+        // borderBottom: '1.2px solid #323033'
     },
     jobDesc: {
         display: 'flex', 
@@ -219,7 +218,7 @@ const styles = StyleSheet.create({
         width: 1.2, // Width of the line
         height: '73%', 
         position: 'absolute',
-        top: 53,
+        top: 48,
         left: 18,
         backgroundColor: '#323033', 
     },
@@ -431,12 +430,6 @@ const Auckland = ({ resume, imgUrl }) => {
                                     </View>
                                 )}
 
-                                <View>
-                                    <View style={styles.sectionHeader}><Text>REFERENCES</Text></View>
-                                    <View style={styles.group}>
-                                        <Text>Available on request</Text>
-                                    </View>
-                                </View>
                             </View>
                     </View>
 
