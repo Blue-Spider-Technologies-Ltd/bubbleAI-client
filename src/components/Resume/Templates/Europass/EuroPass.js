@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         padding: 20,
         textAlign: 'left',
         lineHeight: 1.2,
-        fontSize: 9,
+        fontSize: 9.3,
         fontWeight: '400',
         margin: 0
     },

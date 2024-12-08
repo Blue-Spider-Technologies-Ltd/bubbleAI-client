@@ -28,6 +28,7 @@ import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import StandardPDF from './Templates/Standard/StandardPDF'
 import EuroPass from './Templates/Europass/EuroPass';
 import Auckland from './Templates/Auckland/Auckland';
+import BubbleFish from './Templates/BubbleFish/BubbleFish';
 import Feedback from '../Dashboard/Feedback';
 import {jwtDecode} from 'jwt-decode';
 import ChatwootWidget from "../../utils/chatwoot";
@@ -73,7 +74,7 @@ const DownloadResume = () => {
     const confirm = useConfirm();
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
-    const [completed, setCompleted] = useState(false)
+    // const [completed, setCompleted] = useState(false)
     const [hasDownloadedCv, setHasDownloadedCv] = useState(false)
     const [isFeedbackTime, setIsFeedbackTime] = useState(false)
     const [canPrint, setCanPrint] = useState(false)
@@ -240,7 +241,9 @@ const DownloadResume = () => {
             case "Auckland":
                 template  = <Auckland resume={resume} imgUrl={imgUrl} />
                 break;
-            case "Flying Fish":
+            case "Bubble Fish":
+                template  = <BubbleFish resume={resume} />
+                break;
             case "Water Train":
             case "Sinking Duck":
                 template  = (<Document>
@@ -277,7 +280,7 @@ const DownloadResume = () => {
         setCarouselName(selectedCarousel.title)
     
         let canPrintFlag = false;
-        if (selectedCarousel.title === "Euro Pass" || selectedCarousel.title === "Auckland" || selectedCarousel.title === "Flying Fish" || selectedCarousel.title === "Water Train") {
+        if (selectedCarousel.title === "Euro Pass" || selectedCarousel.title === "Auckland" || selectedCarousel.title === "Water Train") {
             setHasImg(true)
         } else {
             setHasImg(false)
@@ -296,9 +299,9 @@ const DownloadResume = () => {
                 setStorageDetails({ ...storageDetails, template: "Auckland" });
                 canPrintFlag = true;
                 break;
-            case "Flying Fish":
-                setStorageDetails({ ...storageDetails, template: "Flying Fish" });
-                canPrintFlag = false;
+            case "Bubble Fish":
+                setStorageDetails({ ...storageDetails, template: "Bubble Fish" });
+                canPrintFlag = true;
                 break;
             case "Water Train":
                 setStorageDetails({ ...storageDetails, template: "Water Train" });
@@ -394,11 +397,11 @@ const DownloadResume = () => {
                 localStorage?.removeItem(
                     "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
                 );
-                const data = response?.data?.shareableLink
-                const data2 = response?.data?.aiSuggestedJobs
+                // const data = response?.data?.shareableLink
+                // const data2 = response?.data?.aiSuggestedJobs
     
-                setShareableLink(data)
-                setAiSuggestedJobs(data2)
+                // setShareableLink(data)
+                // setAiSuggestedJobs(data2)
                 dispatch(setFetching(false));
                 
                 if(!hasDroppedFeedback) {
@@ -641,7 +644,7 @@ const DownloadResume = () => {
             {showCheckout && <CheckoutSummaryModal />}
             
             {!hasDroppedFeedback && isFeedbackTime && <Feedback notApaymentTextPositive="Resume Creation Completed!"/>}
-            {completed &&  (                
+            {/* {completed &&  (                
                 <SuccessFailureModal 
                     success={true} 
                     notApaymentTextPositive="Resume Creation Completed!"
@@ -652,7 +655,7 @@ const DownloadResume = () => {
                     template={storageDetails.template}
                     imgUrl={imgUrl}
                 />
-            )}
+            )} */}
                             
             <ChatwootWidget />
         </div>

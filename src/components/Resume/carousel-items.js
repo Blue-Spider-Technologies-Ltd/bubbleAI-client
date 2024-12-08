@@ -17,8 +17,8 @@ const carouselData = [
         image: aucklandTempImg
     },
     {
-        title: "Flying Fish",
-        image: comingSoonImg
+        title: "Bubble Fish",
+        image: standardTempImg
     },
     {
         title: "Water Train",

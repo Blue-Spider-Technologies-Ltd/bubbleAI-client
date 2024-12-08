@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ed291272.css",
-    "main.js": "/static/js/main.5d6aa4d7.js",
+    "main.js": "/static/js/main.06ceaf31.js",
     "static/js/29.1dc24455.chunk.js": "/static/js/29.1dc24455.chunk.js",
     "static/js/118.290d15af.chunk.js": "/static/js/118.290d15af.chunk.js",
     "static/js/568.2ab9919e.chunk.js": "/static/js/568.2ab9919e.chunk.js",
@@ -19,7 +19,6 @@
     "static/media/success.gif": "/static/media/success.05e3bee91653111f1bbe.gif",
     "static/media/resume.png": "/static/media/resume.45b9fee5abf6c047a2c6.png",
     "static/media/diamond.png": "/static/media/diamond.b330e22ab75d41ba22f6.png",
-    "static/media/psych.png": "/static/media/psych.b4c69895f2caa6b9e305.png",
     "static/media/auckland-temp.png": "/static/media/auckland-temp.9ff06641b9b42862dcd7.png",
     "static/media/Roboto-LightItalic.ttf": "/static/media/Roboto-LightItalic.3743e89917aa46e2f6e5.ttf",
     "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.27f62b53b93858475a7f.ttf",
@@ -28,6 +27,9 @@
     "static/media/cover-letter.jpg": "/static/media/cover-letter.95c36fb1b52b7dbb2ef0.jpg",
     "static/media/email.png": "/static/media/email.1c3d25dd5fe5bd93fd1d.png",
     "static/media/black-friday.png": "/static/media/black-friday.7b30b4282ffcda18eb2f.png",
+    "static/media/RobotoCondensed-Black.ttf": "/static/media/RobotoCondensed-Black.ea66a26dd10da9c77f6f.ttf",
+    "static/media/RobotoCondensed-Bold.ttf": "/static/media/RobotoCondensed-Bold.b151d2e8beef32d5bd12.ttf",
+    "static/media/RobotoCondensed-Medium.ttf": "/static/media/RobotoCondensed-Medium.ff190f979bb05ae7bee6.ttf",
     "static/media/resume-standard.jpg": "/static/media/resume-standard.e71f1986a936fd038a78.jpg",
     "static/media/preview.jpg": "/static/media/preview.1315be4f62fd38efd818.jpg",
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.7a4d0bbbe53cc081ca37.png",
@@ -46,22 +48,25 @@
     "static/media/phone.png": "/static/media/phone.6d1adf7ad412cd990245.png",
     "static/media/meta.png": "/static/media/meta.32869ff467490b2a5ab7.png",
     "static/media/pin.png": "/static/media/pin.e914b4ecb74c64241b7d.png",
+    "static/media/www.png": "/static/media/www.015cfcc5fc69600e5396.png",
     "static/media/bubble-logo.png": "/static/media/bubble-logo.63e34960a90ae6d78b82.png",
     "static/media/amazon.jpg": "/static/media/amazon.860b802fdf513b9b0571.jpg",
     "static/media/mail.png": "/static/media/mail.64c8c85b87ac40885eff.png",
+    "static/media/emfish.png": "/static/media/emfish.269dc4d3214525882f96.png",
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/microsoft.png": "/static/media/microsoft.204345df7313cd2dc55b.png",
+    "static/media/phnfish.png": "/static/media/phnfish.b9005581c421e881aa71.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
     "main.ed291272.css.map": "/static/css/main.ed291272.css.map",
-    "main.5d6aa4d7.js.map": "/static/js/main.5d6aa4d7.js.map",
+    "main.06ceaf31.js.map": "/static/js/main.06ceaf31.js.map",
     "29.1dc24455.chunk.js.map": "/static/js/29.1dc24455.chunk.js.map",
     "118.290d15af.chunk.js.map": "/static/js/118.290d15af.chunk.js.map",
     "568.2ab9919e.chunk.js.map": "/static/js/568.2ab9919e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ed291272.css",
-    "static/js/main.5d6aa4d7.js"
+    "static/js/main.06ceaf31.js"
   ]
 }

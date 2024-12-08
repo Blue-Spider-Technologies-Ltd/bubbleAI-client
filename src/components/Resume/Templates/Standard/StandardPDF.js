@@ -2,7 +2,6 @@ import React from "react";
 import { getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../../../utils/client-functions";
 import { Document, Page, View, Text, StyleSheet, Image } from '@react-pdf/renderer';
 import favIcon from '../../../../images/fav.png'
-import psychIcon from '../../../../images/psych.png'
 import mobileIcon from '../../../../images/mobile.png'
 import pinIcon from '../../../../images/pin.png'
 import emailIcon from '../../../../images/email.png'
@@ -15,7 +14,7 @@ const styles = StyleSheet.create({
         padding: 20,
         textAlign: 'left',
         lineHeight: 1.2,
-        fontSize: 9,
+        fontSize: 9.3,
         fontWeight: '400',
         margin: 0
     },
@@ -131,12 +130,6 @@ const styles = StyleSheet.create({
 
 
 
-
-const getTickCharacter = () => {
-    return String.fromCharCode(0x2714); // U+2714
-};
-
-const tickCharacter = getTickCharacter();
 
 const StandardPDF = ({resume}) => (
     

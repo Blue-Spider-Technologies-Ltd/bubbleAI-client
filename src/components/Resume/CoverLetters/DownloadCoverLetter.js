@@ -16,6 +16,7 @@ import AuthHeader from '../../UI/AuthHeader/AuthHeader';
 import CLStandardPDF from './CLStandardPDF';
 import CLEuroPass from './CLEuroPass';
 import CLAuckland from './CLAuckland';
+import CLBubbleFish from './CLBubbleFish';
 import avatarImg from '../../../images/avatar.png'
 const screenWidth = window.innerWidth
 
@@ -71,7 +72,9 @@ const DownloadCoverLetter = () => {
             case "Auckland":
                 selectedTemplate  = <CLAuckland resume={resume} imgUrl={imgUrl} letter={letter} />
                 break;
-            case "Flying Fish":
+            case "Bubble Fish":
+                selectedTemplate  = <CLBubbleFish resume={resume} letter={letter} />
+                break;
             case "Water Train":
             case "Sinking Duck":
                 selectedTemplate  = <h5 style={{textAlign: "center", padding: "30px 0 !important"}}>Coming Soon</h5>
