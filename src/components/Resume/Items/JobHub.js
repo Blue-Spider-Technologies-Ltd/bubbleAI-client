@@ -242,33 +242,47 @@ const JobHub = () => {
 
     const getResume = (description, title) => {
 
-        if(!description) {
-            confirm({
-                title: "Description Not Available For This Job",
-                description: `Click Ok if you must continue, but the resulting resume wil not be fully optimized for this job.`,
-            })
-            .then(() => {
+        if(!isResumeSubbed) {
+            errorSetter("Upgrade your subscription to access this feature")
+            setTimeout(() => {
+                window.open('/pricing', '_blank')
+            }, 5000);
+        } else {
+            if(!description) {
+                confirm({
+                    title: "Description Not Available For This Job",
+                    description: `Click Ok if you must continue, but the resulting resume might not be fully optimized for this job.`,
+                })
+                .then(() => {
+                    localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription", description)
+                    localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle", title)
+                    window.open('/user/dashboard/resume', '_blank')
+                })
+                .catch(() => {
+                    errorSetter('Process Terminated')
+                });
+            } else {
                 localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription", description)
                 localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle", title)
                 window.open('/user/dashboard/resume', '_blank')
-            })
-            .catch(() => {
-                errorSetter('Process Terminated')
-            });
-        } else {
-            localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription", description)
-            localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle", title)
-            window.open('/user/dashboard/resume', '_blank')
+            }
         }
 
     }
 
     
     const getJob = async (linkedinUrl, companyUrl) => {
-        if(!companyUrl) {
-            window.open(linkedinUrl, '_blank')
+        if(!isResumeSubbed) {
+            errorSetter("Upgrade your subscription to access this feature")
+            setTimeout(() => {
+                window.open('/pricing', '_blank')
+            }, 5000);
+        } else {
+            if(!companyUrl) {
+                window.open(linkedinUrl, '_blank')
+            }
+            window.open(companyUrl, '_blank')
         }
-        window.open(companyUrl, '_blank')
     }
 
     const deleteJob = async (id, jobName) => {
@@ -320,73 +334,82 @@ const JobHub = () => {
         setSingleResume(allResumes[index])
     }
 
+
     const handleGenerate = async () => {
-        
-        switch (actionString) {
-            case "Cover Letter":
-                const date = getOrdinalDate()
-                const companyName = chosenJob?.company_name
-                const jobDesc = chosenJob?.description
-                const jobPosition = chosenJob?.title
-                const imgUrl = singleResume?.storageDetails?.imgUrl
-                const template = singleResume?.storageDetails?.template
 
-                localStorage?.removeItem("template")            
-                localStorage?.removeItem("imgUrl")
-                localStorage?.removeItem("resume")
-                localStorage?.removeItem("letter")
-                
-                
-                if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
-                    return errorSetter("Upgrade Subscription to access this feature")
-                }
-                
-                const prompt = `You are the best and most professional cover letter writer in the world, 
-                    with 100% success rate from your cover letter writings. Write a stunning professional 
-                    cover letter using the following details: Job Position: ${jobPosition}, 
-                    Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${JSON.stringify(singleResume)}, 
-                    pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
-                    the basicInfo object of the resume; pick out the candidate's work history and all other elements 
-                    needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
-                    links or addressing or contact details or place holders e.g [Your Email] [Your Mobile] [Hiring Manager’s Name] to the cover letter. 
-                    Start with Date, then Dear Hiring Manager and return just the cover letter, with no explanations`
-                
-                try {
-                    dispatch(setFetching(true))
-                    let response = await axios.post("/cover-letter", { prompt }, {
-                        headers: {
-                            "x-access-token": isAuth,
-                        },
-                    });
+        if(!isResumeSubbed) {
+            errorSetter("Upgrade your subscription to access this feature")
+            setTimeout(() => {
+                window.open('/pricing', '_blank')
+            }, 5000);
+        } else {
+            switch (actionString) {
+                case "Cover Letter":
+                    const date = getOrdinalDate()
+                    const companyName = chosenJob?.company_name
+                    const jobDesc = chosenJob?.description
+                    const jobPosition = chosenJob?.title
+                    const imgUrl = singleResume?.storageDetails?.imgUrl
+                    const template = singleResume?.storageDetails?.template
+    
+                    localStorage?.removeItem("template")            
+                    localStorage?.removeItem("imgUrl")
+                    localStorage?.removeItem("resume")
+                    localStorage?.removeItem("letter")
                     
-                    localStorage.setItem("template", template)            
-                    localStorage.setItem("resume", JSON.stringify(singleResume))            
-                    localStorage.setItem("imgUrl", imgUrl)
-                    localStorage.setItem("letter", response.data)
-                    dispatch(setFetching(false))
-                    successSetter("You Cover Letter Will open in a new tab in 3 seconds")
-                    //Navigate in a Cover Letter page
-                    setTimeout(() => {
-                        window.open("/cover-letter", "_blank");
-                    }, 3000);
-                } catch (error) {
-                    dispatch(setFetching(false))
-                    errorSetter("Failed to generate Cover Letter, Try again")
-                }
-                break;
+                    
+                    if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
+                        return errorSetter("Upgrade Subscription to access this feature")
+                    }
+                    
+                    const prompt = `You are the best and most professional cover letter writer in the world, 
+                        with 100% success rate from your cover letter writings. Write a stunning professional 
+                        cover letter using the following details: Job Position: ${jobPosition}, 
+                        Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${JSON.stringify(singleResume)}, 
+                        pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
+                        the basicInfo object of the resume; pick out the candidate's work history and all other elements 
+                        needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
+                        links or addressing or contact details or place holders e.g [Your Email] [Your Mobile] [Hiring Manager’s Name] to the cover letter. 
+                        Start with Date, then Dear Hiring Manager and return just the cover letter, with no explanations`
+                    
+                    try {
+                        dispatch(setFetching(true))
+                        let response = await axios.post("/cover-letter", { prompt }, {
+                            headers: {
+                                "x-access-token": isAuth,
+                            },
+                        });
+                        
+                        localStorage.setItem("template", template)            
+                        localStorage.setItem("resume", JSON.stringify(singleResume))            
+                        localStorage.setItem("imgUrl", imgUrl)
+                        localStorage.setItem("letter", response.data)
+                        dispatch(setFetching(false))
+                        successSetter("You Cover Letter Will open in a new tab in 3 seconds")
+                        //Navigate in a Cover Letter page
+                        setTimeout(() => {
+                            window.open("/cover-letter", "_blank");
+                        }, 3000);
+                    } catch (error) {
+                        dispatch(setFetching(false))
+                        errorSetter("Failed to generate Cover Letter, Try again")
+                    }
+                    break;
+                    
+                case "Email":
+                    
+                    break;
+    
                 
-            case "Email":
+                case "Interview":
                 
-                break;
-
+                    break;
             
-            case "Interview":
-            
-                break;
-        
-            default:
-                break;
+                default:
+                    break;
+            }
         }
+        
     }
 
 
@@ -489,7 +512,7 @@ const JobHub = () => {
                                             <div style={styles.link} >
                                                 <div>
                                                     <ul>
-                                                        <li><span style={styles.key}>Company Name</span> <span>{isResumeSubbed ? item?.company_name : <a className="link" style={styles.unlock} href='/pricing' target="_blank">Unlock to see name</a>}</span></li>
+                                                        <li><span style={styles.key}>Company Name</span> <span>{isResumeSubbed ? item?.company_name : <a className="link" style={styles.unlock} href='/pricing' target="_blank">See company name</a>}</span></li>
                                                         <li><span style={styles.key}>Employment Type</span> <span>{item?.employment_type}</span></li>
                                                         <li><span style={styles.key}>Location</span> <span>{item?.location}</span></li>
                                                         <li><span style={styles.key}>Salary</span> <span>{item?.salary ? item.salary : "Undisclosed"}</span></li>

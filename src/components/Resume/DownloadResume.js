@@ -83,10 +83,7 @@ const DownloadResume = () => {
     const [imgUrl, setImgUrl] = useState(resume?.storageDetails?.imgUrl || avatarImg);
     const [hasImg, setHasImg] = useState(false);
     const [resumeNameExist, setResumeNameExist] = useState(false);
-    const [shareableLink, setShareableLink] = useState("");
-    const [aiSuggestedJobs, setAiSuggestedJobs] = useState([]);
     const [isSubscribed, setIsSubscribed] = useState(true);
-    const [isFirstFreeSetOnDB, setIsFirstFreeSetOnDB] = useState(false)
     const [storageDetails, setStorageDetails] = useState({
         name: "",
         desc: "",
@@ -143,45 +140,6 @@ const DownloadResume = () => {
             navigate('/user/dashboard/resume?customize');
         } 
     }, [user]);
-
-
-    useEffect(() => {
-        let timer;
-    
-        const runSubTimerForNewUser = () => {
-            if (!user?.resumeSubscriptions?.subscribed) {
-                errorSetter("Select a package to get all BENEFITS");
-                if (!isFirstFreeSetOnDB) {
-                    setIsFirstFreeUsedAndUpdateDB();
-                }
-            }
-        };
-
-        timer = setTimeout(runSubTimerForNewUser, 180000); // 3 minute
-        
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
-    
-    
-    const setIsFirstFreeUsedAndUpdateDB = () => {
-        dispatch(setFetching(true))
-        axios
-            .get('/set-first-free-used', {
-                headers: {
-                    'x-access-token': isAuth,
-                },
-            })
-            .then((response) => {
-                setIsFirstFreeSetOnDB(true);
-                setIsSubscribed(false);
-            })
-            .catch((error) => {
-                setIsFirstFreeSetOnDB(false);
-            });
-            dispatch(setFetching(false))
-    };
     
     
     //scroll to page top on render
@@ -208,14 +166,6 @@ const DownloadResume = () => {
       }
     };
 
-    const handleFirstFreeDownloadRestrict = () => {
-
-        if (!user.isFirstFreeUsed) {
-            if (!isFirstFreeSetOnDB) {
-                setIsFirstFreeUsedAndUpdateDB();
-            }
-        }
-    };
 
     const checkObjectForKeyValue = (arr, key, keyOfKey, searchValue) => {
         if (arr.some(obj => obj[key][keyOfKey] === searchValue)) {
@@ -409,6 +359,13 @@ const DownloadResume = () => {
                 }
                 setHasDownloadedCv(true)
             }
+            if(!user.isFirstFreeUsed) {
+                successSetter("Redirecting to JOB CONNECTIONS in 5 seconds")
+                setTimeout(() => {
+                    navigate('/user/dashboard/job-hub')
+                }, 5000);
+                return
+            }
             successSetter("CV Downloaded Successfully")
 
         } catch (error) {
@@ -426,10 +383,11 @@ const DownloadResume = () => {
         }
         //check if user used first free use already and if not subscribed
         if(!user?.resumeSubscriptions?.subscribed) {
-            errorSetter('Please SUBSCRIBE to download resume plus other BENEFITS')
-            handleFirstFreeDownloadRestrict()
-            setIsSubscribed(false)
-            return
+            if (user.isFirstFreeUsed) {
+                errorSetter('Please SUBSCRIBE to keep downloading resumes plus other BENEFITS')
+                setIsSubscribed(false)
+                return
+            }
         }
         if(storageDetails.name === "") {
             window.scrollTo(0, 0);
@@ -437,9 +395,9 @@ const DownloadResume = () => {
         }
         if (resumeNameExist) {
             window.scrollTo(0, 0);
-            return errorSetter('Please change the resume name')
+            return errorSetter('Resume name exists')
         }
-        if (resumeSubDuration === "Per Use" && carouselName !== "Standard" && carouselName !== "Bubble Fish") {
+        if (resumeSubDuration !== "Per Month" && resumeSubDuration !== "Per Week" && carouselName !== "Standard" && carouselName !== "Bubble Fish") {
             return errorSetter("Upgrade to Monthly or Weeekly for this template")
         }
         const note = screenWidth < 900 ? 'Click OK only when instruction completed. MOBILE DETECTED! Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. After that, your resume will open in another tab, click the share (📤) button on your browser to save to files or share. RETURN BACK TO THIS TAB WHEN DONE FOR JOBS DISPLAY AND COVER LETTERS' : 'This action is irreversible, continue?'
@@ -448,7 +406,7 @@ const DownloadResume = () => {
                 title: "⚠️⚠️⚠️PLEASE READ⚠️⚠️⚠️"
             })
             .then(() => {
-                handleResumeSave()
+                handleResumeSave() 
             })
             .catch(() => {
                 errorSetter("Resume not yet printed")
