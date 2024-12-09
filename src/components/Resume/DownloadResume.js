@@ -439,7 +439,7 @@ const DownloadResume = () => {
             window.scrollTo(0, 0);
             return errorSetter('Please change the resume name')
         }
-        if (resumeSubDuration === "Per Use" && carouselName !== "Standard") {
+        if (resumeSubDuration === "Per Use" && carouselName !== "Standard" && carouselName !== "Bubble Fish") {
             return errorSetter("Upgrade to Monthly or Weeekly for this template")
         }
         const note = screenWidth < 900 ? 'Click OK only when instruction completed. MOBILE DETECTED! Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. After that, your resume will open in another tab, click the share (📤) button on your browser to save to files or share. RETURN BACK TO THIS TAB WHEN DONE FOR JOBS DISPLAY AND COVER LETTERS' : 'This action is irreversible, continue?'
