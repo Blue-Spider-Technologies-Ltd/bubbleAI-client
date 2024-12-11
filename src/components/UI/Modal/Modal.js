@@ -407,8 +407,12 @@ export const SuccessFailureModal = ({
         if (!success) {
             navigate('/pricing')
         } else {
-            navigate(prevPath)
-            localStorage?.removeItem('prevPath')
+            if(localStorage.getItem('prevPath')) {
+                navigate(prevPath)
+                localStorage?.removeItem('prevPath')
+                return
+            }
+            window.location.reload()
         }
     }
 
@@ -460,20 +464,6 @@ export const SuccessFailureModal = ({
                     ) : (
                         <div>
                             <h1>{success ? notApaymentTextPositive : notApaymentTextNegative}</h1>
-                           
-                            <div>
-                                <h4>Copy the link below to share to employers</h4>
-                                <div style={{width: "100%", padding: "5px", backgroundColor: "#c0d1d457", borderRadius: "10px", wordBreak: "break-word", lineHeight: "1", boxShadow: "outset 10px 10px 10px rgba(0, 0, 0, 0.1)"}}>
-                                    <a className="link" style={{fontSize: ".7rem"}} href={shareableLink} target='_blank' rel="noreferrer">{shareableLink}</a>
-                                    <span onClick={handleCopy} style={{color: "green", cursor: "pointer", float: "right"}}>
-                                        <ContentCopyIcon fontSize="small" />
-                                    </span>
-                                </div>
-                                
-                            </div>
-
-                            <JobList aiSuggestedJobs={aiSuggestedJobs} resume={resume} template={template} imgUrl={imgUrl} errorSetter={errorSetter} />
-
                         </div>
                     )}
                     

@@ -29,7 +29,6 @@ import StandardPDF from './Templates/Standard/StandardPDF'
 import EuroPass from './Templates/Europass/EuroPass';
 import Auckland from './Templates/Auckland/Auckland';
 import BubbleFish from './Templates/BubbleFish/BubbleFish';
-import Feedback from '../Dashboard/Feedback';
 import {jwtDecode} from 'jwt-decode';
 import ChatwootWidget from "../../utils/chatwoot";
 const screenWidth = window.innerWidth
@@ -76,7 +75,6 @@ const DownloadResume = () => {
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
     // const [completed, setCompleted] = useState(false)
     const [hasDownloadedCv, setHasDownloadedCv] = useState(false)
-    const [isFeedbackTime, setIsFeedbackTime] = useState(false)
     const [canPrint, setCanPrint] = useState(false)
     const [activeIndex, setActiveIndex] = useState(null);
     const [carouselName, setCarouselName] = useState("");
@@ -355,12 +353,15 @@ const DownloadResume = () => {
                 dispatch(setFetching(false));
                 
                 if(!hasDroppedFeedback) {
-                    setIsFeedbackTime(true)
+                    //to be used in jobhub
+                    localStorage.setItem("feedbackTime", true)
                 }
                 setHasDownloadedCv(true)
             }
+
+            // So first time users understands job-hub
             if(!user.isFirstFreeUsed) {
-                successSetter("Redirecting to JOB CONNECTIONS in 5 seconds")
+                successSetter("Redirecting you to JOB CONNECTIONS in 5 seconds")
                 setTimeout(() => {
                     navigate('/user/dashboard/job-hub')
                 }, 5000);
@@ -601,7 +602,7 @@ const DownloadResume = () => {
 
             {showCheckout && <CheckoutSummaryModal />}
             
-            {!hasDroppedFeedback && isFeedbackTime && <Feedback notApaymentTextPositive="Resume Creation Completed!"/>}
+
             {/* {completed &&  (                
                 <SuccessFailureModal 
                     success={true} 

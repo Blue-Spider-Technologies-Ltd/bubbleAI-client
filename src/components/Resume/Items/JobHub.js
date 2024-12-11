@@ -5,6 +5,7 @@ import { useConfirm } from "material-ui-confirm";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
+import Feedback from "../../Dashboard/Feedback";
 import { ButtonSubmitGreen, ButtonThin } from "../../UI/Buttons/Buttons";
 import { 
     errorAnimation, 
@@ -56,6 +57,7 @@ const JobHub = () => {
     const [chosenJob, setChosenJob] =  useState({})
     const [actionString, setActionString] = useState('')
     const [activeResIndex, setActiveResIndex] = useState(0)
+    const [isFeedbackTime, setIsFeedbackTime] = useState(false)
 
     const styles = {
         cardGrid: {
@@ -190,6 +192,18 @@ const JobHub = () => {
         successMiniAnimation()
     }
 
+    useEffect(() => {
+        const feedback = localStorage.getItem('feedbackTime');
+
+        if (feedback) {
+            const timer = setTimeout(() => {
+                setIsFeedbackTime(true);
+            }, 10000);
+
+            // Cleanup function to clear the timeout if the component unmounts
+            return () => clearTimeout(timer);
+        }
+    }, []);
 
     useEffect(() => {
         dispatch(setFetching(true));
@@ -415,248 +429,253 @@ const JobHub = () => {
 
 
   return (
-    <div className="auth-container">
-        {/* For SIDE MENU */}
-        <div style={{ width: "100%", padding: "0" }}>
-            <div className="auth-bg-blob"></div>
-        </div>
-        <div className='go-back' style={{position: "absolute", top: "1.3rem", left: "1rem"}}>
-            <div onClick={goBackPrevPage} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '80px'}}>
-                <ArrowCircleLeftIcon fontSize='large' />
-            </div>
-        </div>
-
-        <div className="auth-container-inner">
-            {/* for TOP MENU */}
-            <AuthHeader
-                noAuthMenu={true}
-                headerText="My Jobs"
-            />
-            <div className="error">{error}</div>
-            <div className="success-mini">{successMini}</div>
-
-            {/* <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
-                <AuthInputs 
-                    placeholder="Search for a resume" 
-                    inputType="search" 
-                    mb={3} 
-                    mt={5} 
-                    required={true} 
-                    value={searchString}
-                    onChange={handleSearch}
-                />
-            </div>  */}
-
-            <div style={styles.animText}>
-                <TypeAnimation
-                    sequence={[
-                        () => setTextColor('#3E8F93'),
-                        1000,
-                        'Greater Than 90% Chance of Beating ATS',
-                        1000,
-                        'Greater Than 90% Chance of Interview',
-                        1000,
-                        'Greater Than 90% Chance of Employment',
-                        1000,
-                        '.',
-                        1000,
-                        () => setTextColor('black'),
-                        'Real Company Data Used in Generating Resume',
-                        1000,
-                        'Real Company Data Used in Generating Cover',
-                        1000,
-                        'Real Company Data Used in Interview Prep',
-                        1000,
-                        '.',
-                        1000,
-                        () => setTextColor('#987070'),
-                        'Enhances User Data to Generate Resume',
-                        1000,
-                        'Enhances User Data to Generate Cover',
-                        1000,
-                        'Enhances User Data in Interview Prep',
-                        1000,
-                        '.',
-                        1000,
-                    ]}
-                    repeat={Infinity}
-                />
-            </div>
-
-            {jobs.length < 1 ? (
-                <div style={styles.noResumes}>
-                    <h4>Create Resume to get Job Connections</h4>
-                    <div style={{width: '200px'}}>
-                        <ButtonSubmitGreen onClick={goBackPrevPage}>Create Resume</ButtonSubmitGreen>
+    <div>
+        {isFeedbackTime ? <Feedback notApaymentTextPositive="Resume Creation Completed!"/> : (
+            <div className="auth-container">
+                {/* For SIDE MENU */}
+                <div style={{ width: "100%", padding: "0" }}>
+                    <div className="auth-bg-blob"></div>
+                </div>
+                <div className='go-back' style={{position: "absolute", top: "1.3rem", left: "1rem"}}>
+                    <div onClick={goBackPrevPage} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '80px'}}>
+                        <ArrowCircleLeftIcon fontSize='large' />
                     </div>
                 </div>
-            ) : (
-                <Grid container>
-                    {jobs.map((item, index) => (
-                        <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
-                            <Card sx={activeIndex !== index + 1 ? styles.card : styles.cardLarge}>
-                                
-                                <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                                    <CardContent sx={{ display: 'flex', flexDirection: 'row' }}>
-                                        <CardMedia
-                                            component="img"
-                                            sx={styles.img}
-                                            image={img}
-                                            alt="Avatar"
-                                        />
 
-                                        <div style={{width: '90%'}}>
-                                            <Typography component="div" variant="h5">
-                                                {item.title}
-                                            </Typography>
-                                            <div style={styles.link} >
-                                                <div>
-                                                    <ul>
-                                                        <li><span style={styles.key}>Company Name</span> <span>{isResumeSubbed ? item?.company_name : <a className="link" style={styles.unlock} href='/pricing' target="_blank">See company name</a>}</span></li>
-                                                        <li><span style={styles.key}>Employment Type</span> <span>{item?.employment_type}</span></li>
-                                                        <li><span style={styles.key}>Location</span> <span>{item?.location}</span></li>
-                                                        <li><span style={styles.key}>Salary</span> <span>{item?.salary ? item.salary : "Undisclosed"}</span></li>
-                                                    </ul>
-                                                    
+                <div className="auth-container-inner">
+                    {/* for TOP MENU */}
+                    <AuthHeader
+                        noAuthMenu={true}
+                        headerText="My Jobs"
+                    />
+                    <div className="error">{error}</div>
+                    <div className="success-mini">{successMini}</div>
+
+                    {/* <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
+                        <AuthInputs 
+                            placeholder="Search for a resume" 
+                            inputType="search" 
+                            mb={3} 
+                            mt={5} 
+                            required={true} 
+                            value={searchString}
+                            onChange={handleSearch}
+                        />
+                    </div>  */}
+
+                    <div style={styles.animText}>
+                        <TypeAnimation
+                            sequence={[
+                                () => setTextColor('#3E8F93'),
+                                1000,
+                                'Greater Than 90% Chance of Beating ATS',
+                                1000,
+                                'Greater Than 90% Chance of Interview',
+                                1000,
+                                'Greater Than 90% Chance of Employment',
+                                1000,
+                                '.',
+                                1000,
+                                () => setTextColor('black'),
+                                'Real Company Data Used in Generating Resume',
+                                1000,
+                                'Real Company Data Used in Generating Cover',
+                                1000,
+                                'Real Company Data Used in Interview Prep',
+                                1000,
+                                '.',
+                                1000,
+                                () => setTextColor('#987070'),
+                                'Enhances User Data to Generate Resume',
+                                1000,
+                                'Enhances User Data to Generate Cover',
+                                1000,
+                                'Enhances User Data in Interview Prep',
+                                1000,
+                                '.',
+                                1000,
+                            ]}
+                            repeat={Infinity}
+                        />
+                    </div>
+
+                    {jobs.length < 1 ? (
+                        <div style={styles.noResumes}>
+                            <h4>Create Resume to get Job Connections</h4>
+                            <div style={{width: '200px'}}>
+                                <ButtonSubmitGreen onClick={goBackPrevPage}>Create Resume</ButtonSubmitGreen>
+                            </div>
+                        </div>
+                    ) : (
+                        <Grid container>
+                            {jobs.map((item, index) => (
+                                <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
+                                    <Card sx={activeIndex !== index + 1 ? styles.card : styles.cardLarge}>
+                                        
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                            <CardContent sx={{ display: 'flex', flexDirection: 'row' }}>
+                                                <CardMedia
+                                                    component="img"
+                                                    sx={styles.img}
+                                                    image={img}
+                                                    alt="Avatar"
+                                                />
+
+                                                <div style={{width: '90%'}}>
+                                                    <Typography component="div" variant="h5">
+                                                        {item.title}
+                                                    </Typography>
+                                                    <div style={styles.link} >
+                                                        <div>
+                                                            <ul>
+                                                                <li><span style={styles.key}>Company Name</span> <span>{isResumeSubbed ? item?.company_name : <a className="link" style={styles.unlock} href='/pricing' target="_blank">See company name</a>}</span></li>
+                                                                <li><span style={styles.key}>Employment Type</span> <span>{item?.employment_type}</span></li>
+                                                                <li><span style={styles.key}>Location</span> <span>{item?.location}</span></li>
+                                                                <li><span style={styles.key}>Salary</span> <span>{item?.salary ? item.salary : "Undisclosed"}</span></li>
+                                                            </ul>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </CardContent>
+
+                                            <div style={{ margin: '20px', marginTop: '-20px' }}>
+                                                <h4 style={{ margin: '0' }}>Description</h4>
+                                                <div style={styles.desc}>
+                                                    {activeIndex !== index + 1 
+                                                        ? <>
+                                                            {item.description.slice(0, 200)}... <span onClick={() => setActiveIndex(index + 1)} style={{ cursor: 'pointer', color: '#3E8F93' }}>see more</span>
+                                                        </>
+                                                        : <> {item.description} <span onClick={() => setActiveIndex(null)} style={{ cursor: 'pointer', color: '#3E8F93' }}>...see less</span></>}
                                                 </div>
                                             </div>
-                                        </div>
-                                        
-                                    </CardContent>
 
-                                    <div style={{ margin: '20px', marginTop: '-20px' }}>
-                                        <h4 style={{ margin: '0' }}>Description</h4>
-                                        <div style={styles.desc}>
-                                            {activeIndex !== index + 1 
-                                                ? <>
-                                                    {item.description.slice(0, 200)}... <span onClick={() => setActiveIndex(index + 1)} style={{ cursor: 'pointer', color: '#3E8F93' }}>see more</span>
-                                                </>
-                                                : <> {item.description} <span onClick={() => setActiveIndex(null)} style={{ cursor: 'pointer', color: '#3E8F93' }}>...see less</span></>}
-                                        </div>
-                                    </div>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1, flexWrap: 'wrap' }}>
 
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1, flexWrap: 'wrap' }}>
+                                                <div style={{marginBottom: "10px"}}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid #3E8F93' 
+                                                        width={'110px'} 
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => getResume(item?.description, item?.title)}
+                                                    >
+                                                        <FaSuitcase style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Resume
+                                                    </ButtonThin>
+                                                </div>
 
-                                        <div style={{marginBottom: "10px"}}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid #3E8F93' 
-                                                width={'110px'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => getResume(item?.description, item?.title)}
-                                            >
-                                                <FaSuitcase style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Resume
-                                            </ButtonThin>
-                                        </div>
+                                                <div style={{marginBottom: "10px", marginRight: '3px'}}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid #987070' 
+                                                        width={'110px'} 
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => chooseActStr("Cover Letter", item)}
+                                                    >
+                                                        <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
+                                                    </ButtonThin>
+                                                </div>
 
-                                        <div style={{marginBottom: "10px", marginRight: '3px'}}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid #987070' 
-                                                width={'110px'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => chooseActStr("Cover Letter", item)}
-                                            >
-                                                <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
-                                            </ButtonThin>
-                                        </div>
+                                                <div style={{marginBottom: "10px"}}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid #F8E231' 
+                                                        width={'110px'} 
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => getJob(item?.url, item?.external_url)}
+                                                    >
+                                                        <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
+                                                    </ButtonThin>
+                                                </div>
 
-                                        <div style={{marginBottom: "10px"}}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid #F8E231' 
-                                                width={'110px'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => getJob(item?.url, item?.external_url)}
-                                            >
-                                                <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
-                                            </ButtonThin>
-                                        </div>
+                                                <div style={{marginBottom: "10px"}}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid #68A7AD' 
+                                                        width={'110px'} 
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => chooseActStr("Email")}
+                                                    >
+                                                        <MdMarkEmailRead style={{color: "#68A7AD", fontSize: ".9rem"}} />&nbsp;&nbsp; Email Follow-up
+                                                    </ButtonThin>
+                                                </div>
+                                                
+                                                <div style={{marginBottom: "10px"}}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid black' 
+                                                        width={'110px'} 
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => chooseActStr("Interview")}
+                                                    >
+                                                        <VscChecklist style={{color: "black", fontSize: ".9rem"}} />&nbsp;&nbsp; Interview Prep
+                                                    </ButtonThin>
+                                                </div>
+                                                
+                                                <div style={{marginBottom: "10px"}}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid rgba(158, 9, 9, 0.733)' 
+                                                        width={'110px'} 
+                                                        height='25px' 
+                                                        color='rgba(158, 9, 9, 0.733)'
+                                                        onClick={() => deleteJob(item?.id, item.title)}
+                                                    >
+                                                        <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
+                                                    </ButtonThin>
+                                                </div>
 
-                                        <div style={{marginBottom: "10px"}}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid #68A7AD' 
-                                                width={'110px'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => chooseActStr("Email")}
-                                            >
-                                                <MdMarkEmailRead style={{color: "#68A7AD", fontSize: ".9rem"}} />&nbsp;&nbsp; Email Follow-up
-                                            </ButtonThin>
-                                        </div>
-                                        
-                                        <div style={{marginBottom: "10px"}}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid black' 
-                                                width={'110px'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => chooseActStr("Interview")}
-                                            >
-                                                <VscChecklist style={{color: "black", fontSize: ".9rem"}} />&nbsp;&nbsp; Interview Prep
-                                            </ButtonThin>
-                                        </div>
-                                        
-                                        <div style={{marginBottom: "10px"}}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid rgba(158, 9, 9, 0.733)' 
-                                                width={'110px'} 
-                                                height='25px' 
-                                                color='rgba(158, 9, 9, 0.733)'
-                                                onClick={() => deleteJob(item?.id, item.title)}
-                                            >
-                                                <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
-                                            </ButtonThin>
-                                        </div>
+                                            </Box>
+                                        </Box>
 
-                                    </Box>
-                                </Box>
-
-                            </Card>
+                                    </Card>
+                                </Grid>
+                            ))}          
                         </Grid>
-                    ))}          
-                </Grid>
-            )}
-
-        </div>
-
-        {modalOpen && (
-            <PlainModalOverlay>
-                <div style={styles.modalInner}>
-                    <div className='prev-page' onClick={() => setModalOpen(false)}>
-                        <FaLongArrowAltLeft />
-                    </div>
-                    <h4>Choose a resume for me to optimize your {actionString}, together with this job's real data.</h4>
-                    <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Using the "Get Resume" button on each job to optimize your resume per-job gives your application materials more relevance and hence, gives you a surer chance.</Alert>
-
-                    <div style={styles.resumesCont}>
-                        {allResumes.length > 0 && (
-                            allResumes.map((resume, index) => {
-                                return (
-                                    <div key={index} style={activeResIndex === index + 1 ? styles.activeResume : styles.eachResume} onClick={() => chooseResume(index)}>
-                                        <div>{resume?.storageDetails?.name}</div> {activeResIndex === index + 1 && <div><GrStatusGood style={{color: "#3E8F93", fontSize: ".9rem"}} /> </div>}
-                                    </div>
-                                )
-                            })
-                        )}
-                    </div>
-
-                    <div style={{width: '100%'}}>
-                        <ButtonSubmitGreen onClick={handleGenerate} >Get {actionString}</ButtonSubmitGreen>
-                    </div>
+                    )}
 
                 </div>
-            </PlainModalOverlay>
+
+                {modalOpen && (
+                    <PlainModalOverlay>
+                        <div style={styles.modalInner}>
+                            <div className='prev-page' onClick={() => setModalOpen(false)}>
+                                <FaLongArrowAltLeft />
+                            </div>
+                            <h4>Choose a resume for me to optimize your {actionString}, together with this job's real data.</h4>
+                            <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Using the "Get Resume" button on each job to optimize your resume per-job gives your application materials more relevance and hence, gives you a surer chance.</Alert>
+
+                            <div style={styles.resumesCont}>
+                                {allResumes.length > 0 && (
+                                    allResumes.map((resume, index) => {
+                                        return (
+                                            <div key={index} style={activeResIndex === index + 1 ? styles.activeResume : styles.eachResume} onClick={() => chooseResume(index)}>
+                                                <div>{resume?.storageDetails?.name}</div> {activeResIndex === index + 1 && <div><GrStatusGood style={{color: "#3E8F93", fontSize: ".9rem"}} /> </div>}
+                                            </div>
+                                        )
+                                    })
+                                )}
+                            </div>
+
+                            <div style={{width: '100%'}}>
+                                <ButtonSubmitGreen onClick={handleGenerate} >Get {actionString}</ButtonSubmitGreen>
+                            </div>
+
+                        </div>
+                    </PlainModalOverlay>
+                )}
+
+                
+            </div>
         )}
-
-
     </div>
+
   );
 
   

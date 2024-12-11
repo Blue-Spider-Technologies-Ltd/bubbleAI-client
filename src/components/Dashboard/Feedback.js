@@ -11,11 +11,11 @@ import successImg from '../../images/success.gif';
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from "react-redux";
 import { errorAnimation } from "../../utils/client-functions";
-import { setError } from "../../redux/states";
+import { setError, setFetching } from "../../redux/states";
 import {jwtDecode} from 'jwt-decode';;
 
 
-const Feedback = (props) => {
+const Feedback = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const [ratingStar, setRatingStar] = useState(0)
@@ -49,6 +49,7 @@ const Feedback = (props) => {
             return errorSetter("Rating stars please?")
         }
         try {
+            dispatch(setFetching(true))
             const data = {
                 name: firstName,
                 rating: ratingStar,
@@ -60,15 +61,19 @@ const Feedback = (props) => {
                 },
             });
             setFeedbackSent(true)
+            //remove feedback ietm saved in download page after downloading resume
+            localStorage.removeItem('feedbackTime')
             localStorage.setItem('token', response?.data?.token)
         } catch (error) {
             errorSetter("Something went wrong, please try again")
         }
+        dispatch(setFetching(false))
 
     }
 
     const cancelFeedback = () => {
-        setFeedbackSent(true)
+        localStorage.removeItem('feedbackTime')
+        window.location.reload()
     }
 
     const handleCommentChange = (e) => {
@@ -81,7 +86,6 @@ const Feedback = (props) => {
                 <PlainModalOverlay>
                     <div className={modalCss.CheckoutLogoWrapper}>
                         <img src={successImg} alt='Bubble Ai' style={{width: '100%'}} />
-                        <h4>Completed!</h4>
                     </div>
                     <h2>Kindly leave me a review!</h2>
                     <p>Only your first name will be used</p>
