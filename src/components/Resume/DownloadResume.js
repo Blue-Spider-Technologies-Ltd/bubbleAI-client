@@ -73,7 +73,7 @@ const DownloadResume = () => {
     const confirm = useConfirm();
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
-    // const [completed, setCompleted] = useState(false)
+    const [freeJustUsed, setFreeJustUsed] = useState(false)
     const [hasDownloadedCv, setHasDownloadedCv] = useState(false)
     const [canPrint, setCanPrint] = useState(false)
     const [activeIndex, setActiveIndex] = useState(null);
@@ -360,7 +360,7 @@ const DownloadResume = () => {
             }
 
             // So first time users understands job-hub
-            if(!user.isFirstFreeUsed) {
+            if(freeJustUsed) {
                 successSetter("Redirecting you to JOB CONNECTIONS in 5 seconds")
                 setTimeout(() => {
                     navigate('/user/dashboard/job-hub')
@@ -377,6 +377,30 @@ const DownloadResume = () => {
         dispatch(setFetching(false));
     }
 
+    const setFirstFreeUsedOnDB = async () => {
+        try {
+            await checkAuthenticatedUser();
+        } catch (error) {
+            localStorage?.removeItem("token");
+            navigate("/popin?resume");
+        }
+        try {
+            const response = await axios.get('/set-first-free-used', {
+                headers: {
+                    'x-access-token': isAuth
+                }
+            })
+
+            if(response.statusCode === 409) {
+                errorSetter("Not Authenticated")
+                setTimeout(() => {
+                    navigate("/popin?resume");
+                }, 2000);
+            }
+        } catch (error) {
+            
+        }
+    }
 
     const handleDownload = () => {
         if(!canPrint) {
@@ -384,11 +408,13 @@ const DownloadResume = () => {
         }
         //check if user used first free use already and if not subscribed
         if(!user?.resumeSubscriptions?.subscribed) {
-            if (user.isFirstFreeUsed) {
-                errorSetter('Please SUBSCRIBE to keep downloading resumes plus other BENEFITS')
-                setIsSubscribed(false)
-                return
+            errorSetter('Please SUBSCRIBE to download resumes plus other BENEFITS')
+            if (!user.isFirstFreeUsed) {
+                setFirstFreeUsedOnDB()
+                setFreeJustUsed(true)
             }
+            setIsSubscribed(false)
+            return
         }
         if(storageDetails.name === "") {
             window.scrollTo(0, 0);
