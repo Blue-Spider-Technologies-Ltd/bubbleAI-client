@@ -20,7 +20,17 @@ import ProtectedContent from "../UI/ProtectedContent/ProtectedContent ";
 import { useConfirm } from "material-ui-confirm";
 import axios from "axios";
 import {jwtDecode} from 'jwt-decode';
+import { LANGUAGES } from '../../utils/languages';
+
+const langLevelsArray = [
+  {name: '1'},
+  {name: '2'},
+  {name: '3'},
+  {name: '4'},
+  {name: '5'}
+]
 const screenWidth = window.innerWidth
+
 
 
 const styles = {
@@ -82,6 +92,7 @@ const PreviewResume = () => {
   const [workExpArray, setWorkExpArray] = useState([]);
   const [awardArray, setAwardArray] = useState([]);
   const [publications, setPublications] = useState([]);
+  const [languages, setLanguages] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(true);
   const [countryid, setCountryid] = useState(0);
 
@@ -123,6 +134,7 @@ const PreviewResume = () => {
     setWorkExpArray(resume.workExpArray && resume.workExpArray);
     setAwardArray(resume.awardArray && resume.awardArray);
     setPublications(resume.publications && resume.publications);
+    setLanguages(resume.languages && resume.languages);
     dispatch(setFetching(false));
   }, [dispatch, resume]);
 
@@ -156,17 +168,10 @@ const PreviewResume = () => {
         const scrollMeter = screenWidth < 900 ? 0.7 : 0.5;
   
         if (scrollPosition > (scrollMeter * viewHeight)) {
-
-          axios.get('/user/get-subscription', {
-            headers: { "x-access-token": isAuth },
-          })
-          .then((response) => {
-            setIsSubscribed(response.data?.resumeSubscriptions);
-          })
-          .catch((error) => {
+          if (!isResumeSubbed) {
             errorSetter("Looks like you are not subscribed. Choose a plan to complete your CV");
             setIsSubscribed(false);
-          });
+          } 
           window.removeEventListener('scroll', handleScroll);
         }
       };
@@ -177,12 +182,10 @@ const PreviewResume = () => {
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [user.isFirstFreeUsed, dispatch, isAuth]);
+  }, [user.isFirstFreeUsed, dispatch, isAuth, isResumeSubbed]);
 
   
 
-
-  //////LINK HANDLERS
   const handleDeleteLinks = (index) => {
     confirm({ title: `Proceed to delete link? ${linkInfo[index]}` })
       .then(() => {
@@ -377,6 +380,26 @@ const PreviewResume = () => {
     }
   };
 
+  const handleLangChange = (event, index) => {
+    const updatedLang = languages.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          [event.target.name]: event.target.value,
+        };
+      }
+      return item;
+    });
+    setLanguages(updatedLang)
+  };
+  const deleteLang = (index) => {
+    confirm({ title: `Delete Language?` })
+    .then(() => {
+      setLanguages((prevItems) => prevItems.filter((_, i) => i !== index));
+    })
+    .catch(() => errorSetter("Not Deleted"));
+  };
+
   const handleUnlockEdit = () => {
     window.open('/pricing')
   }
@@ -393,6 +416,7 @@ const PreviewResume = () => {
       awardArray: awardArray, //Array
       interests: interests, //Array
       publications: publications, //Array
+      languages: languages, //Array
     };
 
     try {
@@ -1006,7 +1030,7 @@ const PreviewResume = () => {
                 </div>
               )}
 
-              {awardArray && (
+              {awardArray.length > 0 && (
                 <div className="Segment">
                   <Grid container>
                     <Grid item md={2} >
@@ -1259,6 +1283,55 @@ const PreviewResume = () => {
                   </Grid>
                 </div>
               )}
+
+
+              {languages?.length > 0 && (
+                <div className="Segment">
+                  <h4>Languages</h4>
+                  <Grid container>                      
+                    {languages.map((language, index) => {
+                      return (
+                        <Grid container xs={12} md={6} key={index}>                              
+                          <AuthInput 
+                            value={language.language} 
+                            name="language"
+                            label="Language" 
+                            inputType="select2" 
+                            inputGridSm={8} 
+                            mb={2} 
+                            list={LANGUAGES} 
+                            disabled={!isResumeSubbed}
+                            onChange={(event) => handleLangChange(event, index)}
+                          />
+                          <AuthInput 
+                            value={language.level} 
+                            name="level"
+                            label="Level" 
+                            inputType="select2" 
+                            inputGridSm={2} 
+                            mb={2} 
+                            list={langLevelsArray} 
+                            disabled={!isResumeSubbed}
+                            onChange={(event) => handleLangChange(event, index)}
+                          />
+                          <Grid item xs={2} pt={1}>
+                            <ButtonTransparentSquare 
+                              style={styles.reorderDltBtn}
+                              title="delete item"
+                              type='button'
+                              onClick={() => deleteLang(index)}
+                            >
+                              <MdDeleteForever />
+                            </ButtonTransparentSquare>
+                          </Grid>
+                        </Grid>
+                      );
+                      })}
+                  </Grid>
+                </div>
+              )}
+
+
               <div
                 style={{
                   width: "100%",
@@ -1281,7 +1354,7 @@ const PreviewResume = () => {
         {loading && (
           <Modal
             header4={`Hello ${basicInfo.firstName}`}
-            header3="Readying your Resume for download..."
+            header3="Preping Resume for download..."
           />
         )}
 

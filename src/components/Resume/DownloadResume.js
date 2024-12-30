@@ -442,8 +442,8 @@ const DownloadResume = () => {
                         <div className='error'>{error}</div>
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE DETECTED: Enable browser pop-ups to allow CV download. Go to Phone settings ⚙️; Search pop-up and allow it. If you do not, you will lose your download and Bubble Ai will not be liable.</Alert>}
-                            <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible</Alert>
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE DETECTED: Allow browser pop-ups to allow CV download. If you do not, you will lose your download.</Alert>}
+                            {resumeSubDuration !=="Per Week" && resumeSubDuration !== "Per Month" && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible for non-premuim users</Alert>}
                         </div>
                         <div className="Segment">
                             <h4>Save Resume Details</h4>
@@ -512,18 +512,33 @@ const DownloadResume = () => {
                             <h4>View and Download</h4>
 
                             {screenWidth < 900 && (
-                                <Alert 
-                                    sx={{ 
-                                        width: '100%',  
-                                        padding: '0 5px', 
-                                        display: 'flex', 
-                                        justifyContent: 'center', 
-                                        fontSize: '.7rem'
-                                    }} 
-                                    severity="info"
-                                >
-                                    <div>Only first page is displayed on mobile. Download for complete view</div>
-                                </Alert>
+                                <div>
+                                    <Alert 
+                                        sx={{ 
+                                            width: '100%',  
+                                            padding: '0 5px', 
+                                            display: 'flex', 
+                                            justifyContent: 'center', 
+                                            fontSize: '.7rem'
+                                        }} 
+                                        severity="info"
+                                    >
+                                        <div>Only first page is displayed on mobile. Download for complete view</div>
+                                    </Alert>
+                                    <Alert 
+                                        sx={{ 
+                                            width: '100%',  
+                                            padding: '0 5px', 
+                                            display: 'flex', 
+                                            justifyContent: 'center', 
+                                            fontSize: '.7rem'
+                                        }} 
+                                        severity="info"
+                                    >
+                                        <div>If not displayed on older Android versions, proceed to download after picking template.</div>
+                                    </Alert>
+                                </div>
+                                
                             )}
                             {!isSubscribed && (
                                 <Alert 

@@ -268,6 +268,21 @@ const BubbleFish = ({resume}) => {
                                 </View>
                             )}
 
+                            {resume?.languages && (
+                                <View>
+                                    {resume.languages.length > 0 && (
+                                        <View>
+                                            <Text style={styles.sectionHeader}>LANGUAGE PROFICIENCIES</Text>
+                                            <View style={styles.SkillContainer}>
+                                                {resume.languages.map((language, index) => (
+                                                    <Text key={index} style={styles.SkillItems}>{language.language} ({language.level}/5)</Text>
+                                                ))}
+                                            </View>
+                                        </View>
+                                    )}
+                                </View>
+                            )}
+
                             {resume?.interests && (
                                 <View>
                                     {resume.interests.length > 0 && (

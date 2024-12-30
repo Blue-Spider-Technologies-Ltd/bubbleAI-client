@@ -323,6 +323,20 @@ const EuroPass = ({resume, imgUrl}) => (
                             )}
                         </View>
                     )}
+                    {resume?.languages && (
+                        <View>
+                            {resume.languages.length > 0 && (
+                                <View>
+                                    <Text style={styles.sectionHeader}>Language Proficiencies</Text>
+                                    <View style={styles.SkillContainer}>
+                                        {resume.languages.map((language, index) => (
+                                            <Text key={index} style={styles.SkillItems}>{language.language} ({language.level}/5)</Text>
+                                        ))}
+                                    </View>
+                                </View>
+                            )}
+                        </View>
+                    )}
                 </View>
             </View>
         </Page>

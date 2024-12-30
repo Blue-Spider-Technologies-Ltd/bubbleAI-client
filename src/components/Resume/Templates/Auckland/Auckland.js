@@ -1,11 +1,12 @@
 import React from "react";
 import { getMonthShortName, capitalizeAllLetters, capitalizeWords } from "../../../../utils/client-functions";
 import { Document, Page, View, Text, StyleSheet, Image, Font } from '@react-pdf/renderer';
-import arrowIcon from '../../../../images/arrow.png'
+// import arrowIcon from '../../../../images/arrow.png'
 import mobileIcon from '../../../../images/phone.png'
 import pinIcon from '../../../../images/pin2.png'
 import emailIcon from '../../../../images/mail.png'
 import linkIcon from '../../../../images/globe.png'
+import badgeIcon from '../../../../images/badge.png'
 
 ////FONTS
 import TinosRegular from '../../../../assets/fonts/tinos/Tinos-Regular.ttf';
@@ -119,8 +120,7 @@ const styles = StyleSheet.create({
         height: 20
     },
     group: {
-        marginTop: 20,
-        marginBottom: 20,
+        marginTop: 25,
         width: '100%'
     },
     member: {
@@ -293,7 +293,7 @@ const Auckland = ({ resume, imgUrl }) => {
                                     <View style={styles.group}>
                                         {resume.skills.map((skill, index) => (
                                             <View key={index} style={styles.contact}>
-                                                <View><Image style={styles.contactIcon} src={arrowIcon} /></View>
+                                                <View><Image style={styles.contactIcon} src={badgeIcon} /></View>
                                                 <View style={styles.SkillItems}><Text>{capitalizeWords(skill)}</Text></View>
                                             </View>
                                         ))}
@@ -302,21 +302,7 @@ const Auckland = ({ resume, imgUrl }) => {
                             )}
 
 
-                            {resume?.eduArray && (
-                                <View>
-                                    <View style={styles.sectionHeader}><Text>EDUCATION</Text></View>
-                                    
-                                    <View style={styles.group}>
-                                        {resume.eduArray.map((eduInfo, index) => (
-                                            <View key={index} style={styles.member}>
-                                                <Text style={styles.title}>{capitalizeAllLetters(eduInfo.degree)}</Text>
-                                                <Text>{capitalizeWords(eduInfo.institution)}</Text>
-                                                <Text style={styles.date}>{getMonthShortName(eduInfo?.date) + " " + eduInfo.date.slice(0, 4)}</Text>
-                                            </View>
-                                        ))}
-                                    </View>
-                                </View>
-                            )}
+
 
                             {resume?.awardArray && (
                                 <View>
@@ -341,96 +327,111 @@ const Auckland = ({ resume, imgUrl }) => {
 
                     <View style={styles.rightCont}>
                         
-                            <View style={styles.name}>
-                                <Text style={{display: 'block', fontSize: 25, marginBottom: 0}}>{capitalizeAllLetters(resume?.basicInfo?.firstName || '')}</Text>
-                                <Text style={{display: 'block', fontSize: 30, marginTop: -5}}>{capitalizeAllLetters(resume?.basicInfo?.lastName || '')}</Text>
+                        <View style={styles.name}>
+                            <Text style={{display: 'block', fontSize: 25, marginBottom: 0}}>{capitalizeAllLetters(resume?.basicInfo?.firstName || '')}</Text>
+                            <Text style={{display: 'block', fontSize: 30, marginTop: -5}}>{capitalizeAllLetters(resume?.basicInfo?.lastName || '')}</Text>
+                        </View>
+                        <Text style={styles.jobPosition}>{resume?.basicInfo?.jobPosition}</Text>
+
+                        <View style={{marginTop: 40}}>
+                            <View>
+                                <View style={styles.sectionHeader}><Text>SUMMARY</Text></View>
+                                <Text style={{marginTop: 10}}>{resume?.basicInfo?.profSummary}</Text>
                             </View>
-                            <Text style={styles.jobPosition}>{resume?.basicInfo?.jobPosition}</Text>
 
-                            <View style={{marginTop: 40}}>
-                                <View>
-                                    <View style={styles.sectionHeader}><Text>SUMMARY</Text></View>
-                                    <Text style={styles.group}>{resume?.basicInfo?.profSummary}</Text>
-                                </View>
+                            {resume?.workExpArray && (
+                                <View style={{ position: 'relative' }}>
+                                    <View style={styles.sectionHeader}><Text>WORK EXPERIENCE</Text></View>
 
-                                {resume?.workExpArray && (
-                                    <View style={{ position: 'relative' }}>
-                                        <View style={styles.sectionHeader}><Text>WORK EXPERIENCE</Text></View>
-
-                                        <View style={styles.group}>
-                                            {resume.workExpArray.map((workInfo, index) => (
-                                                <View key={index} style={{ marginBottom: 20, display: 'flex', flexDirection: 'row' }}>
-                                                    <View style={{width: '15%', position: 'relative', flexDirection: 'column' }}>
-                                                        <View style={styles.workExpBall}>
-                                                            <View style={styles.workExpBallInner}>
-                                                                <Text style={styles.date}>
-                                                                    {workInfo.dateFrom.slice(0, 4)} {workInfo.currently ? "Present" : workInfo.dateTo.slice(0, 4)}
-                                                                </Text>
-                                                            </View>
-                                                        </View>
-
-                                                        <View style={styles.verticalLine} />
-                                                    </View>
-
-                                                    <View style={{width: '85%'}}>
-                                                        <View>
-                                                            <Text style={styles.title}>{capitalizeAllLetters(workInfo.position)} | {capitalizeWords(workInfo?.company)}</Text> 
-                                                            {workInfo.workLink && <Text style={{...styles.link, marginBottom: 2}} href={workInfo.workLink}> ({workInfo.workLink})</Text>} 
-                                                            
-
-                                                        </View>
-                                                        <Text style={styles.industry}>{workInfo.industry}</Text>
-                                                        <View style={styles.jobDescGroup}>
-                                                            {workInfo.jobDesc.split(";").map((item, index) => (
-                                                                <View key={index} style={styles.jobDesc}>
-                                                                    <Text>• </Text>
-                                                                    <Text style={styles.jobText}>{item.trim()}</Text>
-                                                                </View>
-                                                            ))}
+                                    <View style={styles.group}>
+                                        {resume.workExpArray.map((workInfo, index) => (
+                                            <View key={index} style={{ marginBottom: 20, display: 'flex', flexDirection: 'row' }}>
+                                                <View style={{width: '15%', position: 'relative', flexDirection: 'column' }}>
+                                                    <View style={styles.workExpBall}>
+                                                        <View style={styles.workExpBallInner}>
+                                                            <Text style={styles.date}>
+                                                                {workInfo.dateFrom.slice(0, 4)} {workInfo.currently ? "Present" : workInfo.dateTo.slice(0, 4)}
+                                                            </Text>
                                                         </View>
                                                     </View>
 
+                                                    <View style={styles.verticalLine} />
                                                 </View>
-                                            ))}
-                                        </View>
-                                    </View>
-                                )}
 
-                                {resume?.publications && (
-                                    <View>
-                                        {resume.publications.length > 0 && (
-                                            <View>
-                                                <View style={styles.sectionHeader}><Text>PROJECTS</Text></View>
-                                                
-                                                <View style={styles.group}>
-                                                    {resume.publications.map((publication, index) => (
-                                                        <View key={index} style={{ marginBottom: 20, display: 'flex', flexDirection: 'row' }}>
-                                                            <View style={{width: '15%'}}>
-                                                                <View style={styles.workExpBall}>
-                                                                    <View style={styles.workExpBallInner}>
-                                                                        <Text style={styles.date}>
-                                                                            {getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}
-                                                                        </Text>
-                                                                    </View>
-                                                                </View>
+                                                <View style={{width: '85%'}}>
+                                                    <View>
+                                                        <Text style={styles.title}>{capitalizeAllLetters(workInfo.position)} | {capitalizeWords(workInfo?.company)}</Text> 
+                                                        {workInfo.workLink && <Text style={{...styles.link, marginBottom: 2}} href={workInfo.workLink}> ({workInfo.workLink})</Text>} 
+                                                        
+
+                                                    </View>
+                                                    <Text style={styles.industry}>{workInfo.industry}</Text>
+                                                    <View style={styles.jobDescGroup}>
+                                                        {workInfo.jobDesc.split(";").map((item, index) => (
+                                                            <View key={index} style={styles.jobDesc}>
+                                                                <Text>• </Text>
+                                                                <Text style={styles.jobText}>{item.trim()}</Text>
                                                             </View>
-
-                                                            <View style={{width: '85%'}}>
-                                                                <View>
-                                                                    <Text style={styles.title}>{capitalizeAllLetters(publication.title)}</Text> 
-                                                                </View>
-                                                                <Text style={styles.industry}>{publication.source}</Text>
-                                                            </View>
-
-                                                        </View>
-                                                    ))}
+                                                        ))}
+                                                    </View>
                                                 </View>
+
                                             </View>
-                                        )}
+                                        ))}
                                     </View>
-                                )}
+                                </View>
+                            )}
 
-                            </View>
+                            {resume?.publications && (
+                                <View>
+                                    {resume.publications.length > 0 && (
+                                        <View>
+                                            <View style={styles.sectionHeader}><Text>PROJECTS</Text></View>
+                                            
+                                            <View style={styles.group}>
+                                                {resume.publications.map((publication, index) => (
+                                                    <View key={index} style={{ marginBottom: 20, display: 'flex', flexDirection: 'row' }}>
+                                                        <View style={{width: '15%'}}>
+                                                            <View style={styles.workExpBall}>
+                                                                <View style={styles.workExpBallInner}>
+                                                                    <Text style={styles.date}>
+                                                                        {getMonthShortName(publication?.date) + " " + publication?.date.slice(0, 4)}
+                                                                    </Text>
+                                                                </View>
+                                                            </View>
+                                                        </View>
+
+                                                        <View style={{width: '85%'}}>
+                                                            <View>
+                                                                <Text style={styles.title}>{capitalizeAllLetters(publication.title)}</Text> 
+                                                            </View>
+                                                            <Text style={styles.industry}>{publication.source}</Text>
+                                                        </View>
+
+                                                    </View>
+                                                ))}
+                                            </View>
+                                        </View>
+                                    )}
+                                </View>
+                            )}
+
+                            {resume?.eduArray && (
+                                <View>
+                                    <View style={styles.sectionHeader}><Text>EDUCATION</Text></View>
+                                    
+                                    <View style={styles.group}>
+                                        {resume.eduArray.map((eduInfo, index) => (
+                                            <View key={index} style={styles.member}>
+                                                <Text style={styles.title}>{capitalizeAllLetters(eduInfo.degree)}</Text>
+                                                <Text>{capitalizeWords(eduInfo.institution)}</Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                </View>
+                            )}
+
+                        </View>
                     </View>
 
                 </View>

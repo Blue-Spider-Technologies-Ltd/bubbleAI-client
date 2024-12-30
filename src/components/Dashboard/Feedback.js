@@ -68,7 +68,6 @@ const Feedback = () => {
             errorSetter("Something went wrong, please try again")
         }
         dispatch(setFetching(false))
-
     }
 
     const cancelFeedback = () => {

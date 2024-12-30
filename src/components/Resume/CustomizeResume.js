@@ -18,9 +18,6 @@ import {
   setHideCards 
 } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonCard } from "../UI/Buttons/Buttons";
-// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-// import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import axios from "axios";
 import { Modal, PlainModalOverlay } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
@@ -31,6 +28,14 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { IoSparklesSharp } from "react-icons/io5";
 import ChatwootWidget from "../../utils/chatwoot";
+import { LANGUAGES } from '../../utils/languages';
+const langLevelsArray = [
+  {name: '1'},
+  {name: '2'},
+  {name: '3'},
+  {name: '4'},
+  {name: '5'}
+]
 
 
 
@@ -54,12 +59,14 @@ const CustomizeResume = () => {
   const [skillFaded, setSkillFaded] = useState(true)
   const [certFaded, setCertFaded] = useState(true)
   const [pubFaded, setPubFaded] = useState(true)
+  const [langFaded, setLangFaded] = useState(true)
   const [interestFaded, setInterestFaded] = useState(true)
   const [countryid, setCountryid] = useState(0);
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(false);
   const [creatorDisplay, setCreatorDisplay] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
+
   // const screenWidth = window.innerWidth
 
 
@@ -175,7 +182,15 @@ const CustomizeResume = () => {
         dispatch(setIsResumeSubbed(resumeSubscriptions?.subscribed))
         dispatch(setResumeSubDuration(resumeSubscriptions?.duration))
         dispatch(setUser(response.data.user));
+        if(description) {
+          selectBuildType("Optimize");
+          setAdditionalInfo(`The following is a full job description of the job being applied for, optimize the resume to fit the job description; 
+            making sure that keywords from the description appears strategically and professionally in the skills, professional 
+            summary and work history of the resultant ATS friendly resume: ` + description)
+        }
         dispatch(setFetching(false));
+        localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription")
+        localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle")
 
       } catch (error) {
         dispatch(setFetching(false));
@@ -184,14 +199,6 @@ const CustomizeResume = () => {
     };
 
     populateUser();
-
-    if(description) {
-      setAdditionalInfo(`The following is a full job description of the job i am applying for, optimize the resume to fit the job description; 
-        making sure that keywords from the description appears strategically and professionally in the skills, professional 
-        summary and work history of the resultant ATS friendly resume: ` + description)
-    }
-    localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription")
-    localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle")
 
   }, [navigate, dispatch, isAuth]);
 
@@ -236,6 +243,12 @@ const CustomizeResume = () => {
   const [linkInfo, setLinkInfo] = useState([""]);
   const [skills, addSkills] = useState([""]);
   const [interests, addInterests] = useState([""]);
+  const [languages, addLanguages] = useState([
+    {
+      language: "",
+      level: ""
+    }
+  ]);
   const [eduArray, addEduArray] = useState([
     {
       institution: "",
@@ -576,62 +589,43 @@ const CustomizeResume = () => {
     }
   };
 
-  const handleFormSubmit = async (e) => {
-
-    e.preventDefault();
-    setLoading(true);
-    dispatch(setResume({}));
-    const resumeData = {
-      basicInfo: basicInfo, //Object
-      linkInfo: linkInfo, //Array
-      skills: skills, //Array
-      interests: interests, //Array
-      eduArray: eduArray, //Array
-      workExpArray: workExpArray, //Array
-      awardArray: awardArray, //Array
-      publications: publications, //Array
+  ///LANGUAGE HANDLERS
+  const handleAddLang = () => {
+    const newLang = {
+      language: "",
+      level: ""
     };
+    if (languages.length < 5) {
+      return addLanguages([...languages, newLang]);
+    }
+    errorSetter("5 relevant languages max");
+  };
+  const handleDeleteLang = () => {
+    if (languages.length > 1) {
+      const prevLangs = [...languages];
+      prevLangs.pop();
+      return addLanguages([...prevLangs]);
+    }
+    errorSetter("Leave blank, don't delete");
+  };
 
-    //get event progress
-    const eventSource = new EventSource('/user/progress');
-    //listen for SSE
-    eventSource.onmessage = (event) =>  {
-        const progressUpdate = JSON.parse(event.data)
-        setProgressPercentage(progressUpdate.percent);
-        setProgressStatus(progressUpdate.status)
-    };
-
-    try {
-      const response = await axios.post("/user/customize-resume", resumeData, {
-        headers: {
-          "x-access-token": isAuth,
-        },
-      });
-      if (response.status === 500) {
-        setLoading(false);
-        errorSetter("Throttling, try again after a while");
-        return
-      }
-
-      const now = new Date().getTime();
-      //save a copy for later incase user doesn't finish now
-      let resumeObjforLocal = {
-        resumeData: response.data.resumeData,
-        expiration: now + 168 * 60 * 60 * 1000, //current time + 1 week in milliseconds
-      };
-      localStorage.setItem(
-        "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@",
-        JSON.stringify(resumeObjforLocal)
-      );
-      setLoading(false);
-      eventSource.close();
-      navigate("/user/dashboard/resume?preview");
-    } catch (error) {
-      setLoading(false);
-      errorSetter("Throttling, try again after a while");
-      eventSource.close();
+  const handleLangChange = (event, index) => {
+    const prevLangs = [...languages];
+    switch (event.target.name) {
+      case "language":
+        prevLangs[index].language = event.target.value;
+        addLanguages(prevLangs);
+        break;
+      case "level":
+        prevLangs[index].level = event.target.value;
+        addLanguages(prevLangs);
+        break;
+      default:
+        addLanguages(prevLangs);
+        break;
     }
   };
+
 
   const handleInputChange = (prop) => (event) => {
     //if data is mobile number
@@ -697,18 +691,17 @@ const CustomizeResume = () => {
   }
 
   const eduInfoForwardOrBackward = (arg) => {  
-
+    setEduFaded(true)
     switch (arg) {
       case "forward":
         //check if required fields are filled
         if (checkEmptyStringsInObjNoExempt(eduArray) === false ) {
+          setEduFaded(false)
           return errorSetter("Complete required fields in this section to continue");    
         }
-        setEduFaded(true)
         setWorkFaded(false)
         break;
       case "backward":
-        setEduFaded(true)
         setBasicFaded(false);
         break;
     
@@ -719,18 +712,18 @@ const CustomizeResume = () => {
   }
 
   const workExpForwardOrBackward = (arg) => {
+    setWorkFaded(true)
     switch (arg) {
       case "forward":
         //check if required fields are filled, exempting some keys
         if (checkEmptyStringsInObj(workExpArray, "jobDesc", "workLink", "dateTo", "currently") === false ) {
+          setWorkFaded(false)
           errorSetter("Complete required fields in this section to continue");
           return;
         }
-        setWorkFaded(true)
         setSkillFaded(false)
         break;
       case "backward":
-        setWorkFaded(true)
         setEduFaded(false)
         break;
     
@@ -740,19 +733,18 @@ const CustomizeResume = () => {
   }
 
   const skillsForwardOrBackward = (arg) => {
-
+    setSkillFaded(true)
     switch (arg) {
       case "forward":
         //check if required fields are filled, exempting two keys
         if (checkEmptyStrings(skills) === false ) {
+          setSkillFaded(false)
           errorSetter("Complete required fields in this section to continue");
           return;
         }
-        setSkillFaded(true)
         setCertFaded(false)
         break;
       case "backward":
-        setSkillFaded(true)
         setWorkFaded(false)
         break;
     
@@ -780,11 +772,26 @@ const CustomizeResume = () => {
     setPubFaded(true)
     switch (arg) {
       case "forward":
+        setLangFaded(false)
+        break;
+      case "backward":
+        setCertFaded(false)
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  const langForwardOrBackward = (arg) => {
+    setLangFaded(true)
+    switch (arg) {
+      case "forward":
         setInterestFaded(false)
         document.getElementById("submit-button").style.display = ""
         break;
       case "backward":
-        setCertFaded(false)
+        setPubFaded(false)
         break;
     
       default:
@@ -796,7 +803,7 @@ const CustomizeResume = () => {
     setInterestFaded(true)
     switch (arg) {
       case "backward":
-        setPubFaded(false)
+        setLangFaded(false)
         document.getElementById("submit-button").style.display = "none"
         break;
     
@@ -884,9 +891,9 @@ const CustomizeResume = () => {
     const eventSource = new EventSource('/user/progress');
     //listen for SSE
     eventSource.onmessage = (event) =>  {
-        const progressUpdate = JSON.parse(event.data)
-        setProgressPercentage(progressUpdate.percent);
-        setProgressStatus(progressUpdate.status)
+      const progressUpdate = JSON.parse(event.data)
+      setProgressPercentage(progressUpdate.percent);
+      setProgressStatus(progressUpdate.status)
     };
 
     try {
@@ -936,6 +943,64 @@ const CustomizeResume = () => {
   }
 
 
+  const handleCreateFromScratch = async (e) => {
+
+    e.preventDefault();
+    setLoading(true);
+    dispatch(setResume({}));
+    const resumeData = {
+      basicInfo: basicInfo, //Object
+      linkInfo: linkInfo, //Array
+      skills: skills, //Array
+      interests: interests, //Array
+      eduArray: eduArray, //Array
+      workExpArray: workExpArray, //Array
+      awardArray: awardArray, //Array
+      publications: publications, //Array
+      languages: languages, //Array
+    };
+
+    //get event progress
+    const eventSource = new EventSource('/user/progress');
+    //listen for SSE
+    eventSource.onmessage = (event) =>  {
+      const progressUpdate = JSON.parse(event.data)
+      setProgressPercentage(progressUpdate.percent);
+      setProgressStatus(progressUpdate.status)
+    };
+
+    try {
+      const response = await axios.post("/user/customize-resume", resumeData, {
+        headers: {
+          "x-access-token": isAuth,
+        },
+      });
+      if (response.status === 500) {
+        setLoading(false);
+        errorSetter("Throttling, try again after a while");
+        return
+      }
+
+      const now = new Date().getTime();
+      //save a copy for later incase user doesn't finish now
+      let resumeObjforLocal = {
+        resumeData: response.data.resumeData,
+        expiration: now + 168 * 60 * 60 * 1000, //current time + 1 week in milliseconds
+      };
+      localStorage.setItem(
+        "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@",
+        JSON.stringify(resumeObjforLocal)
+      );
+      setLoading(false);
+      eventSource.close();
+      navigate("/user/dashboard/resume?preview");
+    } catch (error) {
+      setLoading(false);
+      errorSetter("Throttling, try again after a while");
+      eventSource.close();
+    }
+  };
+
   const renderDragAndDrop = () => (
     <div
       className={`${depoCss.DragnDrop}`}
@@ -965,7 +1030,6 @@ const CustomizeResume = () => {
       />
     </div>
   );
-  
 
 
   return (
@@ -1020,7 +1084,7 @@ const CustomizeResume = () => {
               </Grid>
             </Grid>
           ) : (
-            <form method="post" onSubmit={handleFormSubmit}>
+            <form method="post" onSubmit={handleCreateFromScratch}>
 
               <div className='explanation-points'>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
@@ -1028,9 +1092,11 @@ const CustomizeResume = () => {
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have questions? <a className="link" target="_blank" href="/chat" style={{textDecoration: "underline"}}>Ask me anything!</a></Alert>
               </div>
 
-              <div className='prev-page' onClick={resetButtonCardBoleans} >
-                <FaLongArrowAltLeft />
-              </div>
+              {!basicFaded && (
+                <div className='prev-page' onClick={resetButtonCardBoleans} >
+                  <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;back
+                </div>
+              )}
 
               {/* DRAG N DROP TO REWRITE RESUME */}
 
@@ -1380,7 +1446,7 @@ const CustomizeResume = () => {
                       }}
                     >
                       <div className='prev-page' onClick={() => {eduInfoForwardOrBackward('backward')}}>
-                          <FaLongArrowAltLeft />
+                        <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;prev
                       </div>
                       <div style={{ width: "150px"}}>
                         <ButtonSubmitGreen type="button" onClick={() => {
@@ -1564,7 +1630,7 @@ const CustomizeResume = () => {
                       }}
                     >
                       <div className='prev-page' onClick={() => {workExpForwardOrBackward('backward')}}>
-                          <FaLongArrowAltLeft />
+                        <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;prev
                       </div>
                       <div style={{ width: "150px"}}>
                         <ButtonSubmitGreen type="button" onClick={() => {
@@ -1638,7 +1704,7 @@ const CustomizeResume = () => {
                       }}
                     >
                       <div className='prev-page' onClick={() => {skillsForwardOrBackward('backward')}}>
-                          <FaLongArrowAltLeft />
+                        <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;prev
                       </div>
                       <div style={{ width: "150px"}}>
                         <ButtonSubmitGreen type="button" onClick={() => {
@@ -1733,7 +1799,7 @@ const CustomizeResume = () => {
                       }}
                     >
                       <div className='prev-page' onClick={() => {certsForwardOrBackward('backward')}}>
-                          <FaLongArrowAltLeft />
+                        <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;prev
                       </div>
                       <div style={{ width: "150px"}}>
                         <ButtonSubmitGreen type="button" onClick={() => {
@@ -1828,11 +1894,92 @@ const CustomizeResume = () => {
                       }}
                     >
                       <div className='prev-page' onClick={() => {pubForwardOrBackward('backward')}}>
-                          <FaLongArrowAltLeft />
+                        <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;prev
                       </div>
                       <div style={{ width: "150px"}}>
                         <ButtonSubmitGreen type="button" onClick={() => {
                           pubForwardOrBackward('forward')
+                        }}>
+                          Languages &nbsp;&nbsp;<FaLongArrowAltRight />
+                        </ButtonSubmitGreen>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* LANGUAGES */}
+                  <div id="languages" className={`Segment ${langFaded ? "Faded" : "Faded-in"}`}>
+                    <h4>Language Proficiency [Optional]</h4>
+                    <Grid container>
+                      {languages.map((language, index) => {
+                        return (
+                          <Grid container item xs={12} md={6} key={index}>                              
+                            <AuthInput 
+                              value={language.language} 
+                              name="language"
+                              label="Language" 
+                              inputType="select2" 
+                              inputGridSm={9} 
+                              mb={2} 
+                              list={LANGUAGES} 
+                              required={true} 
+                              onChange={(event) => handleLangChange(event, index)}
+                            />
+                            <AuthInput 
+                              value={language.level} 
+                              name="level"
+                              label="Level" 
+                              inputType="select2" 
+                              inputGridSm={3} 
+                              mb={2} 
+                              list={langLevelsArray} 
+                              required={true} 
+                              onChange={(event) => handleLangChange(event, index)}
+                            />
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: "20px"
+                      }}
+                    >
+                      <div
+                        style={{ marginRight: "10px" }}
+                        className="delete"
+                        title="Delete Language"
+                        onClick={handleDeleteLang}
+                      >
+                        -
+                      </div>
+                      <div
+                        className="add"
+                        title="Add Language"
+                        onClick={handleAddLang}
+                      >
+                        +
+                      </div>
+                    </div>
+
+                    {/* Visibility Buttons */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <div className='prev-page' onClick={() => {langForwardOrBackward('backward')}}>
+                        <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;prev
+                      </div>
+                      <div style={{ width: "150px"}}>
+                        <ButtonSubmitGreen type="button" onClick={() => {
+                          langForwardOrBackward('forward')
                         }}>
                           Hobbies &nbsp;&nbsp;<FaLongArrowAltRight />
                         </ButtonSubmitGreen>
@@ -1899,7 +2046,7 @@ const CustomizeResume = () => {
                       }}
                     >
                       <div className='prev-page' onClick={() => {interestsBackward('backward')}}>
-                          <FaLongArrowAltLeft />
+                        <FaLongArrowAltLeft size='1rem' /> &nbsp;&nbsp;&nbsp;prev
                       </div>
                     </div>
                   </div>

@@ -276,9 +276,18 @@ const JobHub = () => {
                     errorSetter('Process Terminated')
                 });
             } else {
-                localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription", description)
-                localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle", title)
-                window.open('/user/dashboard/resume', '_blank')
+                confirm({
+                    title: "Optimize a resume to this Job?",
+                    description: `You will be redirected to upload an old resume which will be automatically tailored for this job. This will 100x your chances.`,
+                })
+                .then(() => {
+                    localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription", description)
+                    localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXtitle", title)
+                    window.open('/user/dashboard/resume', '_blank')
+                })
+                .catch(() => {
+                    errorSetter('Process Terminated')
+                });
             }
         }
 

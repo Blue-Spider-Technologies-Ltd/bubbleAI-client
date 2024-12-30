@@ -6,6 +6,7 @@ import mobileIcon from '../../../../images/mobile.png'
 import pinIcon from '../../../../images/pin.png'
 import emailIcon from '../../../../images/email.png'
 import linkIcon from '../../../../images/link.png'
+import waveIcon from '../../../../images/wave.png'
 
 
 const styles = StyleSheet.create({
@@ -255,7 +256,22 @@ const StandardPDF = ({resume}) => (
                         </View>
                     )}
 
+                    {resume?.languages && (
+                        <View>
+                            {resume.languages.length > 0 && (
+                                <View>
+                                    <Text style={styles.sectionHeader}>Languages</Text>
+                                    <View style={styles.SkillContainer}>
+                                        {resume.languages.map((language, index) => (
+                                            <Text key={index} style={styles.SkillItems}><Image style={styles.icon} src={waveIcon} /> {language.language} &nbsp; {language.level} of 5</Text>
+                                        ))}
+                                    </View>
+                                </View>
+                            )}
+                        </View>
+                    )}
 
+                    
                     {resume?.interests && (
                         <View>
                             {resume.interests.length > 0 && (
