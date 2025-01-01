@@ -232,20 +232,20 @@ const ResumeLearnMore = () => {
                             </div>
                     </Grid>
                     <Grid item xs={12} md={6} p={3} pt={screenWidth < 900 && 0}>
-                        <h3>Customize</h3>
-                        <p>Answer short smart profile or upload old CV.</p>
+                        <h3>Create Resume</h3>
+                        <p>Typically takes less than 2 minutes and generates a professional resume that scores over 90% ATS</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Takes less than 2 minutes.</Grid>
+                                <Grid item xs={8}>You can upload old resume or start from scratch to create.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Analysis used to generate job-specific resume/CV.</Grid>
+                                <Grid item xs={8}>Preview Bubble AI generated resume and make edits if you like.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Get your CV in seconds, No waiting time.</Grid>
+                                <Grid item xs={8}>Choose preferred template and download in PDF.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -253,7 +253,7 @@ const ResumeLearnMore = () => {
                                 type="button"
                                 onClick={handleTryFree}
                             >
-                                TRY FREE NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
+                                CREATE NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
                             </ButtonSubmitGreen>
                         </div>
                     </Grid>
@@ -273,20 +273,20 @@ const ResumeLearnMore = () => {
                         </Grid>
                     )}
                     <Grid item xs={12} md={6} p={3}>
-                        <h3>Preview</h3>
-                        <p>Pass Applicant Tracking Systems and other software, you get to preview and edit the seamlessly generated Ai resume, giving it extra legitimacy and a human touch.</p>
+                        <h3>Bubble AI Job Connect</h3>
+                        <p>For every new resume created, Bubble Ai performs an indepth keyword, skills, experience and industry analysis to start connecting you to jobs. These jobs promise:</p>
                         <div className={css.Points}>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Pass 99.99% ATS.</Grid>
+                                <Grid item xs={8}>Over 90% Interview rate.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Add your touch.</Grid>
+                                <Grid item xs={8}>Provides options to automatically tailor application materials for each job with a click.</Grid>
                             </Grid>
                             <Grid container mb={1}>
                                 <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Choose from Ai suggested keywords after analysis of your generated CV.</Grid>
+                                <Grid item xs={8}>Uses real job data and your data for creating <strong>resume</strong>, <strong>cover letter</strong>, <strong>interview prep</strong> and <strong>follow-up email</strong> to recruiter.</Grid>
                             </Grid>
                         </div>
                         <div style={{width: '300px', marginTop: '2rem'}}>
@@ -294,7 +294,7 @@ const ResumeLearnMore = () => {
                                 type="button"
                                 onClick={handleTryFree}
                             >
-                                START NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
+                                GET CONNECTED &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
                             </ButtonSubmitGreen>
                         </div>
                     </Grid>
@@ -312,7 +312,7 @@ const ResumeLearnMore = () => {
                     )}
                 </Grid>
 
-                <Grid container sx={{lineHeight: '1.4'}}>
+                {/* <Grid container sx={{lineHeight: '1.4'}}>
                     <Grid item xs={12} md={6}>
                         <div style={{width: '100%', height: '110%', marginTop: screenWidth < 900 && "50px"}}>
                             <Blob
@@ -441,7 +441,7 @@ const ResumeLearnMore = () => {
                             </ButtonSubmitGreen>
                         </div>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
             </section>  
 
