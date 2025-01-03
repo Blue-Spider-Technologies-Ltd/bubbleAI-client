@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4a950ef3.css",
-    "main.js": "/static/js/main.de94d115.js",
+    "main.js": "/static/js/main.72c3e06f.js",
     "static/js/29.1dc24455.chunk.js": "/static/js/29.1dc24455.chunk.js",
     "static/js/118.290d15af.chunk.js": "/static/js/118.290d15af.chunk.js",
     "static/js/568.2ab9919e.chunk.js": "/static/js/568.2ab9919e.chunk.js",
@@ -33,8 +33,7 @@
     "static/media/resume-standard.jpg": "/static/media/resume-standard.e71f1986a936fd038a78.jpg",
     "static/media/preview.jpg": "/static/media/preview.1315be4f62fd38efd818.jpg",
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.7a4d0bbbe53cc081ca37.png",
-    "static/media/jobs.jpg": "/static/media/jobs.b10dfa882e78b8f4cb2f.jpg",
-    "static/media/download.jpg": "/static/media/download.ef98484cac9563d41704.jpg",
+    "static/media/jobs.png": "/static/media/jobs.578af1c7bc9496466f06.png",
     "static/media/2.jpg": "/static/media/2.208b96f80fdadd2cd4c7.jpg",
     "static/media/customize.jpg": "/static/media/customize.6a79e4b9bcd64980a5d8.jpg",
     "static/media/refund-stamp.png": "/static/media/refund-stamp.19654e7aecd4136b31aa.png",
@@ -60,13 +59,13 @@
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
     "main.4a950ef3.css.map": "/static/css/main.4a950ef3.css.map",
-    "main.de94d115.js.map": "/static/js/main.de94d115.js.map",
+    "main.72c3e06f.js.map": "/static/js/main.72c3e06f.js.map",
     "29.1dc24455.chunk.js.map": "/static/js/29.1dc24455.chunk.js.map",
     "118.290d15af.chunk.js.map": "/static/js/118.290d15af.chunk.js.map",
     "568.2ab9919e.chunk.js.map": "/static/js/568.2ab9919e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4a950ef3.css",
-    "static/js/main.de94d115.js"
+    "static/js/main.72c3e06f.js"
   ]
 }

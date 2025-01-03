@@ -58,6 +58,7 @@ const JobHub = () => {
     const [actionString, setActionString] = useState('')
     const [activeResIndex, setActiveResIndex] = useState(0)
     const [isFeedbackTime, setIsFeedbackTime] = useState(false)
+    const [pricingOpened, setPricingOpened] = useState(false)
 
     const styles = {
         cardGrid: {
@@ -362,10 +363,19 @@ const JobHub = () => {
 
         if(!isResumeSubbed) {
             errorSetter("Upgrade your subscription to access this feature")
-            setTimeout(() => {
-                window.open('/pricing', '_blank')
-            }, 5000);
+            if(!pricingOpened) {
+                setTimeout(() => {
+                    setPricingOpened(true)
+                    window.open('/pricing', '_blank')
+                }, 5000);
+            }
+
         } else {
+                                
+            if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
+                return errorSetter("Upgrade Subscription to access this feature")
+            }
+
             switch (actionString) {
                 case "Cover Letter":
                     const date = getOrdinalDate()
@@ -379,11 +389,6 @@ const JobHub = () => {
                     localStorage?.removeItem("imgUrl")
                     localStorage?.removeItem("resume")
                     localStorage?.removeItem("letter")
-                    
-                    
-                    if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
-                        return errorSetter("Upgrade Subscription to access this feature")
-                    }
                     
                     const prompt = `You are the best and most professional cover letter writer in the world, 
                         with 100% success rate from your cover letter writings. Write a stunning professional 
@@ -408,7 +413,7 @@ const JobHub = () => {
                         localStorage.setItem("imgUrl", imgUrl)
                         localStorage.setItem("letter", response.data)
                         dispatch(setFetching(false))
-                        successSetter("You Cover Letter Will open in a new tab in 3 seconds")
+                        successSetter("Your Cover Letter opens in a new tab in 3 seconds")
                         //Navigate in a Cover Letter page
                         setTimeout(() => {
                             window.open("/cover-letter", "_blank");
@@ -417,15 +422,45 @@ const JobHub = () => {
                         dispatch(setFetching(false))
                         errorSetter("Failed to generate Cover Letter, Try again")
                     }
+
                     break;
                     
                 case "Email":
-                    
+                    const emailPrompt = `Please help me draft a follow-up email regarding my 
+                        job application for the Job Title: ${chosenJob?.title} and Company Name: ${chosenJob?.company_name}. I would like the email to be professional and polite, 
+                        expressing my continued interest in the position and inquiring about the status of my application. 
+                        Additionally, using details from this resume string object: ${JSON.stringify(singleResume)} and the following job description: ${chosenJob?.description}, 
+                        please include a very brief reminder of my relevant skills or experiences that make me a strong candidate for this role. Thank you!`
+
+                    localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", emailPrompt)
+                    successSetter("Your Email opens in a new tab in 3 seconds")
+                    //Navigate in a ask me page
+                    setTimeout(() => {
+                        window.open("/chat", "_blank");
+                    }, 3000);
+
                     break;
     
                 
                 case "Interview":
-                
+                    const interviewPrompt = `I am preparing for an upcoming job interview for the Job Title: ${chosenJob?.title}, Company Name: ${chosenJob?.company_name}, Job Description: ${chosenJob?.description} 
+                        and my resume used for the application is given here in string object form: ${JSON.stringify(singleResume)}. 
+                        Please provide a detailed and comprehensive guide that includes the following:
+                        Common Interview Questions: List 15 typical questions I might be asked in order of descending importance, along with their corresponding correct answer, exactly as I should nswer them, using all the details I have provided and those you can find on the given company.
+                        Company Research: Do a research on the company provided above, its culture, values, and recent news or achievements and feed me with all the info you can find on them.
+                        Role-Specific Preparation: Important skills and qualifications related to the job, and how I can demonstrate my expertise in these areas during the interview.
+                        Behavioral Questions: Examples of behavioral questions and the STAR (Situation, Task, Action, Result) method to structure my responses.
+                        Questions to Ask the Interviewer: Thoughtful questions I can ask at the end of the interview to show my interest and engagement.
+                        Body Language and Presentation: Tips on how to present myself confidently and effectively during the interview.
+                        Follow-Up Strategy: Guidance on how and when to follow up after the interview.
+                        Thank you for your help in preparing me for this important opportunity!`
+
+                    localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", interviewPrompt)
+                    successSetter("Your Interactive Interview Mock opens in 3 seconds")
+                    //Navigate in a Cask me page
+                    setTimeout(() => {
+                        window.open("/chat", "_blank");
+                    }, 3000);
                     break;
             
                 default:
@@ -608,7 +643,7 @@ const JobHub = () => {
                                                         width={'110px'} 
                                                         height='25px' 
                                                         color='black'
-                                                        onClick={() => chooseActStr("Email")}
+                                                        onClick={() => chooseActStr("Email", item)}
                                                     >
                                                         <MdMarkEmailRead style={{color: "#68A7AD", fontSize: ".9rem"}} />&nbsp;&nbsp; Email Follow-up
                                                     </ButtonThin>
@@ -621,7 +656,7 @@ const JobHub = () => {
                                                         width={'110px'} 
                                                         height='25px' 
                                                         color='black'
-                                                        onClick={() => chooseActStr("Interview")}
+                                                        onClick={() => chooseActStr("Interview", item)}
                                                     >
                                                         <VscChecklist style={{color: "black", fontSize: ".9rem"}} />&nbsp;&nbsp; Interview Prep
                                                     </ButtonThin>

@@ -62,6 +62,7 @@ const AskMe = () => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioTranscribed, setAudioTranscribed] = useState(false)
   const [transcribing, setTranscribing] = useState(false)
+  const [prepCalled, setPrepCalled] = useState(false)
 
 
   const isEffectExecuted = useRef(false);
@@ -89,8 +90,11 @@ const AskMe = () => {
     }
   }, []);
 
-  //fetch messages for auth user
+  //fetch messages, interview prep, follow up email, etc for auth user
   useEffect(() => {
+
+    const prepInStorage = localStorage?.getItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY") 
+
     const populateMessages = async () => {
       if (isAuth) {
         //only try this if isAuth present in local Storage, meaning user had previously logged into browser
@@ -114,10 +118,87 @@ const AskMe = () => {
           errorSetter("Reload page to fetch data");
         }
       } 
-
     };
-    populateMessages()
-  }, []);
+    
+
+    const prepFunc = async (params) => {
+      const newMsg = {
+        content: params
+      };
+      //Dispatch with empty content to enable thinking algo
+      const emptyMsg = {
+        role: "assistant",
+        content: "",
+      };
+      // dispatch(setMessage(newMsg));
+      dispatch(setMessage(emptyMsg));
+      try {
+        let response = await axios.post("/int-em", newMsg, {
+          headers: {
+            "x-access-token": isAuth,
+          },
+        });
+
+        //save ai response for auth user
+        dispatch(deleteLastMessage());
+        dispatch(setMessage(response.data));
+
+      } catch (error) {
+        dispatch(deleteLastMessage());
+        dispatch(setMessage(askMeErrorObj));
+      }
+    }
+
+
+    const handleTailoredInterviewPrep = async (param) => {
+      if (prepInStorage) {
+        setSuggestionDisplay(false)
+        successSetter("Starting, Please wait...")
+        //START NEW SESSION IF OLD SESSION
+        if(messages.length !== 0) {
+          //push a new empty array to backend and frontend
+          const emptyArr = []
+          try {
+            let response = await axios.post("/create-new-askme-session", emptyArr, {
+              headers: {
+                "x-access-token": isAuth,
+              },
+            });
+            
+            const messagesArrayofArray = response.data
+            dispatch(setAllMessagesArray(messagesArrayofArray));
+            dispatch(setMessages(messagesArrayofArray[messagesArrayofArray.length - 1]));
+            successSetter("Generating...")
+            await prepFunc(param)
+          } catch (error) {
+            dispatch(setFetching(false))
+            errorSetter("Please try again");
+            return
+          }
+        }
+      }
+
+    } 
+
+    if (!prepCalled) {
+      dispatch(setFetching(true))
+      populateMessages()
+      .then(async () => {
+        setPrepCalled(true)
+        await handleTailoredInterviewPrep(prepInStorage)
+        dispatch(setFetching(false))
+        localStorage.removeItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY")
+      })
+      .catch((error) => {
+        dispatch(setFetching(false))
+        errorSetter("Try again")
+        localStorage.removeItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY")
+      })
+      
+    }
+
+      
+  }, [messages.length, prepCalled]);
 
 
   // Scroll to bottom on new message

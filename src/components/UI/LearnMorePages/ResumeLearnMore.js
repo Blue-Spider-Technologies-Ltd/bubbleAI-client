@@ -9,7 +9,7 @@ import { TfiHandPointRight } from "react-icons/tfi";
 import Carousel from "react-multi-carousel";
 import { reviewDetails } from '../../../utils/reviews';
 import bubbleBgAuthImg from "../../../images/bubblebg-auth.jpg"
-import jobImg from "../../../images/jobs.jpg"
+import jobImg from "../../../images/jobs.png"
 import coverImg from "../../../images/cover-letter.jpg"
 import interviewImg from "../../../images/interview-prep.jpg"
 import aramcoImg from "../../../images/aramco.png"
@@ -20,7 +20,6 @@ import nvidiaImg from "../../../images/nvidia.png"
 import exxonImg from "../../../images/exxon.png"
 import resumeImg from "../../../images/2.jpg"
 import customImg from "../../../images/customize.jpg"
-import downloadImg from "../../../images/download.jpg"
 import previewImg from "../../../images/preview.jpg"
 import Blob from '../Blob/Blob';
 import { Grid, Rating } from "@mui/material";
