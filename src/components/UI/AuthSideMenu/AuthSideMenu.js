@@ -142,7 +142,7 @@ const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
                 <li>
                     <Link to="/user/dashboard/resume-hub">
                         <PictureAsPdf />
-                        <span>Resume Hub</span>
+                        <span>Resumes & Cover Ltrs</span>
                     </Link>
                 </li>
                 <li>

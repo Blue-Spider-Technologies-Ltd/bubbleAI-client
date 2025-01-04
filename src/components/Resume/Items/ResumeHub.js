@@ -3,21 +3,23 @@ import { useNavigate } from "react-router-dom";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { ButtonSubmitGreen, ButtonThin } from "../../UI/Buttons/Buttons";
+import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import { Grid } from "@mui/material";
-import avatarImg from '../../../images/avatar.png'
+import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import AuthInputs from "../../UI/Input/AuthInputs";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { IoMdRemoveCircle } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
+import { SlEnvolopeLetter } from "react-icons/sl";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
-import { errorAnimation, successMiniAnimation, checkAuthenticatedUser } from "../../../utils/client-functions";
+import { errorAnimation, successMiniAnimation, checkAuthenticatedUser, getOrdinalDate } from "../../../utils/client-functions";
 import { setError, setSuccessMini, setResume, setFetching, setUserResumesAll } from "../../../redux/states";
 const screenWidth = window.innerWidth
 
@@ -26,13 +28,17 @@ const screenWidth = window.innerWidth
 const ResumeHub = () => {
     const dispatch = useDispatch();
     const confirm = useConfirm();
-    const { error, successMini, userResumesAll } = useSelector((state) => state.stateData);
+    const { error, successMini, userResumesAll, isResumeSubbed } = useSelector((state) => state.stateData);
     const navigate = useNavigate();
     const copyLink = useRef(null);
     const isAuth = localStorage?.getItem("token")
-    const [img, setImg] = useState('')
+    const [modalOpen, setModalOpen] = useState(false)
+    const [pricingOpened, setPricingOpened] = useState(false)
+    // const [img, setImg] = useState('')
     const [searchString, setSearchString] = useState("");
     const [resumeForSearch, setResumeForSearch] = useState("");
+    const [jobDesc, setJobDesc] = useState("");
+    const [resumeIndex, setResumeIndex] = useState(0)
     
 
     useEffect(() => {
@@ -45,9 +51,10 @@ const ResumeHub = () => {
         setResumeForSearch(userResumesAll)
     }, []);
 
-    useEffect(() => {
-        setImg(avatarImg)
-    }, []);
+    // useEffect(() => {
+    //     console.log(jobDesc);
+        
+    // }, [jobDesc]);
 
     
     const errorSetter = (string) => {
@@ -105,6 +112,67 @@ const ResumeHub = () => {
         .catch(() => {
             return    
         });
+    }
+
+    const coverLetterStart = (index) => {
+        setJobDesc("")
+        setResumeIndex(index)
+        setModalOpen(true)
+    }
+
+    const handleGenerateCL =  async () => {
+        if(!isResumeSubbed) {
+            errorSetter("NOT SUBSCRIBED, Pricing will open in a NEW TAB...")
+            if(!pricingOpened) {
+                setPricingOpened(true)
+                setTimeout(() => {
+                    window.open("/pricing", "_blank")
+                }, 5000);
+            }
+            return
+        }
+        if(jobDesc.length < 20) {
+            errorSetter("Job Description TOO SHORT")
+            return
+        }
+        const date = getOrdinalDate()
+        const myResume = userResumesAll[resumeIndex]
+        
+        const imgUrl = myResume?.storageDetails?.imgUrl
+        const template = myResume?.storageDetails?.template
+
+        
+        const prompt = `You are the best and most professional cover letter writer in the world, 
+            with 100% ATS and employment success rate from your cover letter writings. Write a stunning professional 
+            cover letter tailored to the job description: ${jobDesc}; and my resume resume in object form: ${JSON.stringify(myResume)}, 
+            pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
+            the basicInfo object of the resume; pick out the candidate's work history and all other elements 
+            needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
+            links or addressing or contact details or place holders e.g [Your Email] [Your Mobile] [Hiring Manager’s Name] to the cover letter. 
+            Start with Date, then Dear Hiring Manager and return just the cover letter, with no explanations`
+        
+        try {
+            dispatch(setFetching(true))
+            let response = await axios.post("/cover-letter", { prompt }, {
+                headers: {
+                    "x-access-token": isAuth,
+                },
+            });
+            
+            localStorage.setItem("template", template)            
+            localStorage.setItem("resume", JSON.stringify(myResume))            
+            localStorage.setItem("imgUrl", imgUrl)
+            localStorage.setItem("letter", response.data)
+            dispatch(setFetching(false))
+            successSetter("Your Cover Letter opens in a new tab in 3 seconds")
+            //Navigate in a Cover Letter page
+            setTimeout(() => {
+                window.open("/cover-letter", "_blank");
+            }, 3000);
+        } catch (error) {
+            dispatch(setFetching(false))
+            errorSetter("Failed to generate Cover Letter, Try again")
+        }
     }
 
     const handleDeleteResume = async (index, imgUrl) => {
@@ -223,12 +291,47 @@ const ResumeHub = () => {
                             {resumeForSearch.map((item, index) => (
                                 <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
                                     <Card sx={styles.card}>
-                                        <CardMedia
+                                        {/* <CardMedia
                                             component="img"
                                             sx={styles.img}
                                             image={item?.storageDetails?.imgUrl ? item?.storageDetails?.imgUrl : img}
                                             alt="Avatar"
-                                        />
+                                        /> */}
+                                        <Box sx={styles.leftCont}>
+                                            <ButtonThin
+                                                fontSize='.6rem' 
+                                                border='2px solid #3E8F93' 
+                                                width={'85%'} 
+                                                height='25px' 
+                                                color='black'
+                                                onClick={() => handleReDownload(index)}
+                                            >
+                                                <FaEye style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; View 
+                                            </ButtonThin>
+
+                                            <ButtonThin
+                                                fontSize='.6rem' 
+                                                border='2px solid #987070' 
+                                                width={'85%'} 
+                                                height='25px' 
+                                                color='black'
+                                                onClick={() => coverLetterStart(index)}
+                                            >
+                                                <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
+                                            </ButtonThin>
+                                           
+
+                                            <ButtonThin
+                                                fontSize='.6rem' 
+                                                border='2px solid rgba(158, 9, 9, 0.733)' 
+                                                width={'85%'} 
+                                                height='25px' 
+                                                color='rgba(158, 9, 9, 0.733)'
+                                                onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)}
+                                            >
+                                                <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
+                                            </ButtonThin>
+                                        </Box>
                                         
                                         <Box sx={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
                                             <CardContent sx={{ flex: '1 0 auto' }}>
@@ -255,31 +358,7 @@ const ResumeHub = () => {
                                                 )}
 
                                             </CardContent>
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1 }}>
-                                                <ButtonThin
-                                                    fontSize='.6rem' 
-                                                    border='2px solid #3E8F93' 
-                                                    width={'100px'} 
-                                                    height='25px' 
-                                                    color='black'
-                                                    onClick={() => handleReDownload(index)}
-                                                >
-                                                    <FaEye style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; View 
-                                                </ButtonThin>
 
-                                
-
-                                                <ButtonThin
-                                                    fontSize='.6rem' 
-                                                    border='2px solid rgba(158, 9, 9, 0.733)' 
-                                                    width={'100px'} 
-                                                    height='25px' 
-                                                    color='rgba(158, 9, 9, 0.733)'
-                                                    onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)}
-                                                >
-                                                    <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
-                                                </ButtonThin>
-                                            </Box>
                                         </Box>
 
                                     </Card>
@@ -291,6 +370,37 @@ const ResumeHub = () => {
                 )}
 
             </div>
+
+            {modalOpen && (
+                <PlainModalOverlay>
+                    <div style={styles.modalInner}>
+                        <div className='prev-page' onClick={() => setModalOpen(false)}>
+                            <FaLongArrowAltLeft />
+                        </div>
+                        <h4>Paste job description into the field below.</h4>
+                        <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">This is an important step to increase your cover letter score.</Alert>
+
+                        <div style={styles.descCont}>
+                            <AuthInputs
+                              id={jobDesc}
+                              name="jobDesc"
+                              value={jobDesc}
+                              placeholder="  Full job description here..."
+                              multiline={true}
+                              rows={6}
+                              maxRows={6}
+                              inputGridSm={12}
+                              onChange={(event) => setJobDesc(event.target.value)}
+                            />
+                        </div>
+
+                        <div style={{width: '100%'}}>
+                            <ButtonSubmitGreen onClick={handleGenerateCL} >Optimize</ButtonSubmitGreen>
+                        </div>
+
+                    </div>
+                </PlainModalOverlay>
+            )}
         </div>
     );
 };
@@ -333,12 +443,19 @@ const styles = {
         zIndex: '1',
         fontSize: '.75rem',
     },
-    img: {
-        borderRadius: '50%',
-        margin: '10px auto',
-        width: '40%',
-        maxWidth: '150px',
-        maxHeight: '150px'
+    leftCont: { 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center',
+        justifyContent: 'space-around', 
+        borderRight: '1px solid #c0d1d457', 
+        width: '40%', 
+        margin: '15px auto',
+    },
+    descCont: {
+        width: '100%',
+        margin: '15px auto',
+        padding: 0
     },
     greenBtnCont: {
         width: '100px',

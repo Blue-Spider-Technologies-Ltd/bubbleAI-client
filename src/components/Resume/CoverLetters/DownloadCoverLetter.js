@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import Alert from '@mui/material/Alert';
 // import ProtectedContent from "../../UI/ProtectedContent/ProtectedContent";
 import { useConfirm } from "material-ui-confirm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import "react-multi-carousel/lib/styles.css";
@@ -32,12 +32,14 @@ const styles = StyleSheet.create({
 
 
 const DownloadCoverLetter = () => {
+    const { isResumeSubbed, error } = useSelector((state) => state.stateData);
     const resumeLocal = localStorage.getItem('resume')
     const resume = JSON.parse(resumeLocal)
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
+    const [pricingOpened, setPricingOpened] = useState(false)
     const template = localStorage?.getItem("template")
     const imgUrl = localStorage?.getItem("imgUrl") ? localStorage?.getItem("imgUrl") : avatarImg
     const letter = localStorage?.getItem("letter")
@@ -122,7 +124,17 @@ const DownloadCoverLetter = () => {
 
 
     const handleDownload = () => {
-        const note = screenWidth < 900 ? 'Click OK only when instruction completed. MOBILE DETECTED! Enable browser pop-ups to let CV download. Go to Phone settings ⚙️; Search pop-up and allow it. After that, your letter will open in another tab, click the share (📤) button on your browser to save to files or share.' : 'This action is irreversible, continue?'
+        if(!isResumeSubbed) {
+            errorSetter("Not Subscribed to this feature, Pricing will open in a new tab...")
+            if(!pricingOpened) {
+                setPricingOpened(true)
+                setTimeout(() => {
+                    window.open("/pricing", "_blank")
+                }, 5000);
+            }
+            return
+        }
+        const note = screenWidth < 900 ? 'Click OK only when instruction completed. MOBILE DETECTED! Allow browser pop-ups if prompted. After that, your letter will open in another tab, click the share (📤) button on your browser to save to files or share.' : 'This action is irreversible, continue?'
         confirm({ 
                 description: note,
                 title: "⚠️⚠️⚠️PLEASE READ⚠️⚠️⚠️"
@@ -148,7 +160,7 @@ const DownloadCoverLetter = () => {
             <div className="auth-container-inner">
                 {/* for TOP MENU */}
                 <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Cover Letter" />
-
+                <div className="error">{error}</div>
                 <div className="BodyWrapper">
                     <form>
                         <div className="Segment">
