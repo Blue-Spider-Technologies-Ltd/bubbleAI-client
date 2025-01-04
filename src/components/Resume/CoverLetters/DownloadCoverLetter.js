@@ -124,16 +124,7 @@ const DownloadCoverLetter = () => {
 
 
     const handleDownload = () => {
-        if(!isResumeSubbed) {
-            errorSetter("Not Subscribed to this feature, Pricing will open in a new tab...")
-            if(!pricingOpened) {
-                setPricingOpened(true)
-                setTimeout(() => {
-                    window.open("/pricing", "_blank")
-                }, 5000);
-            }
-            return
-        }
+
         const note = screenWidth < 900 ? 'Click OK only when instruction completed. MOBILE DETECTED! Allow browser pop-ups if prompted. After that, your letter will open in another tab, click the share (📤) button on your browser to save to files or share.' : 'This action is irreversible, continue?'
         confirm({ 
                 description: note,
