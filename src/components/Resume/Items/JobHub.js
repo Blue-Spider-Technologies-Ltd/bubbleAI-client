@@ -307,10 +307,10 @@ const JobHub = () => {
                 window.open('/pricing', '_blank')
             }, 5000);
         } else {
-            if(!companyUrl) {
-                window.open(linkedinUrl, '_blank')
+            if(!linkedinUrl) {
+                window.open(companyUrl, '_blank')
             }
-            window.open(companyUrl, '_blank')
+            window.open(linkedinUrl, '_blank')
         }
     }
 
@@ -378,7 +378,7 @@ const JobHub = () => {
         } else {
                                 
             if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
-                return errorSetter("Upgrade Subscription to access this feature")
+                return errorSetter("Upgrade to Per Week or Per Month")
             }
 
             switch (actionString) {
@@ -445,8 +445,7 @@ const JobHub = () => {
                     }, 3000);
 
                     break;
-    
-                
+      
                 case "Interview":
                     const interviewPrompt = `I am preparing for an upcoming job interview for the Job Title: ${chosenJob?.title}, Company Name: ${chosenJob?.company_name}, Job Description: ${chosenJob?.description} 
                         and my resume used for the application is given here in string object form: ${JSON.stringify(singleResume)}. 
