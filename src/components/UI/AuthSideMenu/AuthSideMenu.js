@@ -14,7 +14,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { 
     Work, 
     PictureAsPdf, 
-    GroupAdd,
+    EditNote,
     PersonSearch,
     ConnectWithoutContact,
 } from '@mui/icons-material';
@@ -139,6 +139,12 @@ const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
     const MenuDisplay = () => {
         return (                    
             <ul className={adminSideMenuCss.SideMenuItems}>
+                 <li>
+                    <Link to="/user/dashboard/resume">
+                        <EditNote />
+                        <span>Create Resume</span>
+                    </Link>
+                </li>
                 <li>
                     <Link to="/user/dashboard/resume-hub">
                         <PictureAsPdf />

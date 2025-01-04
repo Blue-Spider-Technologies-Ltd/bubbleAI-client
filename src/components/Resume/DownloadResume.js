@@ -23,7 +23,7 @@ import "react-multi-carousel/lib/styles.css";
 import carouselData from './carousel-items';
 import { errorAnimation, successMiniAnimation } from "../../utils/client-functions";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-// import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
+import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../UI/AuthHeader/AuthHeader';
 import StandardPDF from './Templates/Standard/StandardPDF'
 import EuroPass from './Templates/Europass/EuroPass';
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
 
 const DownloadResume = () => {
-    const { resume, error, successMini, resumeSubDuration, user, showCheckout } = useSelector(state => state.stateData)
+    const { resume, error, successMini, resumeSubDuration, user, showCheckout, userResumesAll } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirm = useConfirm();
@@ -447,7 +447,16 @@ const DownloadResume = () => {
     return (
         <div className="auth-container">
             {/* For SIDE MENU */}
-            {/* <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} /> */}
+            <AuthSideMenu
+                opened={authMenuOpen}
+                hidden={!authMenuOpen}
+                resumeSubDuration={resumeSubDuration}
+                isResumeSubbed={isSubscribed}
+                error={error}
+                successMini={successMini}
+                arrayDetails={userResumesAll}
+                firstName={user.firstName}
+            />
 
             <div style={{ width: '100%', padding: '0' }}>
                 <div className="auth-bg-blob">
@@ -458,7 +467,7 @@ const DownloadResume = () => {
                 {/* for TOP MENU */}
                 <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Download Resume" />
 
-                <div className="BodyWrapper">
+                <div className="BodyWrapper" onClick={() => setAuthMenuOpen(false)}>
                     <div className="BuildNavigator">
                         <div><span>1</span>Customise</div>
                         <div><span>2</span>Preview</div>

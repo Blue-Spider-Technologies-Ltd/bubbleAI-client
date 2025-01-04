@@ -11,7 +11,7 @@ import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import "react-multi-carousel/lib/styles.css";
 import { errorAnimation, successMiniAnimation } from "../../../utils/client-functions";
-// import AuthSideMenu from '../UI/AuthSideMenu/AuthSideMenu';
+import AuthSideMenu from '../../UI/AuthSideMenu/AuthSideMenu';
 import AuthHeader from '../../UI/AuthHeader/AuthHeader';
 import CLStandardPDF from './CLStandardPDF';
 import CLEuroPass from './CLEuroPass';
@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
 
 
 const DownloadCoverLetter = () => {
-    const { isResumeSubbed, error } = useSelector((state) => state.stateData);
+    const { isResumeSubbed, error, user } = useSelector((state) => state.stateData);
     const resumeLocal = localStorage.getItem('resume')
     const resume = JSON.parse(resumeLocal)
     const dispatch = useDispatch();
     const confirm = useConfirm();
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
-    const [pricingOpened, setPricingOpened] = useState(false)
+    // const [pricingOpened, setPricingOpened] = useState(false)
     const template = localStorage?.getItem("template")
     const imgUrl = localStorage?.getItem("imgUrl") ? localStorage?.getItem("imgUrl") : avatarImg
     const letter = localStorage?.getItem("letter")
@@ -141,7 +141,14 @@ const DownloadCoverLetter = () => {
     return (
         <div className="auth-container">
             {/* For SIDE MENU */}
-            {/* <AuthSideMenu opened={authMenuOpen} seacrhBarPlaceholder="Search by resume name" hidden={!authMenuOpen} /> */}
+            <AuthSideMenu
+                opened={authMenuOpen}
+                hidden={!authMenuOpen}
+                isResumeSubbed={isResumeSubbed}
+                error={error}
+                arrayDetails={[]}
+                firstName={user.firstName}
+            />
 
             <div style={{ width: '100%', padding: '0' }}>
                 <div className="auth-bg-blob">
@@ -152,7 +159,7 @@ const DownloadCoverLetter = () => {
                 {/* for TOP MENU */}
                 <AuthHeader authMenuOpen={authMenuOpen} onClick={toggleResumes} headerText="Cover Letter" />
                 <div className="error">{error}</div>
-                <div className="BodyWrapper">
+                <div className="BodyWrapper" onClick={() => setAuthMenuOpen(false)}>
                     <form>
                         <div className="Segment">
                             <h4>View and Download</h4>

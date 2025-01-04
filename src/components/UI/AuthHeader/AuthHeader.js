@@ -2,8 +2,8 @@ import React from 'react';
 import authHeaderCss from './AuthHeader.module.css';
 import { Link } from 'react-router-dom'
 import logoImg from "../../../images/bubble-logo.png"
-import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { BiMenuAltLeft } from "react-icons/bi";
+import { BiMenuAltRight } from "react-icons/bi";
 
 const AuthHeader = (props) => {
     return (
@@ -11,15 +11,15 @@ const AuthHeader = (props) => {
             <div className={!props.authMenuOpen ? authHeaderCss.showOptions : authHeaderCss.hideOptions} onClick={props.onClick}>
                 {!props.noAuthMenu ?
                     !props.authMenuOpen ? 
-                        <ArrowCircleRightIcon fontSize='large' />
+                        <BiMenuAltLeft size='2.5em' />
                     :
-                        <ArrowCircleLeftIcon fontSize='large' />
+                        <BiMenuAltRight size='2.5em' />
                 : ""
                 }
             </div>
             <h3 style={{marginLeft: "60px"}}>{props.headerText}</h3>
             <Link to='/'>
-                <img src={logoImg} alt='Bubble Ai' className="Logo" />
+                <img src={logoImg} alt='Bubble Ai' className="authLogo" />
             </Link>
         </div>
     )

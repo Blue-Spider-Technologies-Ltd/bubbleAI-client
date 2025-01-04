@@ -444,9 +444,13 @@ audio::-webkit-media-controls-download-button {
 
 
 
-@media (max-width: 1024px) {
+@media (max-width: 924px) {
   .Logo {
     width: 90px !important;
+  }
+
+  .authLogo {
+    width: 75px;
   }
 }
 

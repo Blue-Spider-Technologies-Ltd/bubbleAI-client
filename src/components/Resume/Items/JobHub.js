@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import Feedback from "../../Dashboard/Feedback";
 import { ButtonSubmitGreen, ButtonThin } from "../../UI/Buttons/Buttons";
@@ -43,7 +44,8 @@ const JobHub = () => {
         error, 
         successMini, 
         resumeSubDuration, 
-        isResumeSubbed 
+        isResumeSubbed,
+        user 
     } = useSelector((state) => state.stateData);
     const navigate = useNavigate();
     const isAuth = localStorage?.getItem("token");
@@ -59,6 +61,7 @@ const JobHub = () => {
     const [activeResIndex, setActiveResIndex] = useState(0)
     const [isFeedbackTime, setIsFeedbackTime] = useState(false)
     const [pricingOpened, setPricingOpened] = useState(false)
+    const [authMenuOpen, setAuthMenuOpen] = useState(false);
 
     const styles = {
         cardGrid: {
@@ -249,7 +252,9 @@ const JobHub = () => {
 
     }, []);
 
-
+    const toggleResumes = () => {
+        setAuthMenuOpen(!authMenuOpen);
+    };
 
     const goBackPrevPage = () => {
         navigate('/user/dashboard/resume');
@@ -476,20 +481,26 @@ const JobHub = () => {
     <div>
         {isFeedbackTime ? <Feedback notApaymentTextPositive="Resume Creation Completed!"/> : (
             <div className="auth-container">
+                <AuthSideMenu
+                    opened={authMenuOpen}
+                    hidden={!authMenuOpen}
+                    resumeSubDuration={resumeSubDuration}
+                    isResumeSubbed={isResumeSubbed}
+                    error={error}
+                    successMini={successMini}
+                    arrayDetails={[]}
+                    firstName={user.firstName}
+                />
                 {/* For SIDE MENU */}
                 <div style={{ width: "100%", padding: "0" }}>
                     <div className="auth-bg-blob"></div>
-                </div>
-                <div className='go-back' style={{position: "absolute", top: "1.3rem", left: "1rem"}}>
-                    <div onClick={goBackPrevPage} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '80px'}}>
-                        <ArrowCircleLeftIcon fontSize='large' />
-                    </div>
                 </div>
 
                 <div className="auth-container-inner">
                     {/* for TOP MENU */}
                     <AuthHeader
-                        noAuthMenu={true}
+                        authMenuOpen={authMenuOpen}
+                        onClick={toggleResumes}
                         headerText="My Jobs"
                     />
                     <div className="error">{error}</div>
@@ -507,7 +518,7 @@ const JobHub = () => {
                         />
                     </div>  */}
 
-                    <div style={styles.animText}>
+                    <div style={styles.animText} onClick={() => setAuthMenuOpen(false)}>
                         <TypeAnimation
                             sequence={[
                                 () => setTextColor('#3E8F93'),
@@ -544,14 +555,14 @@ const JobHub = () => {
                     </div>
 
                     {jobs.length < 1 ? (
-                        <div style={styles.noResumes}>
+                        <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
                             <h4>Create Resume to get Job Connections</h4>
                             <div style={{width: '200px'}}>
                                 <ButtonSubmitGreen onClick={goBackPrevPage}>Create Resume</ButtonSubmitGreen>
                             </div>
                         </div>
                     ) : (
-                        <Grid container>
+                        <Grid container onClick={() => setAuthMenuOpen(false)}>
                             {jobs.map((item, index) => (
                                 <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
                                     <Card sx={activeIndex !== index + 1 ? styles.card : styles.cardLarge}>

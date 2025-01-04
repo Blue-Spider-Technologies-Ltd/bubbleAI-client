@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
 import { ButtonSubmitGreen, ButtonThin } from "../../UI/Buttons/Buttons";
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import { Grid } from "@mui/material";
@@ -28,13 +28,13 @@ const screenWidth = window.innerWidth
 const ResumeHub = () => {
     const dispatch = useDispatch();
     const confirm = useConfirm();
-    const { error, successMini, userResumesAll, isResumeSubbed } = useSelector((state) => state.stateData);
+    const { error, successMini, userResumesAll, isResumeSubbed, resumeSubDuration, user } = useSelector((state) => state.stateData);
     const navigate = useNavigate();
     const copyLink = useRef(null);
     const isAuth = localStorage?.getItem("token")
     const [modalOpen, setModalOpen] = useState(false)
     const [pricingOpened, setPricingOpened] = useState(false)
-    // const [img, setImg] = useState('')
+    const [authMenuOpen, setAuthMenuOpen] = useState(false);
     const [searchString, setSearchString] = useState("");
     const [resumeForSearch, setResumeForSearch] = useState("");
     const [jobDesc, setJobDesc] = useState("");
@@ -67,10 +67,13 @@ const ResumeHub = () => {
         successMiniAnimation()
     }
 
+    const toggleResumes = () => {
+        setAuthMenuOpen(!authMenuOpen);
+    };
+
     const goBackPrevPage = () => {
         navigate('/user/dashboard/resume');
     }
-
 
     const handleCopy = () => {
         if (copyLink.current) {
@@ -244,25 +247,31 @@ const ResumeHub = () => {
     return (
         <div className="auth-container">
             {/* For SIDE MENU */}
+            <AuthSideMenu
+                opened={authMenuOpen}
+                hidden={!authMenuOpen}
+                resumeSubDuration={resumeSubDuration}
+                isResumeSubbed={isResumeSubbed}
+                error={error}
+                successMini={successMini}
+                arrayDetails={[]}
+                firstName={user.firstName}
+            />
             <div style={{ width: "100%", padding: "0" }}>
                 <div className="auth-bg-blob"></div>
-            </div>
-            <div className='go-back' style={{position: "absolute", top: "1.3rem", left: "1rem"}}>
-                <div onClick={goBackPrevPage} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '80px'}}>
-                    <ArrowCircleLeftIcon fontSize='large' />
-                </div>
             </div>
 
             <div className="auth-container-inner">
                 {/* for TOP MENU */}
                 <AuthHeader
-                    noAuthMenu={true}
-                    headerText="My Resumes"
+                    authMenuOpen={authMenuOpen}
+                    onClick={toggleResumes}
+                    headerText="My Jobs"
                 />
                 <div className="error">{error}</div>
                 <div className="success-mini">{successMini}</div>
 
-                <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
+                <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}} onClick={() => setAuthMenuOpen(false)}>
                     <AuthInputs 
                         placeholder="Search resume by name" 
                         inputType="search" 
@@ -275,7 +284,7 @@ const ResumeHub = () => {
                 </div> 
 
                 {Object.keys(userResumesAll).length < 1 ? (
-                    <div style={styles.noResumes}>
+                    <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
                         <h4>Your Resumes Appear here</h4>
                         <div style={{width: '200px'}}>
                             <ButtonSubmitGreen onClick={goBackPrevPage}>Create Resume</ButtonSubmitGreen>
@@ -283,11 +292,11 @@ const ResumeHub = () => {
                     </div>
                 ) : (
                     Object.keys(resumeForSearch).length < 1 ? (
-                        <div style={styles.noResumes}>
+                        <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
                             <h4>No resume found</h4>
                         </div>
                     ) : (
-                        <Grid container>
+                        <Grid container onClick={() => setAuthMenuOpen(false)}>
                             {resumeForSearch.map((item, index) => (
                                 <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
                                     <Card sx={styles.card}>
