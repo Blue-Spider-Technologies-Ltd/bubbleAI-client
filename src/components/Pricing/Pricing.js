@@ -55,7 +55,7 @@ const Pricing = () => {
                 </div>
             </section>
 
-            <section style={styles.fridaySec}>
+            {/* <section style={styles.fridaySec}>
                 <Grid container>
                     <Grid item xs={12} md={5}>
                         <div style={styles.imgCont}>
@@ -69,7 +69,7 @@ const Pricing = () => {
                         <CountdownTimer />
                     </Grid>
                 </Grid>
-            </section>
+            </section> */}
 
             <ResumePricing />
             {/* <DepositionPricing />
