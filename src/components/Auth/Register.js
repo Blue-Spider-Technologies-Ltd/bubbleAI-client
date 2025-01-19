@@ -284,7 +284,7 @@ const Register = () => {
                     <div className="error">{error}</div>
                     <div className="description-box">
                         <p>Career coaches and CV writers often try to fake-fit you to limited available jobs they know about. Bubble Ai, on the other hand analyzes your history to finds JOBS THAT FIT YOU, giving you over 90% chance due to its authentic approach. 
-                        Transform your career in minutes with Bubble Ai's powerful <strong>CV</strong>, <strong>cover letters</strong> and <strong>job tools</strong>. </p>
+                        Transform your career in minutes with Bubble Ai's powerful <strong>resume</strong>, <strong>cover letters</strong> and <strong>job tools</strong>. </p>
                         <p><strong>REGISTER NOW</strong> to benefit from our ongoing giveaways, get the perfect resume and apply to fitted high-paying jobs in choice locations specially curated for you.</p>
                     </div>
 
