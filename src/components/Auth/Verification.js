@@ -9,6 +9,7 @@ import { Send} from '@mui/icons-material';
 import axios from 'axios';
 import { ThreeCircles } from 'react-loader-spinner';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { FaLongArrowAltRight } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { errorAnimation } from "../../utils/client-functions";
@@ -160,14 +161,13 @@ const Verification = () => {
                                     <p>Dear {firstName},</p>
                                     <h2>NEW USER GIVEAWAY!!!</h2>
                                 </div>
-                                <p>Use this discount code, <strong>(OFFER LIMITED FOR 7 DAYS)</strong>, to GET extra 20% OFF: <span style={{fontSize: '1.5rem', fontWeight: 600, color: '#3E8F93'}}>{couponCode}</span> on our PER MONTH PLAN only.</p>
+                                <p>Grab your 1 Week Free Trial Now!!! <strong>(OFFER LIMITED FOR 7 DAYS ONLY STARTING NOW)</strong>.</p>
 
                                 
                                 <div style={{textAlign: 'center', lineHeight: 2}}>
                                     <h2>Your Next Steps:</h2>
-                                    <a href='/pricing' style={styles.link} target="_blank">CLAIM Giveaway</a> <br />
-                                    <a href='/user/dashboard/resume' style={styles.link} target="_blank">Try FOR FREE (Limited Experience)</a> <br />
-                                    <a href='https://www.instagram.com/reel/C8pHqBfIuUY/?igsh=MW9qYnV0em40YW1zdw==' style={styles.link} target="_blank" rel="noreferrer">Earn with Bubble Ai</a> 
+                                    <a href='/user/dashboard/resume' style={styles.link} target="_blank">Claim Free Trial <FaLongArrowAltRight /></a> <br />
+                                    <a href='https://www.instagram.com/reel/C8pHqBfIuUY/?igsh=MW9qYnV0em40YW1zdw==' style={styles.link} target="_blank" rel="noreferrer">Earn with Bubble Ai <FaLongArrowAltRight /></a> 
                                 </div> 
                                 
                                 <p></p>

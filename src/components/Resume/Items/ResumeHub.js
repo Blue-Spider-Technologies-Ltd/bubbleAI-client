@@ -266,7 +266,7 @@ const ResumeHub = () => {
                 <AuthHeader
                     authMenuOpen={authMenuOpen}
                     onClick={toggleResumes}
-                    headerText="My Jobs"
+                    headerText="My Resumes"
                 />
                 <div className="error">{error}</div>
                 <div className="success-mini">{successMini}</div>

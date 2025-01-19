@@ -225,7 +225,7 @@ const Profile = () => {
                                 </div>
                                 <AuthInput
                                     value={streetCity}
-                                    label="Apt No., Street & City"
+                                    label="City"
                                     inputType="text"
                                     inputGridSm={12}
                                     mb={2}
