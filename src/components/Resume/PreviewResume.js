@@ -94,7 +94,6 @@ const PreviewResume = () => {
   const [publications, setPublications] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(true);
-  const [countryid, setCountryid] = useState(0);
 
 
 
@@ -447,18 +446,10 @@ const PreviewResume = () => {
     if (prop === "mobile") {
       return setBasicInfo({ ...basicInfo, [prop]: "+" + event });
     }
-    if (prop === "country") {
-      setCountryid(event.id)
+    if (prop === "country" || prop === "city") {
       setBasicInfo({
         ...basicInfo,
-        [prop]: event.name,
-      });
-      return
-    }
-    if (prop === "city") {
-      setBasicInfo({
-        ...basicInfo,
-        [prop]: event.name,
+        [prop]: event
       });
       return
     }
@@ -467,6 +458,7 @@ const PreviewResume = () => {
       [prop]: event.target.value,
     });
   };
+
 
 
 
@@ -558,27 +550,12 @@ const PreviewResume = () => {
                     disabled={!isResumeSubbed}
                     onChange={handleInputChange("email")}
                   />
-                  <div style={{ width: "100%" }}>
-                    <div className={resumeCss.DetachedLabels}>
-                      Date of Birth *
-                    </div>
-                  </div>
-                  <AuthInput
-                    value={basicInfo?.dob}
-                    placeholder="Date of Birth"
-                    inputType="date"
-                    inputGridSm={12}
-                    inputGrid={2}
-                    mb={2}
-                    required={true}
-                    disabled={true}
-                  />
                   <AuthInput
                     value={basicInfo?.mobile}
                     label="Mobile"
                     inputType="mobile"
                     inputGridSm={12}
-                    inputGrid={4}
+                    inputGrid={5}
                     mb={2}
                     required={true}
                     disabled={!isResumeSubbed}
@@ -589,40 +566,28 @@ const PreviewResume = () => {
                     label="Job Position (NOT editable)"
                     inputType="text"
                     inputGridSm={12}
-                    inputGrid={4}
+                    inputGrid={7}
                     mb={2}
                     required={true}
                     disabled={true}
                   />
                   <AuthInput
-                    value={basicInfo?.street}
-                    label="Street Name"
-                    inputType="text"
-                    inputGridSm={12}
-                    inputGrid={4}
-                    mb={2}
-                    disabled={!isResumeSubbed}
-                    onChange={handleInputChange("street")}
-                  />
-                  <AuthInput
-                    id={basicInfo?.country}
+                    name={basicInfo?.country}
                     value={basicInfo?.country}
-                    placeholder={basicInfo?.country ? basicInfo.country : "Country"}
                     inputType="country-select"
                     inputGridSm={12}
-                    inputGrid={4}
+                    inputGrid={6}
                     mb={2}
                     disabled={!isResumeSubbed}
                     onChange={handleInputChange("country")}
                   />
                   <AuthInput
-                    id={basicInfo?.city}
+                    country={basicInfo.country}
+                    name={basicInfo?.city}
                     value={basicInfo?.city}
-                    countryid={countryid}
-                    placeholder={basicInfo?.city ? basicInfo.city : "State/Region"}
                     inputType="state-select"
                     inputGridSm={12}
-                    inputGrid={4}
+                    inputGrid={6}
                     mb={2}
                     disabled={!isResumeSubbed}
                     onChange={handleInputChange("city")}

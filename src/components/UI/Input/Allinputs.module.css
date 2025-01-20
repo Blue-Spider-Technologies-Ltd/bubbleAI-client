@@ -24,6 +24,12 @@
 .stateCountryCss {
     border-radius: 50px !important;
     font-size: 16px !important;
+    width: 100%;
+    margin: auto;
+    background-color: #F5F5F5;
+    height: 2rem;
+    margin-top: .16rem;
+    padding: .3rem;
 }
 
 

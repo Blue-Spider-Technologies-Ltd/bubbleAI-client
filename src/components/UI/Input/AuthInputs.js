@@ -21,12 +21,9 @@ import allInputCss from "./Allinputs.module.css"
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import {
-    CountrySelect,
-    StateSelect
-  } from "react-country-state-city";
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
   
-import "react-country-state-city/dist/react-country-state-city.css";
+
 const screenWidth = window.innerWidth
 
 
@@ -184,24 +181,20 @@ const AuthInput = props => {
                 </FormControl>
             :
             props.inputType === "country-select" ?
-                <CountrySelect
+                <CountryDropdown
                     name={props.name}
                     onChange={props.onChange}
-                    placeHolder={props.placeholder}
-                    inputClassName={allInputCss.stateCountryCss}
-                    containerClassName={allInputCss.stateCountryCont}
+                    className={allInputCss.stateCountryCss}
                     value={props.value}
                     required={props.required}
                 />
             :
             props.inputType === "state-select" ?
-                <StateSelect
+                <RegionDropdown
+                    country={props.country}
                     name={props.name}
-                    countryid={props.countryid}
                     onChange={props.onChange}
-                    placeHolder={props.placeholder}
-                    inputClassName={allInputCss.stateCountryCss}
-                    containerClassName={allInputCss.stateCountryCont}
+                    className={allInputCss.stateCountryCss}
                     value={props.value}
                     required={props.required}
                 />

@@ -61,7 +61,6 @@ const CustomizeResume = () => {
   const [pubFaded, setPubFaded] = useState(true)
   const [langFaded, setLangFaded] = useState(true)
   const [interestFaded, setInterestFaded] = useState(true)
-  const [countryid, setCountryid] = useState(0);
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(false);
   const [creatorDisplay, setCreatorDisplay] = useState("");
@@ -82,10 +81,8 @@ const CustomizeResume = () => {
     firstName: "",
     lastName: "",
     email: "",
-    dob: "",
     mobile: "",
     jobPosition: "",
-    street: "",
     city: "",
     country: "",
     profSummary: "",
@@ -151,11 +148,9 @@ const CustomizeResume = () => {
           firstName, 
           lastName, 
           email, 
-          dob, 
           mobile,
           isFirstTimeUser, 
           jobPosition, 
-          streetCity, 
           stateRegion, 
           country, 
           profSummary,
@@ -167,10 +162,8 @@ const CustomizeResume = () => {
           firstName: firstName,
           lastName: lastName,
           email: email,
-          dob: dob || "",
           mobile: mobile || "",
           jobPosition: jobTitle || jobPosition || "",
-          street: streetCity || "",
           city: stateRegion || "",
           country: country || "",
           profSummary: profSummary || "",
@@ -632,18 +625,10 @@ const CustomizeResume = () => {
     if (prop === "mobile") {
       return setBasicInfo({ ...basicInfo, [prop]: "+" + event });
     }
-    if (prop === "country") {
-      setCountryid(event.id)
+    if (prop === "country" || prop === "city") {
       setBasicInfo({
         ...basicInfo,
-        [prop]: event.name,
-      });
-      return
-    }
-    if (prop === "city") {
-      setBasicInfo({
-        ...basicInfo,
-        [prop]: event.name,
+        [prop]: event
       });
       return
     }
@@ -657,21 +642,13 @@ const CustomizeResume = () => {
   ////SEGMENT VISIBILITY/ANIMATION HANDLERS
   const basicInfoForward = (arg) => {
     //check if required fields are filled
-    const { dob, mobile, jobPosition, street, city, country } = basicInfo
-    if (dob === "") {
-      errorSetter("Complete Date of Birth to continue");
-      return;
-    }
+    const { mobile, jobPosition, city, country } = basicInfo
     if ( mobile === "") {
       errorSetter("Enter Mobile to continue");
       return;
     }
     if (jobPosition === "") {
       errorSetter("Enter Job Position to continue");
-      return;
-    }
-    if (street === "") {
-      errorSetter("Enter City/District to continue");
       return;
     }
     if (city === "" || city === "State/Region" || country === "" || country === "Country") {
@@ -1018,7 +995,7 @@ const CustomizeResume = () => {
         <>
           <h2>Drag & Drop File</h2>
           <h4>or</h4>
-          <h2>Click to Select</h2>
+          <h2>Tap to Upload</h2>
         </>
       )}
       <input
@@ -1089,7 +1066,8 @@ const CustomizeResume = () => {
               <div className='explanation-points'>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">All fields with * are required</Alert>
-                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have questions? <a className="link" target="_blank" href="/chat" style={{textDecoration: "underline"}}>Ask me anything!</a></Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Location is used for job search & appears on resume</Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have Questions? Please use the chatbot</Alert>
               </div>
 
               {!basicFaded && (
@@ -1113,30 +1091,14 @@ const CustomizeResume = () => {
                       label="Job Position to optimise CV to"
                       inputType="text"
                       inputGridSm={12}
-                      inputGrid={12}
+                      inputGrid={4}
                       mb={2}
                       required={true}
                       onChange={handleInputChange("jobPosition")}
                     />
-                    <div style={{ width: "100%", marginBottom: "15px", textAlign: "center" }}>
-                      <div className={resumeCss.DetachedLabels}>
-                        Location (used for job search & on CV)
-                      </div>
-                    </div>
                     <AuthInput
-                      id={basicInfo.street}
-                      value={basicInfo.street}
-                      label="City/District"
-                      inputType="text"
-                      inputGridSm={12}
-                      inputGrid={4}
-                      mb={2}
-                      onChange={handleInputChange("street")}
-                    />
-                    <AuthInput
-                      id={basicInfo.country}
+                      name={basicInfo.country}
                       value={basicInfo.country}
-                      placeholder={basicInfo.country ? basicInfo.country : "Country"}
                       inputType="country-select"
                       inputGridSm={12}
                       inputGrid={4}
@@ -1144,10 +1106,9 @@ const CustomizeResume = () => {
                       onChange={handleInputChange("country")}
                     />
                     <AuthInput
-                      id={basicInfo.city}
+                      country={basicInfo.country}
+                      name={basicInfo.city}
                       value={basicInfo.city}
-                      countryid={countryid}
-                      placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
                       inputType="state-select"
                       inputGridSm={12}
                       inputGrid={4}
@@ -1196,7 +1157,7 @@ const CustomizeResume = () => {
                         value={basicInfo.firstName}
                         inputType="text"
                         inputGridSm={12}
-                        inputGrid={4}
+                        inputGrid={6}
                         mb={2}
                         required={true}
                         disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
@@ -1207,7 +1168,7 @@ const CustomizeResume = () => {
                         value={basicInfo.lastName}
                         inputType="text"
                         inputGridSm={12}
-                        inputGrid={4}
+                        inputGrid={6}
                         mb={2}
                         required={true}
                         disabled={subDuration !== "Per Month" && subDuration !== "Per Use"}
@@ -1218,27 +1179,11 @@ const CustomizeResume = () => {
                         value={basicInfo.email}
                         inputType="email"
                         inputGridSm={12}
-                        inputGrid={4}
+                        inputGrid={6}
                         mb={0}
                         required={true}
                         disabled={false}
                         onChange={handleInputChange("email")}
-                      />
-                      <div style={{ width: "100%" }}>
-                        <div className={resumeCss.DetachedLabels}>
-                          Date of Birth * (Might not be visible on resume)
-                        </div>
-                      </div>
-                      <AuthInput
-                        id={basicInfo.dob}
-                        value={basicInfo.dob}
-                        placeholder="Date of Birth"
-                        inputType="date"
-                        inputGridSm={12}
-                        inputGrid={3}
-                        mb={2}
-                        required={true}
-                        onChange={handleInputChange("dob")}
                       />
                       <AuthInput
                         id={basicInfo.mobile}
@@ -1246,7 +1191,7 @@ const CustomizeResume = () => {
                         label="Mobile"
                         inputType="mobile"
                         inputGridSm={12}
-                        inputGrid={4}
+                        inputGrid={6}
                         mb={2}
                         required={true}
                         onChange={handleInputChange("mobile")}
@@ -1257,31 +1202,14 @@ const CustomizeResume = () => {
                         label="Job Position"
                         inputType="text"
                         inputGridSm={12}
-                        inputGrid={5}
+                        inputGrid={4}
                         mb={2}
                         required={true}
                         onChange={handleInputChange("jobPosition")}
                       />
-                      <div style={{ width: "100%", marginBottom: '15px', textAlign: "center"  }}>
-                        <div className={resumeCss.DetachedLabels}>
-                          Location (for job search & on CV)
-                        </div>
-                      </div>
                       <AuthInput
-                        id={basicInfo.street}
-                        value={basicInfo.street}
-                        label="City/District"
-                        inputType="text"
-                        inputGridSm={12}
-                        inputGrid={4}
-                        mb={2}
-                        required={true}
-                        onChange={handleInputChange("street")}
-                      />
-                      <AuthInput
-                        id={basicInfo.country}
+                        name={basicInfo.country}
                         value={basicInfo.country}
-                        placeholder={basicInfo.country ? basicInfo.country : "Country"}
                         inputType="country-select"
                         inputGridSm={12}
                         inputGrid={4}
@@ -1289,10 +1217,9 @@ const CustomizeResume = () => {
                         onChange={handleInputChange("country")}
                       />
                       <AuthInput
-                        id={basicInfo.city}
+                        country={basicInfo.country}
+                        name={basicInfo.city}
                         value={basicInfo.city}
-                        countryid={countryid}
-                        placeholder={basicInfo.city ? basicInfo.city : "State/Region"}
                         inputType="state-select"
                         inputGridSm={12}
                         inputGrid={4}
@@ -1922,7 +1849,6 @@ const CustomizeResume = () => {
                               inputGridSm={9} 
                               mb={2} 
                               list={LANGUAGES} 
-                              required={true} 
                               onChange={(event) => handleLangChange(event, index)}
                             />
                             <AuthInput 
@@ -1933,7 +1859,6 @@ const CustomizeResume = () => {
                               inputGridSm={3} 
                               mb={2} 
                               list={langLevelsArray} 
-                              required={true} 
                               onChange={(event) => handleLangChange(event, index)}
                             />
                           </Grid>

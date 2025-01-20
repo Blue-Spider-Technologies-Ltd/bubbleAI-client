@@ -26,14 +26,12 @@ const Profile = () => {
     const [email, setEmail] = useState("")
     const [dob, setDob] = useState("")
     const [mobile, setMobile] = useState("")
-    const [streetCity, setStreetCity] = useState("")
     const [stateRegion, setStateRegion] = useState("")
     const [country, setCountry] = useState("")
     //page where cancel icon would lead to
     const prevPath = localStorage.getItem("prevPath")
     const resumeSub = isResumeSubscribed ? resumeDuration : "Unsubscribed"; 
     const resumeSubExp = isResumeSubscribed ? resumeSubExpiration : "Unsubscribed"; 
-    const [countryid, setCountryid] = useState(0);
 
 
     const errorSetter = (string) => {
@@ -67,7 +65,6 @@ const Profile = () => {
                 setEmail(profileData.email)
                 setDob(profileData?.dob)
                 setMobile(profileData.mobile)
-                setStreetCity(profileData.streetCity)
                 setStateRegion(profileData.stateRegion)
                 setCountry(profileData.country)
                 
@@ -96,7 +93,7 @@ const Profile = () => {
             localStorage.setItem("prevPath", "/user/dashboard/profile")
             return navigate("/popin");      
         }
-        if (dob.length < 10 || mobile.length < 5 || streetCity === "" || stateRegion === "" || country === "" ) {
+        if (dob.length < 10 || mobile.length < 5 || stateRegion === "" || country === "" ) {
             return errorSetter("You have not made valid changes")
         } else {
             dispatch(setFetching(true))
@@ -104,7 +101,6 @@ const Profile = () => {
                 const body = {
                     dob: dob,
                     mobile: mobile,
-                    streetCity: streetCity,
                     stateRegion: stateRegion,
                     country: country
                 }
@@ -145,15 +141,11 @@ const Profile = () => {
     const handleMobileChange = (event) => {
         setMobile(event)
     };
-    const handleStreetCityChange = (event) => {
-        setStreetCity(event.target.value)
-    };
     const handleStateRegionChange = (event) => {
-        setStateRegion(event.name)
+        setStateRegion(event)
     };
     const handleCountryChange = (event) => {
-        setCountryid(event.id)
-        setCountry(event.name)
+        setCountry(event)
     };
     
 
@@ -207,6 +199,13 @@ const Profile = () => {
                                     onChange={handleDobChange}
                                 />
 
+
+                            </Grid>
+                            <Grid item xs={6} sx={{borderLeft: "1px solid #c0d1d457"}}>
+                                
+                                <div style={{marginBottom: "15px", marginLeft: "10px", textAlign: "left"}}>
+                                    <h5>Address Info</h5>
+                                </div>
                                 <AuthInput
                                     value={mobile}
                                     label="Mobile"
@@ -216,37 +215,19 @@ const Profile = () => {
                                     required={true}
                                     onChange={handleMobileChange}
                                 />
-
-                            </Grid>
-                            <Grid item xs={6} sx={{borderLeft: "1px solid #c0d1d457"}}>
-                                
-                                <div style={{marginBottom: "15px", marginLeft: "10px", textAlign: "left"}}>
-                                    <h5>Address Info</h5>
-                                </div>
                                 <AuthInput
-                                    value={streetCity}
-                                    label="City"
-                                    inputType="text"
-                                    inputGridSm={12}
-                                    mb={2}
-                                    onChange={handleStreetCityChange}
-                                />
-                                <AuthInput
-                                    id={country}
+                                    name={country}
                                     value={country}
-                                    placeholder={country ? country : "Country"}
                                     inputType="country-select"
                                     inputGridSm={12}
                                     mb={2}
                                     required={true}
                                     onChange={handleCountryChange}
                                  />
-                                 <span style={{fontSize: '.6rem', marginTop: '-10px'}}>Change country to change/view states*</span>
                                 <AuthInput
-                                    id={stateRegion}
+                                    country={country}
+                                    name={stateRegion}
                                     value={stateRegion}
-                                    countryid={countryid}
-                                    placeholder={stateRegion ? stateRegion : "State/Region"}
                                     inputType="state-select"
                                     inputGridSm={12}
                                     mb={2}
