@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import Feedback from "../../Dashboard/Feedback";
 import { ButtonSubmitGreen, ButtonThin } from "../../UI/Buttons/Buttons";
@@ -30,6 +29,8 @@ import { SlEnvolopeLetter } from "react-icons/sl";
 import { MdMarkEmailRead } from "react-icons/md";
 import { TypeAnimation } from 'react-type-animation';
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import { TfiNewWindow } from "react-icons/tfi";
+import { FaLongArrowAltRight } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
 import iconImg from '../../../images/bubble icon.jpg'
 import axios from "axios";
@@ -90,6 +91,19 @@ const JobHub = () => {
             overflow: 'visible', // Hide overflow to ensure smooth transition
             transition: 'all 3s ease-in-out',
         },
+        list: {
+            fontSize: '.85rem',
+            lineHeight: '1.5',
+            padding: '20px',
+            margin: '20px',
+            width: '100%',
+        },
+        newTabLnk: {
+            color: '#3E8F93',
+            textDecoration: 'dotted',
+            cursor: 'pointer',
+            fontSize: '.7rem',
+        },
         link: {
             borderRadius: '20px',
             color: 'rgba(0, 0, 0, 0.634)',
@@ -126,8 +140,7 @@ const JobHub = () => {
             display: 'flex', 
             flexDirection: 'column',
             alignItems: 'center', 
-            justifyContent: 'center', 
-            height: '30vh', 
+            justifyContent: 'center',
             width: '100%'
         },
         key: {
@@ -555,9 +568,22 @@ const JobHub = () => {
 
                     {jobs.length < 1 ? (
                         <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
-                            <h4>Create Resume to get Job Connections</h4>
+                            <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                <Alert sx={{padding: '0 5px', width: 'auto', margin: '0 auto', fontSize: '.9rem'}} severity="warning">You have no job connections yet.</Alert>
+                            </div>
+                            <div className="BodyWrapper">
+                                <div className="Segment">
+                                    <Alert sx={{padding: '0 5px', margin: '0 auto'}} severity="info">Tips to getting connected</Alert>
+                                </div>
+                                
+                                <ol style={styles.list}>
+                                    <li>Choose a different location when creating/optimizing resume: your perfect fit job might not be in the previous city or country.</li>
+                                    <li>Ask Bubble Ai similar names recruiters might call your current job position: <a href="/chat" target="_blank" style={styles.newTabLnk}>Ask Here <TfiNewWindow /></a></li>
+                                </ol>
+                            </div>
+                            <h4>Optimize Resume to get Job Connections</h4>
                             <div style={{width: '200px'}}>
-                                <ButtonSubmitGreen onClick={goBackPrevPage}>Create Resume</ButtonSubmitGreen>
+                                <ButtonSubmitGreen onClick={goBackPrevPage}>Start Now &nbsp;&nbsp;<FaLongArrowAltRight /></ButtonSubmitGreen>
                             </div>
                         </div>
                     ) : (
