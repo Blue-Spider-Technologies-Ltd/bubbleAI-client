@@ -6,7 +6,7 @@ import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import Feedback from "../../Dashboard/Feedback";
-import { ButtonSubmitGreen, ButtonThin } from "../../UI/Buttons/Buttons";
+import { ButtonSubmitGreen, ButtonThin, ButtonTransparent } from "../../UI/Buttons/Buttons";
 import { 
     errorAnimation, 
     successMiniAnimation, 
@@ -32,6 +32,8 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import { TfiNewWindow } from "react-icons/tfi";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
+import { FaLinkedin } from "react-icons/fa6";
+import { IoIosPeople } from "react-icons/io";
 import iconImg from '../../../images/bubble icon.jpg'
 import axios from "axios";
 const screenWidth = window.innerWidth
@@ -63,6 +65,10 @@ const JobHub = () => {
     const [isFeedbackTime, setIsFeedbackTime] = useState(false)
     const [pricingOpened, setPricingOpened] = useState(false)
     const [authMenuOpen, setAuthMenuOpen] = useState(false);
+    const [jobModal, openJobModal] = useState(false);
+    const [linkedinUrl, setLinkedinUrl] = useState("");
+    const [companyUrl, setCompanyUrl] = useState("");
+    const [applicants, setApplicants] = useState("");
 
     const styles = {
         cardGrid: {
@@ -103,6 +109,13 @@ const JobHub = () => {
             textDecoration: 'dotted',
             cursor: 'pointer',
             fontSize: '.7rem',
+        },
+        applicants: {
+            fontSize: '.75rem',
+            color: 'rgba(0, 0, 0, 0.634)',
+            margin: "10px auto",
+            textAlign: "center",
+            width: "100%"
         },
         link: {
             borderRadius: '20px',
@@ -313,17 +326,24 @@ const JobHub = () => {
     }
 
     
-    const getJob = async (linkedinUrl, companyUrl) => {
+    const getJob = async (linkedinUrl, companyUrl, appCount) => {
+        openJobModal(true)
+        setLinkedinUrl(linkedinUrl)
+        setCompanyUrl(companyUrl)
+        setApplicants(appCount)
+    }
+
+    const submitApplication = async (url) => {
         if(!isResumeSubbed) {
             errorSetter("Upgrade your subscription to access this feature")
             setTimeout(() => {
                 window.open('/pricing', '_blank')
             }, 5000);
         } else {
-            if(!linkedinUrl) {
-                window.open(companyUrl, '_blank')
+            if(!url) {
+                return errorSetter("Method not available for this job")
             }
-            window.open(linkedinUrl, '_blank')
+            window.open(url, '_blank')
         }
     }
 
@@ -666,7 +686,7 @@ const JobHub = () => {
                                                         width={'110px'} 
                                                         height='25px' 
                                                         color='black'
-                                                        onClick={() => getJob(item?.url, item?.external_url)}
+                                                        onClick={() => getJob(item?.url, item?.external_url, item.applicants_count)}
                                                     >
                                                         <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
                                                     </ButtonThin>
@@ -746,6 +766,30 @@ const JobHub = () => {
                             <div style={{width: '100%'}}>
                                 <ButtonSubmitGreen onClick={handleGenerate} >Get {actionString}</ButtonSubmitGreen>
                             </div>
+
+                        </div>
+                    </PlainModalOverlay>
+                )}
+                {jobModal && (
+                    <PlainModalOverlay>
+                        <div style={styles.modalInner}>
+                            <div className='prev-page' onClick={() => openJobModal(false)}>
+                                <FaLongArrowAltLeft />
+                            </div>
+                            <h4>Choose application submission method</h4>
+
+                            <div style={styles.applicants}>
+                                <IoIosPeople /> {applicants}
+                            </div>
+
+                            <Grid container>
+                                <Grid item xs={12} mb={1}>
+                                    <ButtonTransparent width="100%" onClick={() => submitApplication(linkedinUrl)}><FaLinkedin />&nbsp; LinkedIn Apply</ButtonTransparent>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <ButtonSubmitGreen onClick={() => submitApplication(companyUrl)}>Recruiter Portal</ButtonSubmitGreen>
+                                </Grid>
+                            </Grid>
 
                         </div>
                     </PlainModalOverlay>
