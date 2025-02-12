@@ -202,16 +202,6 @@ const PriceCard = ({details}) => {
                     </List>
                 }
 
-                {duration === 'Per Month' && <List style={{ marginTop: '-10px'}}> 
-                    <ListItem >
-                        <ListItemIcon style={{width: "1rem"}}>
-                            <img style={{width: "1rem"}} src={fullRefundImg} alt='ref' />
-                        </ListItemIcon>
-                        <Typography sx={{ml: -3, fontSize: '.9rem'}}>
-                            Money-Back Guarantee (T&C)
-                        </Typography>
-                    </ListItem> 
-                </List>}
 
                 <div style={{ width: "100%", display: 'flex', justifyContent: 'center'}}>
                     <div style={{ width: "85%"}}>

@@ -327,10 +327,10 @@ const JobHub = () => {
 
     
     const getJob = async (linkedinUrl, companyUrl, appCount) => {
-        openJobModal(true)
         setLinkedinUrl(linkedinUrl)
         setCompanyUrl(companyUrl)
         setApplicants(appCount)
+        openJobModal(true)
     }
 
     const submitApplication = async (url) => {

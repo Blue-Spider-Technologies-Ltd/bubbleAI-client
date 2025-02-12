@@ -3,9 +3,10 @@ import css from './LearnMorePages.module.css'
 import modalCss from '../Modal/Modal.module.css'
 import { fetchCountryData } from '../../../utils/client-functions';
 import MenuBar from '../Menu/Menu';
-import { ButtonSubmitGreen } from '../Buttons/Buttons';
+import { ButtonSubmitGreen, ButtonTransparent } from '../Buttons/Buttons';
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { TfiHandPointRight } from "react-icons/tfi";
+import { TfiNewWindow } from "react-icons/tfi";
 import Carousel from "react-multi-carousel";
 import { reviewDetails } from '../../../utils/reviews';
 import bubbleBgAuthImg from "../../../images/bubblebg-auth.jpg"
@@ -84,6 +85,17 @@ const ResumeLearnMore = () => {
 
     const handleQClick = index => {
         setActiveIndex(index === activeIndex ? null : index);
+    }
+
+    const stepByStep = (type) => {
+        switch (type) {
+            case "opt":
+                window.open("https://app.tango.us/app/workflow/Guide-to-Using-Bubble-AI-for-Professional-Resume-and-Job-Application-Services-123f1d4ef09b4c2cbab9e573c27d5d0b", "_blank")
+                break;
+        
+            default:
+                break;
+        }
     }
 
     return (
@@ -311,46 +323,9 @@ const ResumeLearnMore = () => {
                     )}
                 </Grid>
 
-                {/* <Grid container sx={{lineHeight: '1.4'}}>
-                    <Grid item xs={12} md={6}>
-                        <div style={{width: '100%', height: '110%', marginTop: screenWidth < 900 && "50px"}}>
-                            <Blob
-                                bgImage={downloadImg}
-                                width="100%"
-                                height="100%"
-                                // desc="Watch Video"
-                            />
-                        </div>
-                    </Grid>
-                    <Grid item xs={12} md={6} p={3}>
-                        <h3>Download</h3>
-                        <p>On the download page you can:</p>
-                        <div className={css.Points}>
-                            <Grid container mb={1}>
-                                <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Select from Choice Templates.</Grid>
-                            </Grid>
-                            <Grid container mb={1}>
-                                <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Get your resume in PDF.</Grid>
-                            </Grid>
-                            <Grid container mb={1}>
-                                <Grid item xs={2}><TfiHandPointRight className={css.Pointers} /></Grid>
-                                <Grid item xs={8}>Premium subscribers get access to SAVE & REACCESS all resumes.</Grid>
-                            </Grid>
-                        </div>
-                        <div style={{width: '300px', marginTop: '2rem'}}>
-                            <ButtonSubmitGreen 
-                                type="button"
-                                onClick={handleTryFree}
-                            >
-                                START NOW &nbsp;&nbsp;&nbsp;<FaLongArrowAltRight />
-                            </ButtonSubmitGreen>
-                        </div>
-                    </Grid>
-                </Grid>
 
-                <Grid container sx={{lineHeight: '1.4'}}>
+
+                {/* <Grid container sx={{lineHeight: '1.4'}}>
                     {screenWidth < 900 && (
                         <Grid item xs={12} md={6} pt={5}>
                             <div style={{width: '100%', height: '100%', marginBottom: ""}}>
@@ -443,6 +418,24 @@ const ResumeLearnMore = () => {
                 </Grid> */}
 
             </section>  
+
+            <section className={css.Process}>
+                <h3 style={{textAlign: "center"}}>Follow Step-by-step Guides</h3>
+                <Grid container>
+
+                    <Grid item xs={12} lg={4} md={2} px={3} mt={2}>
+                    </Grid>
+                
+                    <Grid item xs={12} lg={4} md={8} px={3} mt={2}>
+                        <ButtonTransparent onClick={() => stepByStep("opt")}>
+                            Professional Resume Optimization and Job Connect Guide &nbsp;&nbsp;&nbsp;<TfiNewWindow />
+                        </ButtonTransparent>
+                    </Grid>
+
+                    <Grid item xs={12} lg={4} md={2} px={3} mt={2}>
+                    </Grid>
+                </Grid>
+            </section>
 
             <section className={css.TopCompanies}>
                 <h2>Users' Feedback Say More Than We Can!</h2>
