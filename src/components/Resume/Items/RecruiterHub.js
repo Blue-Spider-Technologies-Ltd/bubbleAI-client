@@ -1,5 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Grid } from "@mui/material";
+import { ButtonCard } from "../../UI/Buttons/Buttons";
+import { 
+    setHideCards,
+    setError,  
+    setSuccessMini
+  } from "../../../redux/states";
+import { errorAnimation, successMiniAnimation } from "../../../utils/client-functions";
+import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import coolImg from '../../../images/cool.png'
@@ -8,53 +18,59 @@ const screenWidth = window.innerWidth
 
 
 const RecruiterHub = () => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     // const confirm = useConfirm();
-    // const { error, successMini,  } = useSelector((state) => state.stateData);
+    const { user, isResumeSubbed, error, successMini, hideCards, resumeSubDuration } = useSelector((state) => state.stateData);
     const navigate = useNavigate();
+    const [authMenuOpen, setAuthMenuOpen] = useState(false);
     
-
-
-
     
-    // const errorSetter = (string) => {
-    //     dispatch(setError(string))
-    //     errorAnimation()
-    // }
-
-    // const successSetter = (string) => {
-    //     dispatch(setSuccessMini(string))
-    //     successMiniAnimation()
-    // }
-
-    const goBackPrevPage = () => {
-        navigate('/user/dashboard/resume');
+    const errorSetter = (string) => {
+        dispatch(setError(string))
+        errorAnimation()
     }
 
+    const successSetter = (string) => {
+        dispatch(setSuccessMini(string))
+        successMiniAnimation()
+    }
 
+    const selectBuildType = (str) => {
+        dispatch(setHideCards(true))
+        // setCreatorDisplay(str)
+    }
 
+    const toggleResumes = () => {
+        setAuthMenuOpen(!authMenuOpen);
+    };
 
 
   return (
     <div className="auth-container">
+        <AuthSideMenu
+            opened={authMenuOpen}
+            hidden={!authMenuOpen}
+            resumeSubDuration={resumeSubDuration}
+            isResumeSubbed={isResumeSubbed}
+            error={error}
+            successMini={successMini}
+            arrayDetails={[]}
+            firstName={user.firstName}
+        />
         {/* For SIDE MENU */}
         <div style={{ width: "100%", padding: "0" }}>
             <div className="auth-bg-blob"></div>
-        </div>
-        <div className='go-back' style={{position: "absolute", top: "1.3rem", left: "1rem"}}>
-            <div onClick={goBackPrevPage} style={{display: 'flex', alignItems: 'center', cursor: 'pointer', width: '80px'}}>
-                <ArrowCircleLeftIcon fontSize='large' />
-            </div>
         </div>
 
         <div className="auth-container-inner">
             {/* for TOP MENU */}
             <AuthHeader
-                noAuthMenu={true}
-                headerText="Post Jobs"
+                authMenuOpen={authMenuOpen}
+                onClick={toggleResumes}
+                headerText="Ai Recruiter"
             />
-            {/* <div className="error">{error}</div>
-            <div className="success-mini">{successMini}</div> */}
+            <div className="error">{error}</div>
+            <div className="success-mini">{successMini}</div>
 
             {/* <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
                 <AuthInputs 
@@ -68,13 +84,30 @@ const RecruiterHub = () => {
                 />
             </div>  */}
 
-            
-            <div style={styles.noResumes}>
-                <h4>Coming Soon</h4>
-                <div>
-                    <img src={coolImg} width='100px' alt="Welcome" />
-                </div>
+            <div onClick={() => setAuthMenuOpen(false)}>
+                {!hideCards ? (
+                    <div className="BodyWrapper">
+                        <Grid container sx={{padding: '50px 30px'}}>
+                            <Grid item md={6} xs={12}>
+                                <ButtonCard icon="post-job" title="Post a Vacancy" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Have an old resume? This option will help you optimize it to ATS and industry standards in seconds, with the right keywords and metrics." />
+                            </Grid>
+                        
+                            <Grid item md={6} xs={12}>
+                                <ButtonCard icon="view-recruit" title="View Ai Recruits" width={'350px'} onClick={() => selectBuildType("")} description="Bubble Ai recruits not just based on keywords but also uses industry, experience and background to rank the best applicants that fits your recruitment need in your chosen location(s)." />
+                            </Grid>
+                        </Grid>
+                    </div>
+                ) : (
+                    <div style={styles.noResumes}>
+                        <h4>Coming Soon</h4>
+                        <div>
+                            <img src={coolImg} width='100px' alt="Welcome" />
+                        </div>
+                    </div>
+                )}
             </div>
+
+ 
 
 
         </div>

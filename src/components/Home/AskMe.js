@@ -15,8 +15,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMessage, deleteLastMessage, setError, setSuccessMini, setMessages, setAllMessagesArray, setFetching } from "../../redux/states";
 import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots, Oval } from 'react-loader-spinner'
-import  ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { BiMenuAltLeft } from "react-icons/bi";
+import { BiMenuAltRight } from "react-icons/bi";
 import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { errorAnimation, successMiniAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
@@ -511,12 +511,12 @@ const AskMe = () => {
         <div className="success-mini">{successMini}</div>
 
         <div className="chat-header">
-          <div className="chat-menu-icon">
+          <div className="chat-menu-icon" title="Menu">
             
               {!authMenuOpen ? 
-                <ArrowCircleRightIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} onClick={handleMenuToggle}/>
+                <BiMenuAltLeft size='2.1em' onClick={handleMenuToggle} />
               :
-                <ArrowCircleLeftIcon fontSize='large' sx={{transform: "rotate(45deg)", color: "white"}} onClick={handleMenuToggle} />}
+                <BiMenuAltRight size='2.1em' onClick={handleMenuToggle} />}
           </div>
           <div 
             title="Start New Session"

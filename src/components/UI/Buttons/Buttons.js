@@ -12,7 +12,9 @@ import {
     AdminPanelSettings,
     ReceiptLong,
     AutoFixHigh,
-    UploadFile
+    UploadFile,
+    PostAdd,
+    Grading
 } from '@mui/icons-material';
 
 export const ButtonOutlineGreen = ({ link, target, children }) => {
@@ -179,7 +181,13 @@ export const ButtonCard = props => {
                 break; 
             case 'new-resume':
                 iconImg = <AutoFixHigh sx={{color: "#F8E231", fontSize: '4rem'}} />
-                break;          
+                break;  
+            case 'post-job':
+                iconImg = <PostAdd sx={{color: "#F8E231", fontSize: '4rem'}} />
+                break;    
+            case 'view-recruit':
+                iconImg = <Grading sx={{color: "#F8E231", fontSize: '4rem'}} />
+                break;        
             default:
                 iconImg = <Groups3Icon sx={{fontSize: '4rem'}} />
                 break;

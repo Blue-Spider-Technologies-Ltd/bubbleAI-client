@@ -313,7 +313,7 @@ const ResumeLearnMore = () => {
                         <Grid item xs={12} md={6}>
                             <div style={{width: '100%', height: '110%'}}>
                                 <Blob
-                                    bgImage={previewImg}
+                                    bgImage={jobImg}
                                     width="100%"
                                     height="100%"
                                     // desc="Watch Video"
