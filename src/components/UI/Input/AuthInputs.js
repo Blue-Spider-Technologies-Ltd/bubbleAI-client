@@ -89,7 +89,7 @@ const AuthInput = props => {
     const textareaStyles = {
         width: '100%',
         margin: '0 auto',
-        borderRadius: screenWidth > 900 ? "50px" : '20px',
+        borderRadius: '20px',
         fontSize: "16px",
         backgroundColor: "#F5F5F5",
         padding: ".35rem",

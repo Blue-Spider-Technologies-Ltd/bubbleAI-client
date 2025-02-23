@@ -17,6 +17,7 @@ import { IoMdRemoveCircle } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import { VscChecklist } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import { errorAnimation, successMiniAnimation, checkAuthenticatedUser, getOrdinalDate } from "../../../utils/client-functions";
@@ -39,6 +40,7 @@ const ResumeHub = () => {
     const [resumeForSearch, setResumeForSearch] = useState("");
     const [jobDesc, setJobDesc] = useState("");
     const [resumeIndex, setResumeIndex] = useState(0)
+    const [actionString, setActionString] = useState('')
     
 
     useEffect(() => {
@@ -118,26 +120,18 @@ const ResumeHub = () => {
     }
 
     const coverLetterStart = (index) => {
-        setJobDesc("")
         setResumeIndex(index)
+        setActionString("CL")
+        setModalOpen(true)
+    }
+
+    const jobIntStart= async (index) => {
+        setResumeIndex(index)
+        setActionString("Int")
         setModalOpen(true)
     }
 
     const handleGenerateCL =  async () => {
-        if(!isResumeSubbed) {
-            errorSetter("NOT SUBSCRIBED, Pricing will open in a NEW TAB...")
-            if(!pricingOpened) {
-                setPricingOpened(true)
-                setTimeout(() => {
-                    window.open("/pricing", "_blank")
-                }, 5000);
-            }
-            return
-        }
-        if(jobDesc.length < 20) {
-            errorSetter("Job Description TOO SHORT")
-            return
-        }
         const date = getOrdinalDate()
         const myResume = userResumesAll[resumeIndex]
         
@@ -147,7 +141,7 @@ const ResumeHub = () => {
         
         const prompt = `You are the best and most professional cover letter writer in the world, 
             with 100% ATS and employment success rate from your cover letter writings. Write a stunning professional 
-            cover letter tailored to the job description: ${jobDesc}; and my resume resume in object form: ${JSON.stringify(myResume)}, 
+            cover letter tailored to the job description: ${jobDesc} and my resume resume in object form: ${JSON.stringify(myResume)}, 
             pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
             the basicInfo object of the resume; pick out the candidate's work history and all other elements 
             needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
@@ -175,6 +169,60 @@ const ResumeHub = () => {
         } catch (error) {
             dispatch(setFetching(false))
             errorSetter("Failed to generate Cover Letter, Try again")
+        }
+    }
+
+    const handleGenerateInt =  async () => {
+        const myResume = userResumesAll[resumeIndex]
+
+        const interviewPrompt = `I am preparing for an upcoming job interview for the Job description provided (${jobDesc}), 
+        and my resume used for the application is given here in string object form: (${JSON.stringify(myResume)}). 
+        Please provide a detailed and comprehensive guide that includes the following:
+        Common Interview Questions: List 15 typical questions I might be asked in order of descending importance, along with their corresponding correct answer, exactly as I should nswer them, using all the details I have provided and those you can find on the given company.
+        Company Research: Do a research on the company provided above, its culture, values, and recent news or achievements and feed me with all the info you can find on them.
+        Role-Specific Preparation: Important skills and qualifications related to the job, and how I can demonstrate my expertise in these areas during the interview.
+        Behavioral Questions: Examples of behavioral questions and the STAR (Situation, Task, Action, Result) method to structure my responses.
+        Questions to Ask the Interviewer: Thoughtful questions I can ask at the end of the interview to show my interest and engagement.
+        Body Language and Presentation: Tips on how to present myself confidently and effectively during the interview.
+        Follow-Up Strategy: Guidance on how and when to follow up after the interview.
+        Thank you for your help in preparing me for this important opportunity!`
+
+        localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", interviewPrompt)
+        successSetter("Your Interactive Interview Mock opens in 3 seconds")
+        //Navigate in a Cask me page
+        setTimeout(() => {
+            window.open("/chat", "_blank");
+        }, 3000);
+        
+    }
+
+
+    const generate = (actionString) => { 
+        if(!isResumeSubbed) {
+            errorSetter("NOT SUBSCRIBED, Pricing will open in a NEW TAB...")
+            if(!pricingOpened) {
+                setPricingOpened(true)
+                setTimeout(() => {
+                    window.open("/pricing", "_blank")
+                }, 5000);
+            }
+            return
+        }
+        if(jobDesc.length < 20) {
+            errorSetter("Job Description TOO SHORT")
+            return
+        }
+
+        switch (actionString) {
+            case "CL":
+                handleGenerateCL()
+                break;
+            case "Int":
+                handleGenerateInt()
+                break;
+            default:
+                errorSetter("Something broke, reload and try again")
+                break;
         }
     }
 
@@ -232,12 +280,12 @@ const ResumeHub = () => {
         const newSearchString = e.target.value;
         setSearchString(newSearchString);
     
-        if (newSearchString.length < 1) {
+        if (newSearchString.length === 0) {
             setResumeForSearch(userResumesAll);
         } else  {
             // Filter the resumes based on the search string
-            const filteredData = resumeForSearch.filter(item =>
-              item.storageDetails.name.includes(newSearchString)
+            const filteredData = userResumesAll.filter(item =>
+                item.storageDetails.name.toLowerCase().includes(newSearchString.toLowerCase())
             );
             setResumeForSearch(filteredData);
         }
@@ -300,52 +348,11 @@ const ResumeHub = () => {
                             {resumeForSearch.map((item, index) => (
                                 <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
                                     <Card sx={styles.card}>
-                                        {/* <CardMedia
-                                            component="img"
-                                            sx={styles.img}
-                                            image={item?.storageDetails?.imgUrl ? item?.storageDetails?.imgUrl : img}
-                                            alt="Avatar"
-                                        /> */}
-                                        <Box sx={styles.leftCont}>
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid #3E8F93' 
-                                                width={'85%'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => handleReDownload(index)}
-                                            >
-                                                <FaEye style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; View 
-                                            </ButtonThin>
-
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid #987070' 
-                                                width={'85%'} 
-                                                height='25px' 
-                                                color='black'
-                                                onClick={() => coverLetterStart(index)}
-                                            >
-                                                <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
-                                            </ButtonThin>
-                                           
-
-                                            <ButtonThin
-                                                fontSize='.6rem' 
-                                                border='2px solid rgba(158, 9, 9, 0.733)' 
-                                                width={'85%'} 
-                                                height='25px' 
-                                                color='rgba(158, 9, 9, 0.733)'
-                                                onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)}
-                                            >
-                                                <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
-                                            </ButtonThin>
-                                        </Box>
                                         
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>                                            
                                             <CardContent sx={{ flex: '1 0 auto' }}>
                                                 <Typography component="div" variant="h5">
-                                                    {item?.storageDetails?.name ? item.storageDetails.name.length > 18 ? `${item.storageDetails.name.slice(0, 18)}...` : item.storageDetails.name : 'Unnamed'}
+                                                    {item?.storageDetails?.name ? item.storageDetails.name.length > 40 ? `${item.storageDetails.name.slice(0, 40)}...` : item.storageDetails.name : 'Unnamed'}
                                                 </Typography>
                                                 {item?.storageDetails?.resumeLink && (
                                                     <div style={styles.link} title="Copy Resume Link" onClick={handleCopy}>
@@ -368,6 +375,65 @@ const ResumeHub = () => {
 
                                             </CardContent>
 
+
+                                            <div style={{ 
+                                                display: 'flex', 
+                                                justifyContent: 'space-around', 
+                                                paddingBottom: '1rem', 
+                                                flexWrap: 'wrap', 
+                                                gap: '10px', // Adjust the gap between items as needed
+                                                width: '100%',
+                                                margin: '0 auto'
+                                            }}>
+                                                <div style={{ flex: '1 1 auto' }}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid #3E8F93' 
+                                                        width={'100%'} // Use 100% to fill the parent div
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => handleReDownload(index)}
+                                                    >
+                                                        <FaEye style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; View Resume
+                                                    </ButtonThin>
+                                                </div>
+                                                <div style={{ flex: '1 1 auto' }}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid #987070' 
+                                                        width={'100%'} // Use 100% to fill the parent div
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => coverLetterStart(index)}
+                                                    >
+                                                        <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
+                                                    </ButtonThin>
+                                                </div>
+                                                <div style={{ flex: '1 1 auto' }}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid black' 
+                                                        width={'100%'} 
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => jobIntStart(index)}
+                                                    >
+                                                        <VscChecklist style={{color: "black", fontSize: ".9rem"}} />&nbsp;&nbsp; Interview Mock
+                                                    </ButtonThin>
+                                                </div>
+                                                <div style={{ flex: '1 1 auto' }}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid rgba(158, 9, 9, 0.733)' 
+                                                        width={'100%'} 
+                                                        height='25px' 
+                                                        color='rgba(158, 9, 9, 0.733)'
+                                                        onClick={() => handleDeleteResume(index, item?.storageDetails?.imgUrl)}
+                                                    >
+                                                        <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete Resume
+                                                    </ButtonThin>
+                                                </div>
+                                            </div>
                                         </Box>
 
                                     </Card>
@@ -387,8 +453,11 @@ const ResumeHub = () => {
                             <FaLongArrowAltLeft />
                         </div>
                         <h4>Paste job description into the field below.</h4>
-                        <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">This is an important step to increase your cover letter score.</Alert>
 
+                        <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                            <Alert sx={{padding: '0 5px', fontSize: '.7rem' }} severity="warning">This improves your score.</Alert>
+                        </div>
+                        
                         <div style={styles.descCont}>
                             <AuthInputs
                               id={jobDesc}
@@ -404,7 +473,7 @@ const ResumeHub = () => {
                         </div>
 
                         <div style={{width: '100%'}}>
-                            <ButtonSubmitGreen onClick={handleGenerateCL} >Optimize</ButtonSubmitGreen>
+                            <ButtonSubmitGreen onClick={() => generate(actionString)} >Generate</ButtonSubmitGreen>
                         </div>
 
                     </div>
@@ -426,8 +495,8 @@ const styles = {
     card: { 
         backgroundColor: '#c0d1d457',
         borderRadius: '20px',
-        color: 'black',
-        display: 'flex', 
+        color: 'black', 
+        padding: '10px',
         width: screenWidth < 900 ? '100%' : '90%',
     },
     buildDate: {
@@ -455,11 +524,9 @@ const styles = {
     leftCont: { 
         display: 'flex', 
         flexDirection: 'column', 
-        alignItems: 'center',
         justifyContent: 'space-around', 
-        borderRight: '1px solid #c0d1d457', 
-        width: '40%', 
-        margin: '15px auto',
+        flexWrap: 'wrap',
+        width: '100%', 
     },
     descCont: {
         width: '100%',

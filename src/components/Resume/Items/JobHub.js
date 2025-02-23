@@ -598,7 +598,7 @@ const JobHub = () => {
                                 
                                 <ol style={styles.list}>
                                     <li>Choose a different location when creating/optimizing resume: your perfect fit job might not be in the previous city or country.</li>
-                                    <li>Do NOT combine several job positions for one resume e.g Business Developer/Sales Executive.</li>
+                                    <li>Do NOT combine several job positions (using OR, AND, /) for one resume e.g Business Developer/Sales Executive.</li>
                                     <li>Ask Bubble Ai similar names recruiters might call your current job position: <a href="/chat" target="_blank" style={styles.newTabLnk}>Ask Here <TfiNewWindow /></a></li>
                                 </ol>
                             </div>

@@ -89,7 +89,7 @@ const RecruiterHub = () => {
                     <div className="BodyWrapper">
                         <Grid container sx={{padding: '50px 30px'}}>
                             <Grid item md={6} xs={12}>
-                                <ButtonCard icon="post-job" title="Post a Vacancy" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Have an old resume? This option will help you optimize it to ATS and industry standards in seconds, with the right keywords and metrics." />
+                                <ButtonCard icon="post-job" title="Post a Vacancy" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Post a vacancy to have it seen only by the most fit candidates analytically hand-picked by Bubble Ai. These features are still in development." />
                             </Grid>
                         
                             <Grid item md={6} xs={12}>

@@ -167,15 +167,13 @@ const DownloadCoverLetter = () => {
                                 <Alert sx={{padding: '0 5px', width: 'auto', margin: '0 auto', fontSize: '.7rem'}} severity="warning">Reload this page if your cover letter does not display in 10 seconds.</Alert>
                             </div>
                             
-
-                            
-                                    <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
-                                        <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 700 ? '#323639' : 'white', zIndex: 20}}>
-                                        </div>
-                                        <PDFViewer style={styles.viewerContainer} >
-                                            {selectTemplate()}
-                                        </PDFViewer>
-                                    </div>
+                            <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>
+                                <div style={{ height: '50px', width: '27%', position: 'absolute', right: '2px', top: '2px', backgroundColor: screenWidth > 700 ? '#323639' : 'white', zIndex: 20}}>
+                                </div>
+                                <PDFViewer style={styles.viewerContainer} >
+                                    {selectTemplate()}
+                                </PDFViewer>
+                            </div>
                             
                             <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                 <div style={{ width: "150px" }}>
