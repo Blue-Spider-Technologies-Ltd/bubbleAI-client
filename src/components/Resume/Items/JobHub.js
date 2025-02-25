@@ -653,7 +653,19 @@ const JobHub = () => {
                                             </div>
 
                                             <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1, flexWrap: 'wrap' }}>
-
+                                                <div style={{marginBottom: "10px"}}>
+                                                    <ButtonThin
+                                                        fontSize='.6rem' 
+                                                        border='2px solid #F8E231' 
+                                                        width={'110px'} 
+                                                        height='25px' 
+                                                        color='black'
+                                                        onClick={() => getJob(item?.url, item?.external_url, item.applicants_count)}
+                                                    >
+                                                        <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
+                                                    </ButtonThin>
+                                                </div>
+                                                
                                                 <div style={{marginBottom: "10px"}}>
                                                     <ButtonThin
                                                         fontSize='.6rem' 
@@ -677,19 +689,6 @@ const JobHub = () => {
                                                         onClick={() => chooseActStr("Cover Letter", item)}
                                                     >
                                                         <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
-                                                    </ButtonThin>
-                                                </div>
-
-                                                <div style={{marginBottom: "10px"}}>
-                                                    <ButtonThin
-                                                        fontSize='.6rem' 
-                                                        border='2px solid #F8E231' 
-                                                        width={'110px'} 
-                                                        height='25px' 
-                                                        color='black'
-                                                        onClick={() => getJob(item?.url, item?.external_url, item.applicants_count)}
-                                                    >
-                                                        <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
                                                     </ButtonThin>
                                                 </div>
 

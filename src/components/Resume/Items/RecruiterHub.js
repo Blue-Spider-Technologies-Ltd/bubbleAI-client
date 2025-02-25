@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useRef, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Grid } from "@mui/material";
-import { ButtonCard } from "../../UI/Buttons/Buttons";
-import { 
-    setHideCards,
-    setError,  
-    setSuccessMini
-  } from "../../../redux/states";
+import Alert from '@mui/material/Alert';
+import { ButtonCard, ButtonSubmitGreen } from "../../UI/Buttons/Buttons";
+import { PlainModalOverlay } from "../../UI/Modal/Modal";
+import { setHideCards, setError, setSuccessMini } from "../../../redux/states";
 import { errorAnimation, successMiniAnimation } from "../../../utils/client-functions";
-import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
-import AuthHeader from "../../UI/AuthHeader/AuthHeader";
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import coolImg from '../../../images/cool.png'
-const screenWidth = window.innerWidth
+import { FaLongArrowAltLeft } from "react-icons/fa";
+import { GrStatusGood } from "react-icons/gr";
+import { TbFileUpload } from "react-icons/tb";
+// Lazy load components
+const AuthSideMenu = lazy(() => import("../../UI/AuthSideMenu/AuthSideMenu"));
+const AuthHeader = lazy(() => import("../../UI/AuthHeader/AuthHeader"));
+const AuthInput = lazy(() => import("../../UI/Input/AuthInputs"));
+const screenWidth = window.innerWidth;
 
 
 
@@ -22,7 +23,13 @@ const RecruiterHub = () => {
     // const confirm = useConfirm();
     const { user, isResumeSubbed, error, successMini, hideCards, resumeSubDuration } = useSelector((state) => state.stateData);
     const navigate = useNavigate();
+    const dragDropRef = useRef();
+    const dragDropRefTwo = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false);
+    const [fileOne, setFileOne] = useState(null);
+      const [fileOneError, setFileOneError] = useState(false);
+    const [fileTwo, setFileTwo] = useState(null);
+    const [fileTwoError, setFileTwoError] = useState(false);
     
     
     const errorSetter = (string) => {
@@ -44,19 +51,106 @@ const RecruiterHub = () => {
         setAuthMenuOpen(!authMenuOpen);
     };
 
+     ///////DRAG AND DROP & FILE FUNCTIONS
+    const handleUploadFileOne = (e) => {
+        setFileOneError(false);
+        const MAX_FILE_SIZE = 2 * 1024 * 1024;
+        const allowedTypes = ['.jpg', '.png', '.pdf', '.jpeg'];
+
+        let selectedFile;
+        if (e.type === "drop") {
+        selectedFile = e.dataTransfer.files[0];
+        } else {
+        selectedFile = e.target.files[0];
+        }
+
+        if (!selectedFile) {
+        errorSetter("No file detected");
+        setFileOneError(true);
+        return;
+        }
+
+        const fileExtension = selectedFile.name.toLowerCase().split('.').pop();
+        if (!allowedTypes.includes(`.${fileExtension}`)) {
+        errorSetter("Please drop only JPG, PNG, or PDF files.");
+        setFileOneError(true);
+        return;
+        }
+
+        if (selectedFile.size > MAX_FILE_SIZE) {
+        errorSetter(`"${selectedFile.name}" exceeds the maximum file size of ${MAX_FILE_SIZE / (1024 * 1024)} MB.`);
+        setFileOneError(true);
+        return;
+        }
+    
+        setFileOne(selectedFile);
+    };
+  
+    const handleDrop = (e) => {
+        e.preventDefault();
+        handleUploadFileOne(e)
+    };  
+
+    ///////DRAG AND DROP & FILE FUNCTIONS
+    const handleUploadFileTwo = (e) => {
+        setFileTwoError(false);
+        const MAX_FILE_SIZE = 2 * 1024 * 1024;
+        const allowedTypes = ['.jpg', '.png', '.pdf', '.jpeg'];
+
+        let selectedFile;
+        if (e.type === "drop") {
+            selectedFile = e.dataTransfer.files[0];
+        } else {
+            selectedFile = e.target.files[0];
+        }
+
+        if (!selectedFile) {
+            errorSetter("No file detected");
+            setFileTwoError(true);
+            return;
+        }
+
+        const fileExtension = selectedFile.name.toLowerCase().split('.').pop();
+        if (!allowedTypes.includes(`.${fileExtension}`)) {
+            errorSetter("Please drop only JPG, PNG, or PDF files.");
+            setFileTwoError(true);
+            return;
+        }
+
+        if (selectedFile.size > MAX_FILE_SIZE) {
+            errorSetter(`"${selectedFile.name}" exceeds the maximum file size of ${MAX_FILE_SIZE / (1024 * 1024)} MB.`);
+            setFileTwoError(true);
+            return;
+        }
+        
+        setFileTwo(selectedFile);
+    };
+  
+    const handleDropTwo = (e) => {
+        e.preventDefault();
+        handleUploadFileTwo(e)
+    };
+
+    const goBack = () => {
+        dispatch(setHideCards(false))
+        setFileOne(null)
+        setFileTwo(null)
+    }
 
   return (
     <div className="auth-container">
-        <AuthSideMenu
-            opened={authMenuOpen}
-            hidden={!authMenuOpen}
-            resumeSubDuration={resumeSubDuration}
-            isResumeSubbed={isResumeSubbed}
-            error={error}
-            successMini={successMini}
-            arrayDetails={[]}
-            firstName={user.firstName}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+            <AuthSideMenu
+                opened={authMenuOpen}
+                hidden={!authMenuOpen}
+                resumeSubDuration={resumeSubDuration}
+                isResumeSubbed={isResumeSubbed}
+                error={error}
+                successMini={successMini}
+                arrayDetails={[]}
+                firstName={user.firstName}
+            />
+        </Suspense>
         {/* For SIDE MENU */}
         <div style={{ width: "100%", padding: "0" }}>
             <div className="auth-bg-blob"></div>
@@ -64,11 +158,13 @@ const RecruiterHub = () => {
 
         <div className="auth-container-inner">
             {/* for TOP MENU */}
-            <AuthHeader
-                authMenuOpen={authMenuOpen}
-                onClick={toggleResumes}
-                headerText="Ai Recruiter"
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+                <AuthHeader
+                    authMenuOpen={authMenuOpen}
+                    onClick={toggleResumes}
+                    headerText="Ai Recruiter"
+                />
+            </Suspense>
             <div className="error">{error}</div>
             <div className="success-mini">{successMini}</div>
 
@@ -98,12 +194,99 @@ const RecruiterHub = () => {
                         </Grid>
                     </div>
                 ) : (
-                    <div style={styles.noResumes}>
-                        <h4>Coming Soon</h4>
-                        <div>
-                            <img src={coolImg} width='100px' alt="Welcome" />
+                    <PlainModalOverlay>
+                        <div style={styles.modalInner}>
+                            <div className='prev-page' onClick={goBack}>
+                                <FaLongArrowAltLeft />
+                            </div>
+                            <h4>Complete KYC to start recruiting.</h4>
+                            <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The information provided will be stored securely until verification is completed. It will not be revealed to third-party unless trusted verifiers.</Alert>
+
+                            <Grid container>
+                                <AuthInput
+                                    id=""
+                                    value=""
+                                    label="Other Names"
+                                    inputType="text"
+                                    inputGridSm={12}
+                                    inputGrid={6}
+                                    required={true}
+                                    mt={2}
+                                    // onChange={handleInputChange("firstName")}
+                                />
+                                <AuthInput
+                                    id=""
+                                    value=""
+                                    label="Last Name"
+                                    inputType="text"
+                                    inputGridSm={12}
+                                    inputGrid={6}
+                                    required={true}
+                                    mt={2}
+                                    // onChange={handleInputChange("firstName")}
+                                />
+
+                                <AuthInput
+                                    id=""
+                                    value=""
+                                    label="Mobile"
+                                    inputType="mobile"
+                                    inputGridSm={12}
+                                    mt={2}
+                                    required={true}
+                                // onChange={handleInputChange("mobile")}
+                                />
+                            </Grid>
+                            <div 
+                                style={styles.resumesCont}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={handleDrop}
+                                onClick={() => dragDropRef.current.click()}
+                            >
+                                <div>
+                                    {fileOne ? 
+                                        <div style={styles.activeResume}>{fileOne?.name} <GrStatusGood style={{color: "#3E8F93", fontSize: ".9rem"}} /> </div> 
+                                        : 
+                                        <div style={styles.eachResume}>Upload Gov't ID * <TbFileUpload style={{color: "rgba(0, 0, 0, 0.634)", fontSize: "1rem"}} /></div> 
+                                    }
+                                    <input
+                                        type="file"
+                                        accept=".jpg,.jpeg,.png,.pdf"
+                                        onChange={handleUploadFileOne}
+                                        hidden
+                                        ref={dragDropRef}
+                                    />
+                                </div>
+                            </div>
+
+                            <div 
+                                style={styles.resumesCont}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={handleDropTwo}
+                                onClick={() => dragDropRefTwo.current.click()}
+                            >
+                                <div>
+                                    {fileTwo ? 
+                                        <div style={styles.activeResume}>{fileTwo?.name} <GrStatusGood style={{color: "#3E8F93", fontSize: ".9rem"}} /> </div> 
+                                        : 
+                                        <div style={styles.eachResume}>Upload Company Certificate * <TbFileUpload style={{color: "rgba(0, 0, 0, 0.634)", fontSize: "1rem"}} /></div> 
+                                    }
+                                    <input
+                                        type="file"
+                                        accept=".jpg,.jpeg,.png,.pdf"
+                                        onChange={handleUploadFileTwo}
+                                        hidden
+                                        ref={dragDropRefTwo}
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={{width: '100%'}}>
+                                <ButtonSubmitGreen >Submit KYC</ButtonSubmitGreen>
+                            </div>
+
                         </div>
-                    </div>
+                    </PlainModalOverlay>
                 )}
             </div>
 
@@ -173,4 +356,47 @@ const styles = {
         height: '80vh', 
         width: '100%'
     },
+    resumesCont: {
+        width: "100%",
+        height: '45px',
+        textAlign: "left",
+        backgroundColor: "#c0d1d457",
+        borderRadius: "20px",
+        margin: '15px auto',
+        wordBreak: "break-word",
+        lineHeight: "1",
+        padding: "5px",
+        boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
+    },
+    eachResume: {
+        display: 'flex',
+        height: '35px',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        color: 'rgba(0, 0, 0, 0.454)',
+        border: '2px dashed rgba(0, 0, 0, 0.454)',
+        padding: '10px',
+        borderRadius: '15px',
+        fontSize: '.65rem',
+        cursor: 'pointer',
+        transition: 'all 0.4s ease-out',
+        width: '100%',
+    },
+    activeResume: {
+        color: '#3E8F93',
+        height: '35px',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        border: '2px solid #3E8F93',
+        padding: '10px',
+        borderRadius: '15px',
+        fontSize: '.65rem',
+        fontWeight: '500',
+        cursor: 'pointer', 
+        transition: 'all 0.4s ease-in-out'
+    }
 }

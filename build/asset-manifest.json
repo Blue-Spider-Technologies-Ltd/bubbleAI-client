@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.a63a2531.css",
-    "main.js": "/static/js/main.5653160a.js",
-    "static/js/29.1dc24455.chunk.js": "/static/js/29.1dc24455.chunk.js",
-    "static/js/118.290d15af.chunk.js": "/static/js/118.290d15af.chunk.js",
-    "static/js/568.2ab9919e.chunk.js": "/static/js/568.2ab9919e.chunk.js",
+    "main.css": "/static/css/main.f953f54b.css",
+    "main.js": "/static/js/main.26ffaa00.js",
+    "static/js/766.89f1a914.chunk.js": "/static/js/766.89f1a914.chunk.js",
+    "static/js/255.dcf5b407.chunk.js": "/static/js/255.dcf5b407.chunk.js",
+    "static/js/685.d7d9b671.chunk.js": "/static/js/685.d7d9b671.chunk.js",
     "static/media/chat-land.gif": "/static/media/chat-land.3ed0618beca84091d782.gif",
     "static/media/chat-portrait.gif": "/static/media/chat-portrait.059a9f96976a2f7a85fb.gif",
     "static/media/contact-desk2.jpg": "/static/media/contact-desk2.3f8d1759f53e881527ba.jpg",
@@ -56,15 +56,10 @@
     "static/media/microsoft.png": "/static/media/microsoft.204345df7313cd2dc55b.png",
     "static/media/phnfish.png": "/static/media/phnfish.b9005581c421e881aa71.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
-    "index.html": "/index.html",
-    "main.a63a2531.css.map": "/static/css/main.a63a2531.css.map",
-    "main.5653160a.js.map": "/static/js/main.5653160a.js.map",
-    "29.1dc24455.chunk.js.map": "/static/js/29.1dc24455.chunk.js.map",
-    "118.290d15af.chunk.js.map": "/static/js/118.290d15af.chunk.js.map",
-    "568.2ab9919e.chunk.js.map": "/static/js/568.2ab9919e.chunk.js.map"
+    "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.a63a2531.css",
-    "static/js/main.5653160a.js"
+    "static/css/main.f953f54b.css",
+    "static/js/main.26ffaa00.js"
   ]
 }

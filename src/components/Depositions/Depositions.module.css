@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 300px;
+    height: 250px;
     width: 100%;
     margin: auto;
     border: 4px dashed var(--navColor2);
