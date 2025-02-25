@@ -1,20 +1,23 @@
-import React, { useState, useRef, lazy, Suspense } from "react";
+import React, { useState, useRef } from "react";
+import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
+import AuthHeader from "../../UI/AuthHeader/AuthHeader";
+import AuthInput from "../../UI/Input/AuthInputs";
+import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Grid } from "@mui/material";
-import Alert from '@mui/material/Alert';
 import { ButtonCard, ButtonSubmitGreen } from "../../UI/Buttons/Buttons";
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
-import { setHideCards, setError, setSuccessMini } from "../../../redux/states";
+import { 
+    setHideCards,
+    setError,  
+    setSuccessMini
+  } from "../../../redux/states";
 import { errorAnimation, successMiniAnimation } from "../../../utils/client-functions";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
 import { TbFileUpload } from "react-icons/tb";
-// Lazy load components
-const AuthSideMenu = lazy(() => import("../../UI/AuthSideMenu/AuthSideMenu"));
-const AuthHeader = lazy(() => import("../../UI/AuthHeader/AuthHeader"));
-const AuthInput = lazy(() => import("../../UI/Input/AuthInputs"));
-const screenWidth = window.innerWidth;
+const screenWidth = window.innerWidth
 
 
 
@@ -59,28 +62,28 @@ const RecruiterHub = () => {
 
         let selectedFile;
         if (e.type === "drop") {
-        selectedFile = e.dataTransfer.files[0];
+            selectedFile = e.dataTransfer.files[0];
         } else {
-        selectedFile = e.target.files[0];
+            selectedFile = e.target.files[0];
         }
 
         if (!selectedFile) {
-        errorSetter("No file detected");
-        setFileOneError(true);
-        return;
+            errorSetter("No file detected");
+            setFileOneError(true);
+            return;
         }
 
         const fileExtension = selectedFile.name.toLowerCase().split('.').pop();
         if (!allowedTypes.includes(`.${fileExtension}`)) {
-        errorSetter("Please drop only JPG, PNG, or PDF files.");
-        setFileOneError(true);
-        return;
+            errorSetter("Please drop only JPG, PNG, or PDF files.");
+            setFileOneError(true);
+            return;
         }
 
         if (selectedFile.size > MAX_FILE_SIZE) {
-        errorSetter(`"${selectedFile.name}" exceeds the maximum file size of ${MAX_FILE_SIZE / (1024 * 1024)} MB.`);
-        setFileOneError(true);
-        return;
+            errorSetter(`"${selectedFile.name}" exceeds the maximum file size of ${MAX_FILE_SIZE / (1024 * 1024)} MB.`);
+            setFileOneError(true);
+            return;
         }
     
         setFileOne(selectedFile);
@@ -139,18 +142,16 @@ const RecruiterHub = () => {
 
   return (
     <div className="auth-container">
-        <Suspense fallback={<div>Loading...</div>}>
-            <AuthSideMenu
-                opened={authMenuOpen}
-                hidden={!authMenuOpen}
-                resumeSubDuration={resumeSubDuration}
-                isResumeSubbed={isResumeSubbed}
-                error={error}
-                successMini={successMini}
-                arrayDetails={[]}
-                firstName={user.firstName}
-            />
-        </Suspense>
+        <AuthSideMenu
+            opened={authMenuOpen}
+            hidden={!authMenuOpen}
+            resumeSubDuration={resumeSubDuration}
+            isResumeSubbed={isResumeSubbed}
+            error={error}
+            successMini={successMini}
+            arrayDetails={[]}
+            firstName={user.firstName}
+        />
         {/* For SIDE MENU */}
         <div style={{ width: "100%", padding: "0" }}>
             <div className="auth-bg-blob"></div>
@@ -158,13 +159,11 @@ const RecruiterHub = () => {
 
         <div className="auth-container-inner">
             {/* for TOP MENU */}
-            <Suspense fallback={<div>Loading...</div>}>
-                <AuthHeader
-                    authMenuOpen={authMenuOpen}
-                    onClick={toggleResumes}
-                    headerText="Ai Recruiter"
-                />
-            </Suspense>
+            <AuthHeader
+                authMenuOpen={authMenuOpen}
+                onClick={toggleResumes}
+                headerText="Ai Recruiter"
+            />
             <div className="error">{error}</div>
             <div className="success-mini">{successMini}</div>
 
