@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
-import { PlainModalOverlay } from "../../UI/Modal/Modal";
+import { PlainModalOverlay, SuccessFailureModal } from "../../UI/Modal/Modal";
 import Feedback from "../../Dashboard/Feedback";
 import { ButtonSubmitGreen, ButtonThin, ButtonTransparent } from "../../UI/Buttons/Buttons";
 import { 
@@ -69,6 +69,9 @@ const JobHub = () => {
     const [linkedinUrl, setLinkedinUrl] = useState("");
     const [companyUrl, setCompanyUrl] = useState("");
     const [applicants, setApplicants] = useState("");
+    const [successfulAchievement, openSuccessfulAchievement] = useState(false)
+    
+
 
     const styles = {
         cardGrid: {
@@ -224,6 +227,12 @@ const JobHub = () => {
 
     useEffect(() => {
         const feedback = localStorage.getItem('feedbackTime');
+        const successfulTargetAchievement = localStorage.getItem("successfulTargetAchievement")
+
+        if(successfulTargetAchievement) {
+            openSuccessfulAchievement(true)
+            localStorage.removeItem("successfulTargetAchievement")
+        }
 
         if (feedback) {
             const timer = setTimeout(() => {
@@ -794,7 +803,12 @@ const JobHub = () => {
                         </div>
                     </PlainModalOverlay>
                 )}
-
+                {successfulAchievement && 
+                    <SuccessFailureModal 
+                        success={successfulAchievement} 
+                        fullName={user.firstName} 
+                    /> 
+                }
                 
             </div>
         )}

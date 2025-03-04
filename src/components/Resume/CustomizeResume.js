@@ -5,7 +5,13 @@ import depoCss from "../Depositions/Depositions.module.css"
 import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
-import { errorAnimation, checkAuthenticatedUser, checkEmptyStringsInObj, checkEmptyStringsInObjNoExempt, checkEmptyStrings } from "../../utils/client-functions";
+import { 
+  errorAnimation, 
+  checkAuthenticatedUser, 
+  checkEmptyStringsInObj, 
+  checkEmptyStringsInObjNoExempt, 
+  checkEmptyStrings 
+} from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { 
   setUser, 
@@ -19,7 +25,7 @@ import {
 } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonCard } from "../UI/Buttons/Buttons";
 import axios from "axios";
-import { Modal, PlainModalOverlay } from "../UI/Modal/Modal";
+import { Modal, PlainModalOverlay, SuccessFailureModal } from "../UI/Modal/Modal";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
@@ -65,9 +71,10 @@ const CustomizeResume = () => {
   const [fileError, setFileError] = useState(false);
   const [creatorDisplay, setCreatorDisplay] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
+  const [successfulAchievement, openSuccessfulAchievement] = useState(false)
 
   // const screenWidth = window.innerWidth
-
+  const successfulTargetAchievement = localStorage.getItem("successfulTargetAchievement")
 
   const isAuth = localStorage?.getItem("token");
 
@@ -175,6 +182,10 @@ const CustomizeResume = () => {
         dispatch(setIsResumeSubbed(resumeSubscriptions?.subscribed))
         dispatch(setResumeSubDuration(resumeSubscriptions?.duration))
         dispatch(setUser(response.data.user));
+        if(successfulTargetAchievement) {
+          openSuccessfulAchievement(true)
+          localStorage.removeItem("successfulTargetAchievement")
+        }
         if(description) {
           selectBuildType("Optimize");
           setAdditionalInfo(`The following is a full job description of the job being applied for, optimize the resume to fit the job description; 
@@ -2054,6 +2065,13 @@ const CustomizeResume = () => {
             </div>        
           </PlainModalOverlay>
       )}
+
+      {successfulAchievement && 
+          <SuccessFailureModal 
+              success={successfulAchievement} 
+              fullName={user.firstName} 
+          /> 
+      }
 
       <ChatwootWidget />
     </div>
