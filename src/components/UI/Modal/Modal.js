@@ -383,6 +383,9 @@ export const SuccessFailureModal = ({
     notApayment, 
     notApaymentTextPositive, 
     notApaymentTextNegative, 
+    successText,
+    bodyText,
+    buttonText,
     resume,
     shareableLink, 
     aiSuggestedJobs,
@@ -457,9 +460,9 @@ export const SuccessFailureModal = ({
                                 <h3>Hey, {fullName}</h3>
                             </div>
 
-                            <h1>{success ? "Your Payment was Successful!" : "Your Payment Failed"}</h1>
+                            <h1>{successText ? successText : "Your Payment Failed"}</h1>
 
-                            <p>{success ? "We will send a payment confirmation email to your registered email. Well done!" : "We will send more details on this failure to your registered email. Use button below to try again."}</p>
+                            <p>{bodyText ? bodyText : "We will send more details on this failure to your registered email. Use button below to try again."}</p>
                         </div>
                     ) : (
                         <div>
@@ -469,7 +472,7 @@ export const SuccessFailureModal = ({
                     
                     <div style={{marginTop: '20px'}}>
                         <ButtonOutlineGreenWithDiffStyle borderColor={!success && "#D00000"} onClick={handleSuccess}>
-                            {success ? "Done! Continue to Bubble" : "Try Again"}
+                            {buttonText ? buttonText : "Try Again"}
                         </ButtonOutlineGreenWithDiffStyle>
                     </div>
 

@@ -806,6 +806,9 @@ const JobHub = () => {
                 {successfulAchievement && 
                     <SuccessFailureModal 
                         success={successfulAchievement} 
+                        successText="Congratulations, You have been rewarded!"
+                        bodyText="Your Bubble Points have reached your target for your subscription and has earned you an extra week/month of access, Good luck!"
+                        buttonText="Claim Points Reward"
                         fullName={user.firstName} 
                     /> 
                 }

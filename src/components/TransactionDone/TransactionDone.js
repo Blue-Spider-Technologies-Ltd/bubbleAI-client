@@ -78,6 +78,9 @@ const TransactionDone = () => {
             {isCompleted ? 
                 <SuccessFailureModal 
                     success={isSuccessful} 
+                    successText="Your Payment was Successful!"
+                    bodyText="We will send a payment confirmation email to your registered email. Well done!"
+                    buttonText="Done! Continue to Bubble"
                     fullName={name ? name : transaction?.customer?.fullName} 
                 /> 
             : 

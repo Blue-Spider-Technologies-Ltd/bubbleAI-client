@@ -345,11 +345,10 @@ const DownloadResume = () => {
                 localStorage?.removeItem(
                     "5787378Tgigi879889%%%%7]][][]]]=-9-0d90900io90799CVBcvVVHGGYUYFUYIOUIUTY0I9T]---000789XZJHVB[[[27627787tdtu&3$*))(990-__)((@@"
                 );
-                // const data = response?.data?.shareableLink
-                // const data2 = response?.data?.aiSuggestedJobs
+
+                const successfulTargetAchievement = response?.data?.successfulTargetAchievement
+                localStorage?.setItem("successfulTargetAchievement", successfulTargetAchievement)
     
-                // setShareableLink(data)
-                // setAiSuggestedJobs(data2)
                 dispatch(setFetching(false));
                 
                 if(!hasDroppedFeedback) {

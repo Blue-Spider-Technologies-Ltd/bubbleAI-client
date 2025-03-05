@@ -30,6 +30,9 @@ import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import AuthHeader from "../UI/AuthHeader/AuthHeader";
 import { useConfirm } from "material-ui-confirm";
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { IoSparklesSharp } from "react-icons/io5";
@@ -72,8 +75,9 @@ const CustomizeResume = () => {
   const [creatorDisplay, setCreatorDisplay] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
   const [successfulAchievement, openSuccessfulAchievement] = useState(false)
+  const [bubblePoints, setBubblePoints] = useState(0)
 
-  // const screenWidth = window.innerWidth
+  const screenWidth = window.innerWidth
   const successfulTargetAchievement = localStorage.getItem("successfulTargetAchievement")
 
   const isAuth = localStorage?.getItem("token");
@@ -162,8 +166,13 @@ const CustomizeResume = () => {
           country, 
           profSummary,
           resumeSubscriptions,
-          resumes
+          resumes, 
+          resumeTarget
         } = response?.data?.user
+
+        const percentTargetGained = Math.round(resumeTarget.achievedTarget/resumeTarget.setTarget * 100)
+
+        setBubblePoints(percentTargetGained)
 
         setBasicInfo({
           firstName: firstName,
@@ -1020,6 +1029,55 @@ const CustomizeResume = () => {
   );
 
 
+  function CircularProgressWithLabel(props) {
+    return (
+      <Box sx={{ position: 'relative', display: 'inline-flex', marginTop: '7px' }}>
+      {/* TRACK */}
+        <CircularProgress 
+          variant="determinate" 
+          thickness={5} 
+          value={100}
+          sx={{
+            color: '#c0d1d4',
+            position: 'absolute'
+          }} 
+        />
+        {/* MAIN PROGRESS */}
+        <CircularProgress 
+          variant="determinate" 
+          thickness={5} 
+          sx={{
+            color: 'black',
+            '& .MuiCircularProgress-circleDeterminate': {
+              stroke: bubblePoints <= 50 ? '#EE7B1C' : '#56A8AC'
+            },
+          }} 
+          {...props} 
+        />
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography
+            variant="caption"
+            component="div"
+            sx={{ color: bubblePoints <= 50 ? '#EE7B1C' : '#56A8AC', fontWeight: '600' }}
+          >
+            {bubblePoints}
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <div className="auth-container">
       {/* For SIDE MENU */}
@@ -1062,7 +1120,39 @@ const CustomizeResume = () => {
           </div>
 
           {!hideCards ? (
-            <Grid container sx={{padding: '50px 30px'}}>
+            <Grid container sx={{padding: '10px 15px'}}>
+
+              <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
+                  <div className={screenWidth > 900 ? "Segment" : undefined}>
+                      <div className="Segment">
+                          <Alert 
+                            sx={{padding: '0 5px', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center', 
+                              width: '100%', 
+                              '& .MuiAlert-icon': {
+                                color: bubblePoints <= 50 ? '#EE7B1C' : '#56A8AC'
+                              }
+                            }} 
+                            severity="info"
+                          >
+                            <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px'}}>
+                              <div><h3>Bubble Points Gained:</h3> </div> <div><CircularProgressWithLabel value={bubblePoints} /></div>
+                            </div>
+
+                          </Alert>
+                      </div>
+                      
+                      <ol style={styles.list}>
+                          <li>Gain 100% Bubble Points to get a FREE WEEK/MONTH immediately.</li>
+                          <li>Free trial users not eligible.</li>
+                          <li>Subscribe to PER WEEK/MONTH to be eligible.</li>
+                      </ol>
+                  </div>
+                  <h4>Optimize resumes & apply to jobs to start gaining Bubble Points</h4>
+        
+              </div>
               <Grid item md={6} xs={12}>
                   <ButtonCard icon="optimize-resume" title="Optimize Old Resume" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Have an old resume? This option will help you optimize it to ATS and industry standards in seconds, with the right keywords and metrics." />
               </Grid>
@@ -2069,6 +2159,9 @@ const CustomizeResume = () => {
       {successfulAchievement && 
           <SuccessFailureModal 
               success={successfulAchievement} 
+              successText="Congratulations, You have been rewarded!"
+              bodyText="Your Bubble Points have reached your target for your subscription and has earned you an extra week/month of access, Good luck!"
+              buttonText="Claim Points Reward"
               fullName={user.firstName} 
           /> 
       }
@@ -2079,3 +2172,21 @@ const CustomizeResume = () => {
 };
 
 export default memo(CustomizeResume);
+
+
+const styles = {
+  list: {
+      fontSize: '.85rem',
+      lineHeight: '1.5',
+      padding: '0 30px',
+      width: '100%',
+  },
+  noResumes: {
+      boxSizing: 'border-box',
+      display: 'flex', 
+      flexDirection: 'column',
+      alignItems: 'center', 
+      justifyContent: 'center',
+      width: '100%'
+  },
+}
