@@ -1129,7 +1129,7 @@ const CustomizeResume = () => {
                             sx={{padding: '0 5px', 
                               display: 'flex', 
                               alignItems: 'center', 
-                              justifyContent: 'center', 
+                              justifyContent: screenWidth > 900 && 'center', 
                               width: '100%', 
                               '& .MuiAlert-icon': {
                                 color: bubblePoints <= 50 ? '#EE7B1C' : '#56A8AC'
