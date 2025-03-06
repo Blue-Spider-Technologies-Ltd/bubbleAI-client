@@ -1129,7 +1129,7 @@ const CustomizeResume = () => {
                             sx={{padding: '0 5px', 
                               display: 'flex', 
                               alignItems: 'center', 
-                              justifyContent: screenWidth > 900 && 'center', 
+                              justifyContent: 'center', 
                               width: '100%', 
                               '& .MuiAlert-icon': {
                                 color: bubblePoints <= 50 ? '#EE7B1C' : '#56A8AC'
@@ -1294,6 +1294,7 @@ const CustomizeResume = () => {
                         inputGridSm={12}
                         inputGrid={6}
                         mb={2}
+                        mt={screenWidth < 900 && 2}
                         required={true}
                         onChange={handleInputChange("mobile")}
                       />
