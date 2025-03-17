@@ -34,6 +34,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
 import { FaLinkedin } from "react-icons/fa6";
 import { IoIosPeople } from "react-icons/io";
+import { MdOutlineAutoAwesome } from "react-icons/md";
 import iconImg from '../../../images/bubble icon.jpg'
 import axios from "axios";
 const screenWidth = window.innerWidth
@@ -559,6 +560,7 @@ const JobHub = () => {
                         />
                     </div>  */}
 
+                    
                     <div style={styles.animText} onClick={() => setAuthMenuOpen(false)}>
                         <TypeAnimation
                             sequence={[
@@ -594,6 +596,15 @@ const JobHub = () => {
                             repeat={Infinity}
                         />
                     </div>
+
+                    {/* <div style={{textAlign: 'center', margin: '15px 0'}}>
+                        <ButtonSubmitGreen 
+                            onClick={() => navigate('/user/dashboard/auto-apply')}
+                            style={{maxWidth: '300px'}}
+                        >
+                            <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Auto Apply Agent
+                        </ButtonSubmitGreen>
+                    </div> */}
 
                     {jobs.length < 1 ? (
                         <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
@@ -825,5 +836,3 @@ const JobHub = () => {
 
 
 export default JobHub;
-
-

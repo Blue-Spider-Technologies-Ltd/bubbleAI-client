@@ -386,11 +386,7 @@ export const SuccessFailureModal = ({
     successText,
     bodyText,
     buttonText,
-    resume,
-    shareableLink, 
-    aiSuggestedJobs,
-    template,
-    imgUrl }) => {
+ }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()

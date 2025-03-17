@@ -21,6 +21,7 @@ import ResumeHub from './components/Resume/Items/ResumeHub';
 import JobHub from './components/Resume/Items/JobHub';
 import ReferralHub from './components/Resume/Items/ReferralHub';
 import RecruiterHub from './components/Resume/Items/RecruiterHub';
+import AutoApplyAgent from './components/Resume/Items/AutoApplyAgent';
 import Acca from "./components/MockTests/Exams/Acca"
 import Cee from "./components/MockTests/Exams/Cee"
 import Ceh from "./components/MockTests/Exams/Ceh"
@@ -77,6 +78,7 @@ const App = () => {
           <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
           <Route path={'/user/dashboard/resume-hub'} element={ <ResumeHub /> } />
           <Route path={'/user/dashboard/job-hub'} element={ <JobHub /> } />
+          <Route path={'/user/dashboard/auto-apply'} element={ <AutoApplyAgent /> } />
           <Route path={'/user/dashboard/referral-hub'} element={ <ReferralHub /> } />
           <Route path={'/user/dashboard/recruiter'} element={ <RecruiterHub /> } />
 

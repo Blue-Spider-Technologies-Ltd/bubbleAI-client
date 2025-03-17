@@ -3,9 +3,33 @@ import refundImg from '../images/refund-stamp.png';
 export const reviewDetails = [ 
     { 
         img: refundImg, 
+        name: 'Samuel', 
+        review: "You are the best easy and fast services.", 
+        rating: 4.5 
+    }, 
+    { 
+        img: refundImg, 
+        name: 'Isaiah', 
+        review: "great I love this , it really help me", 
+        rating: 5 
+    }, 
+    { 
+        img: refundImg, 
         name: 'Olanrewaju', 
         review: "I had been unemployed for a while, and I was starting to lose hope. Bubble AI gave me a new lease on life. They helped me identify my strengths and find jobs that aligned with my career goals. I'm now working in a fulfilling role.", 
         rating: 5 
+    }, 
+    { 
+        img: refundImg, 
+        name: 'Mine', 
+        review: "It's a great start, I look forward to ana amazing experiences with bubble.ai", 
+        rating: 4 
+    },
+    { 
+        img: refundImg, 
+        name: 'Joy Chinazaekpere', 
+        review: "Amazing and perfect for job hunters", 
+        rating: 4.5 
     }, 
     { 
         img: refundImg, 
@@ -17,6 +41,12 @@ export const reviewDetails = [
         img: refundImg, 
         name: 'Oluwatoyin', 
         review: "I was struggling to find a job that aligned with my skills and passions. Bubble AI changed everything. They created a resume that perfectly showcased my abilities, and within weeks, I had multiple interview offers. I'm now working in my dream role!", 
+        rating: 5 
+    }, 
+    { 
+        img: refundImg, 
+        name: 'Eseoghene', 
+        review: "This is such an amazing platform. My resumé is amazing ✨️✨️.", 
         rating: 5 
     }, 
     { 
@@ -39,6 +69,12 @@ export const reviewDetails = [
     }, 
     { 
         img: refundImg, 
+        name: 'Solomon', 
+        review: "this is wonderful", 
+        rating: 4.5 
+    }, 
+    { 
+        img: refundImg, 
         name: 'Lisa', 
         review: "The Job Suggestions after the resume creation were quite what I needed, it was like 3 platforms in one making the process easier. Really great tool, It could use more descrition though.", 
         rating: 4 
@@ -51,9 +87,21 @@ export const reviewDetails = [
     }, 
     { 
         img: refundImg, 
+        name: 'Chrysancthus', 
+        review: "This is so creative and extraordinary.... will write more when I get a job.", 
+        rating: 5 
+    }, 
+    { 
+        img: refundImg, 
         name: 'Jessica', 
-        review: "It is good because you can really get job in days or few weeks depending on your drive.", 
+        review: "It is good because you can really get job in days or few weeks depending on your drive", 
         rating: 4 
+    }, 
+    { 
+        img: refundImg, 
+        name: 'Aisha', 
+        review: "wow, it gave me a CV with wonderful job descriptions and metrics that i could edit to fit my specific case. cover letter was tailored to my needs too. Nice project", 
+        rating: 5 
     }, 
     { 
         img: refundImg, 
@@ -63,8 +111,8 @@ export const reviewDetails = [
     }, 
     { 
         img: refundImg, 
-        name: 'Aisha', 
-        review: "Wow, it gave me a CV with wonderful job descriptions and metrics that i could edit to fit my specific case. cover letter was tailored to my needs too. Nice project.", 
+        name: 'Abdulrahman', 
+        review: "Very Nice and easy to use.", 
         rating: 5 
     }, 
     { 
@@ -73,6 +121,12 @@ export const reviewDetails = [
         review: "I had been applying for jobs for months with no luck. Bubble AI's targeted job matching was a game-changer. They connected me with opportunities I wouldn't have found on my own. I landed a great job in a field I'm passionate about.", 
         rating: 4.5 
     }, 
+    { 
+        img: refundImg, 
+        name: 'Dooshima', 
+        review: "Simply Amazing, just magical", 
+        rating: 5 
+    },
     { 
         img: refundImg, 
         name: 'Jay', 
