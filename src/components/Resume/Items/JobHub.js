@@ -597,14 +597,14 @@ const JobHub = () => {
                         />
                     </div>
 
-                    {/* <div style={{textAlign: 'center', margin: '15px 0'}}>
+                    <div style={{textAlign: 'center', margin: '15px 0'}}>
                         <ButtonSubmitGreen 
                             onClick={() => navigate('/user/dashboard/auto-apply')}
                             style={{maxWidth: '300px'}}
                         >
                             <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Auto Apply Agent
                         </ButtonSubmitGreen>
-                    </div> */}
+                    </div>
 
                     {jobs.length < 1 ? (
                         <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>

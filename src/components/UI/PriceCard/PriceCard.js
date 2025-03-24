@@ -186,6 +186,34 @@ const PriceCard = ({details}) => {
                                 </Typography>
                             </ListItem> 
                         )}
+                        {features.careerCoach && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.careerCoach.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.careerCoach.text}
+                                </Typography>
+                            </ListItem> 
+                        )}
+                        {features.autoApply && (
+                            <ListItem >
+                                <ListItemIcon>
+                                    {features.autoApply.available ? (
+                                        <CheckCircleIcon sx={{color: '#3E8F93'}} fontSize='small' />
+                                    ) : (
+                                        <CancelIcon sx={{color: 'rgb(216, 7, 7)'}} fontSize='small' />
+                                    )}
+                                </ListItemIcon>
+                                <Typography sx={{ml: -3, fontSize: '.9rem'}}>
+                                    {features.autoApply.text}
+                                </Typography>
+                            </ListItem> 
+                        )}
               
                     </List>
                 </Grid>

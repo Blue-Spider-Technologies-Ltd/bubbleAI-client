@@ -61,7 +61,7 @@ const resumePricingDetails = [
                 text: 'Unlimited CV creation'
             },
             coverLetter: {
-                available: false,
+                available: true,
                 text: 'Tailored Cover Letters'
             },
             editPreview: {
@@ -87,6 +87,14 @@ const resumePricingDetails = [
             aiJobSuggestions: {
                 available: false,
                 text: 'Job Connections'
+            },
+            careerCoach: {
+                available: false,
+                text: '24/7 Human Career Coach'
+            },
+            autoApply: {
+                available: false,
+                text: 'Auto Apply Agent'
             },
             recommendation: {
                 available: true,
@@ -138,6 +146,14 @@ const resumePricingDetails = [
                 available: true,
                 text: '50+ Job Connections'
             },
+            careerCoach: {
+                available: false,
+                text: '24/7 Human Career Coach'
+            },
+            autoApply: {
+                available: true,
+                text: 'Auto Apply Agent (20 Jobs)'
+            },
             recommendation: {
                 available: true,
                 text: 'Connect to Hottest Jobs this Week'
@@ -187,6 +203,14 @@ const resumePricingDetails = [
             aiJobSuggestions: {
                 available: true,
                 text: '200+ Job Connections'
+            },
+            careerCoach: {
+                available: true,
+                text: '24/7 Human Career Coach'
+            },
+            autoApply: {
+                available: true,
+                text: 'Auto Apply Agent (Unlimited Apply)'
             },
             recommendation: {
                 available: true,
