@@ -57,7 +57,7 @@ const AutoApplyAgent = () => {
     const [agentStatus, setAgentStatus] = useState('idle'); // idle, running, paused, completed
     const [targetJobCount, setTargetJobCount] = useState(5);
     const [pricingOpened, setPricingOpened] = useState(false);
-    const [inDev, setInDev] = useState(true);
+    const [inDev, setInDev] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [pollingIntervalId, setPollingIntervalId] = useState(null);
 
