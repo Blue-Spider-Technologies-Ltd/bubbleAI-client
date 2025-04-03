@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Routes, Route } from 'react-router-dom';
+import PWAInstallPrompt from './components/UI/PWAInstallPrompt';
+import PWANotificationPrompt from './components/UI/PWANotificationPrompt';
 import Home from './components/Home/Home';
 import NotFound from './components/Home/NotFound';
 import UnderConstruction from './components/Home/UnderConstruction';
@@ -53,6 +55,41 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const App = () => {
   const { fetching } = useSelector(state => state.stateData)
+
+  // Load PWA-specific scripts
+  useEffect(() => {
+    // Load iOS fixes
+    const iosFixes = document.createElement('script');
+    iosFixes.src = '/ios-fixes.js';
+    iosFixes.async = true;
+    document.body.appendChild(iosFixes);
+
+    // Load iOS CSS fixes
+    const iosFixesCSS = document.createElement('link');
+    iosFixesCSS.rel = 'stylesheet';
+    iosFixesCSS.href = '/ios-fixes.css';
+    document.head.appendChild(iosFixesCSS);
+
+    // Load network detector
+    const networkDetector = document.createElement('script');
+    networkDetector.src = '/network-detector.js';
+    networkDetector.async = true;
+    document.body.appendChild(networkDetector);
+
+    // Load performance fixes
+    const performanceFixes = document.createElement('script');
+    performanceFixes.src = '/performance-fixes.js';
+    performanceFixes.async = true;
+    document.body.appendChild(performanceFixes);
+
+    // Clean up on unmount
+    return () => {
+      document.body.removeChild(iosFixes);
+      document.head.removeChild(iosFixesCSS);
+      document.body.removeChild(networkDetector);
+      document.body.removeChild(performanceFixes);
+    };
+  }, []);
 
   return (
     <GoogleOAuthProvider clientId="260080247067-o0iar4akf4pce1j5ilstvkdeb9tr3elm.apps.googleusercontent.com">
@@ -111,6 +148,10 @@ const App = () => {
         
         {fetching && <Fetching />}
       </ConfirmProvider>
+      
+      {/* PWA Components */}
+      <PWAInstallPrompt />
+      <PWANotificationPrompt />
     </GoogleOAuthProvider>
   );
 }

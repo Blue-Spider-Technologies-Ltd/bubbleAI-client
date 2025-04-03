@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom"
 import store from "./redux/store.js"
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
+import { registerServiceWorker } from './utils/pwa-utils';
 
 
 const handleSubdomain = () => { 
@@ -35,3 +36,6 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals(console.log());
+
+// Register service worker for PWA functionality
+registerServiceWorker();

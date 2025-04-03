@@ -1,25 +1,51 @@
 {
   "short_name": "Bubble AI",
-  "name": "Bubble AI",
+  "name": "Bubble AI - Professional AI Services",
+  "description": "Professional AI to Automate Job Application, create Resume (CVs), Cover Ltters, Interview Prep, Create Business Plans, Minute Meetings, and Transcribe Audio & Video Files. An all-in-one professional AI suite",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "any"
     },
     {
-      "src": "logo192.png",
-      "type": "image/x-icon",
-      "sizes": "192x192"
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "icon.ico",
-      "type": "image/x-icon",
-      "sizes": "512x512"
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "orientation": "portrait",
+  "theme_color": "#56A8AC",
+  "background_color": "#ffffff",
+  "categories": ["productivity", "utilities", "business"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Create Resume",
+      "short_name": "Resume",
+      "description": "Create a professional resume",
+      "url": "/user/dashboard/resume",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Job Hub",
+      "short_name": "Jobs",
+      "description": "Job Connections",
+      "url": "/user/dashboard/job-hub",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
