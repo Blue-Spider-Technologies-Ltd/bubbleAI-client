@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { isRunningAsPWA, showInstallPrompt, isIOS } from '../../utils/pwa-utils';
 import { styled } from '@mui/material/styles';
 import { Button, IconButton, Snackbar, Box, Typography, Paper } from '@mui/material';
-import { ButtonSubmitGreen, ButtonOutlineGreen } from './Buttons/Buttons';
+import { ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from './Buttons/Buttons';
 import CloseIcon from '@mui/icons-material/Close';
 import GetAppIcon from '@mui/icons-material/GetApp';
 
@@ -115,20 +115,13 @@ const PWAInstallPrompt = () => {
           </Typography>
         </Box>
         
-        <Button 
-          variant="outlined" 
-          onClick={handleClose}
-          fullWidth
-        >
-          Got it
-        </Button>
         <div style={{ width: "100%" }}>
-            <ButtonOutlineGreen 
+            <ButtonOutlineGreenWithDiffStyle 
                 type="button"
-                onClick={handleInstallClick}
+                onClick={handleClose}
             >
-                <span>Install App</span>
-            </ButtonOutlineGreen>
+                <span>Got it</span>
+            </ButtonOutlineGreenWithDiffStyle>
         </div>
       </StyledPaper>
     );

@@ -34,7 +34,7 @@
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch; /* Enable momentum scrolling */
   /* Add padding for the iOS status bar */
-  padding-top: env(safe-area-inset-top, 50px);
+  margin-top: 50px !important;
 }
 
 /* Fix for full height elements in iOS */
@@ -52,8 +52,8 @@
 .ios-pwa .header-container,
 .ios-pwa .menu-container {
   /* Add padding for status bar */
-  padding-top: env(safe-area-inset-top, 50px) !important;
-  margin-top: env(safe-area-inset-top, 50px) !important;
+  padding-top: env(safe-area-inset-top, 100px) !important;
+  margin-top: env(safe-area-inset-top, 100px) !important;
 }
 
 /* Fix for iOS PWA bottom navigation */
