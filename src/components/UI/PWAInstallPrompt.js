@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { isRunningAsPWA, showInstallPrompt, isIOS } from '../../utils/pwa-utils';
 import { styled } from '@mui/material/styles';
 import { Button, IconButton, Snackbar, Box, Typography, Paper } from '@mui/material';
+import { ButtonSubmitGreen, ButtonOutlineGreen } from './Buttons/Buttons';
 import CloseIcon from '@mui/icons-material/Close';
 import GetAppIcon from '@mui/icons-material/GetApp';
 
@@ -14,12 +15,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[3],
   position: 'fixed',
-  bottom: theme.spacing(2),
+  bottom: 200,
   left: theme.spacing(2),
   right: theme.spacing(2),
   zIndex: 1000,
   [theme.breakpoints.up('sm')]: {
-    maxWidth: 400,
+    width: 400,
     left: 'auto',
     right: theme.spacing(2),
   },
@@ -91,7 +92,7 @@ const PWAInstallPrompt = () => {
       <StyledPaper>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 1 }}>
           <Typography variant="h6" component="div">
-            Install Bubble AI
+            <strong>Install Bubble Ai</strong>
           </Typography>
           <IconButton size="small" onClick={handleClose} aria-label="close">
             <CloseIcon fontSize="small" />
@@ -99,7 +100,7 @@ const PWAInstallPrompt = () => {
         </Box>
         
         <Typography variant="body2" sx={{ mb: 1 }}>
-          To install Bubble AI on your iOS device:
+          To install Bubble Ai on your iOS device:
         </Typography>
         
         <Box sx={{ width: '100%', mb: 1 }}>
@@ -110,7 +111,7 @@ const PWAInstallPrompt = () => {
             2. Scroll down and tap "Add to Home Screen"
           </Typography>
           <Typography variant="body2" component="div">
-            3. Tap "Add" in the top right corner
+            3. Then tap "Add" in the top right corner
           </Typography>
         </Box>
         
@@ -121,6 +122,14 @@ const PWAInstallPrompt = () => {
         >
           Got it
         </Button>
+        <div style={{ width: "100%" }}>
+            <ButtonOutlineGreen 
+                type="button"
+                onClick={handleInstallClick}
+            >
+                <span>Install App</span>
+            </ButtonOutlineGreen>
+        </div>
       </StyledPaper>
     );
   }
@@ -135,7 +144,7 @@ const PWAInstallPrompt = () => {
         <StyledPaper>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 1 }}>
             <Typography variant="h6" component="div">
-              Install Bubble AI
+              <strong>Install Bubble Ai</strong>
             </Typography>
             <IconButton size="small" onClick={handleClose} aria-label="close">
               <CloseIcon fontSize="small" />
@@ -143,17 +152,18 @@ const PWAInstallPrompt = () => {
           </Box>
           
           <Typography variant="body2" sx={{ mb: 1 }}>
-            Install Bubble AI for a better experience with offline access and faster loading times.
+            Install Bubble Ai for a better experience with offline access and faster loading times.
           </Typography>
           
-          <InstallButton
-            variant="contained"
-            startIcon={<GetAppIcon />}
-            onClick={handleInstallClick}
-            fullWidth
-          >
-            Install App
-          </InstallButton>
+
+            <div style={{ width: "100%" }}>
+                <ButtonSubmitGreen 
+                    type="button"
+                    onClick={handleInstallClick}
+                >
+                    <GetAppIcon fontSize='medium' /><span style={{ marginLeft: '5px', addingTop: "1px" }}>Install App</span>
+                </ButtonSubmitGreen>
+            </div>
         </StyledPaper>
       </Snackbar>
     );

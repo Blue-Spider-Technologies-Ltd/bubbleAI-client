@@ -21,11 +21,9 @@
 
 /* Styles specific to iOS when running as a PWA */
 .ios-pwa {
-  /* Prevent overscroll/bounce effect */
-  position: fixed;
+  /* We're removing the fixed position that was preventing scrolling */
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 .ios-pwa body {
@@ -35,6 +33,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch; /* Enable momentum scrolling */
+  /* Add padding for the iOS status bar */
+  padding-top: env(safe-area-inset-top, 50px);
 }
 
 /* Fix for full height elements in iOS */
@@ -44,9 +44,16 @@
 }
 
 /* Fix for iOS PWA status bar */
-.ios-pwa .app-header {
-  /* Add padding for status bar if needed */
-  padding-top: env(safe-area-inset-top);
+.ios-pwa .app-header,
+.ios-pwa header,
+.ios-pwa nav,
+.ios-pwa .navbar,
+.ios-pwa .nav-container,
+.ios-pwa .header-container,
+.ios-pwa .menu-container {
+  /* Add padding for status bar */
+  padding-top: env(safe-area-inset-top, 50px) !important;
+  margin-top: env(safe-area-inset-top, 50px) !important;
 }
 
 /* Fix for iOS PWA bottom navigation */

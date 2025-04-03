@@ -18,6 +18,21 @@
   if (isInStandaloneMode) {
     document.body.classList.add('ios-pwa');
     
+    // Add meta tag for status bar appearance
+    const metaStatusBar = document.createElement('meta');
+    metaStatusBar.setAttribute('name', 'apple-mobile-web-app-status-bar-style');
+    metaStatusBar.setAttribute('content', 'black-translucent');
+    document.head.appendChild(metaStatusBar);
+    
+    // Add viewport meta tag with viewport-fit=cover
+    const existingViewport = document.querySelector('meta[name="viewport"]');
+    if (existingViewport) {
+      const content = existingViewport.getAttribute('content');
+      if (!content.includes('viewport-fit=cover')) {
+        existingViewport.setAttribute('content', content + ', viewport-fit=cover');
+      }
+    }
+    
     // Fix for iOS PWA navigation issues
     // This helps with handling external links and routing
     document.addEventListener('click', function(e) {
@@ -54,11 +69,6 @@
       }
     }, false);
     
-    // Fix for iOS PWA status bar appearance
-    const metaStatusBar = document.createElement('meta');
-    metaStatusBar.setAttribute('name', 'apple-mobile-web-app-status-bar-style');
-    metaStatusBar.setAttribute('content', 'black-translucent');
-    document.head.appendChild(metaStatusBar);
     
     // Fix for iOS PWA input focus issues
     const fixIOSInputs = () => {
@@ -102,14 +112,8 @@
       }, 300);
     });
     
-    // Fix for iOS PWA scroll bounce
-    document.addEventListener('touchmove', function(e) {
-      // If at the top and trying to scroll up, or at the bottom and trying to scroll down
-      if ((window.scrollY === 0 && e.touches[0].screenY > 0) ||
-          (window.scrollY + window.innerHeight >= document.body.scrollHeight && e.touches[0].screenY < 0)) {
-        e.preventDefault();
-      }
-    }, { passive: false });
+    // Fix for iOS PWA scroll issues - we're removing the scroll bounce prevention
+    // that was causing scrolling problems
   }
   
   // iOS viewport height fix (for both standalone and non-standalone)
