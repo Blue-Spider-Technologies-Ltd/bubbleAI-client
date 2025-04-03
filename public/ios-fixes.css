@@ -21,9 +21,9 @@
 
 /* Styles specific to iOS when running as a PWA */
 .ios-pwa {
-  /* We're removing the fixed position that was preventing scrolling */
   width: 100%;
-  height: 100%;
+  height: 95%;
+  margin-top: 5%;
 }
 
 .ios-pwa body {
@@ -41,39 +41,6 @@
 .full-height {
   height: 100vh; /* Fallback */
   height: calc(var(--vh, 1vh) * 100);
-}
-
-/* Fix for iOS PWA status bar - more specific selectors */
-.ios-pwa .app-header,
-.ios-pwa header,
-.ios-pwa nav,
-.ios-pwa .navbar,
-.ios-pwa .nav-container,
-.ios-pwa .header-container,
-.ios-pwa .menu-container,
-.ios-pwa div[class*="header"],
-.ios-pwa div[class*="Header"],
-.ios-pwa div[class*="nav"],
-.ios-pwa div[class*="Nav"],
-.ios-pwa div[class*="menu"],
-.ios-pwa div[class*="Menu"],
-.ios-pwa div[class*="top"],
-.ios-pwa div[class*="Top"] {
-  /* Add padding for status bar */
-  padding-top: env(safe-area-inset-top, 50px) !important;
-  margin-top: 0 !important;
-  position: relative !important;
-}
-
-/* Fix for fixed headers */
-.ios-pwa div[style*="position: fixed"],
-.ios-pwa div[style*="position:fixed"],
-.ios-pwa [class*="fixed"],
-.ios-pwa [class*="Fixed"],
-.ios-pwa [class*="sticky"],
-.ios-pwa [class*="Sticky"] {
-  top: env(safe-area-inset-top, 50px) !important;
-  padding-top: 10px !important;
 }
 
 /* Fix for iOS PWA bottom navigation */
