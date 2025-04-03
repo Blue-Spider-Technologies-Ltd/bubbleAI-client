@@ -22,8 +22,8 @@
 /* Styles specific to iOS when running as a PWA */
 .ios-pwa {
   width: 100%;
-  height: 95%;
-  margin-top: 5%;
+  height: 90%;
+  margin-top: 10%;
 }
 
 .ios-pwa body {
