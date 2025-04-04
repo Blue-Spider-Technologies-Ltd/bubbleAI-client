@@ -110,7 +110,7 @@ const ResumeLearnMore = () => {
                 </div>
             </div>
             <div className={css.DiscountHeader}>
-                <div>Seems you are in&nbsp;<span style={{fontWeight: '700'}}>{country}</span>. There is a 30% DISCOUNT in your country if you &nbsp;<span className="link" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={handleTryFree}>START NOW</span></div>
+                <div>Seems you are in&nbsp;<span style={{fontWeight: '700'}}>{country}</span>. There is a FREE TRIAL in your country if you &nbsp;<span className="link" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={handleTryFree}>START NOW</span></div>
             </div>
 
       

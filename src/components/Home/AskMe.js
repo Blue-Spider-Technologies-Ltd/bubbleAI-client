@@ -510,7 +510,7 @@ const AskMe = () => {
         <div className="error">{error}</div>
         <div className="success-mini">{successMini}</div>
 
-        <div className="chat-header" style={{paddingTop: isIOSStandalonePWA() && "100px"}}>
+        <div className="chat-header" style={{paddingTop: isIOSStandalonePWA() && "50px"}}>
           <div className="chat-menu-icon" title="Menu">
             
               {!authMenuOpen ? 
