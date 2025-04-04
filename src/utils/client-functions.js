@@ -129,7 +129,18 @@ export const getOrdinalDate = () => {
     return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
 }
   
+export const isIOSStandalonePWA = () => {
+    // Check if iOS (iPhone/iPad/iPod)
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    
+    // Check if in standalone mode
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                        window.navigator.standalone || 
+                        document.referrer.includes('android-app://');
   
+    return isIOS && isStandalone;
+}
   
 
 export const fetchPrice = async (category, usage) => {

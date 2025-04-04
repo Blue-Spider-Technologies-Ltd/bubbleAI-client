@@ -19,7 +19,7 @@ import { BiMenuAltLeft } from "react-icons/bi";
 import { BiMenuAltRight } from "react-icons/bi";
 import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
-import { errorAnimation, successMiniAnimation, checkAuthenticatedUser } from "../../utils/client-functions";
+import { errorAnimation, successMiniAnimation, checkAuthenticatedUser, isIOSStandalonePWA } from "../../utils/client-functions";
 
 
 const screenWidth = window.innerWidth
@@ -510,7 +510,7 @@ const AskMe = () => {
         <div className="error">{error}</div>
         <div className="success-mini">{successMini}</div>
 
-        <div className="chat-header">
+        <div className="chat-header" style={{paddingTop: isIOSStandalonePWA() && "100px"}}>
           <div className="chat-menu-icon" title="Menu">
             
               {!authMenuOpen ? 

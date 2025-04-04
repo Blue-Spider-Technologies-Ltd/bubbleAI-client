@@ -10,13 +10,12 @@ import { ButtonSubmitBlack } from "../UI/Buttons/Buttons";
 import Blob from "../UI/Blob/Blob";
 import categoriesData from "./categories";
 import { useSelector, useDispatch } from "react-redux";
-import { setMessages, setUser, setError, setAllMessagesArray } from "../../redux/states";
+import { setMessages, setUser, setError } from "../../redux/states";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 import ChatwootWidget from "../../utils/chatwoot";
 import axios from "axios";
 
 
-const screenWidth =  window.innerWidth
 
 const Home = () => {
   const { user, error } = useSelector((state) => state.stateData);

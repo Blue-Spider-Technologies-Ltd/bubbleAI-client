@@ -8,6 +8,7 @@ import { ButtonSubmitGreen, ButtonLogOut } from '../Buttons/Buttons';
 import { useLocation, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { setUser } from '../../../redux/states';
+import { isIOSStandalonePWA } from '../../../utils/client-functions';
 
 const screenWidth = window.innerWidth
 
@@ -127,24 +128,25 @@ const MenuBarSmall = () => {
 
     return (
 
-        <Box >
-
-            <div id="small-menu-top" className='SmallMenuContainer'>
-                <div>
-                    <Link href='/'>
-                        <img src={logoImg} alt='LOGO' className="Logo" />
-                    </Link>
-                </div>                
-            </div>
-            <div className='HamburgerContainer'>
-                <Hamburger 
-                    color="#6FCBD1" 
-                    rounded 
-                    size={25} 
-                    distance="md"
-                    toggled={menuOpen} 
-                    toggle={setMenuOpen}
-                />
+        <Box>
+            <div style={{paddingTop: isIOSStandalonePWA() && "100px"}}>
+                <div id="small-menu-top" className='SmallMenuContainer'>
+                    <div style={{paddingTop: "10px"}}>
+                        <Link href='/'>
+                            <img src={logoImg} alt='LOGO' className="Logo" />
+                        </Link>
+                    </div>                
+                </div>
+                <div className='HamburgerContainer'>
+                    <Hamburger 
+                        color="#6FCBD1" 
+                        rounded 
+                        size={25} 
+                        distance="md"
+                        toggled={menuOpen} 
+                        toggle={setMenuOpen}
+                    />
+                </div>
             </div>
 
             {/* MENU BLOCK */}
