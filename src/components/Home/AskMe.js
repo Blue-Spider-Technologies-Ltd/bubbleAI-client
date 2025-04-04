@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import AuthSideMenu from "../UI/AuthSideMenu/AuthSideMenu";
 import { Grid } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
 import StopIcon from "@mui/icons-material/Stop";
 import MicIcon from '@mui/icons-material/Mic';
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,6 +16,7 @@ import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots, Oval } from 'react-loader-spinner'
 import { BiMenuAltLeft } from "react-icons/bi";
 import { BiMenuAltRight } from "react-icons/bi";
+import { FaCircleArrowUp } from "react-icons/fa6";
 import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { errorAnimation, successMiniAnimation, checkAuthenticatedUser, isIOSStandalonePWA } from "../../utils/client-functions";
@@ -59,6 +59,7 @@ const AskMe = () => {
   const [aiSuggestions, setAiSuggestions] = useState([])
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
+  const [audioToSend, setAudioToSend] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioTranscribed, setAudioTranscribed] = useState(false)
   const [transcribing, setTranscribing] = useState(false)
@@ -421,16 +422,18 @@ const AskMe = () => {
 
   const handleSendAudio = () => {
     if (audioBlob && mediaRecorder && mediaRecorder.state === 'inactive') {
+      const audio = audioBlob
+      setAudioBlob(null)
       setTranscribing(true)
       const formData = new FormData();
-      formData.append('audio', audioBlob, 'audio.mp3');
+      formData.append('audio', audio, 'audio.mp3');
 
       axios.post('/transcript/transcribe-askme', formData)
           .then(response => {
             setAskMeVal(response.data)
             setAudioTranscribed(true)
-            setAudioBlob(null)
             setMediaRecorder(null);
+            handleAskMeAnything()
           })
           .catch(error => {
             setTranscribing(false)
@@ -582,7 +585,7 @@ const AskMe = () => {
                   </Grid>
                 ) : audioBlob ? (
                   <Grid item xs={10}>
-                    <audio controls style={{width: screenWidth < 900 ? "90%" : "100%", height: "30px", marginTop: screenWidth > 900 ? '15px' : "5px", marginLeft: '10px'}}>
+                    <audio controls style={{width: screenWidth < 900 ? "80%" : "100%", height: "30px", marginTop: screenWidth > 900 ? '-15px' : "-5px", marginLeft: '10px'}}>
                         <source src={URL.createObjectURL(audioBlob)} type="audio/mp3" />
                     </audio>
                   </Grid>
@@ -595,7 +598,7 @@ const AskMe = () => {
                       multiline={true}
                       inputGridSm={10}
                       mt={1}
-                      rows={screenWidth <= 900 ? 1 : 2}
+                      rows={screenWidth <= 900 ? 4 : 2}
                       maxRows={6}
                       required={true}
                       onKeyDown={handleKeyPress}
@@ -605,6 +608,61 @@ const AskMe = () => {
                 )}
 
                 <Grid
+                  item
+                  xs={2}
+                  sx={{ 
+                    marginTop: screenWidth > 900 ? "5px" : "-2px",
+                    marginLeft: "-5px"
+                  }}
+                >
+                  {(() => {
+                    if (askMeVal) {
+                      return (
+                        <ButtonSubmitBlack 
+                          type="button" 
+                          onClick={ handleAskMeAnything}
+                        >
+                          <FaCircleArrowUp style={{ color: "#c0d1d4", fontSize: '1.8em' }} />
+                        </ButtonSubmitBlack>
+                      );
+                    }
+                    
+                    if (audioBlob) {
+                      return (
+                        <div 
+                          style={{width: "100%", display: "flex", justifyContent: "space-around", alignItems: "center", marginTop: screenWidth > 900 ? "-15px" : "-5px"}}
+                        >
+                          <span onClick={() => setAudioBlob(null)}><CancelIcon sx={{ color: "rgb(216, 7, 7)", fontSize: '1.8em', cursor: 'pointer' }} /></span>
+                          <span onClick={handleSendAudio}><FaCircleArrowUp style={{ color: "#c0d1d4", fontSize: '1.8em', cursor: 'pointer' }} /></span>
+                        </div>
+                      );
+                    }
+                    
+                    return (
+                      <ButtonSubmitBlack 
+                        type="button" 
+                        width="90%" 
+                        onClick={handleRecordAudio}
+                      >
+                        {recording ? (
+                          <StopIcon sx={{ color: 'rgb(216, 7, 7)' }} />
+                        ) : transcribing ? (
+                            <Oval
+                              visible={true}
+                              height="20"
+                              width="20"
+                              color="#3E8F93"
+                              ariaLabel="oval-loading"
+                            />
+                          ) : (
+                          <MicIcon />
+                        )}
+                      </ButtonSubmitBlack>
+                    );
+                  })()}
+                </Grid>
+
+                {/* <Grid
                     item
                     xs={1}
                     sx={{ marginTop: screenWidth > 900 ? "5px" : "-2px", marginLeft: "-5px"}}
@@ -633,9 +691,9 @@ const AskMe = () => {
                             width="20"
                             color="#3E8F93"
                             ariaLabel="oval-loading"
-                          /> : <SendIcon sx={{color:"#3E8F93"}} /> }
+                          /> : <FaCircleArrowUp style={{color:"#56A8AC", fontSize: '5em'}} /> }
                     </ButtonSubmitBlack>
-                </Grid>
+                </Grid> */}
               </Grid>
             </div>
         </div>

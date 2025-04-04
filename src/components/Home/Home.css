@@ -127,7 +127,7 @@
     padding: 5px;
     position: fixed;
     text-align: center;
-    bottom: 60px;
+    bottom: 110px;
     transition: all 1s ease-in-out;
     z-index: 1;
 }
@@ -191,7 +191,7 @@
     }
 
     .chat-ex {
-        height: 95%;
+        height: 88%;
     }
 
     .askme-bg {
