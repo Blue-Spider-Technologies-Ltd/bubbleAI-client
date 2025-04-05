@@ -12,7 +12,7 @@ import AuthInput from "../UI/Input/AuthInputs";
 import { ButtonSubmitBlack } from "../UI/Buttons/Buttons"
 import { useSelector, useDispatch } from "react-redux";
 import { setMessage, deleteLastMessage, setError, setSuccessMini, setMessages, setAllMessagesArray, setFetching } from "../../redux/states";
-import { Assistant, User } from "../UI/ChatBoxes/ChatBoxes";
+import { Assistant, User, ScrollToBottom } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots, Oval } from 'react-loader-spinner'
 import { BiMenuAltLeft } from "react-icons/bi";
 import { BiMenuAltRight } from "react-icons/bi";
@@ -201,10 +201,92 @@ const AskMe = () => {
   }, [messages.length, prepCalled]);
 
 
-  // Scroll to bottom on new message
+  // State for batch loading and scroll button
+  const [displayedMessages, setDisplayedMessages] = useState([]);
+  const [batchSize] = useState(10); // Number of messages to load at once
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  
+  // Scroll to bottom function
+  const scrollToBottom = () => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  };
+
+  // Handle scroll events
+  const handleScroll = () => {
+    if (chatBoxRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatBoxRef.current;
+      
+      // Show button when scrolled up more than 300px from bottom
+      const isScrolledUp = scrollHeight - scrollTop - clientHeight > 300;
+      setShowScrollButton(isScrolledUp);
+      
+      // Load more messages when scrolled near top
+      if (scrollTop < 100 && messages.length > displayedMessages.length && !isLoadingMore) {
+        loadMoreMessages();
+      }
+    }
+  };
+
+  // Load more messages when scrolling up
+  const loadMoreMessages = () => {
+    setIsLoadingMore(true);
+    
+    // Add a small delay to prevent rapid loading and show loading indicator
+    setTimeout(() => {
+      const currentLength = displayedMessages.length;
+      const remainingMessages = messages.length - currentLength;
+      
+      if (remainingMessages > 0) {
+        const loadCount = Math.min(batchSize, remainingMessages);
+        const startIndex = messages.length - currentLength - loadCount;
+        const endIndex = startIndex + loadCount;
+        
+        const newBatch = messages.slice(startIndex, endIndex);
+        setDisplayedMessages(prev => [...newBatch, ...prev]);
+      }
+      
+      setIsLoadingMore(false);
+    }, 300);
+  };
+
+  // Initialize displayed messages with the most recent ones
   useEffect(() => {
-    chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-  }, [messages]);
+    if (messages.length > 0) {
+      const initialCount = Math.min(batchSize, messages.length);
+      const initialMessages = messages.slice(messages.length - initialCount);
+      setDisplayedMessages(initialMessages);
+    } else {
+      setDisplayedMessages([]);
+    }
+  }, [messages, batchSize]);
+
+  // Add scroll event listener
+  useEffect(() => {
+    const chatBoxElement = chatBoxRef.current;
+    if (chatBoxElement) {
+      chatBoxElement.addEventListener('scroll', handleScroll);
+      return () => chatBoxElement.removeEventListener('scroll', handleScroll);
+    }
+  }, [messages, displayedMessages.length]);
+
+  // Scroll to bottom on component mount and new messages
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [messages.length]);
+  
+  // Ensure scroll to bottom on component mount
+  useEffect(() => {
+    
+    // Add a small delay to ensure all content is rendered before scrolling
+    const timeoutId = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   //check and remove unauth user's expired use count for ask me anything
   useEffect(() => {
@@ -266,7 +348,7 @@ const AskMe = () => {
     return lineWaves;
   };
   
-  const chatExchange = messages.map((message, index) => {
+  const chatExchange = displayedMessages.map((message, index) => {
     const OverUseMessage = () => {
       const overUseMessage = {
         content: `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble" >Register here</a> or <a href="/popin" >Log in</a> to enjoy more for FREE`,
@@ -280,9 +362,7 @@ const AskMe = () => {
     };
     const isAssistant = message.role === "assistant";
     let contentTrim = message.content.trim()
-    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content.split("\n").map((paragraph, index) => {
-        return <p key={index}>{paragraph}</p>
-    })
+    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content
 
     const content = isAssistant? (
       <Assistant contentTrim={contentTrim === ""}>{contentTrim === "" ?        
@@ -545,7 +625,19 @@ const AskMe = () => {
        
 
         <div className="chatbg-overlay" onClick={() => setAuthMenuOpen(false)}>
-            <div className="chat-ex" ref={chatBoxRef}>
+            <div className="chat-ex" ref={chatBoxRef} onScroll={handleScroll}>
+              {isLoadingMore && (
+                <div className="loading-more-messages">
+                  <ThreeDots 
+                    height="25" 
+                    width="25" 
+                    radius="9"
+                    color="#3E8F93" 
+                    ariaLabel="loading-more-messages"
+                    visible={true}
+                  />
+                </div>
+              )}
               <div style={{ padding: "0", width: "92vw", margin: "auto" }}>
                 <div className={suggestionDisplay ? "suggestion-container" : "suggestion-out"}>
                   {coverLetterPrompt ? (
@@ -575,6 +667,11 @@ const AskMe = () => {
               </div>
 
               {chatExchange}
+              
+              <ScrollToBottom 
+                onClick={scrollToBottom} 
+                visible={showScrollButton} 
+              />
             </div>
 
             <div className="ask-me-form">
@@ -598,7 +695,7 @@ const AskMe = () => {
                       multiline={true}
                       inputGridSm={10}
                       mt={1}
-                      rows={screenWidth <= 900 ? 4 : 2}
+                      rows={4}
                       maxRows={6}
                       required={true}
                       onKeyDown={handleKeyPress}

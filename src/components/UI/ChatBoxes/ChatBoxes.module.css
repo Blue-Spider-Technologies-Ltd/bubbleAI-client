@@ -1,71 +1,179 @@
 .assistantOuter, .userOutter {
-    background: transparent;
-    display: flex;
-    padding: 10px;
-    width: 100%;
-    font-size: .92rem;
-    box-sizing: border-box;
+  background: transparent;
+  display: flex;
+  padding: 10px;
+  width: 100%;
+  font-size: .92rem;
+  box-sizing: border-box;
 }
 
 .assistantOuter {
-    justify-content: left;
+  justify-content: left;
 }
 
 .userOutter {
-    justify-content: right;
+  justify-content: right;
 }
 
+/* Assistant message styling */
 .Assistant {
-    color: black;
-    margin-left: 3px;
-    padding: 0 8px;
-    border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
-    border-top-left-radius: 0;
-    background-color: beige;
-    max-width: 75%;
-    position: relative;
-    word-wrap: break-word;
-    top: 15px;
+  color: black;
+  margin-left: 3px;
+  padding: 8px;
+  border-radius: 8px;
+  border-top-left-radius: 0;
+  background-color: beige;
+  max-width: 86%;
+  position: relative;
+  word-wrap: break-word;
+  top: 15px;
 }
 
+.assistantContent {
+  width: 100%;
+}
+
+.paragraph {
+  margin: 0 0 12px 0;
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.textLine {
+  line-height: 1.5;
+  margin: 4px 0;
+}
+
+.textContent {
+  width: 100%;
+}
+
+/* Code block styling */
+.codeBlock {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 6px;
+  margin: 10px 0;
+  position: relative;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+.codeLanguage {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom: 1px solid #444;
+}
+
+.codeContent {
+  padding: 12px;
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.codeCopyIcon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #6c757d;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px;
+  transition: all 0.2s ease;
+}
+
+.codeCopyIcon:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Copy icons */
 .AssistantCopyIcon, .UserCopyIcon {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .AssistantCopyIcon {
-    color: var(--navColor1);
-    float: right;
+  color: var(--navColor1);
+  float: right;
 }
 
 .UserCopyIcon {
-    margin-top: 8px;
-    color: beige;
-    float: left;
+  margin-top: 8px;
+  color: beige;
+  float: left;
 }
 
+/* User message styling */
 .User {
-    color: black;
-    padding: 8px;
-    border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
-    border-top-right-radius: 0;
-    background-color: var(--navColor1);
-    max-width: 75%;
-    position: relative;
-    word-wrap: break-word;
-    top: 15px;
-    box-sizing: border-box;
+  color: black;
+  padding: 8px;
+  border-radius: 8px;
+  border-top-right-radius: 0;
+  background-color: var(--navColor1);
+  max-width: 75%;
+  position: relative;
+  word-wrap: break-word;
+  top: 15px;
+  box-sizing: border-box;
 }
 
-/* @media (max-width: 900) {
-    .assistantOuter, .userOutter {
-        font-size: .9rem;
-    }
-} */
+.userContent {
+  white-space: pre-wrap;
+}
+
+.userContent p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.userContent br {
+  display: block;
+  content: "";
+  margin-top: 8px;
+}
+
+/* Scroll to bottom button */
+.scrollToBottom {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  background-color: var(--navColor1);
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.scrollToBottomVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .assistantOuter, .userOutter {
+    font-size: 0.9rem;
+  }
+  
+  .codeBlock {
+    font-size: 0.8rem;
+  }
+}

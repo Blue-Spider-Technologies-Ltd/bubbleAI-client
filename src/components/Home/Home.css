@@ -43,13 +43,23 @@
 .chat-ex {
     box-sizing: border-box;
     width: 100vw;
-    height: 95vh;
+    height: 90vh;
     padding-right: 0;
     padding-top: 3.5rem;
     padding-bottom: 3%;
     overflow-y: scroll;
     overflow-x: hidden;
-    bottom: 0
+    bottom: 0;
+    scroll-behavior: smooth;
+}
+
+.loading-more-messages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    margin-top: 10px;
+    width: 100%;
 }
 
 .chatbg-overlay {
