@@ -59,7 +59,6 @@ const AskMe = () => {
   const [aiSuggestions, setAiSuggestions] = useState([])
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
-  const [audioToSend, setAudioToSend] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioTranscribed, setAudioTranscribed] = useState(false)
   const [transcribing, setTranscribing] = useState(false)
