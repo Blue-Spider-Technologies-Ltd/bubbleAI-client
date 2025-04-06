@@ -16,7 +16,7 @@ import { Assistant, User, ScrollToBottom } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots, Oval } from 'react-loader-spinner'
 import { BiMenuAltLeft } from "react-icons/bi";
 import { BiMenuAltRight } from "react-icons/bi";
-import { FaCircleArrowUp } from "react-icons/fa6";
+import { FaArrowUp } from "react-icons/fa6";
 import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { errorAnimation, successMiniAnimation, checkAuthenticatedUser, isIOSStandalonePWA } from "../../utils/client-functions";
@@ -675,7 +675,7 @@ const AskMe = () => {
             </div>
 
             <div className="ask-me-form">
-              <Grid container>
+              {/* <Grid container>
                 {recording ? (
                   <Grid item xs={10} sx={{display: 'flex', justifyContent: 'center'}}>
                     {renderLineWaves()}
@@ -758,39 +758,97 @@ const AskMe = () => {
                     );
                   })()}
                 </Grid>
+              </Grid> */}
+              <Grid container sx={{ position: 'relative' }}>
+                {recording ? (
+                  <Grid container>
+                    <Grid item xs={10} sx={{ display: 'flex', justifyContent: 'center', height: "100px" }}>
+                      {renderLineWaves()} 
+                    </Grid>
+                    <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <StopIcon sx={{ color: 'rgb(216, 7, 7)', fontSize: '2.2em', cursor: 'pointer'}} onClick={handleRecordAudio} />
+                    </Grid>
+                  </Grid>
 
-                {/* <Grid
-                    item
-                    xs={1}
-                    sx={{ marginTop: screenWidth > 900 ? "5px" : "-2px", marginLeft: "-5px"}}
-                >
-                  {audioBlob ? (
-                    <ButtonSubmitBlack type="button" width="90%" onClick={() => setAudioBlob(null)}>
-                      <CancelIcon />
-                    </ButtonSubmitBlack>
-                  ) : (
-                    <ButtonSubmitBlack type="button" width="90%" onClick={handleRecordAudio}>
-                      {recording ? <StopIcon sx={{color: 'rgb(216, 7, 7)'}} /> : <MicIcon />}
-                    </ButtonSubmitBlack>
-                  )}
-                </Grid>
-
-                <Grid
-                    item
-                    xs={1}
-                    sx={{marginTop: screenWidth > 900 ? "5px" : "-2px" }}
-                >
-                    <ButtonSubmitBlack type="button" onClick={audioBlob ? handleSendAudio : handleAskMeAnything}>
-                        {transcribing ? 
-                          <Oval
-                            visible={true}
-                            height="20"
-                            width="20"
-                            color="#3E8F93"
-                            ariaLabel="oval-loading"
-                          /> : <FaCircleArrowUp style={{color:"#56A8AC", fontSize: '5em'}} /> }
-                    </ButtonSubmitBlack>
-                </Grid> */}
+                ) : audioBlob ? (
+                  <Grid container>
+                    <Grid item xs={10}>
+                      <audio controls style={{ width: "100%", marginTop: screenWidth > 900 ? '15px' : "5px", marginLeft: '10px' }}>
+                        <source src={URL.createObjectURL(audioBlob)} type="audio/mp3" style={{ height: "50px" }} />
+                      </audio>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <ButtonSubmitBlack onClick={handleSendAudio}>
+                        <FaArrowUp style={{ color: "#3E8F93", fontSize: '2.2em', cursor: 'pointer' }} />
+                      </ButtonSubmitBlack>
+                      <ButtonSubmitBlack onClick={() => setAudioBlob(null)}>
+                        <CancelIcon sx={{ color: "rgb(216, 7, 7)", fontSize: '1.8em', cursor: 'pointer' }} />
+                      </ButtonSubmitBlack>
+                    </Grid>
+                  </Grid>
+                ) : (
+                  <>
+                    <AuthInput
+                      name="askMe"
+                      value={askMeVal}
+                      label="Ask a Question..."
+                      placeholder="Ask a Question..."
+                      multiline={true}
+                      inputGridSm={12}
+                      mt={1}
+                      rows={4}
+                      maxRows={6}
+                      required={true}
+                      onKeyDown={handleKeyPress}
+                      onChange={handleValChange}
+                      onFocus={handleFocus}
+                      sx={{
+                        '& .MuiInputBase-root': {
+                          paddingRight: '50px' // Make space for the button
+                        }
+                      }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      right: '7px',
+                      bottom: '2.5rem',
+                      zIndex: 1
+                    }}>
+                      {(() => {
+                        if (askMeVal) {
+                          return (
+                            <ButtonSubmitBlack 
+                              type="button" 
+                              onClick={handleAskMeAnything}
+                            >
+                              <FaArrowUp style={{ color: "#3E8F93", fontSize: '2.2em' }} />
+                            </ButtonSubmitBlack>
+                          );
+                        }
+                    
+                        
+                        return (
+                          <ButtonSubmitBlack 
+                            type="button" 
+                            onClick={handleRecordAudio}
+                          >
+                            {transcribing ? (
+                              <Oval
+                                visible={true}
+                                height="30"
+                                width="30"
+                                color="#3E8F93"
+                                ariaLabel="oval-loading"
+                              />
+                            ) : (
+                              <MicIcon sx={{ fontSize: '2.2em', color: '#3E8F93' }} />
+                            )}
+                          </ButtonSubmitBlack>
+                        );
+                      })()}
+                    </div>
+                  </>
+                )}
               </Grid>
             </div>
         </div>

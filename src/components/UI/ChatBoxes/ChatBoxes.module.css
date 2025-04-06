@@ -23,7 +23,7 @@
   border-radius: 8px;
   border-top-left-radius: 0;
   background-color: beige;
-  max-width: 86%;
+  max-width: 90%;
   position: relative;
   word-wrap: break-word;
   top: 15px;
@@ -144,7 +144,7 @@
 /* Scroll to bottom button */
 .scrollToBottom {
   position: fixed;
-  bottom: 100px;
+  bottom: 150px;
   right: 20px;
   background-color: var(--navColor1);
   color: white;
