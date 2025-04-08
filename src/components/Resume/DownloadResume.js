@@ -468,9 +468,15 @@ const DownloadResume = () => {
 
                 <div className="BodyWrapper" onClick={() => setAuthMenuOpen(false)}>
                     <div className="BuildNavigator">
-                        <div><span>1</span>Customise</div>
-                        <div><span>2</span>Preview</div>
-                        <div className="ActiveNav"><span>3</span>Download</div>
+                        <div onClick={() => navigate("/user/dashboard/resume")}>
+                            <span>1</span>Customise
+                        </div>
+                        <div className="ActiveNav" onClick={() => navigate("/user/dashboard/resume?preview")}>
+                            <span>2</span>Preview
+                        </div>
+                        <div className="ActiveNav">
+                            <span>3</span>Download
+                        </div>
                     </div>
                     <form>
                         <div className='error'>{error}</div>

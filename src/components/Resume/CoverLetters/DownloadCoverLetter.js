@@ -7,7 +7,7 @@ import Alert from '@mui/material/Alert';
 // import ProtectedContent from "../../UI/ProtectedContent/ProtectedContent";
 import { useConfirm } from "material-ui-confirm";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
+import { ButtonSubmitGreen, ButtonThin } from '../../UI/Buttons/Buttons';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import "react-multi-carousel/lib/styles.css";
 import { errorAnimation, successMiniAnimation } from "../../../utils/client-functions";
@@ -18,6 +18,7 @@ import CLEuroPass from './CLEuroPass';
 import CLAuckland from './CLAuckland';
 import CLBubbleFish from './CLBubbleFish';
 import avatarImg from '../../../images/avatar.png'
+import { IoReloadCircleSharp } from "react-icons/io5";
 const screenWidth = window.innerWidth
 
 
@@ -164,7 +165,17 @@ const DownloadCoverLetter = () => {
                         <div className="Segment">
                             <h4>View and Download</h4>
                             <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                                <Alert sx={{padding: '0 5px', width: 'auto', margin: '0 auto', fontSize: '.7rem'}} severity="warning">Reload this page if your cover letter does not display in 10 seconds.</Alert>
+
+                                <ButtonThin
+                                    fontSize='.6rem' 
+                                    border='2px solid #F8E231' 
+                                    height='25px' 
+                                    color='black'
+                                    onClick={() => global.location.reload()}
+                                >
+                                    <IoReloadCircleSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Tap here if letter does not display in 10 seconds.
+                                </ButtonThin>
+                        
                             </div>
                             
                             <div id="ComponentRef" ref={componentRef} className={resumeCss.ResponsivePrintView}>

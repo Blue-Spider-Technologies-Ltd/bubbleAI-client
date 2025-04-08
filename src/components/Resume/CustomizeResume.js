@@ -1111,10 +1111,10 @@ const CustomizeResume = () => {
             <div className="ActiveNav">
               <span>1</span>Customise
             </div>
-            <div>
+            <div onClick={() => navigate("/user/dashboard/resume?preview")}>
               <span>2</span>Preview
             </div>
-            <div>
+            <div onClick={() => navigate("/user/dashboard/resume?download")}>
               <span>3</span>Download
             </div>
           </div>

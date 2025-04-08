@@ -486,13 +486,13 @@ const PreviewResume = () => {
 
           <div className="BodyWrapper">
             <div className="BuildNavigator">
-              <div>
+              <div onClick={() => navigate("/user/dashboard/resume")}>
                 <span>1</span>Customise
               </div>
               <div className="ActiveNav">
                 <span>2</span>Preview
               </div>
-              <div>
+              <div onClick={() => navigate("/user/dashboard/resume?download")}>
                 <span>3</span>Download
               </div>
             </div>
