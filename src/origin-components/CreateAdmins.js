@@ -119,7 +119,7 @@ const CreateAdmins = () => {
             }
 
         } catch (error) {
-            errorSetter(error?.response?.data?.message)
+            errorSetter(error?.response?.data?.error)
             dispatch(setFetching(false))
         }
 

@@ -83,7 +83,7 @@ const Verification = () => {
 
         } catch (error) {
             setLoading(false)
-            errorSetter(error.response.data.message)
+            errorSetter(error?.response?.data?.error)
         }
 
     }

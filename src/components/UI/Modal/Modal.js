@@ -618,7 +618,7 @@ export const CheckoutSummaryModal = () => {
         } catch (error) {
             setCouponCode("")
             setLoading(false) 
-            return errorSetter(error.response.data.message)
+            return errorSetter(error?.response?.data?.error)
         }
 
     }

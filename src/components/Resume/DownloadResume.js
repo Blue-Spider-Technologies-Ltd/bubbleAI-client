@@ -471,7 +471,7 @@ const DownloadResume = () => {
                         <div onClick={() => navigate("/user/dashboard/resume")}>
                             <span>1</span>Customise
                         </div>
-                        <div className="ActiveNav" onClick={() => navigate("/user/dashboard/resume?preview")}>
+                        <div onClick={() => navigate("/user/dashboard/resume?preview")}>
                             <span>2</span>Preview
                         </div>
                         <div className="ActiveNav">
@@ -482,7 +482,7 @@ const DownloadResume = () => {
                         <div className='error'>{error}</div>
                         <div className="success-mini">{successMini}</div>
                         <div className='explanation-points'>
-                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="error">MOBILE DETECTED: Allow browser pop-ups to allow CV download. If you do not, you will lose your download.</Alert>}
+                            {screenWidth < 900 && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="info">MOBILE DETECTED: Allow browser pop-ups to allow CV download. If you do not, you will lose your download.</Alert>}
                             {resumeSubDuration !=="Per Week" && resumeSubDuration !== "Per Month" && <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Click Download only when you are sure to download as action is not reversible for non-premuim users</Alert>}
                         </div>
                         <div className="Segment">

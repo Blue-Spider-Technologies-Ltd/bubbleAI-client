@@ -90,14 +90,14 @@ const Login = () => {
                 navigate('/')
             }
         } catch (error) {
-            if (error.response.data.message === "Unverified User") {
+            if (error?.response.data.error === "Unverified User") {
                 errorSetter("Unverified User, Redirecting you to verify");
                 dispatch(setEmail(error?.response?.data?.email));
                 setTimeout(() => {
                     navigate("/verify");
                 }, 5000);
             } else {
-                errorSetter(error?.response?.data?.message);
+                errorSetter(error?.response?.data?.error);
             }
         }
         setLoading(false);
@@ -121,7 +121,7 @@ const Login = () => {
 
         } catch (error) {
             setLoading(false)
-            errorSetter(error.response.data.message);
+            errorSetter(error?.response?.data?.error);
         }
 
     }

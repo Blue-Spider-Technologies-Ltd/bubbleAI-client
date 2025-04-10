@@ -548,7 +548,7 @@ const AskMe = () => {
         return
       } catch (error) {
         dispatch(setFetching(false))
-        errorSetter(error?.response?.data?.message);
+        errorSetter(error?.response?.data?.error);
       }
     }
   }
