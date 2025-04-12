@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
 import AuthInput from "../UI/Input/AuthInputs";
-import { ButtonSubmitBlack } from "../UI/Buttons/Buttons"
+import { ButtonSubmitBlack, ButtonTransparentSquare } from "../UI/Buttons/Buttons"
 import { useSelector, useDispatch } from "react-redux";
 import { setMessage, deleteLastMessage, setError, setSuccessMini, setMessages, setAllMessagesArray, setFetching } from "../../redux/states";
 import { Assistant, User, ScrollToBottom } from "../UI/ChatBoxes/ChatBoxes";
@@ -794,42 +794,49 @@ const AskMe = () => {
                       placeholder="Ask a Question..."
                       multiline={true}
                       inputGridSm={12}
+                      askMe={true}
                       mt={1}
                       rows={4}
-                      maxRows={6}
+                      mb={5}
+                      maxRows={5}
                       required={true}
                       onKeyDown={handleKeyPress}
                       onChange={handleValChange}
                       onFocus={handleFocus}
-                      sx={{
-                        '& .MuiInputBase-root': {
-                          paddingRight: '50px' // Make space for the button
-                        }
-                      }}
                     />
                     <div style={{
                       position: 'absolute',
-                      right: '7px',
-                      bottom: '2.5rem',
+                      right: '10px',
+                      bottom: '3rem',
                       zIndex: 1
                     }}>
                       {(() => {
                         if (askMeVal) {
                           return (
-                            <ButtonSubmitBlack 
+                            <ButtonTransparentSquare 
                               type="button" 
                               onClick={handleAskMeAnything}
+                              color=""
+                              width="50px"
+                              height="50px"
+                              bgColor="#f3f0f15c"
+                              borderRadius="50%"
                             >
                               <FaArrowUp style={{ color: "#3E8F93", fontSize: '2.2em' }} />
-                            </ButtonSubmitBlack>
+                            </ButtonTransparentSquare>
                           );
                         }
                     
                         
                         return (
-                          <ButtonSubmitBlack 
+                          <ButtonTransparentSquare 
                             type="button" 
                             onClick={handleRecordAudio}
+                            color=""
+                            width="50px"
+                            height="50px"
+                            bgColor="#f3f0f15c"
+                            borderRadius="50%"
                           >
                             {transcribing ? (
                               <Oval
@@ -842,7 +849,7 @@ const AskMe = () => {
                             ) : (
                               <MicIcon sx={{ fontSize: '2.2em', color: '#3E8F93' }} />
                             )}
-                          </ButtonSubmitBlack>
+                          </ButtonTransparentSquare>
                         );
                       })()}
                     </div>

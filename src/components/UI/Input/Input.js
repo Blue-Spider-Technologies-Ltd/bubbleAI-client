@@ -11,6 +11,8 @@ const rootStyles = {
         backgroundColor: "#F5F5F5",
         borderRadius: "50px",
         height: ".7rem",
+        border: "none",
+        outline: "none",
     },
     "& .MuiInputLabel-root": {
         color: "#14225188",
@@ -18,7 +20,8 @@ const rootStyles = {
     },
     "& .MuiOutlinedInput-root": {
         borderRadius: "50px",
-        border: "1px solid #F5F5F5"
+        border: "none",
+        outline: "none",
     },
     "&:hover .MuiOutlinedInput-input": {
         // color: "rgb(240, 240, 240)"
@@ -27,11 +30,13 @@ const rootStyles = {
         color: "#142251"
     },
     "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-        border: ".6px solid #c3c3c3"
+        border: "none",
+        outline: "none",
     },
     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
         color: "#142251",
-        border: ".6px solid #c3c3c3"
+        border: "none",
+        outline: "none",
     },
     "& .MuiInputLabel-root.Mui-focused": {
         //Edits the Form Label when cusor is focused
@@ -42,11 +47,10 @@ const rootStyles = {
     },
     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
         border: "none",
+        outline: "none",
         color: "white"
     }
 };
-
-
 
 export const Input = props => {
     const [showPassword, setShowPassword] = useState(false);
@@ -64,23 +68,50 @@ export const Input = props => {
                     label={props.label}
                     multiline
                     rows={4}
-                    sx={rootStyles} 
+                    sx={{
+                        ...rootStyles,
+                        "& .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                            outline: "none",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                            outline: "none",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                            outline: "none",
+                        }
+                    }}
                     onChange={props.onChange}
                     value={props.value}
                     autoComplete="off"
                     required
                 />
             :
-
                 props.inputType === "password" ?
                     <FormControl variant="outlined" sx={rootStyles} required>
-                        
                         <OutlinedInput
                             id={props.placeholder}
                             type={showPassword ? 'text' : 'password'}
                             onChange={props.onChange}
                             onFocus={props.onFocus}
                             onBlur={props.onBlur}
+                            sx={{
+                                ...rootStyles,
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                    outline: "none",
+                                },
+                                "&:hover .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                    outline: "none",
+                                },
+                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                    outline: "none",
+                                }
+                            }}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -102,7 +133,21 @@ export const Input = props => {
                         id={"outlined-basic" + props.label + props.placeholder}
                         placeholder={props.placeholder} 
                         variant="outlined" 
-                        sx={rootStyles}
+                        sx={{
+                            ...rootStyles,
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                border: "none",
+                                outline: "none",
+                            },
+                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                                border: "none",
+                                outline: "none",
+                            },
+                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                border: "none",
+                                outline: "none",
+                            }
+                        }}
                         type={props.inputType}
                         width={props.width}
                         onChange={props.onChange}
@@ -110,7 +155,6 @@ export const Input = props => {
                         value={props.value}
                         disabled={props.disabled}
                     />
-                
             }
         </Grid>
     )

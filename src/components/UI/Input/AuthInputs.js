@@ -22,12 +22,6 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
-  
-
-const screenWidth = window.innerWidth
-
-
-
 
 const AuthInput = props => {
     const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +34,6 @@ const AuthInput = props => {
     const textFieldStyles = {
         width: '100% !important',
         margin: '0 auto',
-        borderRadius: "50px",
         fontSize: "16px",
         "& .MuiOutlinedInput-input": {
             backgroundColor: "#F5F5F5",
@@ -56,23 +49,18 @@ const AuthInput = props => {
         },
         "& .MuiOutlinedInput-root": {
             borderRadius: "50px",
-            border: "1px solid #F5F5F5"
-        },
-        "&:hover .MuiOutlinedInput-input": {
-            // color: "rgb(240, 240, 240)"
-        },
-        "&:hover .MuiInputLabel-root": {
-            //color: "#142251",
+            border: "none",
+            outline: "none"
         },
         "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            border: ".6px solid #c3c3c3"
+            border: ".6px solid #c3c3c3",
+            outline: "none"
         },
         "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
+            border: ".6px solid #c3c3c3",
             color: "#142251",
-            border: ".6px solid #c3c3c3"
         },
         "& .MuiInputLabel-root.Mui-focused": {
-            //Edits the Form Label when cusor is focused
             color: "#000",
             borderRadius: '4px',
             padding: '2px 10px',
@@ -80,10 +68,10 @@ const AuthInput = props => {
             fontSize: '16px',
             fontWeight: '600',
         },
-        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        "& .MuiOutlinedInput-notchedOutline": {
             border: "none",
-            color: "white"
-        }
+            outline: "none",
+        },
     };
 
     const textareaStyles = {
@@ -93,6 +81,9 @@ const AuthInput = props => {
         fontSize: "16px",
         backgroundColor: "#F5F5F5",
         padding: ".35rem",
+        paddingRight: props.askMe ? "3rem" : ".35rem",
+        border: "none",
+        outline: "none",
         "&:hover": {
             border: "none"
         },
@@ -111,11 +102,10 @@ const AuthInput = props => {
             color: '#56A8AC'
         },
         '& .MuiTypography-root': {
-          fontSize: '.85rem', // Example: Change label font weight
+          fontSize: '.85rem',
           lineHeight: '.85'
         },
     };
-    
 
     return (
         <Grid item md={props.inputGrid} inputref={props.inputRef} onKeyDown={props.onKeyDown} xs={props.inputGridSm} px={1} mt={props.mt} mb={props.mb} sx={{boxSizing: "border-box"}}>
@@ -124,7 +114,6 @@ const AuthInput = props => {
                     id={props.id}
                     label={props.label}
                     placeholder={props.placeholder}
-                    // rows={props.rows}
                     minRows={props.rows}
                     maxRows={props.maxRows}
                     style={textareaStyles} 
@@ -164,6 +153,17 @@ const AuthInput = props => {
                         onChange={props.onChange}
                         value={props.value}
                         onFocus={props.onFocus}
+                        sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                border: "none" // Added to remove border
+                            },
+                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                                border: "none" // Added to remove border on hover
+                            },
+                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                border: "none" // Added to remove border on focus
+                            }
+                        }}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
@@ -207,6 +207,17 @@ const AuthInput = props => {
                         onChange={props.onChange}
                         name={props.name}
                         value={props.value}
+                        sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                border: "none"
+                            },
+                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                                border: "none"
+                            },
+                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                border: "none"
+                            }
+                        }}
                     >
                         <MenuItem >
                             <em>{props.label}</em>
@@ -227,9 +238,20 @@ const AuthInput = props => {
                         onChange={props.onChange}
                         name={props.name}
                         value={props.value}
+                        sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                border: "none"
+                            },
+                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                                border: "none"
+                            },
+                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                border: "none"
+                            }
+                        }}
                         MenuProps={{
                             style: {
-                                zIndex: 1000000, // Increase the zIndex value to make it appear above all modals
+                                zIndex: 1000000,
                             }
                         }}
                     >
@@ -258,13 +280,19 @@ const AuthInput = props => {
             props.inputType === "search" ?
                 <Paper
                     component="form"
-                    sx={{display: props.hidden ? 'none' : 'flex', alignItems: 'center', borderRadius: '50px', padding: '0 10px'}}
+                    sx={{display: props.hidden ? 'none' : 'flex', alignItems: 'center', borderRadius: '50px', padding: '0 10px', border: "none"}} // Added border: "none"
                 >
                     <InputBase
-                        // sx={{ ml: 1, flex: 1 }}
                         placeholder={props.placeholder}
                         inputProps={{ 'aria-label': props.placeholder }}
-                        sx={textFieldStyles}
+                        sx={{
+                            ...textFieldStyles,
+                            border: "none", // Added to remove border
+                            "&:focus": {
+                                border: "none",
+                                outline: "none"
+                            }
+                        }}
                         value={props.value}
                         onChange={props.onChange}
                     />
