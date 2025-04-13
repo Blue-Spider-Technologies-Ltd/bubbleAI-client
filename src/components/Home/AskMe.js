@@ -24,20 +24,7 @@ import { errorAnimation, successMiniAnimation, checkAuthenticatedUser, isIOSStan
 
 const screenWidth = window.innerWidth
 
-const suggestionOne = {
-      title: "Generate follow-up email",
-      description: `Generate a professional follow-up email to a recruiter using the following details: Recruiter's Name: [Recruiter's Name here], Recruiter's Email: [Recruiter's Email Address here], My full name: [Your Full Name here], Job Title: [The Job Title here], Date of application or interview: [Date of your application or interview], Reason for the follow-up: [Reason for Follow-Up], Specific questions to ask (optional): [Questions], Desired tone of the email: [professional]. Please generate the email based on the provided details`
-}
 
-const suggestionTwo = {
-  title: "Job Interview Preparation",
-  description: "You are a Job Interview preparation coach. Coach me on how to prepare and ace an interview with [COMPANY NAME HERE] that are in the [INDUSTRY NAME e.g HOSPITALITY] for the role of [PLACE ROLE HERE], given that the specific requirements for the role are [COPY AND PASTE REQUIREMENTS HERE]. After that, give me 10 possible interview questions that might be asked for this role and their best possible answers."
-}
-
-const suggestionThree = {
-  title: "Create Video Content",
-  description: "You are an expert content creator at a business development firm, create a social media video script of 1 minute 30 seconds on the importance of digital marketing with catchy illustrations"
-}
 
 
 const AskMe = () => {
@@ -63,6 +50,26 @@ const AskMe = () => {
   const [audioTranscribed, setAudioTranscribed] = useState(false)
   const [transcribing, setTranscribing] = useState(false)
   const [prepCalled, setPrepCalled] = useState(false)
+
+  const createVidContent = () => {
+    setSuggestionDisplay(false)
+    setAskMeVal("You are an expert content creator at a business development firm, create a social media video script of 1 minute 30 seconds on the importance of digital marketing with catchy illustrations")
+  }
+
+  const suggestionOne = {
+    title: "I want a Job",
+    click: () => navigate("/user/dashboard/job-hub"),
+  }
+  
+  const suggestionTwo = {
+    title: "Create Resume",
+    click: () => navigate("/user/dashboard/resume"),
+  }
+  
+  const suggestionThree = {
+    title: "Create Video Content",
+    click: createVidContent
+  }
 
 
   const isEffectExecuted = useRef(false);
@@ -643,17 +650,14 @@ const AskMe = () => {
                     <span style={{color: "white"}}>Read the query in the input field (edit if necessary) and click the send icon to generate Cover Letter</span>
                   ) : (
                     <div>
-                      <h5>Suggestions</h5>
+                      <p style={{color: "white"}}>Hi, I am <strong>Bubble Ai</strong>. How can I assist you today?</p>
 
                       {aiSuggestions.map((suggestion, index) => {
                         return (
                           <button 
                             key={index}
                             className="suggestion-buttons" 
-                            onClick={() => {
-                              setSuggestionDisplay(false)
-                              setAskMeVal(suggestion.description)}
-                            }
+                            onClick={suggestion.click}
                           >
                             {suggestion.title}
                           </button>
