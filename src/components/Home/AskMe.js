@@ -495,7 +495,7 @@ const AskMe = () => {
               };
               mediaRecorder.onstop = () => {
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                const blobType = isIOS ? 'audio/wav' : 'audio/mp3';
+                const blobType = isIOS ? 'audio/aac' : 'audio/mp3';
                 const audioBlob = new Blob(audioChunks, { type: blobType });
                 setAudioBlob(audioBlob);
               };
@@ -532,7 +532,7 @@ const AskMe = () => {
       const formData = new FormData();
       // Detect iOS and adjust file extension
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      const fileName = isIOS ? 'audio.wav' : 'audio.mp3';
+      const fileName = isIOS ? 'audio.m4a' : 'audio.mp3';
       
       // Append the blob with the correct filename
       formData.append('audio', audioBlob, fileName);
@@ -542,7 +542,7 @@ const AskMe = () => {
             setAskMeVal(response.data)
             setAudioTranscribed(true)
             setMediaRecorder(null);
-            handleAskMeAnything()
+            ///check use effect hook that depends on audioTranscribed to call handleAskMeAnything and other dependent functions
           })
           .catch(error => {
             setTranscribing(false)
