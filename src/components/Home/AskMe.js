@@ -483,74 +483,73 @@ const AskMe = () => {
 
   
   const handleRecordAudio = () => {
-    setSuggestionDisplay(false)
+    setSuggestionDisplay(false);
     if (!recording) {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      if (navigator.mediaDevices?.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ audio: true })
           .then(stream => {
-              const mediaRecorder = new MediaRecorder(stream);
-              const audioChunks = [];
-              mediaRecorder.ondataavailable = (event) => {
-                audioChunks.push(event.data);
-              };
-              mediaRecorder.onstop = () => {
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                const blobType = isIOS ? 'audio/aac' : 'audio/mp3';
-                const audioBlob = new Blob(audioChunks, { type: blobType });
-                setAudioBlob(audioBlob);
-              };
-              mediaRecorder.start();
-              setRecording(true);
-              setMediaRecorder(mediaRecorder);
+            const mediaRecorder = new MediaRecorder(stream);
+            const audioChunks = [];
+            
+            mediaRecorder.ondataavailable = (event) => {
+              audioChunks.push(event.data);
+            };
+            
+            mediaRecorder.onstop = () => {
+              const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+              // iOS typically records in AAC (m4a), others default to webm/mp3
+              const blobType = isIOS ? 'audio/mp4' : 'audio/webm'; // Use 'audio/mp4' for AAC
+
+              const audioBlob = new Blob(audioChunks, { type: blobType });
+              setAudioBlob(audioBlob);
+            };
+            
+            mediaRecorder.start();
+            setRecording(true);
+            setMediaRecorder(mediaRecorder);
           })
           .catch(error => {
-            errorSetter('Error accessing microphone');
+            errorSetter('Microphone access denied');
           });
       } else {
-        errorSetter('Audio recording not supported on this browser');
+        errorSetter('Audio recording not supported');
       }
     } else {
-      // Stop recording
-      if (mediaRecorder) {
-        try {
-          mediaRecorder.stop();
-        } catch (error) {
-          errorSetter('Error stopping recording');
-        }
-      }
+      if (mediaRecorder) mediaRecorder.stop();
       setRecording(false);
-      // setMediaRecorder(null);
     }
   };
   
 
-  const handleSendAudio = () => {
-    if (audioBlob && mediaRecorder && mediaRecorder.state === 'inactive') {
-      setAudioBlob(null)
-      setTranscribing(true)
-      setIsTyping(true); // Set typing when sending audio
-      const formData = new FormData();
-      // Detect iOS and adjust file extension
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      const fileName = isIOS ? 'audio.m4a' : 'audio.mp3';
-      
-      // Append the blob with the correct filename
-      formData.append('audio', audioBlob, fileName);
-
-      axios.post('/transcript/transcribe-askme', formData)
-          .then(response => {
-            setAskMeVal(response.data)
-            setAudioTranscribed(true)
-            setMediaRecorder(null);
-            ///check use effect hook that depends on audioTranscribed to call handleAskMeAnything and other dependent functions
-          })
-          .catch(error => {
-            setTranscribing(false)
-            setIsTyping(false); // Turn off typing on error
-            errorSetter('Error transcribing audio:', error);
-          });
-    } else {
+  const handleSendAudio = async () => {
+    if (!audioBlob || !mediaRecorder || mediaRecorder.state !== 'inactive') {
       return errorSetter('No audio to send');
+    }
+  
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const fileName = isIOS ? 'audio.m4a' : 'audio.webm'; // .m4a for iOS, .webm for others
+
+    const formData = new FormData();
+    formData.append('audio', audioBlob, fileName);
+  
+    setAudioBlob(null);
+    setTranscribing(true);
+    setIsTyping(true);
+  
+    try {
+      const response = await axios.post('/transcript/transcribe-askme', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Required for file uploads
+        },
+      });
+      
+      setAskMeVal(response.data);
+      setAudioTranscribed(true);
+      setMediaRecorder(null);
+    } catch (error) {
+      setTranscribing(false);
+      setIsTyping(false);
+      errorSetter(`Transcription failed: ${error.response?.data?.error || 'Try again'}`);
     }
   };
 
