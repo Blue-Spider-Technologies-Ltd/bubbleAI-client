@@ -420,6 +420,7 @@ const PreviewResume = () => {
       interests: interests, //Array
       publications: publications, //Array
       languages: languages, //Array
+      seniority: seniority, //Object
     };
 
     try {

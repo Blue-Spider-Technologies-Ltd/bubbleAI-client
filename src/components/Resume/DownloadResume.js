@@ -321,7 +321,7 @@ const DownloadResume = () => {
         const completeResume = { ...resume, storageDetails }
         dispatch(setFetching(true));
         //set Resume for cover letter use
-        dispatch(setResume(resume));
+        dispatch(setResume(completeResume));
     
         try {
             const fileName = storageDetails.name + '.pdf';
