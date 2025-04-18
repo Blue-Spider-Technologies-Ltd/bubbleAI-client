@@ -1222,7 +1222,6 @@ const CustomizeResume = () => {
                       value={additionalInfo}
                       placeholder="[Optional] Tell me what to specifically add or remove or you can paste job requirements. E.g Certificate of Excellence, Awarded by Bubble Ai Foundation on 20th July 2024 OR Delete work history with Blanket Designs OR [Paste job description here] "
                       multiline={true}
-                      rows={3}
                       maxRows={5}
                       inputGridSm={12}
                       onChange={(event) => setAdditionalInfo(event.target.value)}

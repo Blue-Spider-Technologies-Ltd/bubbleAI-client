@@ -3,7 +3,6 @@ import resumeCss from '../Resume.module.css'
 import { setError, setFetching, setSuccessMini } from "../../../redux/states";
 import { pdf, PDFViewer, StyleSheet } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import Alert from '@mui/material/Alert';
 // import ProtectedContent from "../../UI/ProtectedContent/ProtectedContent";
 import { useConfirm } from "material-ui-confirm";
 import { useDispatch, useSelector } from "react-redux";

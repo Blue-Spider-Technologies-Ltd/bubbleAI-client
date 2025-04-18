@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import resumeCss from "./Resume.module.css";
 import { useNavigate } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
-import { Grid, Grid2 } from "@mui/material";
+import { Grid, Rating } from "@mui/material";
 import { errorAnimation } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setResume, setFetching, setError, setIsResumeSubbed } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonThin, ButtonTransparentSquare } from "../UI/Buttons/Buttons";
 import Alert from '@mui/material/Alert';
 import { IoIosUnlock } from "react-icons/io";
+import { TfiNewWindow } from "react-icons/tfi";
+import { GiGraduateCap } from "react-icons/gi";
 import { MdDeleteForever } from "react-icons/md";
 import { FaLongArrowAltUp } from "react-icons/fa";
 import { FaLongArrowAltDown } from "react-icons/fa";
@@ -93,6 +95,7 @@ const PreviewResume = () => {
   const [awardArray, setAwardArray] = useState([]);
   const [publications, setPublications] = useState([]);
   const [languages, setLanguages] = useState([]);
+  const [seniority, setSeniority] = useState({ level: 0 });
   const [isSubscribed, setIsSubscribed] = useState(true);
 
 
@@ -134,6 +137,7 @@ const PreviewResume = () => {
     setAwardArray(resume.awardArray && resume.awardArray);
     setPublications(resume.publications && resume.publications);
     setLanguages(resume.languages && resume.languages);
+    setSeniority(resume.seniority && resume.seniority);
     dispatch(setFetching(false));
   }, [dispatch, resume]);
 
@@ -502,6 +506,37 @@ const PreviewResume = () => {
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">On the job description field, make sure each point is separated by a semi colon (<b>;</b>) (if you decide to edit it) to enable proper formatting on the download page.</Alert>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Always read the generated resume carefully and make edits to imprint your personal touch.</Alert>
               </div>
+
+              {seniority && (
+                <div className="Segment">
+                  <h4>Your Resume Level</h4>
+                  <Alert severity="info">This segment will not be displayed on your final resume. It serves only as a mini guide to help grow your career quickly.</Alert>
+                    
+                    
+                      <Grid container>  
+
+                        <Grid item xs={12} md={4} p={2} >
+                          <div><strong>Level:</strong> </div> <div><Rating name="read-only" value={seniority.level} size="large" precision={1} readOnly /></div>   
+                        </Grid>
+
+                        <Grid item xs={12} md={4} p={2} >
+                          <div><strong>Description:</strong> </div> 
+                          <div style={{fontSize: ".8rem"}}>Based on my analysis of your certifications, work experience and education, your resume level is <strong>{seniority?.description}</strong>. This can be further <strong>improved on by</strong> gaining more certifications, courses, projects or volunteering for experience.</div>   
+                        </Grid>
+
+                        <Grid item xs={12} md={4} p={2} >
+                          <div><strong>Recommended Certification/Course:</strong> </div> 
+                          <div style={{fontSize: ".8rem", margin: "10px auto", display: "flex", alignItems: "center"}}>
+                            <div><GiGraduateCap style={{color: "#EE7B1C", fontSize: "1.3rem"}} /></div> &nbsp; &nbsp; <div><strong>{seniority?.courseRecommendation}</strong></div>
+                          </div>   
+
+                          {/* <ButtonThin onClick={() => {window.open(seniority?.courseLink, '_blank', 'noopener,noreferrer')}} width={'120px'} height='20px' color='#EE7B1C' border="2px solid #EE7B1C">
+                            View course &nbsp; &nbsp;<TfiNewWindow />
+                          </ButtonThin> */}
+                        </Grid>
+                      </Grid>
+                </div>
+              )}
               <div className="Segment">
                 <Grid container>
                   <Grid item md={2} >

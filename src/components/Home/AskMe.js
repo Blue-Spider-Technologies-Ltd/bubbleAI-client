@@ -31,6 +31,7 @@ const AskMe = () => {
   const { messages, error, successMini, allMessagesArray, user } = useSelector((state) => state.stateData);
   const dispatch = useDispatch();
   const chatBoxRef = useRef(null);
+  const prevScrollHeight = useRef(null);
   const navigate = useNavigate();
   const isAuth = localStorage?.getItem("token");
   const now = new Date().getTime();
@@ -50,6 +51,12 @@ const AskMe = () => {
   const [audioTranscribed, setAudioTranscribed] = useState(false)
   const [transcribing, setTranscribing] = useState(false)
   const [prepCalled, setPrepCalled] = useState(false)
+  const [isTyping, setIsTyping] = useState(false);
+    // State for batch loading and scroll button
+  const [displayedMessages, setDisplayedMessages] = useState([]);
+  const [batchSize] = useState(10); // Number of messages to load at once
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const createVidContent = () => {
     setSuggestionDisplay(false)
@@ -206,48 +213,39 @@ const AskMe = () => {
 
   }, [messages.length, prepCalled]);
 
-
-  // State for batch loading and scroll button
-  const [displayedMessages, setDisplayedMessages] = useState([]);
-  const [batchSize] = useState(10); // Number of messages to load at once
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [showScrollButton, setShowScrollButton] = useState(false);
-  
-  // Scroll to bottom function
+  // Scroll and message display logic
   const scrollToBottom = () => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   };
 
-  // Handle scroll events
   const handleScroll = () => {
     if (chatBoxRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = chatBoxRef.current;
-      
-      // Show button when scrolled up more than 300px from bottom
       const isScrolledUp = scrollHeight - scrollTop - clientHeight > 300;
       setShowScrollButton(isScrolledUp);
       
-      // Load more messages when scrolled near top
       if (scrollTop < 100 && messages.length > displayedMessages.length && !isLoadingMore) {
         loadMoreMessages();
       }
     }
   };
 
-  // Load more messages when scrolling up
   const loadMoreMessages = () => {
+    if (chatBoxRef.current) {
+      prevScrollHeight.current = chatBoxRef.current.scrollHeight - chatBoxRef.current.scrollTop;
+    }
+    
     setIsLoadingMore(true);
     
-    // Add a small delay to prevent rapid loading and show loading indicator
     setTimeout(() => {
       const currentLength = displayedMessages.length;
       const remainingMessages = messages.length - currentLength;
       
       if (remainingMessages > 0) {
         const loadCount = Math.min(batchSize, remainingMessages);
-        const startIndex = messages.length - currentLength - loadCount;
+        const startIndex = Math.max(0, messages.length - currentLength - loadCount);
         const endIndex = startIndex + loadCount;
         
         const newBatch = messages.slice(startIndex, endIndex);
@@ -258,7 +256,7 @@ const AskMe = () => {
     }, 300);
   };
 
-  // Initialize displayed messages with the most recent ones
+  // Initialize displayed messages
   useEffect(() => {
     if (messages.length > 0) {
       const initialCount = Math.min(batchSize, messages.length);
@@ -269,7 +267,7 @@ const AskMe = () => {
     }
   }, [messages, batchSize]);
 
-  // Add scroll event listener
+  // Scroll event listener
   useEffect(() => {
     const chatBoxElement = chatBoxRef.current;
     if (chatBoxElement) {
@@ -277,20 +275,28 @@ const AskMe = () => {
       return () => chatBoxElement.removeEventListener('scroll', handleScroll);
     }
   }, [messages, displayedMessages.length]);
-
-  // Scroll to bottom on component mount and new messages
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages.length]);
   
-  // Ensure scroll to bottom on component mount
+  // Scroll position management
   useEffect(() => {
-    
-    // Add a small delay to ensure all content is rendered before scrolling
+    if (chatBoxRef.current && prevScrollHeight.current && !isLoadingMore) {
+      const newScrollHeight = chatBoxRef.current.scrollHeight;
+      chatBoxRef.current.scrollTop = newScrollHeight - prevScrollHeight.current;
+      prevScrollHeight.current = null;
+    }
+  }, [displayedMessages, isLoadingMore]);
+
+  // Auto-scroll for new messages
+  useEffect(() => {
+    if (messages.length > displayedMessages.length && !isLoadingMore) {
+      scrollToBottom();
+    }
+  }, [messages.length, displayedMessages.length, isLoadingMore]);
+
+  // Initial scroll
+  useEffect(() => {
     const timeoutId = setTimeout(() => {
       scrollToBottom();
     }, 100);
-    
     return () => clearTimeout(timeoutId);
   }, []);
 
@@ -353,34 +359,38 @@ const AskMe = () => {
     }
     return lineWaves;
   };
-  
-  const chatExchange = displayedMessages.map((message, index) => {
-    const OverUseMessage = () => {
-      const overUseMessage = {
-        content: `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble" >Register here</a> or <a href="/popin" >Log in</a> to enjoy more for FREE`,
-      };
-    
-      return (
-        <div>
-          <span dangerouslySetInnerHTML={{ __html: overUseMessage.content }} />
-        </div>
-      );
-    };
-    const isAssistant = message.role === "assistant";
-    let contentTrim = message.content.trim()
-    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content
 
-    const content = isAssistant? (
-      <Assistant contentTrim={contentTrim === ""}>{contentTrim === "" ?        
-        <ThreeDots 
+  // Message rendering
+  const chatExchange = displayedMessages.map((message, index) => {
+    const OverUseMessage = () => (
+      <div>
+        <span dangerouslySetInnerHTML={{ __html: 
+          `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble">Register here</a> or <a href="/popin">Log in</a> to enjoy more for FREE` 
+        }} />
+      </div>
+    );
+    
+    const isAssistant = message.role === "assistant";
+    let contentTrim = message.content.trim();
+    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content;
+    
+    const showTyping = index === displayedMessages.length - 1 && 
+                      isAssistant && 
+                      contentTrim === "" && 
+                      isTyping;
+
+    const content = isAssistant ? (
+      <Assistant contentTrim={contentTrim === ""}>
+        {showTyping ?        
+          <ThreeDots 
             height="25" 
             width="25" 
             radius="9"
             color="#000" 
             ariaLabel="three-dots-loading"
             visible={true}
-        /> : assistantMessage
-    }
+          /> : assistantMessage
+        }
       </Assistant>
     ) : (
       <User>{message.content}</User>
@@ -395,6 +405,8 @@ const AskMe = () => {
       errorSetter("Empty question detected")
       return
     }
+    setIsTyping(true);
+
     const newMessage = {
       role: "user",
       content: askMeVal,
@@ -424,9 +436,11 @@ const AskMe = () => {
         //save ai response for auth user
         dispatch(deleteLastMessage());
         dispatch(setMessage(response.data));
+        setIsTyping(false);
         localStorage?.removeItem("UF76rOUFfVA6A87AJjhaf6bvaIYI9GHJFJHfgag0HFHJFAfgaHGA")
       } catch (error) {
         dispatch(deleteLastMessage());
+        setIsTyping(false);
         dispatch(setMessage(askMeErrorObj));
       }
     } else {
@@ -447,6 +461,7 @@ const AskMe = () => {
         dispatch(deleteLastMessage());
         dispatch(setMessage(overUseMessage));
         setAskMeVal("");
+        setIsTyping(false);
         return
       } else {
         //THIS BLOCK WORKS FOR unauthenticated users below 3 usage within the day
@@ -457,6 +472,7 @@ const AskMe = () => {
           dispatch(deleteLastMessage());
           dispatch(setMessage(response.data));
           localStorage.setItem("oats_3297", useIndicatorJson);
+          setIsTyping(false);
         } catch (error) {
           dispatch(deleteLastMessage());
           dispatch(setMessage(askMeErrorObj));
@@ -511,6 +527,7 @@ const AskMe = () => {
       const audio = audioBlob
       setAudioBlob(null)
       setTranscribing(true)
+      setIsTyping(true); // Set typing when sending audio
       const formData = new FormData();
       formData.append('audio', audio, 'audio.mp3');
 
@@ -523,6 +540,7 @@ const AskMe = () => {
           })
           .catch(error => {
             setTranscribing(false)
+            setIsTyping(false); // Turn off typing on error
             errorSetter('Error transcribing audio:', error);
           });
     } else {

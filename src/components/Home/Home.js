@@ -99,7 +99,6 @@ const Home = () => {
               <AuthInput
                 name="askMe"
                 label="Ask a Question..."
-                // placeholder="Free Job Interview Mock, Follow Up Emails etc..."
                 multiline={true}
                 inputGridSm={10}
                 rows={2}
