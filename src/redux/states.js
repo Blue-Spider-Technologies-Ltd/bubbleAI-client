@@ -17,7 +17,14 @@ const initialState = {
   fetching: false,
   showCheckout: false,
   resumeSubDuration: "",
-  isResumeSubbed: false
+  isResumeSubbed: false,
+  resumeServicesNumbers: {
+    resumeCreated: 0,
+    jobsApplied: 0,
+    coverLettersCreated: 0,
+    interviewMocks: 0,
+    followUpEmails: 0
+  },
 }
 
 export const stateSlice = createSlice({
@@ -90,6 +97,9 @@ export const stateSlice = createSlice({
     setIsResumeSubbed: (state, action) => {
       state.isResumeSubbed = action.payload;
     },
+    setResumeServicesNumbers: (state, action) => {
+      state.resumeServicesNumbers = action.payload;
+    },
   },
 })
 
@@ -113,7 +123,8 @@ export const {
   setTranscriptActivityStarted,
   setShowCheckout, 
   setResumeSubDuration,
-  setIsResumeSubbed
+  setIsResumeSubbed,
+  setResumeServicesNumbers
 } = stateSlice.actions
 
 export default stateSlice.reducer

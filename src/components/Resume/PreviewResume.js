@@ -5,7 +5,7 @@ import AuthInput from "../UI/Input/AuthInputs";
 import { Grid, Rating } from "@mui/material";
 import { errorAnimation } from "../../utils/client-functions";
 import { useSelector, useDispatch } from "react-redux";
-import { setResume, setFetching, setError, setIsResumeSubbed } from "../../redux/states";
+import { setResume, setFetching, setError, setIsResumeSubbed, setResumeServicesNumbers } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonThin, ButtonTransparentSquare } from "../UI/Buttons/Buttons";
 import Alert from '@mui/material/Alert';
 import { IoIosUnlock } from "react-icons/io";
@@ -63,7 +63,7 @@ const styles = {
 const PreviewResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, resume, error, showCheckout, isResumeSubbed } = useSelector((state) => state.stateData);
+  const { user, resume, error, showCheckout, isResumeSubbed, resumeServicesNumbers } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   // const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -153,6 +153,7 @@ const PreviewResume = () => {
       })
       .then((response) => {
         dispatch(setIsResumeSubbed(response.data?.resumeSubscriptions));
+        dispatch(setResumeServicesNumbers(response.data?.resumeNumbers));
       })
       .catch((error) => {
         dispatch(setIsResumeSubbed(false));
@@ -163,7 +164,6 @@ const PreviewResume = () => {
   }, []);
 
   useEffect(() => {
-    if (user.isFirstFreeUsed) {
       const handleScroll = () => {
         const scrollPosition = window.scrollY || window.pageYOffset;
         const viewHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -171,10 +171,15 @@ const PreviewResume = () => {
         const scrollMeter = screenWidth < 900 ? 0.7 : 0.5;
   
         if (scrollPosition > (scrollMeter * viewHeight)) {
-          if (!isResumeSubbed) {
+          if (user.isFirstFreeUsed && !isResumeSubbed) {
             errorSetter("Looks like you are not subscribed. Choose a plan to complete your CV");
             setIsSubscribed(false);
           } 
+          //limit for first time free users
+          if (!user.isFirstFreeUsed && resumeServicesNumbers.resumeCreated >= 3) {
+            errorSetter("You have reached the maximum number of free tier resumes. Please choose a plan to create more.");
+            setIsSubscribed(false);
+          }
           window.removeEventListener('scroll', handleScroll);
         }
       };
@@ -184,8 +189,8 @@ const PreviewResume = () => {
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
-    }
-  }, [user.isFirstFreeUsed, dispatch, isAuth, isResumeSubbed]);
+      
+  });
 
   
 
@@ -528,7 +533,23 @@ const PreviewResume = () => {
                         <Grid item xs={12} md={4} p={2} >
                           <div><strong>Recommended Certification/Course:</strong> </div> 
                           <div style={{fontSize: ".8rem", margin: "10px auto", display: "flex", alignItems: "center"}}>
-                            <div><GiGraduateCap style={{color: "#EE7B1C", fontSize: "1.3rem"}} /></div> &nbsp; &nbsp; <div><strong>{seniority?.courseRecommendation}</strong></div>
+                            <div>
+                              <GiGraduateCap style={{color: "#EE7B1C", fontSize: "1.3rem"}} />
+                            </div> &nbsp; &nbsp; 
+                            {(!isResumeSubbed || !user?.isFirstFreeUsed) ? (
+                              <div><strong>{seniority?.courseRecommendation}</strong></div>
+                            ) : (
+                              <ButtonThin 
+                                onClick={handleUnlockEdit} 
+                                width={'150px'} 
+                                height='20px' 
+                                color='#EE7B1C' 
+                                border="2px solid #EE7B1C"
+                              >
+                                Unlock Insights &nbsp; &nbsp;<IoIosUnlock />
+                              </ButtonThin>
+                            )}
+                            
                           </div>   
 
                           {/* <ButtonThin onClick={() => {window.open(seniority?.courseLink, '_blank', 'noopener,noreferrer')}} width={'120px'} height='20px' color='#EE7B1C' border="2px solid #EE7B1C">

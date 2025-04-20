@@ -96,6 +96,10 @@ const resumePricingDetails = [
                 available: false,
                 text: 'Auto Apply Agent'
             },
+            aiInsights: {
+                available: true,
+                text: 'Ai Resume Insights'
+            },
             recommendation: {
                 available: true,
                 text: '(One-time Resume)'
@@ -154,6 +158,10 @@ const resumePricingDetails = [
                 available: true,
                 text: 'Auto Apply Agent (20 Jobs)'
             },
+            aiInsights: {
+                available: true,
+                text: 'Ai Career Insights'
+            },
             recommendation: {
                 available: true,
                 text: 'Connect to Hottest Jobs this Week'
@@ -211,6 +219,10 @@ const resumePricingDetails = [
             autoApply: {
                 available: true,
                 text: 'Auto Apply Agent (Unlimited Apply)'
+            },
+            aiInsights: {
+                available: true,
+                text: 'Ai Career Insights'
             },
             recommendation: {
                 available: true,

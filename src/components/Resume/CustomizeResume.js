@@ -21,7 +21,8 @@ import {
   setError, 
   setResumeSubDuration,
   setIsResumeSubbed,
-  setHideCards 
+  setHideCards,
+  setResumeServicesNumbers
 } from "../../redux/states";
 import { ButtonSubmitGreen, ButtonCard } from "../UI/Buttons/Buttons";
 import axios from "axios";
@@ -51,7 +52,7 @@ const langLevelsArray = [
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, userResumesAll, error, successMini, isResumeSubbed, hideCards } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error, successMini, isResumeSubbed, hideCards, resumeServicesNumbers } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const dragDropRef = useRef();
   const [loading, setLoading] = useState(false);
@@ -167,7 +168,8 @@ const CustomizeResume = () => {
           profSummary,
           resumeSubscriptions,
           resumes, 
-          resumeTarget
+          resumeTarget,
+          resumeNumbers 
         } = response?.data?.user
 
         const percentTargetGained = Math.round(resumeTarget.achievedTarget/resumeTarget.setTarget * 100)
@@ -190,6 +192,7 @@ const CustomizeResume = () => {
         setSubDuration(resumeSubscriptions?.duration)
         dispatch(setIsResumeSubbed(resumeSubscriptions?.subscribed))
         dispatch(setResumeSubDuration(resumeSubscriptions?.duration))
+        dispatch(setResumeServicesNumbers(resumeNumbers))
         dispatch(setUser(response.data.user));
         if(successfulTargetAchievement) {
           openSuccessfulAchievement(true)

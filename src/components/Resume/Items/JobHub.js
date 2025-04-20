@@ -13,7 +13,7 @@ import {
     checkAuthenticatedUser,
     getOrdinalDate 
 } from "../../../utils/client-functions";
-import { setFetching, setError, setSuccessMini, setResumeSubDuration, setIsResumeSubbed } from "../../../redux/states";
+import { setFetching, setError, setSuccessMini, setResumeSubDuration, setIsResumeSubbed, setResumeServicesNumbers } from "../../../redux/states";
 import Alert from '@mui/material/Alert';
 import { Grid } from "@mui/material";
 import Box from '@mui/material/Box';
@@ -49,7 +49,8 @@ const JobHub = () => {
         successMini, 
         resumeSubDuration, 
         isResumeSubbed,
-        user 
+        user,
+        resumeServicesNumbers 
     } = useSelector((state) => state.stateData);
     const navigate = useNavigate();
     const isAuth = localStorage?.getItem("token");
@@ -71,6 +72,7 @@ const JobHub = () => {
     const [companyUrl, setCompanyUrl] = useState("");
     const [applicants, setApplicants] = useState("");
     const [successfulAchievement, openSuccessfulAchievement] = useState(false)
+    const [isFirstFreeUsed, setIsFirstFreeUsed] = useState(false)
     
 
 
@@ -273,9 +275,11 @@ const JobHub = () => {
                 const data = response?.data
 
                 dispatch(setResumeSubDuration(data?.subDuration));
+                dispatch(setResumeServicesNumbers(data?.resumeNumbers));
                 dispatch(setIsResumeSubbed(data?.resumeSub));
                 setJobs(data?.jobs)
                 setAllResumes(data.resumes)
+                setIsFirstFreeUsed(data.isFirstFreeUsed)
                 dispatch(setFetching(false));
     
             } catch (error) {
@@ -304,6 +308,13 @@ const JobHub = () => {
                 window.open('/pricing', '_blank')
             }, 5000);
         } else {
+            if (!isFirstFreeUsed && resumeServicesNumbers.resumeCreated >= 3) {
+                errorSetter("You have reached the maximum number of free tier resumes. Please choose a plan to create more.");
+                setTimeout(() => {
+                    window.open("/pricing", "_blank");
+                }, 5000);
+                return
+            }
             if(!description) {
                 confirm({
                     title: "Description Not Available For This Job",
@@ -350,10 +361,26 @@ const JobHub = () => {
                 window.open('/pricing', '_blank')
             }, 5000);
         } else {
+            //limit for first time free users
+            if (!isFirstFreeUsed && resumeServicesNumbers.jobsApplied >= 2) {
+                errorSetter("You have reached the maximum number of free tier Ai job applications. Please choose a plan to create more.");
+                setTimeout(() => {
+                    window.open("/pricing", "_blank");
+                }, 5000);
+                return
+            }
             if(!url) {
                 return errorSetter("Method not available for this job")
             }
-            window.open(url, '_blank')
+            try {
+                window.open(url, '_blank')
+                const response = await axios.get('/user/update-applied-jobs', {
+                    headers: {
+                        "x-access-token": isAuth,
+                    },
+                });
+            } catch (error) {    
+            }
         }
     }
 
@@ -408,111 +435,94 @@ const JobHub = () => {
 
 
     const handleGenerate = async () => {
+        switch (actionString) {
+            case "Cover Letter":
+                const date = getOrdinalDate()
+                const companyName = chosenJob?.company_name
+                const jobDesc = chosenJob?.description
+                const jobPosition = chosenJob?.title
+                const imgUrl = singleResume?.storageDetails?.imgUrl
+                const template = singleResume?.storageDetails?.template
 
-        if(!isResumeSubbed) {
-            errorSetter("Upgrade your subscription to access this feature")
-            if(!pricingOpened) {
+                localStorage?.removeItem("template")            
+                localStorage?.removeItem("imgUrl")
+                localStorage?.removeItem("resume")
+                localStorage?.removeItem("letter")
+                
+                const prompt = `You are the best and most professional cover letter writer in the world, 
+                    with 100% success rate from your cover letter writings. Write a stunning professional 
+                    cover letter using the following details: Job Position: ${jobPosition}, 
+                    Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${JSON.stringify(singleResume)}, 
+                    pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
+                    the basicInfo object of the resume; pick out the candidate's work history and all other elements 
+                    needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
+                    links or addressing or contact details or place holders e.g [Your Email] [Your Mobile] [Hiring Manager’s Name] to the cover letter. 
+                    Start with Date, then Dear Hiring Manager and return just the cover letter, with no explanations`
+                
+                try {
+                    dispatch(setFetching(true))
+                    let response = await axios.post("/cover-letter", { prompt }, {
+                        headers: {
+                            "x-access-token": isAuth,
+                        },
+                    });
+                    
+                    localStorage.setItem("template", template)            
+                    localStorage.setItem("resume", JSON.stringify(singleResume))            
+                    localStorage.setItem("imgUrl", imgUrl)
+                    localStorage.setItem("letter", response.data)
+                    dispatch(setFetching(false))
+                    successSetter("Your Cover Letter opens in a new tab in 3 seconds")
+                    //Navigate in a Cover Letter page
+                    setTimeout(() => {
+                        window.open("/cover-letter", "_blank");
+                    }, 3000);
+                } catch (error) {
+                    dispatch(setFetching(false))
+                    errorSetter("Failed to generate Cover Letter, Try again")
+                }
+
+                break;
+                
+            case "Email":
+                const emailPrompt = `Please help me draft a follow-up email regarding my 
+                    job application for the Job Title: ${chosenJob?.title} and Company Name: ${chosenJob?.company_name}. I would like the email to be professional and polite, 
+                    expressing my continued interest in the position and inquiring about the status of my application. 
+                    Additionally, using details from this resume string object: ${JSON.stringify(singleResume)} and the following job description: ${chosenJob?.description}, 
+                    please include a very brief reminder of my relevant skills or experiences that make me a strong candidate for this role. Thank you!`
+
+                localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", emailPrompt)
+                successSetter("Your Email opens in a new tab in 3 seconds")
+                //Navigate in a ask me page
                 setTimeout(() => {
-                    setPricingOpened(true)
-                    window.open('/pricing', '_blank')
-                }, 5000);
-            }
+                    window.open("/chat", "_blank");
+                }, 3000);
 
-        } else {
-                                
-            if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
-                return errorSetter("Upgrade to Per Week or Per Month")
-            }
-
-            switch (actionString) {
-                case "Cover Letter":
-                    const date = getOrdinalDate()
-                    const companyName = chosenJob?.company_name
-                    const jobDesc = chosenJob?.description
-                    const jobPosition = chosenJob?.title
-                    const imgUrl = singleResume?.storageDetails?.imgUrl
-                    const template = singleResume?.storageDetails?.template
+                break;
     
-                    localStorage?.removeItem("template")            
-                    localStorage?.removeItem("imgUrl")
-                    localStorage?.removeItem("resume")
-                    localStorage?.removeItem("letter")
-                    
-                    const prompt = `You are the best and most professional cover letter writer in the world, 
-                        with 100% success rate from your cover letter writings. Write a stunning professional 
-                        cover letter using the following details: Job Position: ${jobPosition}, 
-                        Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${JSON.stringify(singleResume)}, 
-                        pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
-                        the basicInfo object of the resume; pick out the candidate's work history and all other elements 
-                        needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
-                        links or addressing or contact details or place holders e.g [Your Email] [Your Mobile] [Hiring Manager’s Name] to the cover letter. 
-                        Start with Date, then Dear Hiring Manager and return just the cover letter, with no explanations`
-                    
-                    try {
-                        dispatch(setFetching(true))
-                        let response = await axios.post("/cover-letter", { prompt }, {
-                            headers: {
-                                "x-access-token": isAuth,
-                            },
-                        });
-                        
-                        localStorage.setItem("template", template)            
-                        localStorage.setItem("resume", JSON.stringify(singleResume))            
-                        localStorage.setItem("imgUrl", imgUrl)
-                        localStorage.setItem("letter", response.data)
-                        dispatch(setFetching(false))
-                        successSetter("Your Cover Letter opens in a new tab in 3 seconds")
-                        //Navigate in a Cover Letter page
-                        setTimeout(() => {
-                            window.open("/cover-letter", "_blank");
-                        }, 3000);
-                    } catch (error) {
-                        dispatch(setFetching(false))
-                        errorSetter("Failed to generate Cover Letter, Try again")
-                    }
+            case "Interview":
+                const interviewPrompt = `I am preparing for an upcoming job interview for the Job Title: ${chosenJob?.title}, Company Name: ${chosenJob?.company_name}, Job Description: ${chosenJob?.description} 
+                    and my resume used for the application is given here in string object form: ${JSON.stringify(singleResume)}. 
+                    Please provide a detailed and comprehensive guide that includes the following:
+                    Common Interview Questions: List 15 typical questions I might be asked in order of descending importance, along with their corresponding correct answer, exactly as I should nswer them, using all the details I have provided and those you can find on the given company.
+                    Company Research: Do a research on the company provided above, its culture, values, and recent news or achievements and feed me with all the info you can find on them.
+                    Role-Specific Preparation: Important skills and qualifications related to the job, and how I can demonstrate my expertise in these areas during the interview.
+                    Behavioral Questions: Examples of behavioral questions and the STAR (Situation, Task, Action, Result) method to structure my responses.
+                    Questions to Ask the Interviewer: Thoughtful questions I can ask at the end of the interview to show my interest and engagement.
+                    Body Language and Presentation: Tips on how to present myself confidently and effectively during the interview.
+                    Follow-Up Strategy: Guidance on how and when to follow up after the interview.
+                    Thank you for your help in preparing me for this important opportunity!`
 
-                    break;
-                    
-                case "Email":
-                    const emailPrompt = `Please help me draft a follow-up email regarding my 
-                        job application for the Job Title: ${chosenJob?.title} and Company Name: ${chosenJob?.company_name}. I would like the email to be professional and polite, 
-                        expressing my continued interest in the position and inquiring about the status of my application. 
-                        Additionally, using details from this resume string object: ${JSON.stringify(singleResume)} and the following job description: ${chosenJob?.description}, 
-                        please include a very brief reminder of my relevant skills or experiences that make me a strong candidate for this role. Thank you!`
-
-                    localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", emailPrompt)
-                    successSetter("Your Email opens in a new tab in 3 seconds")
-                    //Navigate in a ask me page
-                    setTimeout(() => {
-                        window.open("/chat", "_blank");
-                    }, 3000);
-
-                    break;
-      
-                case "Interview":
-                    const interviewPrompt = `I am preparing for an upcoming job interview for the Job Title: ${chosenJob?.title}, Company Name: ${chosenJob?.company_name}, Job Description: ${chosenJob?.description} 
-                        and my resume used for the application is given here in string object form: ${JSON.stringify(singleResume)}. 
-                        Please provide a detailed and comprehensive guide that includes the following:
-                        Common Interview Questions: List 15 typical questions I might be asked in order of descending importance, along with their corresponding correct answer, exactly as I should nswer them, using all the details I have provided and those you can find on the given company.
-                        Company Research: Do a research on the company provided above, its culture, values, and recent news or achievements and feed me with all the info you can find on them.
-                        Role-Specific Preparation: Important skills and qualifications related to the job, and how I can demonstrate my expertise in these areas during the interview.
-                        Behavioral Questions: Examples of behavioral questions and the STAR (Situation, Task, Action, Result) method to structure my responses.
-                        Questions to Ask the Interviewer: Thoughtful questions I can ask at the end of the interview to show my interest and engagement.
-                        Body Language and Presentation: Tips on how to present myself confidently and effectively during the interview.
-                        Follow-Up Strategy: Guidance on how and when to follow up after the interview.
-                        Thank you for your help in preparing me for this important opportunity!`
-
-                    localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", interviewPrompt)
-                    successSetter("Your Interactive Interview Mock opens in 3 seconds")
-                    //Navigate in a Cask me page
-                    setTimeout(() => {
-                        window.open("/chat", "_blank");
-                    }, 3000);
-                    break;
-            
-                default:
-                    break;
-            }
+                localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", interviewPrompt)
+                successSetter("Your Interactive Interview Mock opens in 3 seconds")
+                //Navigate in a Cask me page
+                setTimeout(() => {
+                    window.open("/chat", "_blank");
+                }, 3000);
+                break;
+        
+            default:
+                break;
         }
         
     }
@@ -653,6 +663,7 @@ const JobHub = () => {
                                                                 <li><span style={styles.key}>Employment Type</span> <span>{item?.employment_type}</span></li>
                                                                 <li><span style={styles.key}>Location</span> <span>{item?.location}</span></li>
                                                                 <li><span style={styles.key}>Salary</span> <span>{item?.salary ? item.salary : "Undisclosed"}</span></li>
+                                                                <li><span style={styles.key}>Experience</span> <span>{item?.seniority ? item.seniority : "N/A"}</span></li>
                                                             </ul>
                                                             
                                                         </div>

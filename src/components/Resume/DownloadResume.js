@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
 
 const DownloadResume = () => {
-    const { resume, error, successMini, resumeSubDuration, user, showCheckout, userResumesAll } = useSelector(state => state.stateData)
+    const { resume, error, successMini, resumeSubDuration, user, showCheckout, userResumesAll, resumeServicesNumbers } = useSelector(state => state.stateData)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirm = useConfirm();
@@ -405,14 +405,17 @@ const DownloadResume = () => {
         if(!canPrint) {
             return errorSetter('Select an AVAILABLE template to print')
         }
-        //check if user used first free use already and if not subscribed
+        
         if(!user?.resumeSubscriptions?.subscribed) {
             errorSetter('Please SUBSCRIBE to download resumes plus other BENEFITS')
-            if (!user.isFirstFreeUsed) {
-                setFirstFreeUsedOnDB()
-                setFreeJustUsed(true)
-            }
             setIsSubscribed(false)
+            return
+        }
+        if (!user.isFirstFreeUsed && resumeServicesNumbers.resumeCreated >= 3) {
+            errorSetter("You have reached the maximum number of free tier resumes. Please choose a plan to create more.");
+            setTimeout(() => {
+                window.open("/pricing", "_blank");
+            }, 5000);
             return
         }
         if(storageDetails.name === "") {
