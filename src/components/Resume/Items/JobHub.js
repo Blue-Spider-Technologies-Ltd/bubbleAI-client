@@ -356,31 +356,41 @@ const JobHub = () => {
 
     const submitApplication = async (url) => {
         if(!isResumeSubbed) {
-            errorSetter("Upgrade your subscription to access this feature")
+            errorSetter("Upgrade your subscription to access this feature");
             setTimeout(() => {
-                window.open('/pricing', '_blank')
+                window.open('/pricing', '_blank');
             }, 5000);
-        } else {
-            //limit for first time free users
-            if (!isFirstFreeUsed && resumeServicesNumbers.jobsApplied >= 2) {
-                errorSetter("You have reached the maximum number of free tier Ai job applications. Please choose a plan to create more.");
-                setTimeout(() => {
-                    window.open("/pricing", "_blank");
-                }, 5000);
-                return
+            return;
+        }
+        
+        //limit for first time free users
+        if (!isFirstFreeUsed && resumeServicesNumbers?.jobsApplied >= 2) {
+            errorSetter("You have reached the maximum number of free tier Ai job applications. Please choose a plan to create more.");
+            setTimeout(() => {
+                window.open("/pricing", "_blank");
+            }, 5000);
+            return;
+        }
+        
+        if(!url) {
+            return errorSetter("Method not available for this job");
+        }
+        
+        try {
+            window.open(url, '_blank');
+            const response = await axios.get('/user/update-applied-jobs', {
+                headers: {
+                    "x-access-token": isAuth,
+                },
+            });
+    
+            const updatedNumbers = response?.data?.resumeNumbers;
+            if (updatedNumbers) {
+                dispatch(setResumeServicesNumbers(updatedNumbers));
             }
-            if(!url) {
-                return errorSetter("Method not available for this job")
-            }
-            try {
-                window.open(url, '_blank')
-                const response = await axios.get('/user/update-applied-jobs', {
-                    headers: {
-                        "x-access-token": isAuth,
-                    },
-                });
-            } catch (error) {    
-            }
+        } catch (error) {    
+            console.error("Failed to update job count:", error);
+            errorSetter("Failed to track your application. It went through, but our counter didn't update.");
         }
     }
 

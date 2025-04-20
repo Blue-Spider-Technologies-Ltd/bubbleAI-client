@@ -164,33 +164,33 @@ const PreviewResume = () => {
   }, []);
 
   useEffect(() => {
-      const handleScroll = () => {
-        const scrollPosition = window.scrollY || window.pageYOffset;
-        const viewHeight = window.innerHeight || document.documentElement.clientHeight;
-        const screenWidth = window.innerWidth;
-        const scrollMeter = screenWidth < 900 ? 0.7 : 0.5;
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY || window.pageYOffset;
+      const viewHeight = window.innerHeight || document.documentElement.clientHeight;
+      const screenWidth = window.innerWidth;
+      const scrollMeter = screenWidth < 900 ? 0.7 : 0.5;
   
-        if (scrollPosition > (scrollMeter * viewHeight)) {
-          if (user.isFirstFreeUsed && !isResumeSubbed) {
-            errorSetter("Looks like you are not subscribed. Choose a plan to complete your CV");
-            setIsSubscribed(false);
-          } 
-          //limit for first time free users
-          if (!user.isFirstFreeUsed && resumeServicesNumbers.resumeCreated >= 3) {
-            errorSetter("You have reached the maximum number of free tier resumes. Please choose a plan to create more.");
-            setIsSubscribed(false);
-          }
-          window.removeEventListener('scroll', handleScroll);
+      if (scrollPosition > (scrollMeter * viewHeight)) {
+        if (!isResumeSubbed) {
+          errorSetter("Looks like you are not subscribed. Choose a plan to complete your CV");
+          setIsSubscribed(false);
+        } 
+        
+        // Check if user exists before accessing properties
+        else if (user && !user.isFirstFreeUsed && resumeServicesNumbers?.resumeCreated >= 3) {
+          errorSetter("You have reached the maximum number of free tier resumes. Please choose a plan to create more.");
+          setIsSubscribed(false);
         }
-      };
-  
-      window.addEventListener('scroll', handleScroll);
-  
-      return () => {
         window.removeEventListener('scroll', handleScroll);
-      };
-      
-  });
+      }
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isResumeSubbed, user, resumeServicesNumbers?.resumeCreated, errorSetter, setIsSubscribed]);
 
   
 
@@ -537,8 +537,6 @@ const PreviewResume = () => {
                               <GiGraduateCap style={{color: "#EE7B1C", fontSize: "1.3rem"}} />
                             </div> &nbsp; &nbsp; 
                             {(!isResumeSubbed || !user?.isFirstFreeUsed) ? (
-                              <div><strong>{seniority?.courseRecommendation}</strong></div>
-                            ) : (
                               <ButtonThin 
                                 onClick={handleUnlockEdit} 
                                 width={'150px'} 
@@ -548,6 +546,8 @@ const PreviewResume = () => {
                               >
                                 Unlock Insights &nbsp; &nbsp;<IoIosUnlock />
                               </ButtonThin>
+                            ) : (
+                              <div><strong>{seniority?.courseRecommendation}</strong></div>
                             )}
                             
                           </div>   

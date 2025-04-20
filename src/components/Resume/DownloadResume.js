@@ -411,11 +411,9 @@ const DownloadResume = () => {
             setIsSubscribed(false)
             return
         }
-        if (!user.isFirstFreeUsed && resumeServicesNumbers.resumeCreated >= 3) {
+        if (!user.isFirstFreeUsed && resumeServicesNumbers?.resumeCreated >= 3) {
             errorSetter("You have reached the maximum number of free tier resumes. Please choose a plan to create more.");
-            setTimeout(() => {
-                window.open("/pricing", "_blank");
-            }, 5000);
+            setIsSubscribed(false)
             return
         }
         if(storageDetails.name === "") {
