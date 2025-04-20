@@ -92,7 +92,7 @@ const Feedback = () => {
                     
                     <Grid container>
                         <AuthInput
-                        id={firstName}
+                        id={"firstName"}
                         value={firstName}
                         inputType="text"
                         inputGridSm={12}
@@ -114,14 +114,14 @@ const Feedback = () => {
                         </Grid>
 
                         <AuthInput
-                        id={comment}
-                        value={comment}
-                        placeholder="Kindly leave us a comment about your rating"
-                        multiline={true}
-                        rows={3}
-                        mb={2}
-                        inputGridSm={12}
-                        onChange={handleCommentChange}
+                            id={"comment"}
+                            value={comment}
+                            placeholder="Kindly leave us a comment about your rating"
+                            multiline={true}
+                            rows={3}
+                            mb={2}
+                            inputGridSm={12}
+                            onChange={handleCommentChange}
                         />
                     </Grid>
 

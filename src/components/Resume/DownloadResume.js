@@ -491,6 +491,7 @@ const DownloadResume = () => {
                             <div>
                                 <Grid container>
                                     <AuthInput 
+                                        id="resumeName"
                                         name="resumeName"  
                                         value={storageDetails.name} 
                                         label="Resume Name" 
@@ -501,7 +502,16 @@ const DownloadResume = () => {
                                         onChange={handleInputChange('name')} 
                                         onBlur={() => checkObjectForKeyValue(user.resumes, "storageDetails", "name", storageDetails.name)} 
                                     />
-                                    <AuthInput name="desc" value={storageDetails.desc} placeholder="Optional Description" multiline={true} rows={2} inputGridSm={12} onChange={handleInputChange('desc')} />
+                                    <AuthInput 
+                                        id="storageDetails.desc" 
+                                        name="storageDetails.desc" 
+                                        value={storageDetails.desc} 
+                                        placeholder="Optional Description" 
+                                        multiline={true} 
+                                        rows={2} 
+                                        inputGridSm={12} 
+                                        onChange={handleInputChange('desc')} 
+                                    />
                                 </Grid>
                             </div>
                         </div>

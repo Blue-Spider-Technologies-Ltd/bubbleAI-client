@@ -265,6 +265,7 @@ const Meeting = (props) => {
                 <div>
                     <Grid container>
                         <AuthInput 
+                            id="meetingTitle" 
                             name="meetingTitle" 
                             value={meetingTitle} 
                             label="Meeting Title" 
@@ -282,9 +283,10 @@ const Meeting = (props) => {
             <div className="Segment">
                 <h4>Participants</h4>
                 <Grid container>
-                {participants.map((participant, index) => {
+                    {participants.map((participant, index) => {
                         return <AuthInput 
                                     key={index} 
+                                    id={"Participant Full Name" + index} 
                                     label="Participant Full Name" 
                                     value={participant.name} 
                                     inputType="text" 
@@ -294,7 +296,7 @@ const Meeting = (props) => {
                                     required={true} 
                                     onChange={(event) => handleParticipantChange(event, index)}
                                 />
-                })}
+                    })}
                     <Grid item xs={4} sx={{display: "flex", justifyContent: "center"}}>
                         <div style={{marginRight: "10px"}} className='delete' title='Delete ' onClick={handleDeleteParticipant}>-</div>
                         <div className='add' title='Add More' onClick={handleAddParticipant}>+</div>

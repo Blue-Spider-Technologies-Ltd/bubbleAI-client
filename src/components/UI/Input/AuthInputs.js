@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useEffect, useState, memo } from "react"
 import { 
     Grid, 
     TextField, 
@@ -26,6 +26,33 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 const AuthInput = props => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    // Add this useEffect inside your AuthInput component
+    useEffect(() => {
+        const handleFocus = (e) => {
+        if (window.innerWidth < 768) { // Only for mobile
+            setTimeout(() => {
+                const element = e.target;
+                element.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center',
+                    inline: 'nearest'
+                });
+            }, 300); // Small delay to allow keyboard to appear
+        }
+        };
+    
+        const inputElement = document.getElementById(props.id);
+        if (inputElement) {
+            inputElement.addEventListener('focus', handleFocus);
+        }
+    
+        return () => {
+            if (inputElement) {
+                inputElement.removeEventListener('focus', handleFocus);
+            }
+        };
+    }, [props.id]);
 
     const handleMouseDownPassword = (event) => {
       event.preventDefault();

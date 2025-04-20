@@ -269,6 +269,7 @@ const CouponDashboard = () => {
                     />
 
                     <AuthInput 
+                        id="discountPercentage"  
                         name="discountPercentage"  
                         value={discountPercentage}
                         label="Discount Percentage" 
@@ -312,6 +313,7 @@ const CouponDashboard = () => {
                     />
 
                     <AuthInput 
+                        id="code"  
                         name="code"  
                         value={couponCode}
                         label="Coupon Code [optional]" 
@@ -323,6 +325,7 @@ const CouponDashboard = () => {
                     />
 
                     <AuthInput 
+                        id="createUseCount"  
                         name="createUseCount"  
                         value={createdUseCount}
                         label="Alloted Usage Count" 

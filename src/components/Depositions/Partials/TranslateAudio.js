@@ -159,7 +159,18 @@ const TranslateAudio = (props) => {
             <div className='Segment'>
                 <h4>Choose Language</h4>
                 <Grid container sx={{border: languageSelectError && '1px dashed rgb(216, 7, 7)'}}>
-                    <AuthInput value={language} label="Translate to:" inputType="select2" inputGridSm={12} inputGrid={12} mb={2} list={LANGUAGES} required={true} onChange={handleSelectChange} />     
+                    <AuthInput 
+                        value={language} 
+                        id="Translate to:" 
+                        label="Translate to:" 
+                        inputType="select2" 
+                        inputGridSm={12} 
+                        inputGrid={12} 
+                        mb={2} 
+                        list={LANGUAGES} 
+                        required={true} 
+                        onChange={handleSelectChange} 
+                    />     
                 </Grid>
             </div>
 

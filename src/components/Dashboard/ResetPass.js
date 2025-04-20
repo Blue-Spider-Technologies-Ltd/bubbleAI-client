@@ -142,6 +142,7 @@ const ResetPass = () => {
                     <div>
                         <Grid container>
                             <AuthInput
+                                id={"oldPass"}
                                 value={oldPass}
                                 label="Old Password"
                                 inputType="password"
@@ -150,6 +151,7 @@ const ResetPass = () => {
                                 onChange={handleOldPass} 
                             />   
                             <AuthInput
+                                id={"newPass"}
                                 value={newPass}
                                 label="New Password"
                                 inputType="password"
@@ -159,6 +161,7 @@ const ResetPass = () => {
                                 onFocus={handleFocus}
                             />   
                             <AuthInput
+                                id={"confirmNewPass"}
                                 value={confirmNewPass}
                                 label="New Password Again"
                                 inputType="password"

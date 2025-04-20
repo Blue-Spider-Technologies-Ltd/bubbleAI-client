@@ -51,7 +51,7 @@ const ResearchPartial = ({
                                 >
                                     <AuthInput
                                         name="researchName"
-                                        id={item?.researchName}
+                                        id={"researchName"}
                                         value={item?.researchName}
                                         label={`Research ${index + 1}`}
                                         inputGridSm={12}
@@ -62,7 +62,7 @@ const ResearchPartial = ({
                                     />
                                     <AuthInput
                                         name="price"
-                                        id={item?.price}
+                                        id={"itemprice"}
                                         value={item.price}
                                         label="Per Research Price (Only If applicable)"
                                         inputGridSm={12}
@@ -72,7 +72,7 @@ const ResearchPartial = ({
                                     />
                                     <AuthInput
                                         name="ResearchDesc"
-                                        id={item?.researchDesc}
+                                        id={"researchDesc"}
                                         value={item?.researchDesc}
                                         label="[If available] Describe research"
                                         placeholder="[If available] Describe research"
@@ -165,6 +165,7 @@ const ResearchPartial = ({
 
                 <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
                     <AuthInput
+                        id="objInput name"
                         name="objInput"
                         value={objInput}
                         placeholder="Enter some objectives (Objectives are details of what your research will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
@@ -234,6 +235,7 @@ const ResearchPartial = ({
 
                 <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
                     <AuthInput
+                        id="objInputresearcg"
                         name="objInput"
                         value={objInput}
                         placeholder="Enter Research (separate each Research with a comma, semi-colon or full-stop)"

@@ -203,7 +203,7 @@ const RecruiterHub = () => {
 
                             <Grid container>
                                 <AuthInput
-                                    id=""
+                                    id="Other Names"
                                     value=""
                                     label="Other Names"
                                     inputType="text"
@@ -214,7 +214,7 @@ const RecruiterHub = () => {
                                     // onChange={handleInputChange("firstName")}
                                 />
                                 <AuthInput
-                                    id=""
+                                    id="Last Name"
                                     value=""
                                     label="Last Name"
                                     inputType="text"
@@ -226,7 +226,7 @@ const RecruiterHub = () => {
                                 />
 
                                 <AuthInput
-                                    id=""
+                                    id="Mobile"
                                     value=""
                                     label="Mobile"
                                     inputType="mobile"

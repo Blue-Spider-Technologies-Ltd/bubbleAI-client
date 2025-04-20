@@ -51,7 +51,7 @@ const GrantsPartial = ({
                                 >
                                     <AuthInput
                                         name="grantName"
-                                        id={item?.grantName}
+                                        id="grantName"
                                         value={item?.grantName}
                                         label={`Grant ${index + 1}`}
                                         inputGridSm={12}
@@ -62,7 +62,7 @@ const GrantsPartial = ({
                                     />
                                     <AuthInput
                                         name="price"
-                                        id={item?.price}
+                                        id="price"
                                         value={item.price}
                                         label="Per Grant Price (Only If applicable)"
                                         inputGridSm={12}
@@ -72,7 +72,7 @@ const GrantsPartial = ({
                                     />
                                     <AuthInput
                                         name="grantDesc"
-                                        id={item?.grantDesc}
+                                        id="grantDesc"
                                         value={item?.grantDesc}
                                         label="[If available] Describe grant"
                                         placeholder="[If available] Describe grant"
@@ -165,6 +165,7 @@ const GrantsPartial = ({
 
                 <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
                     <AuthInput
+                        id="objInput"
                         name="objInput"
                         value={objInput}
                         placeholder="Enter some objectives (Objectives are details of what your grant will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
@@ -230,10 +231,10 @@ const GrantsPartial = ({
                     )}
                 </div>
                 
-                
 
                 <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
                     <AuthInput
+                        id="objInput"
                         name="objInput"
                         value={objInput}
                         placeholder="Enter Grant (separate each Grant with a comma, semi-colon or full-stop)"

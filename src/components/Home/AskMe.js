@@ -605,8 +605,13 @@ const AskMe = () => {
     setAuthMenuOpen(!authMenuOpen)
   }
 
-  const handleFocus = () => {
+  const handleFocus = (e) => {
     setSuggestionDisplay(false)
+    if (window.innerWidth < 768) {
+      setTimeout(() => {
+        e.target.scrollIntoView({ block: 'center' });
+      }, 300);
+    }
   }
 
 
@@ -732,6 +737,7 @@ const AskMe = () => {
                 ) : (
                   <>
                     <AuthInput
+                      id="askMe"
                       name="askMe"
                       value={askMeVal}
                       label="Ask a Question..."

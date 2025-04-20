@@ -56,7 +56,7 @@ const ProjectPartial = ({
                                 >
                                     <AuthInput
                                         name="phaseName"
-                                        id={item?.phaseName}
+                                        id="phaseName"
                                         value={item?.phaseName}
                                         label={`Project Phase ${index + 1}`}
                                         inputGridSm={12}
@@ -67,7 +67,7 @@ const ProjectPartial = ({
                                     />
                                     <AuthInput
                                         name="budget"
-                                        id={item?.budget}
+                                        id="budget"
                                         value={item.budget}
                                         label="Phase Budget (Only If applicable)"
                                         inputGridSm={12}
@@ -77,7 +77,7 @@ const ProjectPartial = ({
                                     />
                                     <AuthInput
                                         name="timeline"
-                                        id={item?.timeline}
+                                        id="timeline"
                                         value={item.timeline}
                                         label="Timeline (e.g 2 Weeks)"
                                         inputGridSm={12}
@@ -87,7 +87,7 @@ const ProjectPartial = ({
                                     />
                                     <AuthInput
                                         name="phaseDesc"
-                                        id={item?.phaseDesc}
+                                        id="phaseDesc"
                                         value={item?.phaseDesc}
                                         label="[If available] Describe phase"
                                         placeholder="[If available] Describe phase"
@@ -180,6 +180,7 @@ const ProjectPartial = ({
 
                 <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
                     <AuthInput
+                        id="objInput"
                         name="objInput"
                         value={objInput}
                         placeholder="Enter some objectives (Objectives are details of the main goals you want to achieve with this project. Separate each sentence/word with a comma, semi-colon or full-stop)"
@@ -249,6 +250,7 @@ const ProjectPartial = ({
 
                 <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
                     <AuthInput
+                        id={"objInput"}
                         name="objInput"
                         value={objInput}
                         placeholder="Enter partners (separate each partner with a comma, semi-colon or full-stop)"
@@ -300,7 +302,7 @@ const ProjectPartial = ({
                 >  
                     <AuthInput
                         name={otherDeets?.teamSize}
-                        id={otherDeets?.teamSize}
+                        id={"otherDeetsteamSize"}
                         value={otherDeets?.teamSize}
                         label="Team Size"
                         inputGridSm={12}
@@ -311,7 +313,7 @@ const ProjectPartial = ({
                     />
                     <AuthInput
                         name={otherDeets?.yearsInBiz}
-                        id={otherDeets?.yearsInBiz}
+                        id={"otherDeetsyearsInBiz"}
                         value={otherDeets?.yearsInBiz}
                         label="Cummulative Years of Experience"
                         inputGridSm={12}
@@ -322,7 +324,7 @@ const ProjectPartial = ({
                     />
                     <AuthInput
                         name={otherDeets?.missionVisionCore}
-                        id={otherDeets?.missionVisionCore}
+                        id={"otherDeetsmissionVisionCore"}
                         value={otherDeets?.missionVisionCore}
                         label="[If available] Mission: Vision: Core Values: "
                         placeholder="[If available] Mission: Vision: Core Values: "
@@ -335,7 +337,7 @@ const ProjectPartial = ({
                     />
                     <AuthInput
                         name={otherDeets?.awardRecog}
-                        id={otherDeets?.awardRecog}
+                        id={"otherDeetsawardRecog"}
                         value={otherDeets?.awardRecog}
                         label="[If available] Awards: Recognitions: "
                         placeholder="[If available] Awards: Recognitions: "

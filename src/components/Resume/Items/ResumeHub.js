@@ -460,7 +460,7 @@ const ResumeHub = () => {
                         
                         <div style={styles.descCont}>
                             <AuthInputs
-                              id={jobDesc}
+                              id={"jobDesc"}
                               name="jobDesc"
                               value={jobDesc}
                               placeholder="  Full job description here..."

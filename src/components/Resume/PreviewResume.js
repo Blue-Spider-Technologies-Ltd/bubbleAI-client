@@ -578,6 +578,7 @@ const PreviewResume = () => {
 
                 <Grid container>
                   <AuthInput
+                    id={"basicInfo?.firstName"}
                     value={basicInfo?.firstName}
                     inputType="text"
                     inputGridSm={12}
@@ -588,6 +589,7 @@ const PreviewResume = () => {
                     onChange={handleInputChange("firstName")}
                   />
                   <AuthInput
+                    id={"basicInfo?.lastName"}
                     value={basicInfo?.lastName}
                     inputType="text"
                     inputGridSm={12}
@@ -598,6 +600,7 @@ const PreviewResume = () => {
                     onChange={handleInputChange("lastName")}
                   />
                   <AuthInput
+                    id={"basicInfo?.email"}
                     value={basicInfo?.email}
                     inputType="email"
                     inputGridSm={12}
@@ -608,6 +611,7 @@ const PreviewResume = () => {
                     onChange={handleInputChange("email")}
                   />
                   <AuthInput
+                    id={"basicInfo?.mobile"}
                     value={basicInfo?.mobile}
                     label="Mobile"
                     inputType="mobile"
@@ -619,6 +623,7 @@ const PreviewResume = () => {
                     onChange={handleInputChange("mobile")}
                   />
                   <AuthInput
+                    id={"basicInfo?.jobPosition"}
                     value={basicInfo?.jobPosition}
                     label="Job Position (NOT editable)"
                     inputType="text"
@@ -629,6 +634,7 @@ const PreviewResume = () => {
                     disabled={true}
                   />
                   <AuthInput
+                    id={"basicInfo?.country"}
                     name={basicInfo?.country}
                     value={basicInfo?.country}
                     inputType="country-select"
@@ -640,6 +646,7 @@ const PreviewResume = () => {
                   />
                   <AuthInput
                     country={basicInfo.country}
+                    id={"basicInfo?.city"}
                     name={basicInfo?.city}
                     value={basicInfo?.city}
                     inputType="state-select"
@@ -655,6 +662,7 @@ const PreviewResume = () => {
                     <h4>Ai Generated Prof. Summary</h4>
                   </div>
                   <AuthInput
+                    id={"basicInfo?.profSummary"}
                     value={basicInfo?.profSummary}
                     label="AI Generated Prof. Summary"
                     multiline={true}
@@ -761,6 +769,7 @@ const PreviewResume = () => {
 
                           <Grid container xs={12}>
                             <AuthInput
+                              id={"info.institution" + index}
                               name="institution"
                               value={info.institution}
                               label="Name of Institution"
@@ -774,6 +783,7 @@ const PreviewResume = () => {
                             />
                             <AuthInput
                               name="degree"
+                              id={"info.degree" + index}
                               value={info.degree}
                               label="Degree Obtained"
                               inputType="text"
@@ -788,6 +798,7 @@ const PreviewResume = () => {
                               Graduation Date *
                             </label>
                             <AuthInput
+                              id={"date" + index}
                               name="date"
                               value={info.date}
                               placeholder="Graduation Date"
@@ -865,6 +876,7 @@ const PreviewResume = () => {
                           <Grid container xs={12}>
                             <AuthInput
                               name="company"
+                              id={info.company + index}
                               value={info.company}
                               label="Company/Org. Name"
                               inputType="text"
@@ -879,6 +891,7 @@ const PreviewResume = () => {
                             />
                             <AuthInput
                               name="position"
+                              id={info.position + index}
                               value={info.position}
                               label="Position Held"
                               inputType="text"
@@ -893,6 +906,7 @@ const PreviewResume = () => {
                             />
                             <AuthInput
                               name="industry"
+                              id={info.industry + index}
                               value={info.industry}
                               label="Industry e.g IT"
                               inputType="text"
@@ -907,6 +921,7 @@ const PreviewResume = () => {
                             />
                             <AuthInput
                               name="workLink"
+                              id={info.workLink + index}
                               value={info.workLink}
                               label="Related Link"
                               inputType="text"
@@ -938,6 +953,7 @@ const PreviewResume = () => {
                                 </label>
                                 <AuthInput
                                   name="dateFrom"
+                                  id={"info.dateFrom" + index}
                                   value={info.dateFrom}
                                   placeholder="Start Date"
                                   inputType="date"
@@ -965,6 +981,7 @@ const PreviewResume = () => {
                                 </label>
                                 <AuthInput
                                   name="dateTo"
+                                  id={"info.dateTo" + index}
                                   value={info.dateTo}
                                   placeholder="End Date"
                                   inputType="date"
@@ -981,7 +998,7 @@ const PreviewResume = () => {
                             <div style={{width: "100%", textAlign: "center"}}>
                               <AuthInput
                                 name="currently"
-                                id={info.currently}
+                                id={"info.currently" + index}
                                 value={info.currently}
                                 label="I currently work here"
                                 inputType="checkbox"
@@ -1000,6 +1017,7 @@ const PreviewResume = () => {
                             <AuthInput
                               name="jobDesc"
                               label="Job Description"
+                              id={info.jobDesc}
                               value={info.jobDesc}
                               multiline={true}
                               rows={2}
@@ -1087,6 +1105,7 @@ const PreviewResume = () => {
                             <Grid item xs={12}>
                               <AuthInput
                                 name="org"
+                                id={info.org + index}
                                 value={info.org}
                                 label="Awarding Organization"
                                 inputGridSm={12}
@@ -1097,6 +1116,7 @@ const PreviewResume = () => {
                               />
                               <AuthInput
                                 name="award"
+                                id={info.award}
                                 value={info.award}
                                 label="Award Received"
                                 inputGridSm={12}
@@ -1110,6 +1130,7 @@ const PreviewResume = () => {
                               </label>
                               <AuthInput
                                 name="date"
+                                id={"info.dateakanla" + index}
                                 value={info.date}
                                 placeholder="Date Awarded"
                                 inputGridSm={12}
@@ -1197,6 +1218,7 @@ const PreviewResume = () => {
                             <Grid item xs={12}>
                               <AuthInput
                                 name="title"
+                                id={info.title}
                                 value={info.title}
                                 label="Publication Title"
                                 inputGridSm={12}
@@ -1207,6 +1229,7 @@ const PreviewResume = () => {
                               />
                               <AuthInput
                                 name="source"
+                                id={info.source + index}
                                 value={info.source}
                                 label="Source"
                                 inputGridSm={12}
@@ -1220,6 +1243,7 @@ const PreviewResume = () => {
                               </label>
                               <AuthInput
                                 name="date"
+                                id={"info.datepub" + index}
                                 value={info.date}
                                 placeholder="Date Awarded"
                                 inputGridSm={12}
@@ -1315,6 +1339,7 @@ const PreviewResume = () => {
                       return (
                         <Grid container xs={12} md={6} key={index}>                              
                           <AuthInput 
+                            id={language.language} 
                             value={language.language} 
                             name="language"
                             label="Language" 
@@ -1326,6 +1351,7 @@ const PreviewResume = () => {
                             onChange={(event) => handleLangChange(event, index)}
                           />
                           <AuthInput 
+                            id={language.level + index} 
                             value={language.level} 
                             name="level"
                             label="Level" 

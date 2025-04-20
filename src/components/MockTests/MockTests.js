@@ -234,6 +234,8 @@ const DashSupport = (props) => {
 
             <div style={{width: searchBarWidth, margin: "auto"}}>
                 <AuthInputs 
+                    id={"searchString"} 
+                    name={searchString} 
                     value={searchString} 
                     onChange={handleSearchInput} 
                     placeholder=" Search for Exam" 

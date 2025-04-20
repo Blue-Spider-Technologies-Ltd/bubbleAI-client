@@ -166,6 +166,7 @@ const Profile = () => {
                                 </div>
                                 
                                 <AuthInput
+                                    id={"firstName"}
                                     value={firstName}
                                     label="First Name"
                                     inputType="text"
@@ -174,6 +175,7 @@ const Profile = () => {
                                     mb={2}
                                 />
                                 <AuthInput
+                                    id={"lastName"}
                                     value={lastName}
                                     label="Last Name"
                                     inputType="text"
@@ -182,6 +184,7 @@ const Profile = () => {
                                     mb={2}
                                 />
                                 <AuthInput
+                                    id={"email"}
                                     value={email}
                                     label="Your Email"
                                     inputType="email"
@@ -191,6 +194,7 @@ const Profile = () => {
                                 />
                                 <div className="detached-label">Date of Birth</div>
                                 <AuthInput
+                                    id={"dob"}
                                     value={dob}
                                     inputType="date"
                                     inputGridSm={12}
@@ -207,6 +211,7 @@ const Profile = () => {
                                     <h5>Address Info</h5>
                                 </div>
                                 <AuthInput
+                                    id={"mobile"}
                                     value={mobile}
                                     label="Mobile"
                                     inputType="mobile"
@@ -216,6 +221,7 @@ const Profile = () => {
                                     onChange={handleMobileChange}
                                 />
                                 <AuthInput
+                                    id={"country"}
                                     name={country}
                                     value={country}
                                     inputType="country-select"
@@ -226,6 +232,7 @@ const Profile = () => {
                                  />
                                 <AuthInput
                                     country={country}
+                                    id={"stateRegion"}
                                     name={stateRegion}
                                     value={stateRegion}
                                     inputType="state-select"
@@ -245,7 +252,7 @@ const Profile = () => {
                         <Grid container xs={12}>
 
                             <AuthInput
-                                id={resumeSub}
+                                id={"resumeSub"}
                                 value={`${resumeSub}`}
                                 label="Resume Subscription"
                                 inputType="text"
@@ -255,7 +262,7 @@ const Profile = () => {
                             />
 
                             <AuthInput
-                                id={resumeSubExp}
+                                id={"resumeSubExp"}
                                 value={`${resumeSubExp.slice(0, 10)}`}
                                 label="Expires"
                                 inputType="text"

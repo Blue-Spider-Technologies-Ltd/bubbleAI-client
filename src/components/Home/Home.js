@@ -98,6 +98,7 @@ const Home = () => {
 
               <AuthInput
                 name="askMe"
+                id="Ask a Question..."
                 label="Ask a Question..."
                 multiline={true}
                 inputGridSm={10}

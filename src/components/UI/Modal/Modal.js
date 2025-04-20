@@ -725,6 +725,7 @@ export const CheckoutSummaryModal = () => {
                             <div className={modalCss.CheckoutInnerContainer}>
                                 <div>
                                     <AuthInput
+                                        id={"couponCode"}
                                         value={couponCode}
                                         inputType="text"
                                         inputGridSm={12}

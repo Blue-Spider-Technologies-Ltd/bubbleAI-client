@@ -57,7 +57,7 @@ const ServicesPartial = ({
                                 >
                                     <AuthInput
                                         name="serviceName"
-                                        id={item?.serviceName}
+                                        id={"itemserviceName"}
                                         value={item?.serviceName}
                                         label={`Service ${index + 1}`}
                                         inputGridSm={12}
@@ -68,7 +68,7 @@ const ServicesPartial = ({
                                     />
                                     <AuthInput
                                         name="price"
-                                        id={item?.price}
+                                        id={"item.price"}
                                         value={item.price}
                                         label="Per Service Price (Only If applicable)"
                                         inputGridSm={12}
@@ -78,7 +78,7 @@ const ServicesPartial = ({
                                     />
                                     <AuthInput
                                         name="dicountPercent"
-                                        id={item.discountPercent}
+                                        id={"itemdiscountPercent"}
                                         value={item.discountPercent}
                                         label="Percent Discount (If Available)"
                                         inputGridSm={12}
@@ -88,7 +88,7 @@ const ServicesPartial = ({
                                     />
                                     <AuthInput
                                         name="serviceDesc"
-                                        id={item?.serviceDesc}
+                                        id={"itemserviceDesc"}
                                         value={item?.serviceDesc}
                                         label="[If available] Describe service"
                                         placeholder="[If available] Describe service"
@@ -181,6 +181,7 @@ const ServicesPartial = ({
 
                 <Grid container px={screenWidth < 900 ? 1 : 3} mb={2}>
                     <AuthInput
+                        id="objInputianO"
                         name="objInput"
                         value={objInput}
                         placeholder="Enter some objectives (Objectives are details of what your service will solve. Separate each sentence/word with a comma, semi-colon or full-stop)"
@@ -245,7 +246,7 @@ const ServicesPartial = ({
                                 >
                                     <AuthInput
                                         name="clientName"
-                                        id={item.clientName}
+                                        id={"itemclientName"}
                                         value={item.clientName}
                                         label={`Client Name ${index + 1}`}
                                         inputGridSm={12}
@@ -256,7 +257,7 @@ const ServicesPartial = ({
                                     />
                                     <AuthInput
                                         name="testimony"
-                                        id={item.testimony}
+                                        id={"itemtestimony"}
                                         value={item.testimony}
                                         placeholder="testimony/how client was helped (OPTIONAL)"
                                         inputGridSm={12}
@@ -329,7 +330,7 @@ const ServicesPartial = ({
                 >  
                     <AuthInput
                         name={otherDeets?.teamSize}
-                        id={otherDeets?.teamSize}
+                        id={"otherDeets.teamSize"}
                         value={otherDeets?.teamSize}
                         label="Team Size"
                         inputGridSm={12}
@@ -340,7 +341,7 @@ const ServicesPartial = ({
                     />
                     <AuthInput
                         name={otherDeets?.yearsInBiz}
-                        id={otherDeets?.yearsInBiz}
+                        id={"otherDeets.yearsInBiz"}
                         value={otherDeets?.yearsInBiz}
                         label="Years in Business"
                         inputGridSm={12}
@@ -351,7 +352,7 @@ const ServicesPartial = ({
                     />
                     <AuthInput
                         name={otherDeets?.missionVisionCore}
-                        id={otherDeets?.missionVisionCore}
+                        id={"otherDeetsmissionVisionCore"}
                         value={otherDeets?.missionVisionCore}
                         label="[If available] Mission: Vision: Core Values: "
                         placeholder="[If available] Mission: Vision: Core Values: "
@@ -364,7 +365,7 @@ const ServicesPartial = ({
                     />
                     <AuthInput
                         name={otherDeets?.awardRecog}
-                        id={otherDeets?.awardRecog}
+                        id={"otherDeetsawardRecog"}
                         value={otherDeets?.awardRecog}
                         label="[If available] Awards: Recognitions: "
                         placeholder="[If available] Awards: Recognitions: "

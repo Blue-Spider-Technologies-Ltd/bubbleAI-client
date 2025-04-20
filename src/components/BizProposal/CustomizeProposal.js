@@ -1377,7 +1377,7 @@ const CustomizeProposal = () => {
                                 >
                                     <AuthInput
                                         name="proposalTitle"
-                                        id={proposalTitle}
+                                        id="proposalTitle"
                                         value={proposalTitle}
                                         label={`Proposal Title`}
                                         inputGridSm={12}
@@ -1387,6 +1387,7 @@ const CustomizeProposal = () => {
                                         onChange={handleProposalTitleChange}
                                     />
                                     <AuthInput
+                                        id="objInput"
                                         name="objInput"
                                         value={objInput}
                                         placeholder="Enter brief description: [Why is it being undertaken? Describe an opportunity or problem that it is to address]."

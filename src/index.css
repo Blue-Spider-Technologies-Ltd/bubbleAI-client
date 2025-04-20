@@ -16,6 +16,11 @@
   --lighterBlueGrey: #c0d1d457;
 }
 
+html {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -29,6 +34,11 @@ body {
   padding: 0;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  height: 100%;
+  position: fixed;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 

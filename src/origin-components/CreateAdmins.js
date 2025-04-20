@@ -155,6 +155,7 @@ const CreateAdmins = () => {
                     />
 
                     <AuthInput 
+                        id="code"  
                         name="code"  
                         value={adminEmail}
                         label="Admin Email" 
