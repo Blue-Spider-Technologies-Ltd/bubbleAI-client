@@ -17,6 +17,7 @@
 }
 
 html {
+  height: 100%;
   overflow-x: hidden;
 }
 
@@ -31,9 +32,10 @@ body {
   background: white;
   font-family: Inter, sans-serif;
   padding: 0;
+  padding-top: 20px;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  height: 100vh;
+  height: auto;
   position: fixed;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
