@@ -20,6 +20,10 @@
   box-sizing: border-box;
 }
 
+html {
+  min-height: 100vh;
+}
+
 body {
   box-sizing: border-box;
   margin: 0;
@@ -30,8 +34,6 @@ body {
   overflow-x: hidden;
   scroll-behavior: smooth;
   overflow-y: scroll;
-  min-height: 100vh;
-  position: fixed;
   min-height: -webkit-fill-available;
   -webkit-overflow-scrolling: touch;
   width: 100%;
