@@ -16,11 +16,6 @@
   --lighterBlueGrey: #c0d1d457;
 }
 
-html {
-  height: 100%;
-  overflow-x: hidden;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -32,12 +27,11 @@ body {
   background: white;
   font-family: Inter, sans-serif;
   padding: 0;
-  padding-top: 20px;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  height: auto;
-  position: fixed;
   overflow-y: scroll;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   -webkit-overflow-scrolling: touch;
   width: 100%;
 }
