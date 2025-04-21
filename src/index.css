@@ -31,6 +31,7 @@ body {
   scroll-behavior: smooth;
   overflow-y: scroll;
   min-height: 100vh;
+  position: fixed;
   min-height: -webkit-fill-available;
   -webkit-overflow-scrolling: touch;
   width: 100%;
