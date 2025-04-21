@@ -127,7 +127,6 @@ const MenuBarSmall = () => {
 
 
     return (
-
         <Box>
             <div style={{marginTop: isIOSStandalonePWA() && "50px"}}>
                 <div id="small-menu-top" className='SmallMenuContainer'>
