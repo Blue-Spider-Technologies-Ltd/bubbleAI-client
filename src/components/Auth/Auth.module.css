@@ -5,6 +5,7 @@
     padding: 40px 0 0;
     width: 100vw;
     height: 110vh;
+    overflow-y: scroll;
     z-index: 1;
 }
 
