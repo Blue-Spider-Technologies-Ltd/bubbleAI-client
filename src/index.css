@@ -35,8 +35,8 @@ body {
   padding: 0;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  overflow-y: scroll;
-  height: 100%;
+  overflow-y: auto;
+  height: auto;
   -webkit-overflow-scrolling: touch;
   width: 100vw;
 }
@@ -461,6 +461,17 @@ audio::-webkit-media-controls-download-button {
 
   .authLogo {
     width: 85px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific styles */
+  body {
+    height: -webkit-fill-available;
+  }
+  
+  .authContainer {
+    min-height: -webkit-fill-available;
   }
 }
 
