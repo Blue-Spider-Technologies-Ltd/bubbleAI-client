@@ -21,7 +21,7 @@
 }
 
 html {
-  height: 100vh;
+  height: auto;
   overflow-y: scroll;
   overflow-x: hidden !important;
 }
