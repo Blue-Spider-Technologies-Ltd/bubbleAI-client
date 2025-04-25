@@ -2,6 +2,7 @@
     box-sizing: border-box;
     display: flex;
     justify-content: space-around;
+    position: relative;
     padding: 40px 0 0;
     width: 100vw !important;
     z-index: 1;
@@ -13,7 +14,6 @@
     top: 0;
     left: 0;
     width: 100vw;
-    min-height: 100vh;
     height: auto;
     overflow-y: scroll;
     padding: 20px 0;
