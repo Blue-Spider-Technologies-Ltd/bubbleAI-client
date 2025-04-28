@@ -27,7 +27,6 @@ const AuthInput = props => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    // Add this useEffect inside your AuthInput component
     useEffect(() => {
         const handleFocus = (e) => {
         if (window.innerWidth < 768) { // Only for mobile

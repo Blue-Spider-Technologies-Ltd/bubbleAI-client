@@ -226,46 +226,44 @@ const AskMe = () => {
       const isScrolledUp = scrollHeight - scrollTop - clientHeight > 300;
       setShowScrollButton(isScrolledUp);
       
-      if (scrollTop < 100 && messages.length > displayedMessages.length && !isLoadingMore) {
-        loadMoreMessages();
-      }
+      // if (scrollTop < 100 && messages.length > displayedMessages.length && !isLoadingMore) {
+      //   loadMoreMessages();
+      // }
     }
   };
 
-  const loadMoreMessages = () => {
-    if (chatBoxRef.current) {
-      prevScrollHeight.current = chatBoxRef.current.scrollHeight - chatBoxRef.current.scrollTop;
-    }
+  // const loadMoreMessages = () => {
+  //   if (chatBoxRef.current) {
+  //     prevScrollHeight.current = chatBoxRef.current.scrollHeight - chatBoxRef.current.scrollTop;
+  //   }
     
-    setIsLoadingMore(true);
+  //   setIsLoadingMore(true);
     
-    setTimeout(() => {
-      const currentLength = displayedMessages.length;
-      const remainingMessages = messages.length - currentLength;
+  //   setTimeout(() => {
+  //     const currentLength = displayedMessages.length;
+  //     const remainingMessages = messages.length - currentLength;
       
-      if (remainingMessages > 0) {
-        const loadCount = Math.min(batchSize, remainingMessages);
-        const startIndex = Math.max(0, messages.length - currentLength - loadCount);
-        const endIndex = startIndex + loadCount;
+  //     if (remainingMessages > 0) {
+  //       const loadCount = Math.min(batchSize, remainingMessages);
+  //       const startIndex = Math.max(0, messages.length - currentLength - loadCount);
+  //       const endIndex = startIndex + loadCount;
         
-        const newBatch = messages.slice(startIndex, endIndex);
-        setDisplayedMessages(prev => [...newBatch, ...prev]);
-      }
+  //       const newBatch = messages.slice(startIndex, endIndex);
+  //       setDisplayedMessages(prev => [...newBatch, ...prev]);
+  //     }
       
-      setIsLoadingMore(false);
-    }, 300);
-  };
+  //     setIsLoadingMore(false);
+  //   }, 300);
+  // };
 
   // Initialize displayed messages
   useEffect(() => {
     if (messages.length > 0) {
-      const initialCount = Math.min(batchSize, messages.length);
-      const initialMessages = messages.slice(messages.length - initialCount);
-      setDisplayedMessages(initialMessages);
+      setDisplayedMessages(messages);
     } else {
       setDisplayedMessages([]);
     }
-  }, [messages, batchSize]);
+  }, [messages]);
 
   // Scroll event listener
   useEffect(() => {

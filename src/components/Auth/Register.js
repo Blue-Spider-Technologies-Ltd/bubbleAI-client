@@ -374,12 +374,12 @@ const Register = () => {
                         <hr style={{width: '90%', margin: 'auto', borderColor: '#c0d1d457'}}></hr>
                         <p></p>
                         <Grid container>
-                            <Input placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 
-                            <Input placeholder="Last name..." value={user.lastName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('lastName')} /> 
+                            <Input id="firstName" placeholder="First name..." value={user.firstName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('firstName')} /> 
+                            <Input id="lastName" placeholder="Last name..." value={user.lastName} inputType="text" inputGridSm={12} inputGrid={6} onChange={handleInputChange('lastName')} /> 
                         </Grid>
-                        <Input placeholder="Email..." value={user.email} inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
-                        <Input placeholder="Password..." value={user.password} inputType="password" inputGridSm={12} onChange={handleInputChange('password')} onFocus={handleBlur} />
-                        <Input placeholder="Confirm password..." value={user.confirmPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmPassword')} onFocus={handleBlur} />
+                        <Input id="email" placeholder="Email..." value={user.email} inputType="email" inputGridSm={12} onChange={handleInputChange('email')} /> 
+                        <Input id="password" placeholder="Password..." value={user.password} inputType="password" inputGridSm={12} onChange={handleInputChange('password')} onFocus={handleBlur} />
+                        <Input id="confirmPassword" placeholder="Confirm password..." value={user.confirmPassword} inputType="password" inputGridSm={12} onChange={handleInputChange('confirmPassword')} onFocus={handleBlur} />
                         <Link href="/popin" className={authCss.pwdRec}>Login?</Link>
                         <p className="description-box">By proceeding with the registration, you agree to Bubble <a className="link" href="/privacy" target="_blank">User Agreement</a></p>
                         {pwdChecklist &&

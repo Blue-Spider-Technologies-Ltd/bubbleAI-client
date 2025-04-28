@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Grid, TextField, OutlinedInput, InputAdornment, IconButton, FormControl } from "@mui/material"
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -55,6 +55,32 @@ const rootStyles = {
 export const Input = props => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    useEffect(() => {
+        const handleFocus = (e) => {
+        if (window.innerWidth < 768) { // Only for mobile
+            setTimeout(() => {
+                const element = e.target;
+                element.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center',
+                    inline: 'nearest'
+                });
+            }, 300); // Small delay to allow keyboard to appear
+        }
+        };
+    
+        const inputElement = document.getElementById(props.id);
+        if (inputElement) {
+            inputElement.addEventListener('focus', handleFocus);
+        }
+    
+        return () => {
+            if (inputElement) {
+                inputElement.removeEventListener('focus', handleFocus);
+            }
+        };
+    }, [props.id]);
 
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
