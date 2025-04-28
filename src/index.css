@@ -369,32 +369,26 @@ h5 {
 
 
 .bubble-text {
-  font-family: "Rubik Bubbles", system-ui;
-  font-weight: 800;
-  position: relative;
-  display: inline-block;
-  animation: bubble-size 4s infinite linear;
-}
-
-.bubble-text span {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
+    font-family: "Rubik Bubbles", system-ui;
+    font-weight: 800;
+    position: relative;
+    display: inline-block;
+    transform-origin: center;
+    padding: 0 10px;
+    animation: bubble-size 4s infinite ease-in-out;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 @keyframes bubble-size {
-  0% {
-    font-size: 10px;
-    color: var(--navColor5)
-  }
-  50% {
-    font-size: 2.6rem;
-    color: var(--navColor1);
-  }
-  100% {
-    font-size: 10px;
-    color: var(--navColor1);
-  }
+    0%, 100% {
+        transform: scale(0.8);
+        color: var(--navColor5);
+    }
+    50% {
+        transform: scale(1.2);
+        color: var(--navColor1);
+    }
 }
 
 
