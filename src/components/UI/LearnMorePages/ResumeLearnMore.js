@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 import css from './LearnMorePages.module.css'
-import modalCss from '../Modal/Modal.module.css'
 import { fetchCountryData } from '../../../utils/client-functions';
 import MenuBar from '../Menu/Menu';
 import { ButtonSubmitGreen } from '../Buttons/Buttons';
@@ -46,12 +45,6 @@ const ProcessStep = ({ number, title, description, image }) => {
         if (stepRef.current) {
             observer.observe(stepRef.current);
         }
-
-        return () => {
-            if (stepRef.current) {
-                observer.unobserve(stepRef.current);
-            }
-        };
     }, []);
 
     return (
@@ -86,12 +79,6 @@ const TestimonialCard = ({ detail }) => {
         if (cardRef.current) {
             observer.observe(cardRef.current);
         }
-
-        return () => {
-            if (cardRef.current) {
-                observer.unobserve(cardRef.current);
-            }
-        };
     }, []);
 
     return (
@@ -145,24 +132,7 @@ const ResumeLearnMore = () => {
     const [bubbleText, setBubbleText] = useState(['B', 'u', 'b', 'b', 'l', 'e', ' ', 'A', 'i']);
     const [activeIndex, setActiveIndex] = useState(null);
     const bubbleTextRef = useRef(null);
-    //Option for carousel in template section
-    const responsive = {
-        desktop: {
-          breakpoint: { max: 3000, min: 1024 },
-          items: 6,
-          slidesToSlide: 3 // optional, default to 1.
-        },
-        tablet: {
-          breakpoint: { max: 1024, min: 700 },
-          items: 3,
-          slidesToSlide: 2 // optional, default to 1.
-        },
-        mobile: {
-          breakpoint: { max: 700, min: 0 },
-          items: 1,
-          slidesToSlide: 1 // optional, default to 1.
-        }
-    };
+
 
     useEffect(() => {
         const returnCountryName = async () => {
@@ -195,16 +165,6 @@ const ResumeLearnMore = () => {
         setActiveIndex(index === activeIndex ? null : index);
     }
 
-    // const stepByStep = (type) => {
-    //     switch (type) {
-    //         case "opt":
-    //             window.open("https://app.tango.us/app/workflow/Guide-to-Using-Bubble-AI-for-Professional-Resume-and-Job-Application-Services-123f1d4ef09b4c2cbab9e573c27d5d0b", "_blank")
-    //             break;
-        
-    //         default:
-    //             break;
-    //     }
-    // }
 
     const processSteps = [
         {
@@ -213,12 +173,12 @@ const ResumeLearnMore = () => {
             image: customImg
         },
         {
-            title: "AI-Powered Optimization",
-            description: "Bubble AI analyzes and optimizes your resume with industry-specific keywords and metrics for maximum ATS compatibility.",
+            title: "AI-Powered Customization",
+            description: "Bubble Ai analyzes and optimizes your resume with industry-specific keywords and metrics for maximum ATS compatibility.",
             image: resumeImg
         },
         {
-            title: "Preview & Customize",
+            title: "Preview & Download",
             description: "Review your optimized resume and make any desired changes. Choose from our selection of regionally-accepted professional templates.",
             image: previewImg
         },
@@ -229,7 +189,7 @@ const ResumeLearnMore = () => {
         },
         {
             title: "Complete Application Package",
-            description: "Generate tailored cover letters and use our interactive interview preparation tool powered by company-specific research.",
+            description: "Generate tailored cover letters and use our interactive interview preparation tool powered by company-specific research with personalized answers.",
             image: coverImg
         }
     ];
@@ -253,13 +213,13 @@ const ResumeLearnMore = () => {
             <div className="auth-container-inner" style={{ textAlign: 'center', marginTop: '150px'}}>
                 <div className={css.TitleContainer}>
                     <h1>
-                        Intelligent Job Search Automation with{' '} 
+                        Intelligent Job Application Automation with{' '} 
                         <span ref={bubbleTextRef} className="bubble-text">Bubble Ai</span>
                     </h1>
                     <h5>Join thousands who've secured positions at top companies using our AI-powered resume builder, automated job matching, and interview preparation tools.</h5>
                     <div style={{width: '300px', margin: '20px auto'}}>
                         <ButtonSubmitGreen onClick={handleTryFree}>
-                            Try Bubble AI Free &nbsp;&nbsp;<FaLongArrowAltRight />
+                            Try Bubble Ai Free &nbsp;&nbsp;<FaLongArrowAltRight />
                         </ButtonSubmitGreen>
                     </div>
                 </div>
@@ -278,7 +238,7 @@ const ResumeLearnMore = () => {
                     
                     <div style={{textAlign: 'center', padding: '2rem', background: 'rgba(86, 168, 172, 0.1)', borderRadius: '20px', margin: '2rem'}}>
                         <h3>Coming Soon: Auto-Apply Feature</h3>
-                        <p>Let Bubble AI automatically apply to jobs for you! Our intelligent system will:</p>
+                        <p>Let Bubble Ai automatically apply to jobs for you! Our intelligent system will:</p>
                         <ul style={{textAlign: 'left', maxWidth: '600px', margin: '1rem auto'}}>
                             <li>Tailor resumes and cover letters for each application</li>
                             <li>Fill out application forms using smart data analysis</li>
@@ -332,7 +292,7 @@ const ResumeLearnMore = () => {
                     
                 </section>
 
-                <section>
+                <section style={{width: '100%', padding: '0', margin: '50px auto 0', display: 'flex', justifyContent: 'center'}}>
                     <ResumePricing />
                 </section>
             </div>
@@ -341,6 +301,5 @@ const ResumeLearnMore = () => {
         </div>
     )
 }
-  
 
 export default ResumeLearnMore;
