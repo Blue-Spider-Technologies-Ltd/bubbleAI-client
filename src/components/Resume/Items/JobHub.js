@@ -622,7 +622,7 @@ const JobHub = () => {
                             onClick={() => navigate('/user/dashboard/auto-apply')}
                             style={{maxWidth: '300px'}}
                         >
-                            <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Auto Apply Agent
+                            <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Auto-Apply External Jobs
                         </ButtonSubmitGreen>
                     </div>
 
