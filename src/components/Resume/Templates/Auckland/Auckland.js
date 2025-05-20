@@ -7,6 +7,7 @@ import pinIcon from '../../../../images/pin2.png'
 import emailIcon from '../../../../images/mail.png'
 import linkIcon from '../../../../images/globe.png'
 import badgeIcon from '../../../../images/badge.png'
+import imgAvatar from '../../../../images/avatar.png'
 
 ////FONTS
 import TinosRegular from '../../../../assets/fonts/tinos/Tinos-Regular.ttf';
@@ -248,7 +249,7 @@ const Auckland = ({ resume, imgUrl }) => {
 
                     <View style={styles.leftCont}>
                         <View style={styles.imgCont}>
-                            <Image style={styles.image} src={imgUrl} />
+                            <Image style={styles.image} src={imgUrl || imgAvatar} />
                         </View>
 
                         <View  style={{marginTop: 25}}>

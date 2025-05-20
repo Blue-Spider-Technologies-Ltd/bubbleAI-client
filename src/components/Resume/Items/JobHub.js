@@ -1,49 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useConfirm } from "material-ui-confirm";
+import { useSelector, useDispatch } from 'react-redux';
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
-import { PlainModalOverlay, SuccessFailureModal } from "../../UI/Modal/Modal";
+import { SuccessFailureModal, Modal } from "../../UI/Modal/Modal";
 import Feedback from "../../Dashboard/Feedback";
-import { ButtonSubmitGreen, ButtonThin, ButtonTransparent } from "../../UI/Buttons/Buttons";
+import { ButtonSubmitGreen } from "../../UI/Buttons/Buttons";
 import { 
     errorAnimation, 
-    successMiniAnimation, 
+    successMiniAnimation,
     checkAuthenticatedUser,
-    getOrdinalDate 
+    getOrdinalDate
 } from "../../../utils/client-functions";
 import { setFetching, setError, setSuccessMini, setResumeSubDuration, setIsResumeSubbed, setResumeServicesNumbers } from "../../../redux/states";
 import Alert from '@mui/material/Alert';
-import { Grid } from "@mui/material";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { IoSparklesSharp } from "react-icons/io5";
-import { VscChecklist } from "react-icons/vsc";
-import { FaSuitcase } from "react-icons/fa6";
-import { IoMdRemoveCircle } from "react-icons/io";
-import { SlEnvolopeLetter } from "react-icons/sl";
-import { MdMarkEmailRead } from "react-icons/md";
 import { TypeAnimation } from 'react-type-animation';
-import { FaLongArrowAltLeft } from "react-icons/fa";
 import { TfiNewWindow } from "react-icons/tfi";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import { GrStatusGood } from "react-icons/gr";
-import { FaLinkedin } from "react-icons/fa6";
-import { IoIosPeople } from "react-icons/io";
 import { MdOutlineAutoAwesome } from "react-icons/md";
-import iconImg from '../../../images/bubble icon.jpg'
+import iconImg from '../../../images/bubble icon.jpg';
 import axios from "axios";
-const screenWidth = window.innerWidth
+import { useConfirm } from 'material-ui-confirm';
 
+import { downloadResumeDirect, downloadCoverLetterDirect } from '../../../utils/downloadResumeDirect';
 
+//MODAL IMPORTS
+import ExternalJobModal from "./ExternalJobModal";
+import InternalAppJobModal from "./InternalAppJobModal";
+import FieldAnswersModal from "./FieldAnswersModal";
+import ResumeSelectorModal from "./ResumeSelectorModal";
+import QnAModal from "./QnAModal";
+import JobList from "./JobList";
+
+ 
 
 const JobHub = () => {
-    const dispatch = useDispatch();
-    const confirm = useConfirm();
     const { 
         error, 
         successMini, 
@@ -52,57 +43,87 @@ const JobHub = () => {
         user,
         resumeServicesNumbers 
     } = useSelector((state) => state.stateData);
-    const navigate = useNavigate();
-    const isAuth = localStorage?.getItem("token");
-    const [jobs, setJobs] = useState([])
-    const [img, setImg] = useState('')
-    const [activeIndex, setActiveIndex] = useState(0)
+
+    const [jobs, setJobs] = useState([]);
+    const [img, setImg] = useState('');
+    const [activeIndex, setActiveIndex] = useState(0);
     const [textColor, setTextColor] = useState('black');
-    const [modalOpen, setModalOpen] = useState(false)
-    const [allResumes, setAllResumes] = useState([])
-    const [singleResume, setSingleResume] =  useState({})
-    const [chosenJob, setChosenJob] =  useState({})
-    const [actionString, setActionString] = useState('')
-    const [activeResIndex, setActiveResIndex] = useState(0)
-    const [isFeedbackTime, setIsFeedbackTime] = useState(false)
-    const [pricingOpened, setPricingOpened] = useState(false)
+    const [allResumes, setAllResumes] = useState([]);
+    const [singleResume, setSingleResume] = useState({});
+    const [chosenJob, setChosenJob] = useState({});
+    const [actionString, setActionString] = useState('');
+    const [activeResIndex, setActiveResIndex] = useState(0);
+    const [isFeedbackTime, setIsFeedbackTime] = useState(false);
+    const [pricingOpened, setPricingOpened] = useState(false);
     const [authMenuOpen, setAuthMenuOpen] = useState(false);
-    const [jobModal, openJobModal] = useState(false);
     const [linkedinUrl, setLinkedinUrl] = useState("");
     const [companyUrl, setCompanyUrl] = useState("");
     const [applicants, setApplicants] = useState("");
-    const [successfulAchievement, openSuccessfulAchievement] = useState(false)
-    const [isFirstFreeUsed, setIsFirstFreeUsed] = useState(false)
-    
+    const [successfulAchievement, openSuccessfulAchievement] = useState(false);
+    const [isFirstFreeUsed, setIsFirstFreeUsed] = useState(false);
+    const [externalJobUrl, setExternalJobUrl] = useState('');
+    const [expandedAppIndex, setExpandedAppIndex] = useState(null);
+    const [userApplications, setUserApplications] = useState([]);
+    const [applicationMap, setApplicationMap] = useState({});
+    const [loadingJobs, setLoadingJobs] = useState(false);
+    const [skipCount, setSkipCount] = useState(0);
+    const [hasMoreJobs, setHasMoreJobs] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [progressStatus, setProgressStatus] = useState('');
+    const [progressPercentage, setProgressPercentage] = useState(0);
 
+    const [resumeSelectorModalOpen, setResumeSelectorModalOpen] = useState(false);
+    const [showInternalAppJobModal, setShowInternalAppJobModal] = useState(false);
+    const [showExternalJobModal, setShowExternalJobModal] = useState(false);
+
+    // --- SEMI-AUTO APPLY STATE ---
+    const [showFieldAnswersModal, setShowFieldAnswersModal] = useState(false);
+    const [fieldAnswers, setFieldAnswers] = useState([]);
+    const [fieldAnswersUrl, setFieldAnswersUrl] = useState('');
+    const [fieldAnswersJob, setFieldAnswersJob] = useState(null);
+
+    // --- QnA Modal State for LOGIN ALGORITHM ---
+    const [showQnAModal, setShowQnAModal] = useState(false);
+    const [loginQnAJobDesc, setLoginQnAJobDesc] = useState('');
+    const [loginQnAJobDescSaved, setLoginQnAJobDescSaved] = useState(false);
+    const [loginQnAInput, setLoginQnAInput] = useState('');
+    const [loginQnAList, setLoginQnAList] = useState([]); // [{question, answer}]
+    const [loginQnALoading, setLoginQnALoading] = useState(false);
+    const [loginQnAEditingDesc, setLoginQnAEditingDesc] = useState(false);
+
+    const closeModalsAndReset = () => {
+        setLinkedinUrl("");
+        setCompanyUrl("");
+        setExternalJobUrl("");
+        setFieldAnswersUrl("")
+        setFieldAnswers([]);
+        setActiveResIndex(0);
+
+        setResumeSelectorModalOpen(false);
+        setShowInternalAppJobModal(false);
+        setShowExternalJobModal(false);
+        setShowFieldAnswersModal(false);
+        setShowQnAModal(false);
+        setLoginQnAJobDescSaved(false);
+        setLoginQnALoading(false);
+
+        setLoginQnAJobDesc('');
+        setLoginQnAInput('');
+        setLoginQnAList([]);
+        setSingleResume({});
+        setFieldAnswersJob(null)
+    }
+
+    const isEffectExecuted = useRef(false);
+    const isFetching = useRef(false);
+
+    const dispatch = useDispatch();
+    const confirm = useConfirm();
+
+    const navigate = useNavigate();
+    const isAuth = localStorage?.getItem("token");
 
     const styles = {
-        cardGrid: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '10px auto'
-        },
-        card: { 
-            backgroundColor: '#c0d1d457',
-            borderRadius: '20px',
-            color: 'black',
-            display: 'flex', 
-            maxHeight: '500px',
-            width: screenWidth < 900 ? '100%' : '90%',
-            overflow: 'hidden', // Hide overflow to ensure smooth transition
-            transition: 'all 3s ease-in-out',
-        },
-        cardLarge: { 
-            backgroundColor: '#c0d1d457',
-            borderRadius: '20px',
-            color: 'black',
-            display: 'flex', 
-            maxHeight: 'none',
-            width: screenWidth < 900 ? '100%' : '90%',
-            overflow: 'visible', // Hide overflow to ensure smooth transition
-            transition: 'all 3s ease-in-out',
-        },
         list: {
             fontSize: '.85rem',
             lineHeight: '1.5',
@@ -123,26 +144,6 @@ const JobHub = () => {
             textAlign: "center",
             width: "100%"
         },
-        link: {
-            borderRadius: '20px',
-            color: 'rgba(0, 0, 0, 0.634)',
-            display: 'flex',
-            alignItems:'center',
-            justifyContent: 'space-between',
-            backgroundColor: 'rgba(255, 250, 250, 0.625)',
-            cursor: 'copy',
-            margin: '5px 0',
-            width: '100%',
-            padding: '5px',
-            zIndex: '1',
-            fontSize: '.75rem',
-        },
-        img: {
-            borderRadius: '50%',
-            margin: '20px',
-            maxWidth: '60px',
-            maxHeight: '60px'
-        },
         animText: {
             width: 'auto',
             margin: '15px auto',
@@ -161,74 +162,23 @@ const JobHub = () => {
             alignItems: 'center', 
             justifyContent: 'center',
             width: '100%'
-        },
-        key: {
-            fontWeight: '700'
-        },
-        unlock: {
-            textDecoration: 'underline',
-            fontSize: '.7rem'
-        }, 
-        desc: {
-            fontSize: '.74rem',
-            padding: '10px 0'
-        },
-        modalInner: {
-            width: '100%',
-            textAlign: 'center'
-        },
-        resumesCont: {
-            width: "100%",
-            maxHeight: '200px',
-            overflowY: 'scroll',
-            textAlign: "left",
-            padding: "15px 5px",
-            backgroundColor: "#c0d1d457",
-            borderRadius: "10px",
-            margin: '15px auto',
-            wordBreak: "break-word",
-            lineHeight: "1",
-            boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
-        },
-        eachResume: {
-            width: '100%',
-            border: '1px dashed black',
-            padding: '10px',
-            borderRadius: '6px',
-            fontSize: '.65rem',
-            marginBottom: '5px',
-            cursor: 'pointer',
-            transition: 'all 0.4s ease-out'
-        },
-        activeResume: {
-            color: '#3E8F93',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            border: '1px solid #3E8F93',
-            padding: '10px',
-            borderRadius: '6px',
-            fontSize: '.65rem',
-            fontWeight: '500',
-            marginBottom: '5px',
-            cursor: 'pointer', 
-            transition: 'all 0.4s ease-in-out'
         }
     }
 
-    const errorSetter = (string) => {
-        dispatch(setError(string))
-        errorAnimation()
-    }
+    // Helper functions
+    const errorSetter = useCallback((string) => {
+        dispatch(setError(string));
+        errorAnimation();
+    }, [dispatch]);
 
-    const successSetter = (string) => {
-        dispatch(setSuccessMini(string))
-        successMiniAnimation()
-    }
+    const successSetter = useCallback((string) => {
+        dispatch(setSuccessMini(string));
+        successMiniAnimation();
+    }, [dispatch]);
 
+     // Effects
     useEffect(() => {
+        setImg(iconImg);
         const feedback = localStorage.getItem('feedbackTime');
         const successfulTargetAchievement = localStorage.getItem("successfulTargetAchievement")
 
@@ -242,77 +192,178 @@ const JobHub = () => {
                 setIsFeedbackTime(true);
             }, 10000);
 
-            // Cleanup function to clear the timeout if the component unmounts
             return () => clearTimeout(timer);
         }
     }, []);
 
-    useEffect(() => {
-        dispatch(setFetching(true));
+    const loadJobs = async (skip) => {
+        if (isFetching.current) return;  //prevent multiple fetching in runtime
+        isFetching.current = true;
         
-        const populateJobs = async () => {
-            try {
-                //must await
-                await checkAuthenticatedUser()
-            } catch (error) {
-                dispatch(setFetching(false));
-                return navigate("/popin?resume");      
-            }
-          //Get Data if User is Authorized by subscription
-          try {
-                const response = await axios.get('/user/job-hub', {
-                    headers: {
-                        "x-access-token": isAuth,
-                    },
-                });
-        
-                if (response?.data?.status === "unauthenticated") {
-                    localStorage?.removeItem("token");
-                    return navigate("/popin?resume");
+        if (skip > 0) {
+            setLoadingJobs(true);
+        } else {
+            dispatch(setFetching(true));
+        }
+
+        try {
+            const response = await axios.get('/user/job-hub', {
+                headers: { 
+                "x-access-token": isAuth,
+                skip: skip,
+                limit: 10
                 }
+            });
 
-
-                const data = response?.data
-
-                dispatch(setResumeSubDuration(data?.subDuration));
-                dispatch(setResumeServicesNumbers(data?.resumeNumbers));
-                dispatch(setIsResumeSubbed(data?.resumeSub));
-                setJobs(data?.jobs)
-                setAllResumes(data.resumes)
-                setIsFirstFreeUsed(data.isFirstFreeUsed)
-                dispatch(setFetching(false));
-    
-            } catch (error) {
-                dispatch(setFetching(false));
-                errorSetter("Reload page to fetch data")
+            if (response?.data?.status === "unauthenticated") {
+                localStorage?.removeItem("token");
+                return navigate("/popin?job-hub");
             }
+
+            const data = response.data;
+            setJobs(prev => skip === 0 ? data.jobs : [...prev, ...data.jobs]);
+            setHasMoreJobs(data.jobs.length === 10);
+
+            // if (skip === 0) {
+                dispatch(setResumeSubDuration(data.subDuration));
+                dispatch(setResumeServicesNumbers(data.resumeNumbers));
+                dispatch(setIsResumeSubbed(data.resumeSub));
+                setAllResumes(data.resumes);
+                setIsFirstFreeUsed(data.isFirstFreeUsed);
+
+                const apps = data.applications || [];
+                setUserApplications(apps);
+                
+                const appMap = {};
+                apps.forEach(app => {
+                    if (app.jobTitle) appMap[app.jobTitle] = app;
+                });
+                setApplicationMap(appMap);
+
+                if (apps.length > 0) {
+                    setExpandedAppIndex(apps[0].jobTitle);
+                }
+            // }
+
+        } catch (error) {
+            console.error("Error loading jobs:", error);
+        } finally {
+            isFetching.current = false;
+            setLoadingJobs(false);
+            dispatch(setFetching(false));
+        }
+    };
+
+    useEffect(() => {
+        let scrollTimeout;
+
+        const handleScroll = () => {
+            if (isFetching.current || !hasMoreJobs) return; //prevent multiple fetching in runtime
+
+            clearTimeout(scrollTimeout);
+
+            scrollTimeout = setTimeout(() => {
+                const scrollPosition = window.innerHeight + window.scrollY;
+                const pageBottom = document.body.offsetHeight - 100;
+
+                if (scrollPosition >= pageBottom) {
+                    const newSkip = skipCount + 10;
+                    setSkipCount(newSkip);
+                    loadJobs(newSkip);
+                }
+            }, 500);
         };
-        setImg(iconImg);
-        populateJobs();
 
-    }, []);
+        //Initial load
+        if (!isEffectExecuted.current) {
+            loadJobs(0);
+            isEffectExecuted.current = true;
+        }
 
-    const toggleResumes = () => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            clearTimeout(scrollTimeout);
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [skipCount]);
+
+
+    useEffect(() => {
+        if (showFieldAnswersModal && fieldAnswers && fieldAnswersJob && singleResume) {
+            saveApplicationToBackend({
+                job: fieldAnswersJob,
+                method: 'company-site',
+                resume: singleResume,
+                qaPairs: fieldAnswers.map(f => ({ question: f.label, answer: f.value })),
+            });
+        }
+        // eslint-disable-next-line
+    }, [showFieldAnswersModal]);
+
+    useEffect(() => {
+        if (showQnAModal && loginQnAList.length > 0 && chosenJob && singleResume) {
+            saveApplicationToBackend({
+                job: chosenJob,
+                method: 'linkedin',
+                resume: singleResume,
+                qaPairs: loginQnAList,
+            });
+        }
+        // eslint-disable-next-line
+    }, [showQnAModal, loginQnAList]);
+
+    // Helper to save application to backend
+    const saveApplicationToBackend = async ({ job, method, resume, qaPairs }) => {
+        try {
+            await axios.post('/user/save-application', {
+                jobId: job?.id,
+                jobTitle: job?.title,
+                companyName: job?.company_name,
+                applicationMethod: method,
+                resumeUsed: resume?.id || resume?.storageDetails?.name,
+                qaPairs: qaPairs || [],
+                status: 'completed',
+            }, { headers: { 'x-access-token': isAuth } });
+        } catch (err) {
+            errorSetter('Failed to save application.');
+        }
+    };
+
+    const handleResumeSelect = (index) => {
+        setSingleResume(allResumes[index]);
+        //Adding plus one to allow for 0 to signify no resume selected to user
+        setActiveResIndex(index + 1);
+    };
+
+    const toggleMenu = () => {
         setAuthMenuOpen(!authMenuOpen);
     };
 
     const goBackPrevPage = () => {
         navigate('/user/dashboard/resume');
-    }
+    };
+
+
 
     const getResume = (description, title) => {
 
         if(!isResumeSubbed) {
             errorSetter("Upgrade your subscription to access this feature")
-            setTimeout(() => {
-                window.open('/pricing', '_blank')
-            }, 5000);
+            if (!pricingOpened) {
+                setPricingOpened(true);
+                setTimeout(() => {
+                    window.open('/pricing', '_blank');
+                }, 5000);
+            }
         } else {
             if (!isFirstFreeUsed && resumeServicesNumbers.resumeCreated >= 3) {
-                errorSetter("You have reached the maximum number of free tier resumes. Please choose a plan to create more.");
-                setTimeout(() => {
-                    window.open("/pricing", "_blank");
-                }, 5000);
+                errorSetter("You have reached the maximum number of free trial resumes. Please choose a plan to create more.");
+                if (!pricingOpened) {
+                    setPricingOpened(true);
+                    setTimeout(() => {
+                        window.open('/pricing', '_blank');
+                    }, 5000);
+                }
                 return
             }
             if(!description) {
@@ -331,7 +382,7 @@ const JobHub = () => {
             } else {
                 confirm({
                     title: "Optimize a resume to this Job?",
-                    description: `You will be redirected to upload an old resume which will be automatically tailored for this job. This will 100x your chances.`,
+                    description: `You will be redirected to upload an old resume which will be automatically tailored for this job. This will 100x your chances. If you prefer not to preview and edit resume, cancel this and use the "Get this Job" button.`,
                 })
                 .then(() => {
                     localStorage.setItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription", description)
@@ -346,103 +397,20 @@ const JobHub = () => {
 
     }
 
-    
-    const getJob = async (linkedinUrl, companyUrl, appCount) => {
-        setLinkedinUrl(linkedinUrl)
-        setCompanyUrl(companyUrl)
-        setApplicants(appCount)
-        openJobModal(true)
-    }
+    const getJob = async (linkedinUrl, companyUrl, appCount, job) => {
+        setLinkedinUrl(linkedinUrl);
+        setCompanyUrl(companyUrl);
+        setApplicants(appCount);
+        setChosenJob(job);
+        setShowInternalAppJobModal(true);
+    };
 
-    const submitApplication = async (url) => {
-        if(!isResumeSubbed) {
-            errorSetter("Upgrade your subscription to access this feature");
-            setTimeout(() => {
-                window.open('/pricing', '_blank');
-            }, 5000);
-            return;
-        }
-        
-        //limit for first time free users
-        if (!isFirstFreeUsed && resumeServicesNumbers?.jobsApplied >= 2) {
-            errorSetter("You have reached the maximum number of free tier Ai job applications. Please choose a plan to create more.");
-            setTimeout(() => {
-                window.open("/pricing", "_blank");
-            }, 5000);
-            return;
-        }
-        
-        if(!url) {
-            return errorSetter("Method not available for this job");
-        }
-        
-        try {
-            window.open(url, '_blank');
-            const response = await axios.get('/user/update-applied-jobs', {
-                headers: {
-                    "x-access-token": isAuth,
-                },
-            });
-    
-            const updatedNumbers = response?.data?.resumeNumbers;
-            if (updatedNumbers) {
-                dispatch(setResumeServicesNumbers(updatedNumbers));
-            }
-        } catch (error) {    
-            console.error("Failed to update job count:", error);
-            errorSetter("Failed to track your application. It went through, but our counter didn't update.");
-        }
-    }
 
-    const deleteJob = async (id, jobName) => {
-        try {
-            //must await
-            await checkAuthenticatedUser()
-        } catch (error) {
-            dispatch(setFetching(false));
-            return navigate("/popin?resume");      
-        }
-        confirm({
-            title: `Delete "${jobName}"?`,
-            description: `Click OK to delete selected job from your hub`,
-        })
-        .then(async () => {
-            dispatch(setFetching(true))
-
-            const body = {
-                jobId: id
-            }
-            
-            try {
-                const response = await axios.post("/user/delete-job", body, {
-                    headers: {
-                        "x-access-token": isAuth,
-                    },
-                });
-                setJobs(response.data.jobs)
-                dispatch(setFetching(false))
-                successSetter("Job Deleted")
-            } catch (error) {
-                dispatch(setFetching(false))
-                errorSetter(error.response.data.error)
-            }
-        })
-        .catch(() => {
-            return
-        });
-    }
-
-    const chooseActStr = async (str, item) => {
-        setActionString(str)
-        setModalOpen(true)
-        setChosenJob(item)
-    }
-
-    const chooseResume = (index) => {
-        setActiveResIndex(index + 1)
-        setSingleResume(allResumes[index])
-    }
-
+    const chooseActStr = (action, job) => {
+        setActionString(action);
+        setChosenJob(job);
+        setResumeSelectorModalOpen(true);
+    };
 
     const handleGenerate = async () => {
         switch (actionString) {
@@ -459,10 +427,11 @@ const JobHub = () => {
                 localStorage?.removeItem("resume")
                 localStorage?.removeItem("letter")
                 
-                const prompt = `You are the best and most professional cover letter writer in the world, 
+                const prompt = `You are the best professional cover letter writer in the world, 
                     with 100% success rate from your cover letter writings. Write a stunning professional 
-                    cover letter using the following details: Job Position: ${jobPosition}, 
-                    Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${JSON.stringify(singleResume)}, 
+                    cover letter that uses relevant keywords from the below job details and my resume to show how I am best-fit for the job:
+                    Job Position: ${jobPosition}, 
+                    Job Description: ${jobDesc}, Company Name: ${companyName}, My resume object : ${JSON.stringify(singleResume)}, 
                     pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
                     the basicInfo object of the resume; pick out the candidate's work history and all other elements 
                     needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
@@ -495,15 +464,15 @@ const JobHub = () => {
                 break;
                 
             case "Email":
-                const emailPrompt = `Please help me draft a follow-up email regarding my 
-                    job application for the Job Title: ${chosenJob?.title} and Company Name: ${chosenJob?.company_name}. I would like the email to be professional and polite, 
+                const emailPrompt = `Draft a follow-up email regarding my 
+                    job application for the Job Title: ${chosenJob?.title} and Company Name: ${chosenJob?.company_name}. I would like the email to be short, professional, human-like and polite, 
                     expressing my continued interest in the position and inquiring about the status of my application. 
                     Additionally, using details from this resume string object: ${JSON.stringify(singleResume)} and the following job description: ${chosenJob?.description}, 
-                    please include a very brief reminder of my relevant skills or experiences that make me a strong candidate for this role. Thank you!`
+                    please include a very brief reminder of my relevant skills or experiences that make me a strong candidate for this role.`
 
                 localStorage.setItem("HFLHASIGFWFIVQJKVKJJBJKVSHDVHVIVIVIVHVhvhjavcdhuchch_Int_Prep-fu-em_aghgxtdRWYRDWY", emailPrompt)
                 successSetter("Your Email opens in a new tab in 3 seconds")
-                //Navigate in a ask me page
+                //Navigate to ask me page
                 setTimeout(() => {
                     window.open("/chat", "_blank");
                 }, 3000);
@@ -537,323 +506,545 @@ const JobHub = () => {
         
     }
 
+    const deleteJob = async (jobId, title) => {
+        confirm({
+            title: "Delete This Job",
+            description: `Are you sure you want to remove ${title} from your job connections?`,
+        })
+        .then(async () => {
+            try {
+                await axios.post(`/user/delete-job`, {jobId}, {
+                    headers: {
+                        "x-access-token": localStorage.getItem("token"),
+                    }
+                });
+                // Remove job from state
+                setJobs(prev => prev.filter(job => job.id !== jobId));
+                successSetter("Job removed successfully");
+            } catch (error) {
+                errorSetter("Failed to remove job");
+            }
+        })
+        .catch(() => {
+            errorSetter('Process Terminated')
+        });
+    };
 
+    // --- SEMI-AUTO APPLY HANDLERS ---
+    const handleCopy = (value) => {
+        navigator.clipboard.writeText(value);
+        successSetter('Copied!');
+    };
 
-  return (
-    <div>
-        {isFeedbackTime ? <Feedback notApaymentTextPositive="Resume Creation Completed!"/> : (
-            <div className="auth-container">
-                <AuthSideMenu
-                    opened={authMenuOpen}
-                    hidden={!authMenuOpen}
-                    resumeSubDuration={resumeSubDuration}
-                    isResumeSubbed={isResumeSubbed}
-                    error={error}
-                    successMini={successMini}
-                    arrayDetails={[]}
-                    firstName={user.firstName}
-                />
-                {/* For SIDE MENU */}
-                <div style={{ width: "100%", padding: "0" }}>
-                    <div className="auth-bg-blob"></div>
-                </div>
+    
+    const checkPremiumSubsAndFirstTrial = () => {
+        // Check if user is subscribed and for per month or per week
+        if (!isResumeSubbed || resumeSubDuration === "Per Use") {
+            errorSetter("Upgrade your subscription to access this feature");
+            if (!pricingOpened) {
+                setPricingOpened(true);
+                setTimeout(() => {
+                    window.open('/pricing', '_blank');
+                }, 5000);
+            }
+            return false;
+        }
+        if (!isFirstFreeUsed && resumeServicesNumbers?.jobsApplied >= 2) {
+            errorSetter("You have reached the maximum number of free tier Ai job applications. Please choose a plan to do more.");
+            if (!pricingOpened) {
+                setPricingOpened(true);
+                setTimeout(() => {
+                    window.open('/pricing', '_blank');
+                }, 5000);
+            }
+            return false;
+        }
 
-                <div className="auth-container-inner">
-                    {/* for TOP MENU */}
-                    <AuthHeader
-                        authMenuOpen={authMenuOpen}
-                        onClick={toggleResumes}
-                        headerText="My Jobs"
-                    />
-                    <div className="error">{error}</div>
-                    <div className="success-mini">{successMini}</div>
+        return true
+    }
 
-                    {/* <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
-                        <AuthInputs 
-                            placeholder="Search for a resume" 
-                            inputType="search" 
-                            mb={3} 
-                            mt={5} 
-                            required={true} 
-                            value={searchString}
-                            onChange={handleSearch}
-                        />
-                    </div>  */}
-
-                    
-                    <div style={styles.animText} onClick={() => setAuthMenuOpen(false)}>
-                        <TypeAnimation
-                            sequence={[
-                                () => setTextColor('#3E8F93'),
-                                1000,
-                                'Greater Than 90% Chance of Beating ATS',
-                                1000,
-                                'Greater Than 90% Chance of Interview',
-                                1000,
-                                'Greater Than 90% Chance of Employment',
-                                1000,
-                                '.',
-                                1000,
-                                () => setTextColor('black'),
-                                'Real Company Data Used in Generating Resume',
-                                1000,
-                                'Real Company Data Used in Generating Cover',
-                                1000,
-                                'Real Company Data Used in Interview Prep',
-                                1000,
-                                '.',
-                                1000,
-                                () => setTextColor('#987070'),
-                                'Enhances User Data to Generate Resume',
-                                1000,
-                                'Enhances User Data to Generate Cover',
-                                1000,
-                                'Enhances User Data in Interview Prep',
-                                1000,
-                                '.',
-                                1000,
-                            ]}
-                            repeat={Infinity}
-                        />
-                    </div>
-
-                    <div style={{textAlign: 'center', margin: '15px 0'}}>
-                        <ButtonSubmitGreen 
-                            onClick={() => navigate('/user/dashboard/auto-apply')}
-                            style={{maxWidth: '300px'}}
-                        >
-                            <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Auto-Apply External Jobs
-                        </ButtonSubmitGreen>
-                    </div>
-
-                    {jobs.length < 1 ? (
-                        <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
-                            <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                                <Alert sx={{padding: '0 5px', width: 'auto', margin: '0 auto', fontSize: '.9rem'}} severity="warning">You have no job connections yet.</Alert>
-                            </div>
-                            <div className="BodyWrapper">
-                                <div className="Segment">
-                                    <Alert sx={{padding: '0 5px', margin: '0 auto'}} severity="info">Tips to getting connected</Alert>
-                                </div>
-                                
-                                <ol style={styles.list}>
-                                    <li>Choose a different location when creating/optimizing resume: your perfect fit job might not be in the previous city or country.</li>
-                                    <li>Do NOT combine several job positions (using OR, AND, /) for one resume e.g Business Developer/Sales Executive.</li>
-                                    <li>Ask Bubble Ai similar names recruiters might call your current job position: <a href="/chat" target="_blank" style={styles.newTabLnk}>Ask Here <TfiNewWindow /></a></li>
-                                </ol>
-                            </div>
-                            <h4>Optimize Resume to get Job Connections</h4>
-                            <div style={{width: '200px'}}>
-                                <ButtonSubmitGreen onClick={goBackPrevPage}>Start Now &nbsp;&nbsp;<FaLongArrowAltRight /></ButtonSubmitGreen>
-                            </div>
-                        </div>
-                    ) : (
-                        <Grid container onClick={() => setAuthMenuOpen(false)}>
-                            {jobs.map((item, index) => (
-                                <Grid key={index} item xs={12} md={6} sx={styles.cardGrid}>
-                                    <Card sx={activeIndex !== index + 1 ? styles.card : styles.cardLarge}>
-                                        
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                                            <CardContent sx={{ display: 'flex', flexDirection: 'row' }}>
-                                                <CardMedia
-                                                    component="img"
-                                                    sx={styles.img}
-                                                    image={img}
-                                                    alt="Avatar"
-                                                />
-
-                                                <div style={{width: '90%'}}>
-                                                    <Typography component="div" variant="h5">
-                                                        {item.title}
-                                                    </Typography>
-                                                    <div style={styles.link} >
-                                                        <div>
-                                                            <ul>
-                                                                <li><span style={styles.key}>Company Name</span> <span>{isResumeSubbed ? item?.company_name : <a className="link" style={styles.unlock} href='/pricing' target="_blank">See company name</a>}</span></li>
-                                                                <li><span style={styles.key}>Employment Type</span> <span>{item?.employment_type}</span></li>
-                                                                <li><span style={styles.key}>Location</span> <span>{item?.location}</span></li>
-                                                                <li><span style={styles.key}>Salary</span> <span>{item?.salary ? item.salary : "Undisclosed"}</span></li>
-                                                                <li><span style={styles.key}>Experience</span> <span>{item?.seniority ? item.seniority : "N/A"}</span></li>
-                                                            </ul>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </CardContent>
-
-                                            <div style={{ margin: '20px', marginTop: '-20px' }}>
-                                                <h4 style={{ margin: '0' }}>Description</h4>
-                                                <div style={styles.desc}>
-                                                    {activeIndex !== index + 1 
-                                                        ? <>
-                                                            {item.description.slice(0, 200)}... <span onClick={() => setActiveIndex(index + 1)} style={{ cursor: 'pointer', color: '#3E8F93' }}>see more</span>
-                                                        </>
-                                                        : <> {item.description} <span onClick={() => setActiveIndex(null)} style={{ cursor: 'pointer', color: '#3E8F93' }}>...see less</span></>}
-                                                </div>
-                                            </div>
-
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 1, pb: 1, flexWrap: 'wrap' }}>
-                                                <div style={{marginBottom: "10px"}}>
-                                                    <ButtonThin
-                                                        fontSize='.6rem' 
-                                                        border='2px solid #F8E231' 
-                                                        width={'110px'} 
-                                                        height='25px' 
-                                                        color='black'
-                                                        onClick={() => getJob(item?.url, item?.external_url, item.applicants_count)}
-                                                    >
-                                                        <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
-                                                    </ButtonThin>
-                                                </div>
-                                                
-                                                <div style={{marginBottom: "10px"}}>
-                                                    <ButtonThin
-                                                        fontSize='.6rem' 
-                                                        border='2px solid #3E8F93' 
-                                                        width={'110px'} 
-                                                        height='25px' 
-                                                        color='black'
-                                                        onClick={() => getResume(item?.description, item?.title)}
-                                                    >
-                                                        <FaSuitcase style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Resume
-                                                    </ButtonThin>
-                                                </div>
-
-                                                <div style={{marginBottom: "10px", marginRight: '3px'}}>
-                                                    <ButtonThin
-                                                        fontSize='.6rem' 
-                                                        border='2px solid #987070' 
-                                                        width={'110px'} 
-                                                        height='25px' 
-                                                        color='black'
-                                                        onClick={() => chooseActStr("Cover Letter", item)}
-                                                    >
-                                                        <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
-                                                    </ButtonThin>
-                                                </div>
-
-                                                <div style={{marginBottom: "10px"}}>
-                                                    <ButtonThin
-                                                        fontSize='.6rem' 
-                                                        border='2px solid #68A7AD' 
-                                                        width={'110px'} 
-                                                        height='25px' 
-                                                        color='black'
-                                                        onClick={() => chooseActStr("Email", item)}
-                                                    >
-                                                        <MdMarkEmailRead style={{color: "#68A7AD", fontSize: ".9rem"}} />&nbsp;&nbsp; Email Follow-up
-                                                    </ButtonThin>
-                                                </div>
-                                                
-                                                <div style={{marginBottom: "10px"}}>
-                                                    <ButtonThin
-                                                        fontSize='.6rem' 
-                                                        border='2px solid black' 
-                                                        width={'110px'} 
-                                                        height='25px' 
-                                                        color='black'
-                                                        onClick={() => chooseActStr("Interview", item)}
-                                                    >
-                                                        <VscChecklist style={{color: "black", fontSize: ".9rem"}} />&nbsp;&nbsp; Interview Prep
-                                                    </ButtonThin>
-                                                </div>
-                                                
-                                                <div style={{marginBottom: "10px"}}>
-                                                    <ButtonThin
-                                                        fontSize='.6rem' 
-                                                        border='2px solid rgba(158, 9, 9, 0.733)' 
-                                                        width={'110px'} 
-                                                        height='25px' 
-                                                        color='rgba(158, 9, 9, 0.733)'
-                                                        onClick={() => deleteJob(item?.id, item.title)}
-                                                    >
-                                                        <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
-                                                    </ButtonThin>
-                                                </div>
-
-                                            </Box>
-                                        </Box>
-
-                                    </Card>
-                                </Grid>
-                            ))}          
-                        </Grid>
-                    )}
-
-                </div>
-
-                {modalOpen && (
-                    <PlainModalOverlay>
-                        <div style={styles.modalInner}>
-                            <div className='prev-page' onClick={() => setModalOpen(false)}>
-                                <FaLongArrowAltLeft />
-                            </div>
-                            <h4>Choose a resume for me to optimize your {actionString}, together with this job's real data.</h4>
-                            <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Using the "Get Resume" button on each job to optimize your resume per-job gives your application materials more relevance and hence, gives you a surer chance.</Alert>
-
-                            <div style={styles.resumesCont}>
-                                {allResumes.length > 0 && (
-                                    allResumes.map((resume, index) => {
-                                        return (
-                                            <div key={index} style={activeResIndex === index + 1 ? styles.activeResume : styles.eachResume} onClick={() => chooseResume(index)}>
-                                                <div>{resume?.storageDetails?.name}</div> {activeResIndex === index + 1 && <div><GrStatusGood style={{color: "#3E8F93", fontSize: ".9rem"}} /> </div>}
-                                            </div>
-                                        )
-                                    })
-                                )}
-                            </div>
-
-                            <div style={{width: '100%'}}>
-                                <ButtonSubmitGreen onClick={handleGenerate} >Get {actionString}</ButtonSubmitGreen>
-                            </div>
-
-                        </div>
-                    </PlainModalOverlay>
-                )}
-                {jobModal && (
-                    <PlainModalOverlay>
-                        <div style={styles.modalInner}>
-                            <div className='prev-page' onClick={() => openJobModal(false)}>
-                                <FaLongArrowAltLeft />
-                            </div>
-                            <h4>Choose application submission method</h4>
-
-                            <div style={styles.applicants}>
-                                <IoIosPeople /> {applicants}
-                            </div>
-
-                            <Grid container>
-                                <Grid item xs={12} mb={1}>
-                                    <ButtonTransparent width="100%" onClick={() => submitApplication(linkedinUrl)}><FaLinkedin />&nbsp; LinkedIn Apply</ButtonTransparent>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <ButtonSubmitGreen onClick={() => submitApplication(companyUrl)}>Recruiter Portal</ButtonSubmitGreen>
-                                </Grid>
-                            </Grid>
-
-                        </div>
-                    </PlainModalOverlay>
-                )}
-                {successfulAchievement && 
-                    <SuccessFailureModal 
-                        success={successfulAchievement} 
-                        successText="Congratulations, You have been rewarded!"
-                        bodyText="Your Bubble Points have reached your target for your subscription and has earned you an extra week/month of access, Good luck!"
-                        buttonText="Claim Points Reward"
-                        fullName={user.firstName} 
-                    /> 
-                }
+    const handleCompanySiteAutoApply = async () => {
+        // Check if user is subscribed and for per month or per week
+        if (checkPremiumSubsAndFirstTrial() === false) {
+            return
+        }
+        const jobUrl = companyUrl || externalJobUrl;
+        //get event progress
+        const eventSource = new EventSource('/user/progress');
+        //listen for SSE
+        eventSource.onmessage = (event) =>  {
+            const progressUpdate = JSON.parse(event.data)
+            setProgressPercentage(progressUpdate.percent);
+            setProgressStatus(progressUpdate.status)
+        };
+        setLoading(true)
+        try {
+            const res = await axios.post('/user/form-analysis/company-site', {
+                job: chosenJob,
+                resume: singleResume,
+                url: jobUrl
+            }, { headers: { 'x-access-token': isAuth } });
+            if (res.data.pageType === 'login') {
+                // If login page detected, trigger login QnA modal
+                setShowFieldAnswersModal(false);
+                setLoginQnAJobDesc(chosenJob.description);
+                setLoginQnAJobDescSaved(true);
+                setShowQnAModal(true);
+                setExternalJobUrl(jobUrl);
                 
-            </div>
-        )}
-    </div>
+                setLoading(false);
+                eventSource.close()
+                return;
+            }
+            if (res.data.pageType === 'main-form' && res.data.fields) {
+                setFieldAnswers(res.data.fields);
+                setSingleResume(res.data.optimizedResume)
+                setFieldAnswersUrl(jobUrl);
+                setFieldAnswersJob(chosenJob);
 
-  );
+                setShowFieldAnswersModal(true);
+            } else {
+                errorSetter(res.data.message || 'Failed to analyze form. Try again.');
+            }
+            setLoading(false);
+            eventSource.close()
+        } catch (err) {
+            console.log(err)
+            setLoading(false);
+            eventSource.close()
+            errorSetter('Failed to analyze form. Try again.');
+        }
+    };
 
-  
+    const handleGetResumeDirect = async (loginAlgorithm) => {
+        //user can create resume as long as susbscribed, no matter the plan
+        if (!isResumeSubbed) {
+            errorSetter("Upgrade your subscription to tailor a resume for this job");
+            if (!pricingOpened) {
+                setPricingOpened(true);
+                setTimeout(() => {
+                    window.open('/pricing', '_blank');
+                }, 5000);
+            }
+            return;
+        }
+        //get event progress
+        const eventSource = new EventSource('/user/progress');
+        //listen for SSE
+        eventSource.onmessage = (event) =>  {
+            const progressUpdate = JSON.parse(event.data)
+            setProgressPercentage(progressUpdate.percent);
+            setProgressStatus(progressUpdate.status)
+        };
+        setLoading(true)
+        //check for job description before allowing resume optimization and download
+        if (loginAlgorithm && loginAlgorithm === "loginAlgorithm") {
+            if (!loginQnAJobDescSaved || loginQnAEditingDesc) {
+                eventSource.close();
+                setLoading(false);
+                errorSetter("Save job description first");
+                return;
+            }
+            try {
+                const response = await axios.post('/user/resume/optimize-and-return', {
+                    job: chosenJob,
+                    resume: singleResume
+                }, { headers: { 'x-access-token': isAuth } });
+
+                if (response.data.status === "unauthenticated") {
+                    eventSource.close();
+                    setLoading(false);
+                    errorSetter("Session expired. Please login again.");
+                    localStorage?.removeItem("token");
+                    return navigate("/popin?job-hub");
+                }
+
+                const optimizedResume = response.data.resume;
+                await downloadResumeDirect(optimizedResume);
+                setLoading(false);
+                eventSource.close();
+                successSetter('Resume downloaded!');
+            } catch (error) {
+                eventSource.close();
+                setLoading(false);
+                errorSetter('Failed to generate/download resume.');
+            }
+        } else {
+            //For resume on fieldAnswersModal which is already optimized
+            try {
+                await downloadResumeDirect(singleResume);
+                setLoading(false);
+                eventSource.close();
+                successSetter('Resume downloaded!');
+            } catch (err) {
+                setLoading(false);
+                eventSource.close();
+                errorSetter('Failed to generate/download resume.');
+            }
+        }
+    };
+
+    const handleGetCoverLetterDirect = async () => {
+        if (!loginQnAJobDescSaved || loginQnAEditingDesc) {
+            errorSetter("Save job description first");
+            return;
+        }
+        try {
+            dispatch(setFetching(true));
+            const res = await axios.post('/user/cover-letter/optimize-and-return', {
+                resume: singleResume,
+                job: fieldAnswersJob || chosenJob
+            }, { headers: { 'x-access-token': isAuth } });
+            await downloadCoverLetterDirect(res.data.coverLetter, singleResume);
+            dispatch(setFetching(false));
+            successSetter('Cover letter downloaded!');
+        } catch (err) {
+            dispatch(setFetching(false));
+            errorSetter('Failed to generate/download cover letter.');
+        }
+    };
+
+    const triggerLoginQnAModal = () => {
+        setShowFieldAnswersModal(false);
+        setShowExternalJobModal(false);
+        setShowInternalAppJobModal(false);
+        setShowQnAModal(true);
+    };
+
+
+    // submit handlers for autoapply
+    const handleInternalJobModalSubmit = (method) => {
+        // Check if user is subscribed and for per month or per week
+        if (checkPremiumSubsAndFirstTrial() === false) {
+            return
+        }
+        if (Object.keys(singleResume).length < 1) {
+            errorSetter("Please select a resume first");
+            return;
+        }
+        if (method === 'linkedin') {
+            triggerLoginQnAModal();
+            return;
+        }
+        // Company site
+        setShowInternalAppJobModal(false);
+        handleCompanySiteAutoApply();
+    };
+
+    
+    // Helper: check if a URL is a LinkedIn job
+    const isLinkedInUrl = (url) => {
+        if (!url) return false;
+        try {
+            return url.toLowerCase().includes('linkedin.com');
+        } catch {
+            return false;
+        }
+    };
+
+    // --- External Job Modal Submit Handler (Step 1) ---
+    const handleExternalModalSubmit = () => {
+        // Check if user is subscribed and for per month or per week
+        if (checkPremiumSubsAndFirstTrial() === false) {
+            return
+        }
+        if (!externalJobUrl) {
+            errorSetter("Please provide a valid job URL");
+            return;
+        }
+        if (Object.keys(singleResume).length < 1) {
+            errorSetter("Please select a resume first");
+            return;
+        }
+        // Step 1: Check if LinkedIn or Company Site
+        if (isLinkedInUrl(externalJobUrl)) {
+            triggerLoginQnAModal();
+        } else {
+            // Use Company Site Algorithm
+            setShowExternalJobModal(false);
+            handleCompanySiteAutoApply();
+        }
+    };
+
+    const handleLoginQnAInputChange = (e) => {
+        setLoginQnAInput(e.target.value);
+    };
+
+    // Handler for QnA submit
+    const handleLoginQnASubmit = async () => {
+        // Check if user is subscribed and for per month or per week
+        if (checkPremiumSubsAndFirstTrial() === false) {
+            return
+        }
+        //For QnA Modal
+        if(!showFieldAnswersModal) {
+            if (!loginQnAInput || !loginQnAJobDesc) {
+                errorSetter('Please provide a question and save job description.');
+                return;
+            }
+            try {
+                setLoginQnALoading(true);
+                const res = await axios.post('/user/form-analysis/login-qna', {
+                    resume: singleResume,
+                    jobDescription: loginQnAJobDesc,
+                    question: loginQnAInput
+                }, { headers: { 'x-access-token': isAuth } });
+                setLoginQnAList(prev => [...prev, { question: loginQnAInput, answer: res.data.answer }]);
+            } catch (err) {
+                errorSetter('Failed to get answer. Try again.');
+            }
+        } else {
+            //For FieldAnswersModal
+            if (!loginQnAInput) {
+                errorSetter('Please provide a question.');
+                return;
+            }
+            try {
+                setLoginQnALoading(true);
+                const res = await axios.post('/user/form-analysis/login-qna', {
+                    resume: singleResume,
+                    jobDescription: chosenJob?.description,
+                    question: loginQnAInput
+                }, { headers: { 'x-access-token': isAuth } });
+                setFieldAnswers(prev => [...prev, { label: loginQnAInput, value: res.data.answer }]);
+            } catch (err) {
+                errorSetter('Failed to get answer. Try again.');
+            }
+        }
+
+        setLoginQnAInput('');
+        setLoginQnALoading(false);
+    };
+
+
+    // Render
+    return (
+        <div>
+            {isFeedbackTime ? <Feedback notApaymentTextPositive="Resume Creation Completed!"/> : (
+                <div className="auth-container">
+                    <AuthSideMenu
+                        opened={authMenuOpen}
+                        hidden={!authMenuOpen}
+                        resumeSubDuration={resumeSubDuration}
+                        isResumeSubbed={isResumeSubbed}
+                        error={error}
+                        successMini={successMini}
+                        arrayDetails={[]}
+                        firstName={user.firstName}
+                    />
+                    {/* For SIDE MENU */}
+                    <div style={{ width: "100%", padding: "0" }}>
+                        <div className="auth-bg-blob"></div>
+                    </div>
+
+                    <div className="auth-container-inner">
+                        {/* for TOP MENU */}
+                        <AuthHeader
+                            authMenuOpen={authMenuOpen}
+                            onClick={toggleMenu}
+                            headerText="My Jobs"
+                        />
+                        <div className="error">{error}</div>
+                        <div className="success-mini">{successMini}</div>
+
+                        {/* <div style={{margin: '20px auto', width: screenWidth < 900 ? '100%' : '50%'}}>
+                            <AuthInputs 
+                                placeholder="Search for a resume" 
+                                inputType="search" 
+                                mb={3} 
+                                mt={5} 
+                                required={true} 
+                                value={searchString}
+                                onChange={handleSearch}
+                            />
+                        </div>  */}
+
+
+                        <div style={styles.animText} onClick={() => setAuthMenuOpen(false)}>
+                            <TypeAnimation
+                                sequence={[
+                                    () => setTextColor('#3E8F93'),
+                                    1000,
+                                    'Greater Than 90% Chance of Beating ATS',
+                                    1000,
+                                    'Greater Than 90% Chance of Interview',
+                                    1000,
+                                    'Greater Than 90% Chance of Employment',
+                                    1000,
+                                    '.',
+                                    1000,
+                                    () => setTextColor('black'),
+                                    'Real Company Data Used in Generating Resume',
+                                    1000,
+                                    'Real Company Data Used in Generating Cover',
+                                    1000,
+                                    'Real Company Data Used in Interview Prep',
+                                    1000,
+                                    '.',
+                                    1000,
+                                    () => setTextColor('#987070'),
+                                    'Enhances User Data to Generate Resume',
+                                    1000,
+                                    'Enhances User Data to Generate Cover',
+                                    1000,
+                                    'Enhances User Data in Interview Prep',
+                                    1000,
+                                    '.',
+                                    1000,
+                                ]}
+                                repeat={Infinity}
+                            />
+                        </div>
+
+                        <div style={{textAlign: 'center', margin: '15px 0'}}>
+                            <ButtonSubmitGreen 
+                                onClick={() => setShowExternalJobModal(true)}
+                                style={{maxWidth: '300px'}}
+                            >
+                                <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Auto-Apply to External Jobs
+                            </ButtonSubmitGreen>
+                        </div>
+
+                        {jobs.length < 1 ? (
+                            <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
+                                <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                    <Alert sx={{padding: '0 5px', width: 'auto', margin: '0 auto', fontSize: '.9rem'}} severity="warning">You have no job connections yet.</Alert>
+                                </div>
+                                <div className="BodyWrapper">
+                                    <div className="Segment">
+                                        <Alert sx={{padding: '0 5px', margin: '0 auto'}} severity="info">Tips to getting connected</Alert>
+                                    </div>
+                                    
+                                    <ol style={styles.list}>
+                                        <li>Choose a different location when creating/optimizing resume: your perfect fit job might not be in the previous city or country.</li>
+                                        <li>Do NOT combine several job positions (using OR, AND, /) for one resume e.g Business Developer/Sales Executive.</li>
+                                        <li>Ask Bubble Ai similar names recruiters might call your current job position: <a href="/chat" target="_blank" style={styles.newTabLnk}>Ask Here <TfiNewWindow /></a></li>
+                                    </ol>
+                                </div>
+                                <h4>Optimize Resume to get Job Connections</h4>
+                                <div style={{width: '200px'}}>
+                                    <ButtonSubmitGreen onClick={goBackPrevPage}>Start Now &nbsp;&nbsp;<FaLongArrowAltRight /></ButtonSubmitGreen>
+                                </div>
+                            </div>
+                        ) : (
+                            <div onClick={() => setAuthMenuOpen(false)}>
+                                <JobList
+                                    jobs={jobs}
+                                    img={img}
+                                    activeIndex={activeIndex}
+                                    setActiveIndex={setActiveIndex}
+                                    applicationMap={applicationMap}
+                                    expandedAppIndex={expandedAppIndex}
+                                    setExpandedAppIndex={setExpandedAppIndex}
+                                    handleCopy={handleCopy}
+                                    getJob={getJob}
+                                    getResume={getResume}
+                                    chooseActStr={chooseActStr}
+                                    deleteJob={deleteJob}
+                                    isResumeSubbed={isResumeSubbed}
+                                    resumeSubDuration={resumeSubDuration}
+                                    loadingJobs={loadingJobs}
+                                />
+                            </div>
+                        )}
+
+                    </div>
+
+                    {resumeSelectorModalOpen && (
+                        <ResumeSelectorModal
+                            closeModalsAndReset={closeModalsAndReset}
+                            allResumes={allResumes}
+                            activeResIndex={activeResIndex}
+                            handleResumeSelect={handleResumeSelect}
+                            actionString={actionString}
+                            handleGenerate={handleGenerate}
+                        />
+                    )}
+                    {showInternalAppJobModal && (
+                        <InternalAppJobModal
+                            closeModalsAndReset={closeModalsAndReset}
+                            setShowInternalAppJobModal={setShowInternalAppJobModal}
+                            linkedinUrl={linkedinUrl}
+                            companyUrl={companyUrl}
+                            applicants={applicants}
+                            allResumes={allResumes}
+                            activeResIndex={activeResIndex}
+                            handleResumeSelect={handleResumeSelect}
+                            handleInternalJobModalSubmit={handleInternalJobModalSubmit}
+                        />
+                    )}
+                    {showExternalJobModal && (
+                        <ExternalJobModal
+                            closeModalsAndReset={closeModalsAndReset}
+                            setShowExternalJobModal={setShowExternalJobModal}
+                            externalJobUrl={externalJobUrl}
+                            handleExternalJobUrlChange={(e) => setExternalJobUrl(e.target.value)}
+                            allResumes={allResumes}
+                            activeResIndex={activeResIndex}
+                            handleResumeSelect={handleResumeSelect}
+                            handleExternalModalSubmit={handleExternalModalSubmit}
+                        />
+                    )}
+                    {showFieldAnswersModal && (
+                        <FieldAnswersModal
+                            closeModalsAndReset={closeModalsAndReset}
+                            fieldAnswers={fieldAnswers}
+                            fieldAnswersUrl={fieldAnswersUrl}
+                            handleCopy={handleCopy}
+                            handleGetResumeDirect={handleGetResumeDirect}
+                            handleGetCoverLetterDirect={handleGetCoverLetterDirect}
+                            handleCompanySiteAutoApply={handleCompanySiteAutoApply}
+                            loginQnAInput={loginQnAInput}
+                            handleLoginQnAInputChange={handleLoginQnAInputChange}
+                            handleLoginQnASubmit={handleLoginQnASubmit}
+                            loginQnALoading={loginQnALoading}
+                        />
+                    )}
+                    {showQnAModal && (
+                        <QnAModal
+                            closeModalsAndReset={closeModalsAndReset}
+                            externalJobUrl={externalJobUrl}
+                            linkedinUrl={linkedinUrl}
+                            loginQnAJobDesc={loginQnAJobDesc}
+                            handleLoginQnAJobDescChange={e => setLoginQnAJobDesc(e.target.value)}
+                            loginQnAJobDescSaved={loginQnAJobDescSaved}
+                            setLoginQnAJobDescSaved={setLoginQnAJobDescSaved}
+                            loginQnAEditingDesc={loginQnAEditingDesc}
+                            setLoginQnAEditingDesc={setLoginQnAEditingDesc}
+                            loginQnAInput={loginQnAInput}
+                            handleLoginQnAInputChange={handleLoginQnAInputChange}
+                            loginQnAList={loginQnAList}
+                            handleLoginQnASubmit={handleLoginQnASubmit}
+                            loginQnALoading={loginQnALoading}
+                            handleCopy={handleCopy}
+                            handleGetResumeDirect={handleGetResumeDirect}
+                            handleGetCoverLetterDirect={handleGetCoverLetterDirect}
+                        />
+                    )}
+                    {successfulAchievement && 
+                        <SuccessFailureModal 
+                            success={successfulAchievement} 
+                            successText="Congratulations, You have been rewarded!"
+                            bodyText="Your Bubble Points have reached your target for your subscription and has earned you an extra week/month of access, Good luck!"
+                            buttonText="Claim Points Reward"
+                            fullName={user.firstName} 
+                        /> 
+                    }
+                    {loading && (
+                        <Modal
+                            header4={`Hello ${user.firstName}`}
+                            header3={progressStatus}
+                            progress={progressPercentage}
+                        />
+                    )}
+                </div>
+            )}
+
+        </div>
+    );
+
+    
 };
 
+export default React.memo(JobHub);
 
-
-export default JobHub;

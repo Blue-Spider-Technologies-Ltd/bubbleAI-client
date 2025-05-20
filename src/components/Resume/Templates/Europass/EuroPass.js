@@ -6,6 +6,7 @@ import pinIcon from '../../../../images/pin.png'
 import emailIcon from '../../../../images/email.png'
 import linkIcon from '../../../../images/link.png'
 import diamondIcon from '../../../../images/diamond.png'
+import imgAvatar from '../../../../images/avatar.png'
 
 
 const styles = StyleSheet.create({
@@ -154,7 +155,7 @@ const EuroPass = ({resume, imgUrl}) => (
             <View>
                 <View style={{ ...styles.FlexContainer, height: 120 }}>
                     <View style={styles.leftOfFlex}>
-                        <Image style={styles.image} src={imgUrl} />
+                        <Image style={styles.image} src={imgUrl || imgAvatar} />
                     </View>
 
                     <View style={{ ...styles.rightOfFlex, borderLeft: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}}>

@@ -73,7 +73,6 @@ const DownloadResume = () => {
     const confirm = useConfirm();
     const componentRef = useRef();
     const [authMenuOpen, setAuthMenuOpen] = useState(false)
-    const [freeJustUsed, setFreeJustUsed] = useState(false)
     const [hasDownloadedCv, setHasDownloadedCv] = useState(false)
     const [canPrint, setCanPrint] = useState(false)
     const [activeIndex, setActiveIndex] = useState(null);
@@ -358,14 +357,6 @@ const DownloadResume = () => {
                 setHasDownloadedCv(true)
             }
 
-            // So first time users understands job-hub
-            if(freeJustUsed) {
-                successSetter("Redirecting you to JOB CONNECTIONS in 5 seconds")
-                setTimeout(() => {
-                    navigate('/user/dashboard/job-hub')
-                }, 5000);
-                return
-            }
             successSetter("CV Downloaded Successfully")
 
         } catch (error) {
@@ -375,31 +366,7 @@ const DownloadResume = () => {
 
         dispatch(setFetching(false));
     }
-
-    const setFirstFreeUsedOnDB = async () => {
-        try {
-            await checkAuthenticatedUser();
-        } catch (error) {
-            localStorage?.removeItem("token");
-            navigate("/popin?resume");
-        }
-        try {
-            const response = await axios.get('/set-first-free-used', {
-                headers: {
-                    'x-access-token': isAuth
-                }
-            })
-
-            if(response.statusCode === 409) {
-                errorSetter("Not Authenticated")
-                setTimeout(() => {
-                    navigate("/popin?resume");
-                }, 2000);
-            }
-        } catch (error) {
-            
-        }
-    }
+    
 
     const handleDownload = () => {
         if(!canPrint) {

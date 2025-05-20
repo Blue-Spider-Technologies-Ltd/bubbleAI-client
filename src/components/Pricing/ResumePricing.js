@@ -100,6 +100,10 @@ const resumePricingDetails = [
                 available: true,
                 text: 'Ai Resume Insights'
             },
+            recruiterAccess: {
+                available: false,
+                text: 'Recruiter LinkedIn Access'
+            },
             recommendation: {
                 available: true,
                 text: '(One-time Resume)'
@@ -162,9 +166,13 @@ const resumePricingDetails = [
                 available: true,
                 text: 'Ai Career Insights'
             },
+            recruiterAccess: {
+                available: false,
+                text: 'Recruiter LinkedIn Access'
+            },
             recommendation: {
                 available: true,
-                text: 'Connect to Hottest Jobs this Week'
+                text: 'Get Connect to 90%+ Success Jobs'
             }
         }
     },
@@ -224,9 +232,13 @@ const resumePricingDetails = [
                 available: true,
                 text: 'Ai Career Insights'
             },
+            recruiterAccess: {
+                available: true,
+                text: 'Recruiter LinkedIn Access'
+            },
             recommendation: {
                 available: true,
-                text: 'Get a Job by Next Month'
+                text: 'I want a Job by Next Month'
             }
         }
     }
