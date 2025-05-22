@@ -567,8 +567,14 @@ const JobHub = () => {
         return true
     }
 
+    const isCompanyAutoApplyTriggered = useRef(false);
     const handleCompanySiteAutoApply = async () => {
         // Check if user is subscribed and for per month or per week
+        if (isCompanyAutoApplyTriggered.current) {
+            errorSetter("double call triggered")
+            return
+        }
+        isCompanyAutoApplyTriggered.current = true
         if (checkPremiumSubsAndFirstTrial() === false) {
             return
         }
@@ -610,10 +616,11 @@ const JobHub = () => {
             } else {
                 errorSetter(res.data.message || 'Failed to analyze form. Try again.');
             }
+            isCompanyAutoApplyTriggered.current = false
             setLoading(false);
             eventSource.close()
         } catch (err) {
-            console.log(err)
+            isCompanyAutoApplyTriggered.current = false
             setLoading(false);
             eventSource.close()
             errorSetter('Failed to analyze form. Try again.');
