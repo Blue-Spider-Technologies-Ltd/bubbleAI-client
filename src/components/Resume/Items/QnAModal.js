@@ -1,17 +1,21 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import { ButtonSubmitGreen, ButtonThin, ButtonTransparentSquare } from "../../UI/Buttons/Buttons";
+import { successMiniAnimation } from "../../../utils/client-functions.js";
+import { setSuccessMini } from "../../../redux/states";
 import AuthInput from '../../UI/Input/AuthInputs';
+import { Oval } from 'react-loader-spinner'
+import { GrSend } from "react-icons/gr";
 import { FaCopy } from "react-icons/fa6";
-import { TfiNewWindow } from "react-icons/tfi";
+import { IoLink } from "react-icons/io5";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { BiMessageSquareEdit } from "react-icons/bi";
-import { SiAnswer } from "react-icons/si";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { FaSuitcase } from "react-icons/fa6";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
+import { useDispatch } from "react-redux";
 
 const styles = {
     modalInner: {
@@ -49,6 +53,28 @@ const styles = {
         fontSize: '.74rem',
         padding: '10px 0'
     },
+    stepNumber: {
+        background: 'linear-gradient(135deg, #3E8F93 0%, #56A8AC 100%)',
+        color: 'black',
+        width: '60px',
+        height: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        marginRight: '10px',
+        fontSize: '.85rem',
+        fontWeight: '600'
+    },
+    stepContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '10px', 
+        marginTop: '40px', 
+        fontSize: '1rem',
+        fontWeight: '500',
+    }
 };
 
 const QnAModal = React.memo(({
@@ -71,6 +97,20 @@ const QnAModal = React.memo(({
     handleGetCoverLetterDirect
 }) => {
     const answersContainerRef = useRef(null);
+    const dispatch = useDispatch()
+    const successSetter = useCallback((string) => {
+        dispatch(setSuccessMini(string));
+        successMiniAnimation();
+    }, [dispatch]);
+    const screenWidth = window.innerWidth;
+    const handleKeyDown = e => { 
+        if (screenWidth > 900 ) {
+            if (e.key === "Enter" && !e.shiftKey) { 
+                e.preventDefault();
+                handleLoginQnASubmit();
+            }
+        }
+    }
     // Scroll to bottom whenever fieldAnswers changes
     useEffect(() => {
         if (answersContainerRef.current) {
@@ -83,29 +123,33 @@ const QnAModal = React.memo(({
                 <Alert severity="warning" sx={{ mb: 2, fontSize: '.9rem', textAlign: 'left' }}>
                     This job requires login. Bubble Ai does not handle login yet.<br/>
                     <br/>
-                    <b>But not to worry! Ask me application questions below and I'll answer.</b>
+                    <b>But not to worry! I'll still automate your application, including tailored answers.</b>
                 </Alert>
+
                 {/* Open Job Page Button */}
+                <div style={styles.stepContainer}><div style={styles.stepNumber}>Step 1</div> <div>Open Application Page</div></div>
                 <div style={{marginBottom: "15px", width: '100%', display: 'flex', justifyContent: 'center'}}>
                     <ButtonThin
                         fontSize='.8rem' 
-                        border='2px solid #F8E231' 
+                        border='2px solid #61AFF1' 
                         width={'100%'} 
                         height='30px' 
-                        color='black'
-                        onClick={() => window.open(externalJobUrl || linkedinUrl, '_blank', 'noopener,noreferrer')}
+                        color='#61AFF1'
+                        onClick={() => handleCopy(externalJobUrl || linkedinUrl, true)}
                     >
-                        <TfiNewWindow style={{color: "black", fontSize: ".9rem"}} />&nbsp;&nbsp; Open Application Page
+                        <IoLink style={{fontSize: ".9rem", color: "#61AFF1"}} />&nbsp;&nbsp; Tap to copy page link
                     </ButtonThin>
                 </div>
+                
                 {/* Job Description Paste/Edit */}
+                <div style={styles.stepContainer}><div style={styles.stepNumber}>Step 2</div> <div>Save Job Description</div></div>
                 {!loginQnAJobDescSaved || loginQnAEditingDesc ? (
                     <div style={{ marginBottom: 16 }}>
                         <AuthInput
                             id="jobDescription"
                             name="jobDescription"
                             value={loginQnAJobDesc}
-                            placeholder="Paste full job description from application page and click add..."
+                            placeholder="Paste full job description from application page and click save..."
                             multiline={true}
                             inputGridSm={12}
                             mt={1}
@@ -125,6 +169,7 @@ const QnAModal = React.memo(({
                                 onClick={() => {
                                     setLoginQnAJobDescSaved(true);
                                     setLoginQnAEditingDesc(false);
+                                    successSetter("Awesome! Now you can ask me any application questions")
                                 }}
                             >
                                 <MdOutlinePostAdd style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;Save Description
@@ -138,10 +183,10 @@ const QnAModal = React.memo(({
                             Job description added. 
                         </Alert>
                         <div style={{ fontSize: '.85rem', background: '#f7f7f7', borderRadius: 6, padding: 8, marginBottom: 8, textAlign: 'left' }}>
-                            {loginQnAJobDesc.slice(0, 100)}...
-                            <div style={{width: '100%', display: 'flex', justifyContent: 'right'}}>
-                                <ButtonThin width="120px" onClick={() => setLoginQnAEditingDesc(true)} style={{ fontSize: '.7rem'}}>
-                                    <BiMessageSquareEdit style={{color: "black", fontSize: ".8rem"}} />&nbsp;Edit
+                            {loginQnAJobDesc.slice(0, 50)}...
+                            <div style={{width: '100%', display: 'flex', justifyContent: 'right', textDecoration: 'underline', color: "#61AFF1" }}>
+                                <ButtonThin color="#61AFF1" width="120px" onClick={() => setLoginQnAEditingDesc(true)} style={{ fontSize: '.7rem'}}>
+                                    <BiMessageSquareEdit style={{color: "#61AFF1", fontSize: ".8rem"}} />&nbsp;Edit
                                 </ButtonThin>
                             </div>
                         </div>
@@ -184,9 +229,11 @@ const QnAModal = React.memo(({
                     </div>
                 )}
 
+
                 {/* QnA Input */}
                 {loginQnAJobDescSaved && !loginQnAEditingDesc && (
-                    <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 16, position: 'relative'}}>
+                        <div style={styles.stepContainer}><div style={styles.stepNumber}>Step 3</div> <div>Ask Application Questions</div></div>
                         <AuthInput
                             id="appQuestion"
                             name="appQuestion"
@@ -194,23 +241,36 @@ const QnAModal = React.memo(({
                             placeholder="Paste a question from the application form..."
                             inputGridSm={12}
                             multiline={true}
+                            buttonInInput={true}
                             rows={2}
                             maxRows={2}
                             mt={1}
                             mb={1}
-                            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) handleLoginQnASubmit(); }}
+                            onKeyDown={handleKeyDown}
                             onChange={handleLoginQnAInputChange}
                         />
-                        <div style={{marginBottom: "10px", width: '100%', display: 'flex', justifyContent: 'center'}}>
-                            <ButtonThin
-                                fontSize='.8rem' 
-                                width={'110px'} 
-                                height='25px' 
-                                color='#3E8F93'
-                                onClick={handleLoginQnASubmit}
+                        <div style={{position: 'absolute', top: '2.5rem', right: '15px', zIndex: 1}}>
+                            <ButtonTransparentSquare 
+                                type="button" 
+                                onClick={!loginQnALoading && handleLoginQnASubmit}
+                                color=""
+                                width="35px"
+                                height="35px"
+                                bgColor="black"
+                                borderRadius="50%"
                             >
-                                {!loginQnALoading && <SiAnswer style={{color: "#3E8F93", fontSize: ".9rem"}} />}&nbsp;{loginQnALoading ? 'Generating...' : 'Get Answer'}
-                            </ButtonThin>
+                                {loginQnALoading ? (
+                                    <Oval
+                                        visible={true}
+                                        height="20"
+                                        width="20"
+                                        color="#3E8F93"
+                                        ariaLabel="oval-loading"
+                                    />
+                                ) : (
+                                    <GrSend style={{ color: "#3E8F93", fontSize: '1.5em' }} />
+                                )}
+                            </ButtonTransparentSquare>
                         </div>
                     </div>
                 )}
@@ -221,12 +281,12 @@ const QnAModal = React.memo(({
                         <ButtonThin
                             fontSize='.6rem' 
                             border='2px solid #3E8F93' 
-                            width={'110px'} 
+                            width={'160px'} 
                             height='25px' 
                             color='black'
                             onClick={() => handleGetResumeDirect("loginAlgorithm")}
                         >
-                            <FaSuitcase style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Resume
+                            <FaSuitcase style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Resume in PDF
                         </ButtonThin>
                     </div>
 
@@ -234,12 +294,12 @@ const QnAModal = React.memo(({
                         <ButtonThin
                             fontSize='.6rem' 
                             border='2px solid #987070' 
-                            width={'110px'} 
+                            width={'160px'} 
                             height='25px' 
                             color='black'
                             onClick={handleGetCoverLetterDirect}
                         >
-                            <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr
+                            <SlEnvolopeLetter style={{color: "#987070", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Cover Ltr in PDF
                         </ButtonThin>
                     </div>
                 </Box>

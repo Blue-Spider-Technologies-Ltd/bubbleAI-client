@@ -531,9 +531,13 @@ const JobHub = () => {
     };
 
     // --- SEMI-AUTO APPLY HANDLERS ---
-    const handleCopy = (value) => {
+    const handleCopy = (value, isAppFormLinkOpener) => {
         navigator.clipboard.writeText(value);
-        successSetter('Copied!');
+        if (!isAppFormLinkOpener) {
+            successSetter('Copied!');
+        } else {
+            successSetter('Link Copied! Now paste and open it in a new browser window and move to step (2)');
+        }
     };
 
     
@@ -685,9 +689,12 @@ const JobHub = () => {
     };
 
     const handleGetCoverLetterDirect = async () => {
-        if (!loginQnAJobDescSaved || loginQnAEditingDesc) {
-            errorSetter("Save job description first");
-            return;
+        //only check for LOGIN ALGORITHM
+        if(!showFieldAnswersModal) {
+            if (!loginQnAJobDescSaved || loginQnAEditingDesc) {
+                errorSetter("Save job description first");
+                return;
+            }
         }
         try {
             dispatch(setFetching(true));
@@ -790,6 +797,7 @@ const JobHub = () => {
                     question: loginQnAInput
                 }, { headers: { 'x-access-token': isAuth } });
                 setLoginQnAList(prev => [...prev, { question: loginQnAInput, answer: res.data.answer }]);
+                successSetter("Answer generated!")
             } catch (err) {
                 errorSetter('Failed to get answer. Try again.');
             }
@@ -807,6 +815,7 @@ const JobHub = () => {
                     question: loginQnAInput
                 }, { headers: { 'x-access-token': isAuth } });
                 setFieldAnswers(prev => [...prev, { label: loginQnAInput, value: res.data.answer }]);
+                successSetter("Answer generated!")
             } catch (err) {
                 errorSetter('Failed to get answer. Try again.');
             }

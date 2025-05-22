@@ -16,7 +16,7 @@ import { Assistant, User, ScrollToBottom } from "../UI/ChatBoxes/ChatBoxes";
 import { ThreeDots, Oval } from 'react-loader-spinner'
 import { BiMenuAltLeft } from "react-icons/bi";
 import { BiMenuAltRight } from "react-icons/bi";
-import { FaArrowUp } from "react-icons/fa6";
+import { GrSend } from "react-icons/gr";
 import { LineWave } from 'react-loader-spinner'
 import axios from "axios";
 import { errorAnimation, successMiniAnimation, checkAuthenticatedUser, isIOSStandalonePWA } from "../../utils/client-functions";
@@ -725,7 +725,7 @@ const AskMe = () => {
                     </Grid>
                     <Grid item xs={2}>
                       <ButtonSubmitBlack onClick={handleSendAudio}>
-                        <FaArrowUp style={{ color: "#3E8F93", fontSize: '2.2em', cursor: 'pointer' }} />
+                        <GrSend style={{ color: "#3E8F93", fontSize: '2.2em', cursor: 'pointer' }} />
                       </ButtonSubmitBlack>
                       <ButtonSubmitBlack onClick={() => setAudioBlob(null)}>
                         <CancelIcon sx={{ color: "rgb(216, 7, 7)", fontSize: '1.8em', cursor: 'pointer' }} />
@@ -742,7 +742,7 @@ const AskMe = () => {
                       placeholder="Ask a Question..."
                       multiline={true}
                       inputGridSm={12}
-                      askMe={true}
+                      buttonInInput={true}
                       mt={1}
                       rows={4}
                       mb={5}
@@ -767,10 +767,10 @@ const AskMe = () => {
                               color=""
                               width="50px"
                               height="50px"
-                              bgColor="#f3f0f15c"
+                              bgColor="black"
                               borderRadius="50%"
                             >
-                              <FaArrowUp style={{ color: "#3E8F93", fontSize: '2.2em' }} />
+                              <GrSend style={{ color: "#3E8F93", fontSize: '2.2em' }} />
                             </ButtonTransparentSquare>
                           );
                         }
@@ -783,7 +783,7 @@ const AskMe = () => {
                             color=""
                             width="50px"
                             height="50px"
-                            bgColor="#f3f0f15c"
+                            bgColor="black"
                             borderRadius="50%"
                           >
                             {transcribing ? (

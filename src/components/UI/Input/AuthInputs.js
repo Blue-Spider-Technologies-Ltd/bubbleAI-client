@@ -61,6 +61,8 @@ const AuthInput = props => {
         width: '100% !important',
         margin: '0 auto',
         fontSize: "16px",
+        padding: ".35rem",
+        paddingRight: props.buttonInInput ? "2rem" : "auto",
         "& .MuiOutlinedInput-input": {
             backgroundColor: "#F5F5F5",
             borderRadius: "50px",
@@ -106,8 +108,8 @@ const AuthInput = props => {
         borderRadius: '20px',
         fontSize: "16px",
         backgroundColor: "#F5F5F5",
-        padding: ".35rem",
-        paddingRight: props.askMe ? "3rem" : ".35rem",
+        padding: ".5rem",
+        paddingRight: props.buttonInInput ? "3rem" : ".5rem",
         border: "none",
         outline: "none",
         "&:hover": {
