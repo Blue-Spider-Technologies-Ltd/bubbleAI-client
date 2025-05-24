@@ -569,6 +569,8 @@ const JobHub = () => {
 
     const isCompanyAutoApplyTriggered = useRef(false);
     const handleCompanySiteAutoApply = async () => {
+        setProgressPercentage(1)
+        setProgressStatus("Starting...")
         // Check if user is subscribed and for per month or per week
         if (isCompanyAutoApplyTriggered.current) {
             errorSetter("double call triggered")
@@ -608,7 +610,7 @@ const JobHub = () => {
             }
             if (res.data.pageType === 'main-form' && res.data.fields) {
                 setFieldAnswers(res.data.fields);
-                setSingleResume(res.data.optimizedResume)
+                // setSingleResume(res.data.optimizedResume)
                 setFieldAnswersUrl(jobUrl);
                 setFieldAnswersJob(chosenJob);
 
@@ -628,6 +630,8 @@ const JobHub = () => {
     };
 
     const handleGetResumeDirect = async (loginAlgorithm) => {
+        setProgressPercentage(2)
+        setProgressStatus("Starting...")
         //user can create resume as long as susbscribed, no matter the plan
         if (!isResumeSubbed) {
             errorSetter("Upgrade your subscription to tailor a resume for this job");
@@ -639,6 +643,14 @@ const JobHub = () => {
             }
             return;
         }
+        //check for job description before allowing resume optimization and download
+        if (loginAlgorithm && loginAlgorithm === "loginAlgorithm") {
+            if (!loginQnAJobDescSaved || loginQnAEditingDesc) {
+                errorSetter("Save job description first");
+                return;
+            }
+
+        } 
         //get event progress
         const eventSource = new EventSource('/user/progress');
         //listen for SSE
@@ -648,50 +660,31 @@ const JobHub = () => {
             setProgressStatus(progressUpdate.status)
         };
         setLoading(true)
-        //check for job description before allowing resume optimization and download
-        if (loginAlgorithm && loginAlgorithm === "loginAlgorithm") {
-            if (!loginQnAJobDescSaved || loginQnAEditingDesc) {
-                eventSource.close();
-                setLoading(false);
-                errorSetter("Save job description first");
-                return;
-            }
-            try {
-                const response = await axios.post('/user/resume/optimize-and-return', {
-                    job: chosenJob,
-                    resume: singleResume
-                }, { headers: { 'x-access-token': isAuth } });
 
-                if (response.data.status === "unauthenticated") {
-                    eventSource.close();
-                    setLoading(false);
-                    errorSetter("Session expired. Please login again.");
-                    localStorage?.removeItem("token");
-                    return navigate("/popin?job-hub");
-                }
+        
+        try {
+            const response = await axios.post('/user/resume/optimize-and-return', {
+                job: chosenJob,
+                resume: singleResume
+            }, { headers: { 'x-access-token': isAuth } });
 
-                const optimizedResume = response.data.resume;
-                await downloadResumeDirect(optimizedResume);
-                setLoading(false);
-                eventSource.close();
-                successSetter('Resume downloaded!');
-            } catch (error) {
+            if (response.data.status === "unauthenticated") {
                 eventSource.close();
                 setLoading(false);
-                errorSetter('Failed to generate/download resume.');
+                errorSetter("Session expired. Please login again.");
+                localStorage?.removeItem("token");
+                return navigate("/popin?job-hub");
             }
-        } else {
-            //For resume on fieldAnswersModal which is already optimized
-            try {
-                await downloadResumeDirect(singleResume);
-                setLoading(false);
-                eventSource.close();
-                successSetter('Resume downloaded!');
-            } catch (err) {
-                setLoading(false);
-                eventSource.close();
-                errorSetter('Failed to generate/download resume.');
-            }
+
+            const optimizedResume = response.data.resume;
+            await downloadResumeDirect(optimizedResume);
+            setLoading(false);
+            eventSource.close();
+            successSetter('Resume downloaded!');
+        } catch (error) {
+            eventSource.close();
+            setLoading(false);
+            errorSetter('Failed to generate/download resume.');
         }
     };
 
