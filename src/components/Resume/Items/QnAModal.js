@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import { PlainModalOverlay } from "../../UI/Modal/Modal";
 import { ButtonSubmitGreen, ButtonThin, ButtonTransparentSquare } from "../../UI/Buttons/Buttons";
-import { successMiniAnimation } from "../../../utils/client-functions.js";
-import { setSuccessMini } from "../../../redux/states";
+import { successMiniAnimation, errorAnimation } from "../../../utils/client-functions.js";
+import { setSuccessMini, setError } from "../../../redux/states";
 import AuthInput from '../../UI/Input/AuthInputs';
 import { Oval } from 'react-loader-spinner'
 import { GrSend } from "react-icons/gr";
@@ -102,6 +102,10 @@ const QnAModal = React.memo(({
         dispatch(setSuccessMini(string));
         successMiniAnimation();
     }, [dispatch]);
+    const errorSetter = useCallback((string) => {
+        dispatch(setError(string))
+        errorAnimation()
+    }, [dispatch]);
     const screenWidth = window.innerWidth;
     const handleKeyDown = e => { 
         if (screenWidth > 900 ) {
@@ -116,14 +120,20 @@ const QnAModal = React.memo(({
         if (answersContainerRef.current) {
             answersContainerRef.current.scrollTop = answersContainerRef.current.scrollHeight;
         }
-    }, [loginQnAList]);
+    }, [loginQnAList]);    
+    
+    useEffect(() => {
+        if (!loginQnAJobDesc || loginQnAJobDesc.length < 1) {
+            setLoginQnAEditingDesc(true)
+        }
+    }, []);
     return (
         <PlainModalOverlay>
             <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center', background: '#fff', borderRadius: 12, padding: 24 }}>
                 <Alert severity="warning" sx={{ mb: 2, fontSize: '.9rem', textAlign: 'left' }}>
                     This job requires login. Bubble Ai does not handle login yet.<br/>
                     <br/>
-                    <b>But not to worry! I'll still automate your application, including tailored answers.</b>
+                    <b>But not to worry! I'll still assist your application, including tailored answers and career insights if needed.</b>
                 </Alert>
 
                 {/* Open Job Page Button */}
@@ -167,6 +177,10 @@ const QnAModal = React.memo(({
                                 height='25px' 
                                 color='#3E8F93'
                                 onClick={() => {
+                                    if (!loginQnAJobDesc || loginQnAJobDesc.length < 1) {
+                                        errorSetter("Add and save job description first")
+                                        return;
+                                    }
                                     setLoginQnAJobDescSaved(true);
                                     setLoginQnAEditingDesc(false);
                                     successSetter("Awesome! Now you can ask me any application questions")
@@ -183,7 +197,7 @@ const QnAModal = React.memo(({
                             Job description added. 
                         </Alert>
                         <div style={{ fontSize: '.85rem', background: '#f7f7f7', borderRadius: 6, padding: 8, marginBottom: 8, textAlign: 'left' }}>
-                            {loginQnAJobDesc.slice(0, 50)}...
+                            {loginQnAJobDesc && loginQnAJobDesc.slice(0, 50)}...
                             <div style={{width: '100%', display: 'flex', justifyContent: 'right', textDecoration: 'underline', color: "#61AFF1" }}>
                                 <ButtonThin color="#61AFF1" width="120px" onClick={() => setLoginQnAEditingDesc(true)} style={{ fontSize: '.7rem'}}>
                                     <BiMessageSquareEdit style={{color: "#61AFF1", fontSize: ".8rem"}} />&nbsp;Edit
@@ -238,7 +252,7 @@ const QnAModal = React.memo(({
                             id="appQuestion"
                             name="appQuestion"
                             value={loginQnAInput}
-                            placeholder="Paste a question from the application form..."
+                            placeholder="Paste a question from the application form or any question you might have."
                             inputGridSm={12}
                             multiline={true}
                             buttonInInput={true}

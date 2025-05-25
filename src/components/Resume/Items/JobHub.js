@@ -92,6 +92,7 @@ const JobHub = () => {
     const [loginQnAEditingDesc, setLoginQnAEditingDesc] = useState(false);
 
     const closeModalsAndReset = () => {
+        loadJobs(0) //to reset page details
         setLinkedinUrl("");
         setCompanyUrl("");
         setExternalJobUrl("");
@@ -176,8 +177,19 @@ const JobHub = () => {
         successMiniAnimation();
     }, [dispatch]);
 
+    const checkIfAuth = async () => {
+        try {
+            //must await
+            await checkAuthenticatedUser()
+        } catch (error) {
+            dispatch(setFetching(false));
+            return navigate("/popin?job-hub");      
+        }
+    }
+
      // Effects
     useEffect(() => {
+        checkIfAuth()
         setImg(iconImg);
         const feedback = localStorage.getItem('feedbackTime');
         const successfulTargetAchievement = localStorage.getItem("successfulTargetAchievement")
@@ -209,9 +221,9 @@ const JobHub = () => {
         try {
             const response = await axios.get('/user/job-hub', {
                 headers: { 
-                "x-access-token": isAuth,
-                skip: skip,
-                limit: 10
+                    "x-access-token": isAuth,
+                    skip: skip,
+                    limit: 10
                 }
             });
 
@@ -255,6 +267,7 @@ const JobHub = () => {
     };
 
     useEffect(() => {
+        checkIfAuth()
         let scrollTimeout;
 
         const handleScroll = () => {
@@ -264,7 +277,7 @@ const JobHub = () => {
 
             scrollTimeout = setTimeout(() => {
                 const scrollPosition = window.innerHeight + window.scrollY;
-                const pageBottom = document.body.offsetHeight - 100;
+                const pageBottom = document.body.offsetHeight - 200;
 
                 if (scrollPosition >= pageBottom) {
                     const newSkip = skipCount + 10;
@@ -346,7 +359,7 @@ const JobHub = () => {
 
 
     const getResume = (description, title) => {
-
+        checkIfAuth()
         if(!isResumeSubbed) {
             errorSetter("Upgrade your subscription to access this feature")
             if (!pricingOpened) {
@@ -413,6 +426,7 @@ const JobHub = () => {
     };
 
     const handleGenerate = async () => {
+        checkIfAuth()
         switch (actionString) {
             case "Cover Letter":
                 const date = getOrdinalDate()
@@ -507,6 +521,7 @@ const JobHub = () => {
     }
 
     const deleteJob = async (jobId, title) => {
+        checkIfAuth()
         confirm({
             title: "Delete This Job",
             description: `Are you sure you want to remove ${title} from your job connections?`,
@@ -568,19 +583,20 @@ const JobHub = () => {
     }
 
     const isCompanyAutoApplyTriggered = useRef(false);
-    const handleCompanySiteAutoApply = async () => {
+    const handleCompanySiteAutoApply = async (url) => {
+        checkIfAuth()
         setProgressPercentage(1)
         setProgressStatus("Starting...")
         // Check if user is subscribed and for per month or per week
         if (isCompanyAutoApplyTriggered.current) {
-            errorSetter("double call triggered")
+            errorSetter("double call triggered, reload page or navigate out and back if error persists")
             return
         }
         isCompanyAutoApplyTriggered.current = true
         if (checkPremiumSubsAndFirstTrial() === false) {
             return
         }
-        const jobUrl = companyUrl || externalJobUrl;
+        const jobUrl = url || companyUrl || externalJobUrl;
         //get event progress
         const eventSource = new EventSource('/user/progress');
         //listen for SSE
@@ -630,6 +646,7 @@ const JobHub = () => {
     };
 
     const handleGetResumeDirect = async (loginAlgorithm) => {
+        checkIfAuth()
         setProgressPercentage(2)
         setProgressStatus("Starting...")
         //user can create resume as long as susbscribed, no matter the plan
@@ -689,6 +706,7 @@ const JobHub = () => {
     };
 
     const handleGetCoverLetterDirect = async () => {
+        checkIfAuth()
         //only check for LOGIN ALGORITHM
         if(!showFieldAnswersModal) {
             if (!loginQnAJobDescSaved || loginQnAEditingDesc) {
@@ -721,6 +739,7 @@ const JobHub = () => {
 
     // submit handlers for autoapply
     const handleInternalJobModalSubmit = (method) => {
+        checkIfAuth()
         // Check if user is subscribed and for per month or per week
         if (checkPremiumSubsAndFirstTrial() === false) {
             return
@@ -750,7 +769,8 @@ const JobHub = () => {
     };
 
     // --- External Job Modal Submit Handler (Step 1) ---
-    const handleExternalModalSubmit = () => {
+    const handleExternalModalSubmit = async () => {
+        checkIfAuth()
         // Check if user is subscribed and for per month or per week
         if (checkPremiumSubsAndFirstTrial() === false) {
             return
@@ -759,17 +779,46 @@ const JobHub = () => {
             errorSetter("Please provide a valid job URL");
             return;
         }
+        // Trim input to avoid whitespace issues
+        const trimmedUrl = externalJobUrl.trim();
+        // Try URL API for robust validation
+        try {
+            new URL(trimmedUrl);
+        } catch (e) {
+            // Fallback to regex if protocol is missing
+            const normalizedUrl = trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://') 
+                ? trimmedUrl 
+                : `https://${trimmedUrl}`;
+            // Regex to support complex query parameters
+            const urlRegex = /^(https?:\/\/)((?:[\da-z-]+\.)*[\da-z-]+\.)([a-z]{2,6}(?:\.[a-z]{2})?)([/\w.-]*)*(?:\?[\w=&%+:;,\-_/]*)*(#[\w-]*)?$/i;
+            if (!urlRegex.test(normalizedUrl)) {
+                errorSetter("Please provide a valid job URL");
+                return;
+            }
+        }
+        // Normalize URL (add https:// if no protocol)
+        let normalizedUrl = trimmedUrl;
+        if (!trimmedUrl.startsWith('http://') && !trimmedUrl.startsWith('https://')) {
+            normalizedUrl = `https://${trimmedUrl}`;
+            // Verify normalized URL
+            try {
+                new URL(normalizedUrl);
+            } catch (e) {
+                errorSetter("Invalid URL format after normalization");
+                return;
+            }
+        }
         if (Object.keys(singleResume).length < 1) {
             errorSetter("Please select a resume first");
             return;
         }
         // Step 1: Check if LinkedIn or Company Site
-        if (isLinkedInUrl(externalJobUrl)) {
+        if (isLinkedInUrl(normalizedUrl)) {
             triggerLoginQnAModal();
         } else {
             // Use Company Site Algorithm
             setShowExternalJobModal(false);
-            handleCompanySiteAutoApply();
+            handleCompanySiteAutoApply(normalizedUrl);
         }
     };
 
@@ -779,6 +828,7 @@ const JobHub = () => {
 
     // Handler for QnA submit
     const handleLoginQnASubmit = async () => {
+        checkIfAuth()
         // Check if user is subscribed and for per month or per week
         if (checkPremiumSubsAndFirstTrial() === false) {
             return
@@ -1041,7 +1091,7 @@ const JobHub = () => {
                     }
                     {loading && (
                         <Modal
-                            header4={`Hello ${user.firstName}`}
+                            header4={`RUNNING, DO NOT RELOAD`}
                             header3={progressStatus}
                             progress={progressPercentage}
                         />

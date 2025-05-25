@@ -8,19 +8,14 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import bubbleBgAuthImg from '../../../images/bubblebg-auth.png';
 import logoImg from "../../../images/bubble-logo.png";
 import secureImg from "../../../images/secure.png";
-import { Rings, Watch } from 'react-loader-spinner';
+import { Rings } from 'react-loader-spinner';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { setShowCheckout } from "../../../redux/states"
 import AuthInput from '../Input/AuthInputs';
-import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle, ButtonThin } from '../Buttons/Buttons';
+import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle } from '../Buttons/Buttons';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PaidIcon from '@mui/icons-material/Paid';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { ThreeCircles } from 'react-loader-spinner';
 import refundImg from '../../../images/refund-stamp.png';
 import successImg from '../../../images/success.gif';
@@ -28,10 +23,9 @@ import failedImg from '../../../images/failed.gif';
 import { reviewDetails } from '../../../utils/reviews';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { checkAuthenticatedUser, errorAnimation, successMiniAnimation, getOrdinalDate } from '../../../utils/client-functions';
+import { checkAuthenticatedUser, errorAnimation, successMiniAnimation } from '../../../utils/client-functions';
 import { setFetching, setError, setSuccessMini } from '../../../redux/states';
 const screenWidth = window.innerWidth;
-const isAuth = localStorage?.getItem('token');
 
 //progress bar styling
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -87,14 +81,7 @@ export const Modal = ({header3, header4, progress}) => {
                                 ariaLabel="rings-loading"
                             />
                         :
-                            <Watch
-                                height="150"
-                                width="150"
-                                radius={48}
-                                color="white"
-                                ariaLabel="revolving-dot-loading"
-                                visible={true}
-                            />
+                            ""
                         }
                     </div>                       
                     <Box sx={{ width: '80%', margin: '20px auto', height: '10px', borderRadius: '15px'}}>
@@ -158,225 +145,6 @@ export const PlainModalOverlay = (props) => {
     )
 }
 
-
-// const JobList = ({ aiSuggestedJobs, resume, template, imgUrl, errorSetter }) => {
-//     const dispatch = useDispatch();
-//     const { resumeSubDuration } = useSelector(state => state.stateData)
-//     const getRandomNumber = () => {
-//         return Math.floor(Math.random() * (99 - 90 + 1)) + 90;
-//     };
-
-//     const handleCoverLetterCompose = async (job, index) => {
-//         const date = getOrdinalDate()
-//         const companyName = job?.company_name
-//         const jobDesc = job?.description
-//         const jobPosition = job?.title
-        
-//         localStorage?.removeItem("template")            
-//         localStorage?.removeItem("imgUrl")
-//         localStorage?.removeItem("resume")
-//         localStorage?.removeItem("letter")
-        
-//         if(resumeSubDuration !== "Per Week" && resumeSubDuration !== "Per Month") {
-//             return errorSetter("Upgrade Subscription to access this feature")
-//         }
-        
-//         const prompt = `You are the best and most professional cover letter writer in the world, 
-//             with 100% success rate from your cover letter writings. Write a stunning professional 
-//             cover letter using the following details: Job Position: ${jobPosition}, 
-//             Job Description: ${jobDesc}, Company Name: ${companyName}, My resume in object form: ${JSON.stringify(resume)}, 
-//             pick out the candidate name from keys firstName for First Name and lastName for Last Name within 
-//             the basicInfo object of the resume; pick out the candidate's work history and all other elements 
-//             needed to write the best cover letter from the resume object and Date: ${date}. NOTES: Do not include any 
-//             links or addressing or contact details or place holders e.g [Your Email] [Your Mobile] [Hiring Manager’s Name] to the cover letter. 
-//             Start with Date, then Dear Hiring Manager and return just the cover letter, with no explanations`
-        
-//         try {
-//             dispatch(setFetching(true))
-//             let response = await axios.post("/cover-letter", { prompt }, {
-//                 headers: {
-//                     "x-access-token": isAuth,
-//                 },
-//             });
-
-//             localStorage.setItem("template", template)            
-//             localStorage.setItem("resume", JSON.stringify(resume))            
-//             localStorage.setItem("imgUrl", imgUrl)
-//             localStorage.setItem("letter", response.data)
-//             dispatch(setFetching(false))
-//             //Navigate in a Cover Letter page
-//             setTimeout(() => {
-//                 window.open("/cover-letter", "_blank");
-//             }, 3000);
- 
-//         } catch (error) {
-//             dispatch(setFetching(false))
-//             errorSetter("Failed to generate Cover Letter, Try again")
-//         }
-
-//     }
-//     const styles = {
-//         container: {
-//           width: "100%",
-//           textAlign: "left",
-//           padding: "5px",
-//           backgroundColor: "#c0d1d457",
-//           borderRadius: "10px",
-//           wordBreak: "break-word",
-//           lineHeight: "1",
-//           boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
-//         },
-//         iconContainer: {
-//           fontSize: '1.5rem',
-//           width: "3rem",
-//           height: "3rem",
-//           margin: "auto",
-//           color: "gray",
-//           display: "flex",
-//           alignItems: "center",
-//           justifyContent: "center",
-//           borderRadius: "50%",
-//           boxShadow: "inset 10px 10px 10px rgba(0, 0, 0, 0.1)"
-//         },
-//         jobTitle: {
-//           margin: "0",
-//           fontWeight: "500",
-//           fontSize: "1rem"
-//         },
-//         companyInfo: {
-//           fontSize: ".75rem"
-//         },
-//         locationTimeContainer: {
-//           marginLeft: screenWidth >= 900 ? '5.6rem' : '1rem',
-//           color: 'gray',
-//           fontSize: '.7rem'
-//         },
-//         linkStyle: {
-//           color: "rgb(177, 71, 1)"
-//         },
-//         hrStyle: {
-//           width: '90%',
-//           margin: "auto",
-//           marginBottom: "15px",
-//           marginTop: "5px"
-//         }
-//     };
-
-//     const JobMessage = () => {
-//         const isPremium = resumeSubDuration === 'Per Week' && resumeSubDuration === 'Per Month';
-
-//         return (
-//             <div>
-//               {isPremium ? (
-//                 <div>
-//                   To view Jobs that give you greater than 90% chance of being hired ({' '}
-//                   <a style={styles.linkStyle} href="/pricing" target="_blank" rel="noopener noreferrer">Upgrade</a>).
-//                 </div>
-//               ) : (
-//                 <div>
-//                   No jobs were found that match your CV. Try changing the location or generate other similar job titles recruiters might call a your chosen job position{' '}
-//                   <a style={styles.linkStyle} href="/chat" target="_blank" rel="noopener noreferrer">HERE</a>.
-//                 </div>
-//               )}
-//             </div>
-//         );
-//     };
-
-//     if (!Array.isArray(aiSuggestedJobs) || aiSuggestedJobs.length === 0) {
-//       return (
-//         <div>
-//             <h4>Your Job Connections (Offering over 90% Chance of success)</h4>
-//             <div style={styles.container}>
-//                 <div style={{ padding: "10px", color: "gray", fontSize: ".7rem" }}>
-//                     <JobMessage />
-//                 </div>
-//             </div>
-//         </div>
-//       );
-//     }
-
-//     return (
-//       <div>
-//         <h4>Your Job Connections (Offering over 90% chance of success)</h4>
-//         <div style={styles.container}>
-//           {aiSuggestedJobs.map((job, index) => (
-//             <div key={index}>
-//               <Grid container>
-//                 <Grid item xs={2}>
-//                   <div style={styles.iconContainer}>
-//                     <BusinessCenterIcon fontSize='inherit' />
-//                   </div>
-//                 </Grid>
-//                 <Grid item xs={10} style={{ textAlign: "left", alignItems: "center", paddingTop: "8px" }}>
-//                   <h3 style={styles.jobTitle}>{job?.title}</h3>
-//                   <div style={styles.companyInfo}>{job?.company_name}</div>
-//                 </Grid>
-//               </Grid>
-  
-//               <div style={styles.locationTimeContainer}>
-//                 <Grid container>
-//                   <Grid item md={6} xs={12}>
-//                     <div>
-//                       <LocationOnIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
-//                       <span style={{ position: "relative", top: "-4px" }}>{job?.location}</span>
-//                     </div>
-//                     <div>
-//                       <PaidIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
-//                       <span style={{ position: "relative", top: "-4px" }}>{job?.salary}</span>
-//                     </div>
-//                     <div>
-//                       <KeyboardDoubleArrowUpIcon style={{ marginRight: "5px", fontSize: ".9rem" }} />
-//                       <span style={{ position: "relative", top: "-4px" }}>Your Chance <b>{getRandomNumber()}%</b></span>
-//                     </div>
-//                   </Grid>
-  
-//                   <Grid item md={6} xs={12} style={{ fontWeight: "600", display: 'flex', justifyContent: 'space-between'}}>
-//                     <div style={{ marginTop: "10px"}}>
-//                         <ButtonThin
-//                             fontSize='.6rem' 
-//                             border='1px solid rgb(177, 144, 13)' 
-//                             width={'100%'} 
-//                             height='25px' 
-//                             color='rgb(177, 144, 13)'
-//                         >
-//                             <a href={job?.external_url} target="_blank" rel="noreferrer" className="link">View Company</a>
-//                         </ButtonThin>
-//                     </div>
-//                     <div style={{ marginTop: "10px"}}>
-//                         <ButtonThin 
-//                             onClick={() => handleCoverLetterCompose(job)} 
-//                             fontSize='.6rem' 
-//                             border='1px solid rgb(177, 144, 13)' 
-//                             width={'100%'} 
-//                             height='25px' 
-//                             color='rgb(177, 144, 13)'
-//                         >
-//                             Get Cover Letter
-//                         </ButtonThin>
-//                     </div>
-//                     <div style={{ marginTop: "10px"}}>
-//                         <ButtonThin
-//                             fontSize='.6rem' 
-//                             border='1px solid rgb(177, 144, 13)' 
-//                             width={'100%'} 
-//                             height='25px' 
-//                             color='rgb(177, 144, 13)'
-//                         >
-//                             <a href={job?.url} target="_blank" rel="noreferrer" className="link">Apply Now</a>
-//                         </ButtonThin>
-//                     </div>
-//                   </Grid>
-//                 </Grid>
-//                 <hr style={styles.hrStyle} />
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     );
-// };
-
-
 export const SuccessFailureModal = ({ 
     success, 
     fullName, 
@@ -414,33 +182,6 @@ export const SuccessFailureModal = ({
             window.location.reload()
         }
     }
-
-    // const handleCopy = () => {
-    //     // Convert React nodes to a string or handle differently if needed
-    //     const textToCopy = React.Children.map(shareableLink, child => 
-    //         typeof child === "string" ? child : React.isValidElement(child) ? child.props.children : ""
-    //     ).join('');
-
-    //     if (navigator.clipboard) {
-    //         navigator.clipboard.writeText(textToCopy)
-    //             .then(() => {
-    //                 successSetter('Link copied to clipboard');
-    //             })
-    //             .catch(err => {
-    //                 errorSetter('Failed to copy Link: ', err);
-    //             });
-    //     } else {
-    //         //For older browsers
-    //         const tempTextArea = document.createElement('textarea');
-    //         tempTextArea.value = textToCopy;
-    //         document.body.appendChild(tempTextArea);
-    //         tempTextArea.select();
-    //         document.execCommand('copy');
-    //         document.body.removeChild(tempTextArea);
-
-    //         successSetter('Link copied to clipboard');
-    //     }
-    // };
 
 
     return (
