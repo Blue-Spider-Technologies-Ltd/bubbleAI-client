@@ -360,17 +360,10 @@ const AskMe = () => {
 
   // Message rendering
   const chatExchange = displayedMessages.map((message, index) => {
-    const OverUseMessage = () => (
-      <div>
-        <span dangerouslySetInnerHTML={{ __html: 
-          `You have used up your unregistered user interactions for the day, kindly <a href="/join-bubble">Register here</a> or <a href="/popin">Log in</a> to enjoy more for FREE` 
-        }} />
-      </div>
-    );
     
     const isAssistant = message.role === "assistant";
     let contentTrim = message.content.trim();
-    const assistantMessage = useCount > 2 && !isAuth ? <OverUseMessage /> : message.content;
+    const assistantMessage = message.content;
     
     const showTyping = index === displayedMessages.length - 1 && 
                       isAssistant && 
@@ -451,10 +444,9 @@ const AskMe = () => {
 
       if (useCount > 2) {
         //set user message
-
         const overUseMessage = {
           role: "assistant",
-          content: "OverUse",
+          content: "You have used up your unregistered user interactions for the day, kindly <a href='/join-bubble'>Register here</a> or <a href='/popin'>Log in</a> to enjoy more for FREE",
         };
         dispatch(deleteLastMessage());
         dispatch(setMessage(overUseMessage));
