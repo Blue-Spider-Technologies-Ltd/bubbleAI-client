@@ -11,6 +11,7 @@ import { Grid } from "@mui/material";
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import AuthInputs from "../UI/Input/AuthInputs";
 import { checkAuthenticatedUser } from "../../utils/client-functions";
+import { TypeAnimation } from 'react-type-animation';
 
 
 const DashSupport = (props) => {
@@ -18,6 +19,7 @@ const DashSupport = (props) => {
     const dispatch = useDispatch();
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchString, setSearchString] = useState("");
+    const [textColor, setTextColor] = useState('black');
     const [searchArray, setSearchArray] = useState([]);
     const [searching, setSearching] = useState(false);
     const screenWidth = window.innerWidth
@@ -34,6 +36,20 @@ const DashSupport = (props) => {
     }
 
     const examIconImg = (<ImportContactsIcon sx={{fontSize: '4rem'}} /> )
+
+    const styles = {
+        animText: {
+            width: 'auto',
+            margin: '15px auto',
+            fontSize: '.85rem',
+            textAlign: 'center',
+            fontWeight: '600',
+            color: textColor,
+            backgroundColor: '#c0d1d4',
+            borderRadius: '20px',
+            padding: '15px 10px'
+        }
+    }
 
     const mockTests = [
         {
@@ -227,9 +243,28 @@ const DashSupport = (props) => {
                 headerText="Choose Exam"
             />
 
-            <div className={mockCss.DescritionCont}>
-                ACE your Professional Exams with Bubble AI's simulated time-based mock tests with over 
-                10 years of randomized past questions. Get tutored by Bubble Ai on your weaknesses after each mock.
+            <div style={styles.animText} >
+                <TypeAnimation
+                    sequence={[
+                        '♠️ ACE Professional & Academic Exams with Ease',
+                        1000,
+                        '⏳️ Simulate Time-Based Mock Tests',
+                        1000,
+                        '📑 10 years+ of Randomized Past Questions',
+                        1000,
+                        '.',
+                        1000,
+                        () => setTextColor('#3E8F93'),
+                        '🎓 Get Tutored by Bubble Ai on Weak Areas',
+                        1000,
+                        '🤓 Receive a Personalized Study Plan',
+                        1000,
+                        '🔄Retake Tests to Improve Scores',
+                        1000,
+                        '.',
+                    ]}
+                    repeat={Infinity}
+                />
             </div>
 
             <div style={{width: searchBarWidth, margin: "auto"}}>
@@ -238,7 +273,7 @@ const DashSupport = (props) => {
                     name={searchString} 
                     value={searchString} 
                     onChange={handleSearchInput} 
-                    placeholder=" Search for Exam" 
+                    placeholder="Search for Exam" 
                     inputType="search" 
                     mb={5} 
                     required={true}

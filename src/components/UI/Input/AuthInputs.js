@@ -260,7 +260,7 @@ const AuthInput = props => {
             :
             props.inputType === "select2" ?
                 <FormControl sx={textFieldStyles} required={props.required}>
-                    <InputLabel id="demo-simple-select-helper-label">{props.label}</InputLabel>
+                    <InputLabel id={props.id}>{props.label}</InputLabel>
                     <Select
                         id={props.id}
                         onChange={props.onChange}

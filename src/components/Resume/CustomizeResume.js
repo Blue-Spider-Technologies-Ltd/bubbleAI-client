@@ -47,12 +47,18 @@ const langLevelsArray = [
   {name: '5'}
 ]
 
+const jobTypesArray = [
+  {name: 'Hybrid'},
+  {name: 'Remote'},
+  {name: 'On-site'}
+]
+
 
 
 const CustomizeResume = () => {
   const dispatch = useDispatch();
   const confirm = useConfirm();
-  const { user, userResumesAll, error, successMini, isResumeSubbed, hideCards, resumeServicesNumbers } = useSelector((state) => state.stateData);
+  const { user, userResumesAll, error, successMini, isResumeSubbed, hideCards } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
   const dragDropRef = useRef();
   const [loading, setLoading] = useState(false);
@@ -75,6 +81,7 @@ const CustomizeResume = () => {
   const [fileError, setFileError] = useState(false);
   const [creatorDisplay, setCreatorDisplay] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
+  const [jobConnectType, setJobConnectType] = useState("Hybrid")
   const [successfulAchievement, openSuccessfulAchievement] = useState(false)
   const [bubblePoints, setBubblePoints] = useState(0)
 
@@ -169,7 +176,8 @@ const CustomizeResume = () => {
           resumeSubscriptions,
           resumes, 
           resumeTarget,
-          resumeNumbers 
+          resumeNumbers,
+          jobConnectType 
         } = response?.data?.user
 
         const percentTargetGained = Math.round(resumeTarget.achievedTarget/resumeTarget.setTarget * 100)
@@ -186,6 +194,7 @@ const CustomizeResume = () => {
           country: country || "",
           profSummary: profSummary || "",
         });
+        setJobConnectType(jobConnectType || "Hybrid")
         // console.log(response.data.user);
         dispatch(setUserResumesAll(resumes))
         setIsFirstTimeUserPopUp(isFirstTimeUser)
@@ -642,6 +651,32 @@ const CustomizeResume = () => {
     }
   };
 
+  const handleJobConnectType = (event) => {
+      if (event.target.value === undefined || event.target.value === "") {
+        errorSetter("Select a Job Connect Type");
+        return;
+      }
+    setJobConnectType(event.target.value);
+
+    const setConnTypeOnDB = async () => {
+      try {
+        await axios.post("/user/set-job-connect-type", 
+          {jobConnectType: event.target.value}, 
+          {
+            headers: {
+              "x-access-token": isAuth,
+            },
+          }
+        );
+        
+      } catch (error) {
+        console.error("Error setting job connect type:", error);
+        errorSetter("Failed to set job connect type");
+      }
+    }
+
+    setConnTypeOnDB();
+  };
 
   const handleInputChange = (prop) => (event) => {
     //if data is mobile number
@@ -1196,10 +1231,22 @@ const CustomizeResume = () => {
                       label="Job Position to optimise CV to"
                       inputType="text"
                       inputGridSm={12}
-                      inputGrid={4}
+                      inputGrid={3}
                       mb={2}
                       required={true}
                       onChange={handleInputChange("jobPosition")}
+                    />
+                    <AuthInput 
+                      value={jobConnectType} 
+                      id="jobConnectType" 
+                      name="jobConnectType" 
+                      label={"Type of Job Connection"} 
+                      inputType="select2" 
+                      inputGridSm={12} 
+                      inputGrid={3} 
+                      mb={2} 
+                      list={jobTypesArray} 
+                      onChange={(event) => handleJobConnectType(event)}
                     />
                     <AuthInput
                       id={"basicInfo.country"}
@@ -1207,7 +1254,7 @@ const CustomizeResume = () => {
                       value={basicInfo.country}
                       inputType="country-select"
                       inputGridSm={12}
-                      inputGrid={4}
+                      inputGrid={3}
                       mb={2}
                       onChange={handleInputChange("country")}
                     />
@@ -1218,7 +1265,7 @@ const CustomizeResume = () => {
                       value={basicInfo.city}
                       inputType="state-select"
                       inputGridSm={12}
-                      inputGrid={4}
+                      inputGrid={3}
                       mb={2}
                       onChange={handleInputChange("city")}
                     />
@@ -1285,7 +1332,7 @@ const CustomizeResume = () => {
                         value={basicInfo.email}
                         inputType="email"
                         inputGridSm={12}
-                        inputGrid={6}
+                        inputGrid={4}
                         mb={0}
                         required={true}
                         disabled={false}
@@ -1297,7 +1344,7 @@ const CustomizeResume = () => {
                         label="Mobile"
                         inputType="mobile"
                         inputGridSm={12}
-                        inputGrid={6}
+                        inputGrid={4}
                         mb={2}
                         mt={screenWidth < 900 && 2}
                         required={true}
@@ -1313,6 +1360,18 @@ const CustomizeResume = () => {
                         mb={2}
                         required={true}
                         onChange={handleInputChange("jobPosition")}
+                      />
+                      <AuthInput 
+                        value={jobConnectType} 
+                        id="jobConnectType2" 
+                        name="jobConnectType2" 
+                        label={"Type of Job Connection"} 
+                        inputType="select2" 
+                        inputGridSm={12} 
+                        inputGrid={4} 
+                        mb={2} 
+                        list={jobTypesArray} 
+                        onChange={(event) => handleJobConnectType(event)}
                       />
                       <AuthInput
                         id={"basicInfo.country"}

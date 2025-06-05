@@ -7,7 +7,6 @@ import { AiOutlineReload } from "react-icons/ai";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { FaSuitcase } from "react-icons/fa6";
 import { IoLink } from "react-icons/io5";
-import { TfiNewWindow } from "react-icons/tfi";
 import { Oval } from 'react-loader-spinner'
 import { GrSend } from "react-icons/gr";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
