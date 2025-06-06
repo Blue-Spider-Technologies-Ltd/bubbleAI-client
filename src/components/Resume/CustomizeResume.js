@@ -209,9 +209,9 @@ const CustomizeResume = () => {
         }
         if(description) {
           selectBuildType("Optimize");
-          setAdditionalInfo(`The following is a full job description of the job being applied for, optimize the resume to fit the job description; 
+          setAdditionalInfo(description + `Above is a full job description of the job being applied for, optimize the resume to fit the job description; 
             making sure that keywords from the description appears strategically and professionally in the skills, professional 
-            summary and work history of the resultant ATS friendly resume: ` + description)
+            summary and work history of the resultant ATS friendly resume: `)
         }
         dispatch(setFetching(false));
         localStorage?.removeItem("ha76arf(**gu9jgkgg8a02bGAKgaigFrSlp08VcgxJG4xXdescription")
@@ -897,7 +897,7 @@ const CustomizeResume = () => {
       return navigate("/popin?resume");      
     }
     if (!file) {
-      errorSetter("No file detected")
+      errorSetter("Upload Resume to continue")
       return
     }
     if (!basicInfo.jobPosition) {

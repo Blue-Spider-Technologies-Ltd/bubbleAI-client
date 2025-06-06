@@ -91,6 +91,8 @@ const JobHub = () => {
     const [loginQnALoading, setLoginQnALoading] = useState(false);
     const [loginQnAEditingDesc, setLoginQnAEditingDesc] = useState(false);
 
+    const isCompanyAutoApplyTriggered = useRef(false);
+
     const closeModalsAndReset = () => {
         loadJobs(0) //to reset page details
         setLinkedinUrl("");
@@ -113,6 +115,8 @@ const JobHub = () => {
         setLoginQnAList([]);
         setSingleResume({});
         setFieldAnswersJob(null)
+
+        isCompanyAutoApplyTriggered.current = false
     }
 
     const isEffectExecuted = useRef(false);
@@ -582,7 +586,6 @@ const JobHub = () => {
         return true
     }
 
-    const isCompanyAutoApplyTriggered = useRef(false);
     const handleCompanySiteAutoApply = async (url) => {
         checkIfAuth()
         setProgressPercentage(1)

@@ -95,7 +95,7 @@ const JobCard = memo(({
     const isApplied = app && app.status === 'completed';
     const handleMessageCompany = () => {
         if (isResumeSubbed && resumeSubDuration === "Per Month") {
-            window.open(job.company_url, '_blank', 'noopener,noreferrer');
+            window.open(job.company_url || job.company_object?.linkedinurl, '_blank', 'noopener,noreferrer');
         } else {
             errorSetter("PER MONTH users only, redirecting to pricing.");
             setTimeout(() => {
@@ -111,13 +111,13 @@ const JobCard = memo(({
                     <CardMedia
                         component="img"
                         sx={styles.img}
-                        image={img}
+                        image={job.company_object?.logo || img}
                         alt="Avatar"
                     />
 
                     <div style={{width: '90%'}}>
                         <Typography component="div" variant="h5">
-                            {job.title}
+                            {job.title || job.job_title}
                         </Typography>
                         <div style={styles.link} >
                             <div>
@@ -127,14 +127,14 @@ const JobCard = memo(({
                                             className="link"
                                             style={{ cursor: 'pointer' }}
                                             onClick={handleMessageCompany}
-                                            aria-label={`Message ${job?.company_name}`}
+                                            aria-label={`Message ${job?.company_name || job?.company_object?.name}`}
                                         >
-                                           Message Company - {isResumeSubbed ? job?.company_name : '(Paid Users Only)'} &nbsp;<SiAnswer style={{ fontSize: ".9rem", color: "#987070" }} />
+                                           Message Recruiter - {isResumeSubbed ? job?.company_name || job?.company_object?.name : '(Paid Users Only)'} &nbsp;<SiAnswer style={{ fontSize: ".9rem", color: "#987070" }} />
                                         </span>
                                     </li>
                                     <li>
-                                        <span style={styles.key}>Employment Type - </span> 
-                                        <span>{job?.employment_type || "Not specified"}</span>
+                                        <span style={styles.key}>Job Type - </span> 
+                                        <span>{job?.remote === true ? "Remote" : job?.employment_type || "See Application Page"}</span>
                                     </li>
                                     <li>
                                         <span style={styles.key}>Location - </span> 
@@ -142,7 +142,7 @@ const JobCard = memo(({
                                     </li>
                                     <li>
                                         <span style={styles.key}>Salary - </span> 
-                                        <span>{job?.salary || "Undisclosed"}</span>
+                                        <span>{job?.salary || job.salary_string || "Undisclosed"}</span>
                                     </li>
                                     <li>
                                         <span style={styles.key}>Experience - </span> 
@@ -207,7 +207,7 @@ const JobCard = memo(({
                             width={'110px'} 
                             height='25px' 
                             color='black'
-                            onClick={() => getJob(job?.url, job?.external_url, job.applicants_count, job)}
+                            onClick={() => getJob(job?.url || job.company_object.linkedin_url, job?.external_url || job.final_url, job?.applicants_count, job)}
                         >
                             <IoSparklesSharp style={{color: "#F8E231", fontSize: ".9rem"}} />&nbsp;&nbsp; Get This Job 
                         </ButtonThin>
@@ -220,7 +220,7 @@ const JobCard = memo(({
                             width={'110px'} 
                             height='25px' 
                             color='black'
-                            onClick={() => getResume(job?.description, job?.title)}
+                            onClick={() => getResume(job?.description, job?.title || job.job_title)}
                         >
                             <FaSuitcase style={{color: "#3E8F93", fontSize: ".9rem"}} />&nbsp;&nbsp; Get Resume
                         </ButtonThin>
@@ -272,7 +272,7 @@ const JobCard = memo(({
                             width={'110px'} 
                             height='25px' 
                             color='rgba(158, 9, 9, 0.733)'
-                            onClick={() => deleteJob(job?.id, job.title)}
+                            onClick={() => deleteJob(job?.id, job.title || job.job_title)}
                         >
                             <IoMdRemoveCircle style={{color: "rgba(158, 9, 9, 0.733)", fontSize: ".9rem"}} />&nbsp;&nbsp; Delete
                         </ButtonThin>
