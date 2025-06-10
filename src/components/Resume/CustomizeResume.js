@@ -1161,35 +1161,35 @@ const CustomizeResume = () => {
             <Grid container sx={{padding: '10px 15px'}}>
 
               <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
-                  <div className={screenWidth > 900 ? "Segment" : undefined}>
-                      <div className="Segment">
-                          <Alert 
-                            sx={{padding: '0 5px', 
-                              display: 'flex', 
-                              alignItems: 'center', 
-                              justifyContent: 'center', 
-                              width: '100%', 
-                              '& .MuiAlert-icon': {
-                                color: bubblePoints <= 50 ? '#EE7B1C' : '#56A8AC'
-                              }
-                            }} 
-                            severity="info"
-                          >
-                            <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px'}}>
-                              <div><h3>Bubble Points Gained:</h3> </div> <div><CircularProgressWithLabel value={bubblePoints} /></div>
-                            </div>
+                <div className={screenWidth > 900 ? "Segment" : undefined}>
+                    <div className="Segment">
+                        <Alert 
+                          sx={{padding: '0 5px', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            width: '100%', 
+                            '& .MuiAlert-icon': {
+                              color: bubblePoints <= 50 ? '#EE7B1C' : '#56A8AC'
+                            }
+                          }} 
+                          severity="info"
+                        >
+                          <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px'}}>
+                            <div><h3>Bubble Points Gained:</h3> </div> <div><CircularProgressWithLabel value={bubblePoints} /></div>
+                          </div>
 
-                          </Alert>
-                      </div>
-                      
-                      <ol style={styles.list}>
-                          <li>Gain 100% Bubble Points to get a FREE WEEK/MONTH immediately.</li>
-                          <li>Free trial users not eligible.</li>
-                          <li>Subscribe to PER WEEK/MONTH to be eligible.</li>
-                      </ol>
-                  </div>
-                  <h4>Optimize resumes & apply to jobs to start gaining Bubble Points</h4>
-        
+                        </Alert>
+                    </div>
+                    
+                    <ol style={styles.list}>
+                        <li>Gain 100% Bubble Points to get a FREE WEEK/MONTH immediately.</li>
+                        <li>Free trial users not eligible.</li>
+                        <li>Subscribe to PER WEEK/MONTH to be eligible.</li>
+                    </ol>
+                </div>
+                <h4>Optimize resumes & apply to jobs to start gaining Bubble Points</h4>
+      
               </div>
               <Grid item md={6} xs={12}>
                   <ButtonCard icon="optimize-resume" title="Optimize Old Resume" width={'350px'} onClick={() => selectBuildType("Optimize")} description="Have an old resume? This option will help you optimize it to ATS and industry standards in seconds, with the right keywords and metrics." />

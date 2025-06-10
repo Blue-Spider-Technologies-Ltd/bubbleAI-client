@@ -35,7 +35,7 @@ import Ielts from "./components/MockTests/Exams/Ielts"
 import Neco from "./components/MockTests/Exams/Neco"
 import Pmp from "./components/MockTests/Exams/Pmp"
 import Toefl from "./components/MockTests/Exams/Toefl"
-import Utme from "./components/MockTests/Exams/Utme"
+import Utme from "./components/MockTests/Exams/Utme/Utme"
 import Wassce from "./components/MockTests/Exams/Wassce"
 import ResetPass from './components/Dashboard/ResetPass';
 import GoogleCallback from './components/Auth/GoogleCallback';
@@ -107,7 +107,7 @@ const App = () => {
           <Route path={'/user/dashboard/mock/neco'} element={ <UnderConstruction /> } />
           <Route path={'/user/dashboard/mock/pmp'} element={ <UnderConstruction /> } />
           <Route path={'/user/dashboard/mock/toefl'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/utme'} element={ <UnderConstruction /> } />
+          <Route path={'/user/dashboard/mock/utme'} element={ <Utme /> } />
           <Route path={'/user/dashboard/mock/wassce'} element={ <UnderConstruction /> } />
           <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
           <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />

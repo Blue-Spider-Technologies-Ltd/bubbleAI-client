@@ -243,7 +243,14 @@
     padding: 5px;
     font-size: .8rem;
     font-weight: 500;
+    transition: all 0.5s ease-in-out;
+    background-color: #F3F0F1;
     /* max-width: 22px; */
+}
+
+.ButtonThin:hover {
+    background-color: #E5E5EA;
+    border-radius: 20px;
 }
 
 /* Smaller Screens */
