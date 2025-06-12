@@ -156,7 +156,7 @@ const Utme = (props) => {
                         </div>
 
                         <div style={{ marginBottom: 16 }}>
-                            <h4>Get Mock Subjects</h4>
+                            <h4>Get UTME Subjects</h4>
                             <div style={{width: screenWidth < 900 ? '100%' : '50%', margin: '0 auto', position: 'relative'}}>
                                 <AuthInput
                                     id="courseOfStudy"
@@ -223,7 +223,7 @@ const Utme = (props) => {
                                 
                                 {chosenSubjects.length === 4 && (
                                     <div style={{ padding: '8px', width: '100%', textAlign: 'right' }}>
-                                        <span onClick={() => setChosenSubjects(UtmeSubjects)} style={{color: '#5fbec5', cursor: 'pointer', fontSize: '13px', textDecoration: 'none', fontWeight: 'bold'}}>View All UTME Subjects →</span>
+                                        <span onClick={() => setChosenSubjects(UtmeSubjects)} style={{color: '#5fbec5', cursor: 'pointer', fontSize: '12px', textDecoration: 'none', fontWeight: 'bold'}}>View All UTME Subjects →</span>
                                     </div>
                                 )}
                             </div>) : null
