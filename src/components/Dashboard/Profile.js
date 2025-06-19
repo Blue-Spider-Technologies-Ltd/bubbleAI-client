@@ -208,7 +208,7 @@ const Profile = () => {
                             <Grid item xs={6} sx={{borderLeft: "1px solid #c0d1d457"}}>
                                 
                                 <div style={{marginBottom: "15px", marginLeft: "10px", textAlign: "left"}}>
-                                    <h5>Address Info</h5>
+                                    <h5>Contact</h5>
                                 </div>
                                 <AuthInput
                                     id={"mobile"}
@@ -220,6 +220,9 @@ const Profile = () => {
                                     required={true}
                                     onChange={handleMobileChange}
                                 />
+                                <div style={{ width: "100%", color: '#EE7B1C', fontSize: '.7rem' }}>
+                                    Location used to connect you to jobs
+                                </div>
                                 <AuthInput
                                     id={"country"}
                                     name={country}
@@ -247,7 +250,7 @@ const Profile = () => {
                         </Grid>
                         <hr />
                         <div style={{marginBottom: "22px", marginLeft: "10px", textAlign: "left"}}>
-                            <h5>Current Subscritions</h5>
+                            <h5>Current Subscriptions</h5>
                         </div>
                         <Grid container xs={12}>
 

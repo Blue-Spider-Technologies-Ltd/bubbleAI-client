@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import AuthSideMenu from "../../UI/AuthSideMenu/AuthSideMenu";
@@ -18,6 +18,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { TfiNewWindow } from "react-icons/tfi";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { MdOutlineAutoAwesome } from "react-icons/md";
+import { TbReplaceFilled } from "react-icons/tb";
 import iconImg from '../../../images/bubble icon.jpg';
 import axios from "axios";
 import { useConfirm } from 'material-ui-confirm';
@@ -43,6 +44,7 @@ const JobHub = () => {
         user,
         resumeServicesNumbers 
     } = useSelector((state) => state.stateData);
+    const location = useLocation();
 
     const [jobs, setJobs] = useState([]);
     const [img, setImg] = useState('');
@@ -189,6 +191,12 @@ const JobHub = () => {
             dispatch(setFetching(false));
             return navigate("/popin?job-hub");      
         }
+    }
+
+    const handleNavigateProfile = () => {
+        const prevPath = location.pathname
+        localStorage?.setItem("prevPath", prevPath)
+        navigate("/user/dashboard/profile")
     }
 
      // Effects
@@ -967,6 +975,8 @@ const JobHub = () => {
                             </ButtonSubmitGreen>
                         </div>
 
+                        <div style={{textAlign: 'right', padding: '5px 10px 5px 0', fontSize: '.75rem'}}><b style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={handleNavigateProfile}><TbReplaceFilled style={{color: "#3E8F93", fontSize: "1rem"}}/> Change job connect location here</b></div>
+
                         {jobs.length < 1 ? (
                             <div style={styles.noResumes} onClick={() => setAuthMenuOpen(false)}>
                                 <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
@@ -978,7 +988,7 @@ const JobHub = () => {
                                     </div>
                                     
                                     <ol style={styles.list}>
-                                        <li>Choose a different location when creating/optimizing resume: your perfect fit job might not be in the previous city or country.</li>
+                                        <li><b style={{color: '#3E8F93', textDecoration: 'underline', cursor: 'pointer'}} onClick={handleNavigateProfile}>Change job connect location</b>: your perfect fit job might not be in the previous city or country.</li>
                                         <li>Do NOT combine several job positions (using OR, AND, /) for one resume e.g Business Developer/Sales Executive.</li>
                                         <li>Ask Bubble Ai similar names recruiters might call your current job position: <a href="/chat" target="_blank" style={styles.newTabLnk}>Ask Here <TfiNewWindow /></a></li>
                                     </ol>

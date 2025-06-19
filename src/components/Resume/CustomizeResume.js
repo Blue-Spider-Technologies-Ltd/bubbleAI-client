@@ -2,7 +2,7 @@ import React, { useEffect, useState, memo, useRef } from "react";
 import ReactPixel from 'react-facebook-pixel';
 import resumeCss from "./Resume.module.css";
 import depoCss from "../Depositions/Depositions.module.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AuthInput from "../UI/Input/AuthInputs";
 import { Grid } from "@mui/material";
 import { 
@@ -60,6 +60,7 @@ const CustomizeResume = () => {
   const confirm = useConfirm();
   const { user, userResumesAll, error, successMini, isResumeSubbed, hideCards } = useSelector((state) => state.stateData);
   const navigate = useNavigate();
+  const location = useLocation();
   const dragDropRef = useRef();
   const [loading, setLoading] = useState(false);
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
@@ -109,6 +110,12 @@ const CustomizeResume = () => {
 
   const advancedMatching = { 
     em: user.email
+  }
+
+  const handleNavigateProfile = () => {
+    const prevPath = location.pathname
+    localStorage?.setItem("prevPath", prevPath)
+    navigate("/user/dashboard/profile")
   }
 
   const resetButtonCardBoleans = () => {
@@ -264,7 +271,6 @@ const CustomizeResume = () => {
   }, [confirm, dispatch, navigate])
   
 
-
   const [linkInfo, setLinkInfo] = useState([""]);
   const [skills, addSkills] = useState([""]);
   const [interests, addInterests] = useState([""]);
@@ -319,6 +325,9 @@ const CustomizeResume = () => {
   }
 
   const chengeFirstTimeUserStatus = async () => {
+    if (basicInfo.country === "" || basicInfo.city === "") {
+      return errorSetter("Choose Country and Region")
+    }
     if (dobFirstUser === "" || mobileFirstUser === "") {
       return errorSetter("Complete DoB and Mobile details")
     }
@@ -333,7 +342,9 @@ const CustomizeResume = () => {
 
     const body = {
       dob: dobFirstUser,
-      mobile: mobileFirstUser
+      mobile: mobileFirstUser,
+      stateRegion: basicInfo.city,
+      country: basicInfo.country
     }
     try {
       const response = await axios.post("/user/update-first-user", body, {
@@ -343,11 +354,13 @@ const CustomizeResume = () => {
       });
       if (response.status === 200) {
         setIsFirstTimeUserPopUp(false)
-        const { dob, mobile } = response?.data; 
+        const { dob, mobile, country, stateRegion } = response?.data; 
         setBasicInfo(prevState => ({ 
           ...prevState, 
           dob: dob, 
-          mobile: mobile }))
+          mobile: mobile,
+          country: country,
+          stateRegion: stateRegion }))
       } else {
         errorSetter("Something went wrong, try again")
       }
@@ -1205,7 +1218,7 @@ const CustomizeResume = () => {
               <div className='explanation-points'>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">The + and - buttons are to add and delete applicable input fields or sections</Alert>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">All fields with * are required</Alert>
-                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Location is used for job search & appears on resume</Alert>
+                  <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Location on this page appears on your resume. For <b style={{color: '#3E8F93', textDecoration: 'underline', cursor: 'pointer'}} onClick={handleNavigateProfile}>job connect location</b>, change <b style={{color: '#3E8F93', textDecoration: 'underline', cursor: 'pointer'}} onClick={handleNavigateProfile}>Location in Profile</b> </Alert>
                   <Alert sx={{padding: '0 5px', fontSize: '.7rem'}} severity="warning">Have Questions? Please use the chatbot</Alert>
               </div>
 
@@ -2180,8 +2193,34 @@ const CustomizeResume = () => {
 
       {isFirstTimeUserPopUp  && (
           <PlainModalOverlay>
-            <h2>Hey {basicInfo.firstName}, I am enthused to have you here!</h2>
-            <p>Kindly fill out the following information for regulatory purposes, and then I'll get you started</p>
+            <h2>Welcome {basicInfo.firstName}!</h2>
+            <p>Kindly fill out the following, and I'll get you started</p>
+            <div style={{ width: "100%" }}>
+              <div className={resumeCss.DetachedLabels} style={{color: '#EE7B1C'}}>
+                Country (will be used to connect you to jobs) *
+              </div>
+            </div>
+            <AuthInput
+              id={"basicInfo.country"}
+              name={basicInfo.country}
+              value={basicInfo.country}
+              inputType="country-select"
+              inputGridSm={12}
+              inputGrid={3}
+              mb={2}
+              onChange={handleInputChange("country")}
+            />
+            <AuthInput
+              country={basicInfo.country}
+              id={"basicInfo.city"}
+              name={basicInfo.city}
+              value={basicInfo.city}
+              inputType="state-select"
+              inputGridSm={12}
+              inputGrid={3}
+              mb={2}
+              onChange={handleInputChange("city")}
+            />
             <div style={{ width: "100%" }}>
               <div className={resumeCss.DetachedLabels}>
                 Date of Birth *
@@ -2227,7 +2266,7 @@ const CustomizeResume = () => {
           <SuccessFailureModal 
               success={successfulAchievement} 
               successText="Congratulations, You have been rewarded!"
-              bodyText="Your Bubble Points have reached your target for your subscription and has earned you an extra week/month of access, Good luck!"
+              bodyText="You received Bubble Points! keep using Bubble Ai to reach your target and EARN an extra week/month of access, Good luck!"
               buttonText="Claim Points Reward"
               fullName={user.firstName} 
           /> 

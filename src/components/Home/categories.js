@@ -3,11 +3,11 @@ import resumeImg from "../../images/resume.png"
 // import reportImg from "../../images/report.jpg"
 // import relationshipImg from "../../images/relationship.jpg"
 import sttImg from "../../images/stt2.jpg"
-// import bizProposalImg from "../../images/biz-proposal.jpg"
-// import productImg from "../../images/product.jpg"
+import bizProposalImg from "../../images/biz-proposal.jpg"
+import productImg from "../../images/product.jpg"
 // import fraudImg from "../../images/fraud-detector.jpg"
-// import examImg from "../../images/exam.jpg"
-// import businessPlanImg from "../../images/business-plan.jpg";
+import examImg from "../../images/exam.jpg"
+import businessPlanImg from "../../images/business-plan.jpg";
 
 const categoriesData = [
     {
