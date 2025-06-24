@@ -349,7 +349,7 @@ h5 {
   width: 100px;
   height: 20px;
   margin-top: 12px;
-  color: var(--navColor1);
+  color: rgb(216, 7, 7);
   box-shadow: -6px 0px 10px rgba(255, 255, 255, 0.8),
               6px 0px 10px rgba(0, 0, 0, 0.2);
 }
