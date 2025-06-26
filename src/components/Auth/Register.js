@@ -170,7 +170,7 @@ const Register = () => {
 
             } catch (error) {
                 setLoading(false)
-                errorSetter(error?.response?.data?.error)
+                errorSetter(error?.response?.data?.message)
             }
 
         } else {

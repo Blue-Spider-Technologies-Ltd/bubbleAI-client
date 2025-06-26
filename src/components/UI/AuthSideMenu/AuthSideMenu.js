@@ -110,7 +110,7 @@ const AuthSideMenu = ({opened, arrayDetails, firstName }) => {
                 successSetter("Session Deleted")
             } catch (error) {
                 dispatch(setFetching(false))
-                errorSetter(error.response.data.error)
+                errorSetter(error.response.data.message)
             }
         })
         .catch(() => {

@@ -97,7 +97,7 @@ const Login = () => {
                     navigate("/verify");
                 }, 5000);
             } else {
-                errorSetter(error?.response?.data?.error);
+                errorSetter(error?.response?.data?.message);
             }
         }
         setLoading(false);
@@ -121,7 +121,7 @@ const Login = () => {
 
         } catch (error) {
             setLoading(false)
-            errorSetter(error?.response?.data?.error);
+            errorSetter(error?.response?.data?.message);
         }
 
     }

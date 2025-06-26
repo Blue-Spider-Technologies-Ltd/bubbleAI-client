@@ -52,7 +52,7 @@ const CouponDashboard = () => {
                 }
     
             } catch (error) {
-                errorSetter(error?.response?.data?.error)
+                errorSetter(error?.response?.data?.message)
                 dispatch(setFetching(false))
             }
         }

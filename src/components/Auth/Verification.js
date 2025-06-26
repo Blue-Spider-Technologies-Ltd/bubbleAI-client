@@ -83,7 +83,7 @@ const Verification = () => {
 
         } catch (error) {
             setLoading(false)
-            errorSetter(error?.response?.data?.error)
+            errorSetter(error?.response?.data?.message)
         }
 
     }
@@ -96,7 +96,7 @@ const Verification = () => {
             const response = await axios.post('/auth/resend-email-code', data)
             console.log(response);
         } catch (error) {
-            errorSetter(error.response.message)
+            errorSetter(error.response.data.message)
         }
     };
 

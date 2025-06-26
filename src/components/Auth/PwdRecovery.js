@@ -89,8 +89,7 @@ const PwdRecovery = () => {
 
         } catch (error) {
             setLoading(false)
-            console.log(error.response.data.mesage);
-            errorSetter(error?.response?.data?.error)
+            errorSetter(error?.response?.data?.message)
         }
 
     }

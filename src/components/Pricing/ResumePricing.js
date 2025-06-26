@@ -24,9 +24,9 @@ const ResumePricing = () => {
         dispatch(setFetching(true))
         const fetchData = async () => {
             try {
-                const pricePerUse = await fetchPrice('resume', 'priceOne')
-                const pricePerWeek = await fetchPrice('resume', 'priceTwo')
-                const pricePerMonth = await fetchPrice('resume', 'priceThree')
+                const pricePerUse = await fetchPrice('resume', 'priceOne') || 2000
+                const pricePerWeek = await fetchPrice('resume', 'priceTwo') || 7000
+                const pricePerMonth = await fetchPrice('resume', 'priceThree') || 20000
                 const userCurrency = await fetchCurrency()
                 setPricePerUse(pricePerUse)
                 setPricePerWeek(pricePerWeek)

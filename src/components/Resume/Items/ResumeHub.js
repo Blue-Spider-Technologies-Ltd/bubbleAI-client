@@ -268,7 +268,7 @@ const ResumeHub = () => {
                 successSetter("Resume Deleted")
             } catch (error) {
                 dispatch(setFetching(false))
-                errorSetter(error.response.data.error)
+                errorSetter(error.response.data.message)
             }
         })
         .catch(() => {

@@ -192,7 +192,7 @@ const Meeting = (props) => {
         } catch (error) {
             console.log(error);
             dispatch(setFetching(false))
-            errorSetter(error.response ? error.response.data.error : error.message);
+            errorSetter(error.response ? error.response.data.error : error.response.data.message);
         }
     }
 

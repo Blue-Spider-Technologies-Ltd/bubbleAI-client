@@ -313,7 +313,7 @@ export const CheckoutSummaryModal = () => {
 
         } catch (error) {
             dispatch(setFetching(false))
-            errorSetter(error.response.data)
+            errorSetter(error?.response?.data?.message || "Something went wrong, Try again")
         }
 
     }
@@ -359,7 +359,7 @@ export const CheckoutSummaryModal = () => {
         } catch (error) {
             setCouponCode("")
             setLoading(false) 
-            return errorSetter(error?.response?.data?.error)
+            return errorSetter(error?.response?.data?.message)
         }
 
     }
