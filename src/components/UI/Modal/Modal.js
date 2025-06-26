@@ -181,10 +181,7 @@ export const SuccessFailureModal = ({
                 </div>
 
                     {!notApayment ? (
-                        <div>               
-                            <div>
-                                <h3>Hey, {fullName}</h3>
-                            </div>
+                        <div> 
 
                             <h1>{successText}</h1>
 

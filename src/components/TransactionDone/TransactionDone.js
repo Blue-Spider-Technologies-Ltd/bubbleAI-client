@@ -28,7 +28,9 @@ const TransactionDone = () => {
 
             const completeTransaction = async () => {
                 try {
-
+                    if(status === "successful") {
+                        setIsSuccessful(true)
+                    }
                     const payload = {
                         status : status,
                         txRef: txRef,
