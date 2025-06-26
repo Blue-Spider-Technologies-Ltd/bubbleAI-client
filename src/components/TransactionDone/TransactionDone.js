@@ -41,13 +41,13 @@ const TransactionDone = () => {
                         },
                     });
 
-                    console.log(response?.data)
-                    if(response?.data?.status === "successful") {
-                        setTransaction(response.data)
+                    console.log(response?.data.transaction)
+                    if(response?.data?.transaction.status === "successful") {
+                        setTransaction(response.data.transaction)
                         setIsSuccessful(true)
                         setIsCompleted(true)
                     } else {
-                        setTransaction(response.data)
+                        setTransaction(response.data.transaction)
                         setIsCompleted(true)
                     }
                 } catch (error) {
