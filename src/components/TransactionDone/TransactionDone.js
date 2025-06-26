@@ -12,6 +12,7 @@ const TransactionDone = () => {
     const [isCompleted, setIsCompleted] = useState(false)
     const [transaction, setTransaction] = useState({})
     const [name, setName] = useState("")
+    const [paymentStatus, setPaymentStatus] = useState("")
     const isEffectExecuted = useRef(false);
     
     useEffect(() => {
@@ -19,6 +20,7 @@ const TransactionDone = () => {
             const params = new URLSearchParams(location.search);
         
             const status = params.get("status");
+            setPaymentStatus(status)
             const txRef = params.get("tx_ref");
             const transactionId = params.get("transaction_id");
             const couponCode = params.get("coupon");
@@ -39,7 +41,7 @@ const TransactionDone = () => {
                         },
                     });
 
-                    
+                    console.log(response?.data)
                     if(response?.data?.status === "successful") {
                         setTransaction(response.data)
                         setIsSuccessful(true)
@@ -78,9 +80,9 @@ const TransactionDone = () => {
             {isCompleted ? 
                 <SuccessFailureModal 
                     success={isSuccessful} 
-                    successText="Your Payment was Successful!"
-                    bodyText="We will send a payment confirmation email to your registered email. Well done!"
-                    buttonText="Done! Continue to Bubble"
+                    successText={`Your Payment was ${paymentStatus}`}
+                    bodyText="We will send more details to your registered email. Thank you!"
+                    buttonText={isSuccessful ? "Done! Continue to Bubble" : "Try Again"}
                     fullName={name ? name : transaction?.customer?.fullName} 
                 /> 
             : 

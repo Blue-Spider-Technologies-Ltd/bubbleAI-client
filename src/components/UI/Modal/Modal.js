@@ -156,19 +156,9 @@ export const SuccessFailureModal = ({
     buttonText,
  }) => {
 
-    const dispatch = useDispatch();
     const navigate = useNavigate()
     const prevPath = localStorage?.getItem("prevPath")
 
-    const errorSetter = (string) => {
-        dispatch(setError(string))
-        errorAnimation()
-    }
-
-    const successSetter = (string) => {
-        dispatch(setSuccessMini(string))
-        successMiniAnimation()
-    }
 
     const handleSuccess = () => {
         if (!success) {
@@ -177,7 +167,6 @@ export const SuccessFailureModal = ({
             if(localStorage.getItem('prevPath')) {
                 navigate(prevPath)
                 localStorage?.removeItem('prevPath')
-                return
             }
             window.location.reload()
         }
@@ -197,7 +186,7 @@ export const SuccessFailureModal = ({
                                 <h3>Hey, {fullName}</h3>
                             </div>
 
-                            <h1>{successText ? successText : "Your Payment Failed"}</h1>
+                            <h1>{successText}</h1>
 
                             <p>{bodyText ? bodyText : "We will send more details on this failure to your registered email. Use button below to try again."}</p>
                         </div>
@@ -209,7 +198,7 @@ export const SuccessFailureModal = ({
                     
                     <div style={{marginTop: '20px'}}>
                         <ButtonOutlineGreenWithDiffStyle borderColor={!success && "#D00000"} onClick={handleSuccess}>
-                            {buttonText ? buttonText : "Try Again"}
+                            {buttonText}
                         </ButtonOutlineGreenWithDiffStyle>
                     </div>
 
