@@ -28,7 +28,7 @@ const TransactionDone = () => {
 
             const completeTransaction = async () => {
                 try {
-                    if(status === "successful") {
+                    if(status === "successful" || status === "completed") {
                         setIsSuccessful(true)
                     }
                     const payload = {
@@ -44,7 +44,7 @@ const TransactionDone = () => {
                     });
 
                     console.log(response?.data.transaction)
-                    if(response?.data?.transaction.status === "successful") {
+                    if(response?.data?.transaction.status === "successful" || response?.data?.transaction.status === "completed") {
                         setTransaction(response.data.transaction)
                         setIsSuccessful(true)
                         setIsCompleted(true)
