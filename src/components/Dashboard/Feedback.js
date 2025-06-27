@@ -150,6 +150,7 @@ const Feedback = () => {
                     success={true} 
                     notApaymentTextPositive="Thank You!!!"
                     notApayment={true}
+                    buttonText="Continue"
                 />
             )}
         </div>
