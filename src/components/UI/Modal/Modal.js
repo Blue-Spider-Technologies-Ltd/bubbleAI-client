@@ -236,6 +236,10 @@ export const CheckoutSummaryModal = () => {
     }
 
     const handleProceedToPay = async () => {
+        if (couponCode.length > 0 && isCouponApplied === false) {
+            errorSetter("Click Apply to apply coupon discount or delete it to continue")
+            return
+        }
         dispatch(setFetching(true))
         const prevPath = location.pathname
         localStorage?.setItem("prevPath", prevPath)

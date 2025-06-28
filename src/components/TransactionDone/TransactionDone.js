@@ -16,62 +16,63 @@ const TransactionDone = () => {
     const isEffectExecuted = useRef(false);
     
     useEffect(() => {
-        if (!isEffectExecuted.current) {
-            const params = new URLSearchParams(location.search);
-        
-            const status = params.get("status");
-            setPaymentStatus(status)
-            const txRef = params.get("tx_ref");
-            const transactionId = params.get("transaction_id");
-            const couponCode = params.get("coupon");
-            const fullName = params.get("name");
 
-            const completeTransaction = async () => {
-                try {
-                    if(status === "successful" || status === "completed") {
-                        setIsSuccessful(true)
-                    }
-                    const payload = {
-                        status : status,
-                        txRef: txRef,
-                        transactionId: transactionId
-                    }
+        const params = new URLSearchParams(location.search);
+    
+        const status = params.get("status");
+        setPaymentStatus(status)
+        const txRef = params.get("tx_ref");
+        const transactionId = params.get("transaction_id");
+        const couponCode = params.get("coupon");
+        const fullName = params.get("name");
         
-                    const response = await axios.post("/pricing/complete-transaction", payload, {
-                        headers: {
-                          "x-access-token": localStorage?.getItem('token'),
-                        },
-                    });
+        const completeTransaction = async () => {
+            try {
+                if(status === "successful" || status === "completed") {
+                    setIsSuccessful(true)
+                }
+                const payload = {
+                    status : status,
+                    txRef: txRef,
+                    transactionId: transactionId
+                }
+    
+                const response = await axios.post("/pricing/complete-transaction", payload, {
+                    headers: {
+                        "x-access-token": localStorage?.getItem('token'),
+                    },
+                });
 
-                    console.log(response?.data.transaction)
-                    if(response?.data?.transaction.status === "successful" || response?.data?.transaction.status === "completed") {
-                        setTransaction(response.data.transaction)
-                        setIsSuccessful(true)
-                        setIsCompleted(true)
-                    } else {
-                        setTransaction(response.data.transaction)
-                        setIsCompleted(true)
-                    }
-                } catch (error) {
-                    console.log(error);
-                    setTransaction(error?.response?.data)
+                console.log(response?.data.transaction)
+                if(response?.data?.transaction.status === "successful" || response?.data?.transaction.status === "completed") {
+                    setTransaction(response.data.transaction)
+                    setIsSuccessful(true)
+                    setIsCompleted(true)
+                } else {
+                    setTransaction(response.data.transaction)
                     setIsCompleted(true)
                 }
-            }
-
-            const completeCouponTransact100percentDiscount = async () => {
-                setName(fullName)
-                setIsSuccessful(true)
+            } catch (error) {
+                console.log(error);
+                setTransaction(error?.response?.data)
                 setIsCompleted(true)
             }
+        }
 
-            if(couponCode) {
+        const completeCouponTransact100percentDiscount = async () => {
+            setName(fullName)
+            setIsSuccessful(true)
+            setIsCompleted(true)
+        }
+
+        if (!isEffectExecuted.current) {
+
+            isEffectExecuted.current = true;
+            if(couponCode && couponCode !== "") {
                 completeCouponTransact100percentDiscount()
             } else {
                 completeTransaction()
             }
-
-            isEffectExecuted.current = true;
         }
         
     }, [location])
