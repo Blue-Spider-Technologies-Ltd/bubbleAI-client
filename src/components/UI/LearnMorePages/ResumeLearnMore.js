@@ -8,7 +8,7 @@ import { reviewDetails } from '../../../utils/reviews';
 import bubbleBgAuthImg from "../../../images/bubblebg-auth.jpg"
 import jobImg from "../../../images/jobs.png"
 import coverImg from "../../../images/cover-letter.jpg"
-import interviewImg from "../../../images/interview-prep.jpg"
+import autoApplyImg from "../../../images/auto-apply-img.png"
 import aramcoImg from "../../../images/aramco.png"
 import amazonImg from "../../../images/amazon.jpg"
 import metaImg from "../../../images/meta.png"
@@ -82,7 +82,7 @@ const TestimonialCard = ({ detail }) => {
     }, []);
 
     return (
-        <div ref={cardRef} className={`${css.TestimonialCard} ${isVisible ? css.visible : ''}`}>
+        <div ref={cardRef} className={`${css.TestimonialCard} ${isVisible ? css.visible : ""}`}>
             <div style={{display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
                 <div style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', marginRight: '1rem'}}>
                     <img src={detail?.img} alt={detail?.name} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
@@ -191,6 +191,11 @@ const ResumeLearnMore = () => {
             title: "Complete Application Package",
             description: "Generate tailored cover letters and use our interactive interview preparation tool powered by company-specific research with personalized answers.",
             image: coverImg
+        },
+        {
+            title: "Auto-Apply Feature",
+            description: "Let Bubble Ai automatically apply to jobs for you! Our intelligent system will: Fill out application forms, tailor resumes and cover letters for each application, Allow you to review and edit before submission",
+            image: autoApplyImg
         }
     ];
 
@@ -236,16 +241,6 @@ const ResumeLearnMore = () => {
                         ))}
                     </div>
                     
-                    <div style={{textAlign: 'center', padding: '2rem', background: 'rgba(86, 168, 172, 0.1)', borderRadius: '20px', margin: '2rem'}}>
-                        <h3>Coming Soon: Auto-Apply Feature</h3>
-                        <p>Let Bubble Ai automatically apply to jobs for you! Our intelligent system will:</p>
-                        <ul style={{textAlign: 'left', maxWidth: '600px', margin: '1rem auto'}}>
-                            <li>Tailor resumes and cover letters for each application</li>
-                            <li>Fill out application forms using smart data analysis</li>
-                            <li>Maintain a natural, human tone in all communications</li>
-                            <li>Allow you to review and edit before submission</li>
-                        </ul>
-                    </div>
                 </section>
 
                 <section className={css.TopCompanies}>

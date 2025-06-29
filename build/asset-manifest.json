@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7f3aa497.css",
-    "main.js": "/static/js/main.60b427c4.js",
+    "main.js": "/static/js/main.c77f8398.js",
     "static/js/766.89f1a914.chunk.js": "/static/js/766.89f1a914.chunk.js",
     "static/js/255.dcf5b407.chunk.js": "/static/js/255.dcf5b407.chunk.js",
     "static/js/811.72ea3d00.chunk.js": "/static/js/811.72ea3d00.chunk.js",
@@ -28,7 +28,6 @@
     "static/media/Roboto-LightItalic.ttf": "/static/media/Roboto-LightItalic.3743e89917aa46e2f6e5.ttf",
     "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.27f62b53b93858475a7f.ttf",
     "static/media/Roboto-Bold.ttf": "/static/media/Roboto-Bold.d50a80138ec4f2fb5e9f.ttf",
-    "static/media/interview-prep.jpg": "/static/media/interview-prep.46fb8d310c0d5dd1ed9e.jpg",
     "static/media/cover-letter.jpg": "/static/media/cover-letter.95c36fb1b52b7dbb2ef0.jpg",
     "static/media/email.png": "/static/media/email.1c3d25dd5fe5bd93fd1d.png",
     "static/media/black-friday.png": "/static/media/black-friday.7b30b4282ffcda18eb2f.png",
@@ -40,6 +39,7 @@
     "static/media/bubblebg-auth.png": "/static/media/bubblebg-auth.7a4d0bbbe53cc081ca37.png",
     "static/media/jobs.png": "/static/media/jobs.578af1c7bc9496466f06.png",
     "static/media/business-plan.jpg": "/static/media/business-plan.3ef4cf1ae4d6f64707fd.jpg",
+    "static/media/auto-apply-img.png": "/static/media/auto-apply-img.2403e61758a1c9c4a23c.png",
     "static/media/2.jpg": "/static/media/2.208b96f80fdadd2cd4c7.jpg",
     "static/media/customize.jpg": "/static/media/customize.6a79e4b9bcd64980a5d8.jpg",
     "static/media/refund-stamp.png": "/static/media/refund-stamp.19654e7aecd4136b31aa.png",
@@ -70,6 +70,6 @@
   },
   "entrypoints": [
     "static/css/main.7f3aa497.css",
-    "static/js/main.60b427c4.js"
+    "static/js/main.c77f8398.js"
   ]
 }
