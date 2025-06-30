@@ -15,13 +15,13 @@ import { FaLock } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 const segments = [
-  { key: "grading", label: "Grading", icon: <FaChartPie /> },
-  { key: "studyPlan", label: "Study Plan", icon: <FaBookOpen /> },
-  { key: "aiTutor", label: "AI Tutor", icon: <FaRobot /> },
-  { key: "examInsights", label: "Exam Insights", icon: <FaLightbulb /> },
-  { key: "peerBenchmarking", label: "Peer Benchmarking", icon: <FaUsers /> },
-  { key: "careerAlignment", label: "Career & Course", icon: <FaSuitcase /> },
-  { key: "progressMonitoring", label: "Progress", icon: <FaChartLine /> }
+  { key: "grading", label: "Grading", icon: <FaChartPie style={{color: "#3E8F93"}} /> },
+  { key: "studyPlan", label: "Study Plan", icon: <FaBookOpen style={{color: "#FF6B6B"}} /> },
+  { key: "aiTutor", label: "AI Tutor", icon: <FaRobot style={{color: "#6C63FF"}} /> },
+  { key: "examInsights", label: "Exam Insights", icon: <FaLightbulb style={{color: "#F7B801"}} /> },
+  { key: "peerBenchmarking", label: "Peer Benchmarking", icon: <FaUsers style={{color: "#43AA8B"}} /> },
+  { key: "careerAlignment", label: "Career & Course", icon: <FaSuitcase style={{color: "black"}} /> },
+  { key: "progressMonitoring", label: "Progress", icon: <FaChartLine style={{color: "#6C63FF"}} /> }
 ];
 
 const isMobile = () => window.innerWidth < 700;
