@@ -36,6 +36,8 @@ import Neco from "./components/MockTests/Exams/Neco"
 import Pmp from "./components/MockTests/Exams/Pmp"
 import Toefl from "./components/MockTests/Exams/Toefl"
 import Utme from "./components/MockTests/Exams/Utme/Utme"
+import ExamStarted from "./components/MockTests/ExamStarted/ExamStarted"
+import InsightNTutor from "./components/MockTests/InsightNTutor/InsightNTutor"
 import Wassce from "./components/MockTests/Exams/Wassce"
 import ResetPass from './components/Dashboard/ResetPass';
 import GoogleCallback from './components/Auth/GoogleCallback';
@@ -108,6 +110,9 @@ const App = () => {
           <Route path={'/user/dashboard/mock/pmp'} element={ <UnderConstruction /> } />
           <Route path={'/user/dashboard/mock/toefl'} element={ <UnderConstruction /> } />
           <Route path={'/user/dashboard/mock/utme'} element={ <Utme /> } />
+          <Route path={'/user/dashboard/mock/exam-started'} element={ <ExamStarted /> } />
+          <Route path={'/user/dashboard/mock/exam-insight'} element={ <InsightNTutor /> } />
+
           <Route path={'/user/dashboard/mock/wassce'} element={ <UnderConstruction /> } />
           <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
           <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />

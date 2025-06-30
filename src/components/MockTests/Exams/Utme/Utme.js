@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import mockCss from "../../Mock.module.css";
 import axios from "axios";
 import { UtmeSubjects } from './subjects';
-import Alert from '@mui/material/Alert';
 import AuthHeader from "../../../UI/AuthHeader/AuthHeader";
 import AuthInput from '../../../UI/Input/AuthInputs';
 import { useNavigate } from "react-router-dom";
@@ -22,7 +21,6 @@ import {
     checkAuthenticatedUser,
     formatTime
 } from "../../../../utils/client-functions";
-import { Grid } from "@mui/material";
 
 const Utme = (props) => {
     const { error, successMini } = useSelector((state) => state.stateData);
@@ -116,7 +114,7 @@ const Utme = (props) => {
         setCourseOfStudy(e.target.value);
     };
 
-    const toggleResumes = () => {
+    const toggleAuthMenu = () => {
         setAuthMenuOpen(!authMenuOpen);
     };
 
@@ -129,7 +127,7 @@ const Utme = (props) => {
             <div className="auth-container-inner">
                 <AuthHeader
                     authMenuOpen={authMenuOpen}
-                    onClick={toggleResumes}
+                    onClick={toggleAuthMenu}
                     headerText="UTME MOCK"
                 />
 

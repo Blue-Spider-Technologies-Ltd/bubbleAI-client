@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {jwtDecode} from 'jwt-decode';;
 
@@ -314,13 +315,56 @@ export const capitalizeWords = (sentence) => {
 }
 
 export const formatTime = (seconds) => {
-  const hrs = Math.floor(seconds / 3600);
-  const mins = Math.floor((seconds % 3600) / 60);
-  const secs = seconds % 60;
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
 
-  const pad = (num) => String(num).padStart(2, '0');
+    const pad = (num) => String(num).padStart(2, '0');
+    const screenWidth = window.innerWidth
+    if (screenWidth < 700 && hrs === 0) {
+        return `${pad(mins)}:${pad(secs)}`;
+    }
+    return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+}
 
-  return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+
+// Converts "hh:mm:ss" or seconds to total seconds
+function parseTime(input) {
+    if (typeof input === "number") return input;
+    const parts = input.split(":").map(Number);
+    if (parts.length === 3) {
+        return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    }
+    if (parts.length === 2) {
+        return parts[0] * 60 + parts[1];
+    }
+    return Number(input) || 0;
+}
+
+
+// React hook for countdown
+export function useCountdown(initialTime) {
+    const [seconds, setSeconds] = useState(() => parseTime(initialTime));
+    const intervalRef = useRef();
+
+    useEffect(() => {
+        setSeconds(parseTime(initialTime));
+        if (intervalRef.current) clearInterval(intervalRef.current);
+
+        intervalRef.current = setInterval(() => {
+            setSeconds(prev => {
+                if (prev <= 1) {
+                    clearInterval(intervalRef.current);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(intervalRef.current);
+    }, [initialTime]);
+
+    return formatTime(seconds);
 }
 
 

@@ -104,3 +104,352 @@
   margin-top: 1rem;
 }
 
+.ExamHeader {
+  background-color: #c0d1d4;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;   
+  padding: 0;
+  height: 80px;
+  display: flex;
+  justify-content: space-around;
+  overflow: hidden;
+}
+
+.ExamHeader div {
+  color: rgb(42, 42, 42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100%/3);
+  height: 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 2px
+}
+
+.ExamHeader div:nth-child(2) {
+  width: 60%;
+}
+
+.ExamHeader div>span, .ExamHeader .Icon {
+  color: snow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 3px;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+.ActiveNav {
+  background-color: var(--navColor2);
+  border-radius: 15px;
+  box-shadow: 10px 2px 5px -4px rgba(0,0,0,0.29);
+  -webkit-box-shadow: 10px 2px 5px -4px rgba(0,0,0,0.29);
+  -moz-box-shadow: 10px 2px 5px -4px rgba(0,0,0,0.29);
+}
+
+
+.QuestionArea {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(62,143,147,0.07);
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 1rem auto;
+}
+
+.QuestionText {
+    font-size: 1.1rem;
+    margin: 1rem 0;
+    color: #222;
+}
+
+.OptionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.OptionLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 1rem;
+    background: #f8fafb;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.OptionLabel input[type="radio"] {
+    accent-color: #3E8F93;
+    margin-right: 0.5rem;
+}
+
+.NavButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.QuickNavArea {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1.5rem 0;
+}
+
+.QuickNavBtn {
+    background: #e6f6f7;
+    border: none;
+    border-radius: 50%;
+    width: 2.2rem;
+    height: 2.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3E8F93;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.ActiveQuickNav {
+    background: #3E8F93;
+    color: #fff;
+}
+@media (max-width: 700px) {
+    .QuestionArea { padding: 0.7rem; }
+    .QuestionText { font-size: 1rem; }
+    .QuickNavBtn { width: 1.7rem; height: 1.7rem; font-size: 0.9rem; }
+}
+
+
+/* InsightNTutor Segments */
+.InsightNTutorWrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 0.5rem;
+}
+.TabNav {
+  display: flex;
+  gap: 1rem;
+  background: #e6f6f7;
+  border-radius: 10px 10px 0 0;
+  overflow-x: auto;
+}
+.TabItem {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: #3E8F93;
+  border-bottom: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, border-bottom 0.2s;
+}
+.ActiveTab {
+  background: #fff;
+  border-bottom: 3px solid #3E8F93;
+  color: #222;
+}
+.TabContent {
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(62,143,147,0.07);
+}
+.Segment {
+  margin-bottom: 1.5rem;
+}
+.SegmentDesc {
+  color: #3E8F93;
+  font-size: 1rem;
+  margin: 0.5rem 0 0 0;
+}
+.SegmentBody {
+  margin-top: 1rem;
+}
+.ScoreCard {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+.ScoreCircle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #3E8F93;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2.2rem;
+  box-shadow: 0 2px 8px rgba(62,143,147,0.07);
+  animation: bubble-pop 1s;
+}
+@keyframes bubble-pop {
+  0% { transform: scale(0.7);}
+  80% { transform: scale(1.1);}
+  100% { transform: scale(1);}
+}
+.ScoreValue { font-size: 2.2rem; }
+.ScoreLabel { font-size: 1rem; }
+.ScoreDetails { display: flex; flex-direction: column; gap: 0.5rem; }
+.ScorePercent { font-size: 1.5rem; font-weight: 700; }
+.ScoreStatus { font-size: 1.1rem; font-weight: 600; margin-left: 1rem; }
+.ScoreTopic { font-size: 1rem; }
+.ScoreCompare { font-size: 1rem; color: #888; }
+.ChartRow { display: flex; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.ChartCard { background: #e6f6f7; border-radius: 10px; padding: 1rem; flex: 1; min-width: 220px; }
+.BarChart { display: flex; flex-direction: column; gap: 0.7rem; }
+.BarRow { display: flex; align-items: center; gap: 0.7rem; }
+.BarTrack { width: 100px; height: 12px; background: #c0d1d4; border-radius: 6px; overflow: hidden; margin: 0 0.5rem; }
+.BarFill { height: 100%; border-radius: 6px; transition: width 0.5s; }
+.CompareBar { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+.CompareTrack { width: 100px; height: 12px; background: #c0d1d4; border-radius: 6px; overflow: hidden; position: relative; }
+.CompareFill { height: 100%; border-radius: 6px; position: absolute; left: 0; top: 0; }
+.TableCard { margin-bottom: 1.5rem; }
+.AnalysisTable { width: 100%; border-collapse: collapse; }
+.AnalysisTable th, .AnalysisTable td { padding: 0.5rem; border-bottom: 1px solid #e6f6f7; text-align: left; }
+.ErrorCard { background: #fffbe6; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+.ErrorItem { margin-bottom: 0.5rem; }
+.ErrorExplain { color: #d80707; font-size: 0.95rem; }
+.FeedbackCard { background: #e6f6f7; border-radius: 10px; padding: 1rem; }
+.Overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(62,143,147,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  border-radius: 10px;
+  animation: bubble-fadein 0.7s;
+}
+@keyframes bubble-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.ModalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+.ModalContent {
+  background: #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  min-width: 260px;
+  max-width: 90vw;
+  box-shadow: 0 2px 8px rgba(62,143,147,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.DateInput, .GoalInput {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #c0d1d4;
+  font-size: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.StudySchedule, .PrioritizedTopics, .Resources, .TimeAllocation, .ProgressTracker {
+  margin-bottom: 1.2rem;
+}
+.ResourceCards { display: flex; gap: 1rem; flex-wrap: wrap; }
+.ResourceCard {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(62,143,147,0.07);
+  text-decoration: none;
+  color: #3E8F93;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.ResourceCard:hover { background: #e6f6f7; }
+.PieChart { display: flex; gap: 1rem; }
+.PieSlice {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  background: #e6f6f7;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(62,143,147,0.07);
+}
+.PieSlice span { position: absolute; width: 100%; text-align: center; font-size: 0.8rem; top: 80%; left: 0; }
+.ProgressTracker ul, .PrioritizedTopics ul, .StudySchedule ul { padding-left: 1.2rem; }
+.AiTutorCard { margin-bottom: 1.2rem; }
+.ConceptExplanations { margin-bottom: 1.2rem; }
+.ConceptCard { background: #e6f6f7; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; }
+.Motivational { margin-bottom: 1.2rem; }
+.MotivationalMsg { background: #fffbe6; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+.ExamStructure, .HistoricalTrends, .RubricTable, .Pitfalls, .Logistics, .SuccessStories { margin-bottom: 1.2rem; }
+.LineChart { display: flex; gap: 1.5rem; align-items: flex-end; height: 120px; }
+.LinePoint { display: flex; flex-direction: column; align-items: center; }
+.LineBar { width: 18px; border-radius: 8px 8px 0 0; }
+.RubricTable table { width: 100%; border-collapse: collapse; }
+.RubricTable th, .RubricTable td { padding: 0.5rem; border-bottom: 1px solid #e6f6f7; }
+.Pitfalls ul, .Logistics ul, .Alternatives ul, .NextSteps ul, .Requirements ul { padding-left: 1.2rem; }
+.StorySlider { display: flex; gap: 1rem; overflow-x: auto; }
+.StoryCard { background: #e6f6f7; border-radius: 8px; padding: 1rem; min-width: 220px; }
+.PercentileCard { margin-bottom: 1.2rem; }
+.Gauge { width: 80px; height: 80px; border-radius: 50%; background: #e6f6f7; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: #3E8F93; margin: 0 auto; }
+.StrengthComparison { margin-bottom: 1.2rem; }
+.GapAnalysis { margin-bottom: 1.2rem; }
+.GapCard { background: #fffbe6; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; }
+.CommunityInsights { margin-bottom: 1.2rem; }
+.PrivacyAssurance { color: #888; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+.CareerMapping, .Courses, .SkillGap, .Requirements, .Alternatives, .NextSteps { margin-bottom: 1.2rem; }
+.MatchPercent { color: #3E8F93; font-weight: 700; margin-left: 0.5rem; }
+.CourseCards { display: flex; gap: 1rem; flex-wrap: wrap; }
+.CourseCard { background: #fff; border-radius: 8px; padding: 0.7rem 1.2rem; box-shadow: 0 2px 8px rgba(62,143,147,0.07); text-decoration: none; color: #3E8F93; font-weight: 600; transition: background 0.2s; }
+.CourseCard:hover { background: #e6f6f7; }
+.SkillGapBar { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+.SkillTrack { width: 100px; height: 12px; background: #c0d1d4; border-radius: 6px; overflow: hidden; position: relative; }
+.SkillFill { height: 100%; border-radius: 6px; position: absolute; left: 0; top: 0; }
+.PerformanceDashboard { margin-bottom: 1.2rem; }
+.Milestones { margin-bottom: 1.2rem; }
+.MilestoneCard { background: #fffbe6; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+.WeaknessTracker { margin-bottom: 1.2rem; }
+.WeaknessBar { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+.WeaknessTrack { width: 100px; height: 12px; background: #c0d1d4; border-radius: 6px; overflow: hidden; position: relative; }
+.WeaknessFill { height: 100%; border-radius: 6px; position: absolute; left: 0; top: 0; }
+.StudyTimeAnalytics { margin-bottom: 1.2rem; }
+.GoalSetting { margin-bottom: 1.2rem; }
+.ExportReport { margin-top: 1.2rem; }
+.AccordionNav { width: 100%; }
+.AccordionHeader { background: #e6f6f7; border-radius: 10px; padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; }
+.AccordionBody { background: #fff; border-radius: 0 0 10px 10px; padding: 1.2rem 1rem; margin-bottom: 1.2rem; box-shadow: 0 2px 8px rgba(62,143,147,0.07); }
+@media (max-width: 900px) {
+  .TabContent, .SegmentBody, .AccordionBody { padding: 1rem 0.5rem; }
+  .ScoreCard { flex-direction: column; gap: 1rem; }
+  .ChartRow { flex-direction: column; gap: 1rem; }
+  .ResourceCards, .CourseCards, .PieChart, .StorySlider { flex-direction: column; gap: 0.7rem; }
+}
+@media (max-width: 700px) {
+  .InsightNTutorWrapper { padding: 0.5rem 0.1rem; }
+  .TabNav, .TabContent { display: none; }
+  .AccordionNav { display: block; }
+}
