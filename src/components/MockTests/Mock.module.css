@@ -283,6 +283,7 @@
 .ScoreCard {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
   margin-bottom: 1.5rem;
 }
@@ -308,7 +309,7 @@
 }
 .ScoreValue { font-size: 2.2rem; }
 .ScoreLabel { font-size: 1rem; }
-.ScoreDetails { display: flex; flex-direction: column; gap: 0.5rem; }
+.ScoreDetails { display: flex; flex-direction: column; gap: 0.5rem; text-align: center; justify-content: center }
 .ScorePercent { font-size: 1.5rem; font-weight: 700; }
 .ScoreStatus { font-size: 1.1rem; font-weight: 600; margin-left: 1rem; }
 .ScoreTopic { font-size: 1rem; }
@@ -322,7 +323,7 @@
 .CompareBar { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
 .CompareTrack { width: 100px; height: 12px; background: #c0d1d4; border-radius: 6px; overflow: hidden; position: relative; }
 .CompareFill { height: 100%; border-radius: 6px; position: absolute; left: 0; top: 0; }
-.TableCard { margin-bottom: 1.5rem; }
+.TableCard { margin-bottom: 1.5rem; overflow-y: scroll; overflow-x: scroll;  max-height: 500px; height: 400px }
 .AnalysisTable { width: 100%; border-collapse: collapse; }
 .AnalysisTable th, .AnalysisTable td { padding: 0.5rem; border-bottom: 1px solid #e6f6f7; text-align: left; }
 .ErrorCard { background: #fffbe6; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
@@ -402,6 +403,7 @@
 .ProgressTracker ul, .PrioritizedTopics ul, .StudySchedule ul { padding-left: 1.2rem; }
 .AiTutorCard { margin-bottom: 1.2rem; }
 .ConceptExplanations { margin-bottom: 1.2rem; }
+.ConceptExplanationsInner { height: 250px; max-height: 300px; overflow-y: auto; }
 .ConceptCard { background: #e6f6f7; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; }
 .Motivational { margin-bottom: 1.2rem; }
 .MotivationalMsg { background: #fffbe6; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }

@@ -12,7 +12,7 @@ import businessPlanImg from "../../images/business-plan.jpg";
 const categoriesData = [
     {
         title: "Automate Job Application",
-        desc: "Résumé, Cover Ltrs, >90% Interview Jobs, Career Insight",
+        desc: "Tap here for Résumé, Cover Ltrs, >90% Interview Jobs, Career Insight",
         isAuthURL: '/user/dashboard/resume',
         unAuthURL: '/popin?resume',
         image: resumeImg

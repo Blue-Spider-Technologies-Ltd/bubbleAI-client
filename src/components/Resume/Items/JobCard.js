@@ -25,7 +25,6 @@ const styles = {
         borderRadius: '20px',
         color: 'black',
         display: 'flex', 
-        maxHeight: '500px',
         width: screenWidth < 900 ? '100%' : '90%',
         overflow: 'hidden',
         transition: 'all 3s ease-in-out',
@@ -35,7 +34,6 @@ const styles = {
         borderRadius: '20px',
         color: 'black',
         display: 'flex', 
-        maxHeight: 'none',
         width: screenWidth < 900 ? '100%' : '90%',
         overflow: 'visible',
         transition: 'all 3s ease-in-out',
@@ -107,18 +105,26 @@ const JobCard = memo(({
     return (
         <Card sx={activeIndex !== index + 1 ? styles.card : styles.cardLarge}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <CardContent sx={{ display: 'flex', flexDirection: 'row' }}>
-                    <CardMedia
-                        component="img"
-                        sx={styles.img}
-                        image={job.company_object?.logo || img}
-                        alt="Avatar"
-                    />
+                <CardContent>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 20, width: '100%' }}>
+                        <span>
+                            <CardMedia
+                                component="img"
+                                sx={styles.img}
+                                image={job.company_object?.logo || img}
+                                alt="Avatar"
+                            />
+                        </span>
+                        <span>
+                            <Typography component="div" variant="h6">
+                                {job.title || job.job_title}
+                            </Typography>
+                        </span>
 
-                    <div style={{width: '90%'}}>
-                        <Typography component="div" variant="h5">
-                            {job.title || job.job_title}
-                        </Typography>
+                    </div>
+
+                    <div style={{width: '100%'}}>
+
                         <div style={styles.link} >
                             <div>
                                 <ul>

@@ -91,32 +91,29 @@ const Home = () => {
 
       <section id="ask-me" className="container" style={{ marginTop: "100px" }}>
         <div className="container-inner">
-          <h1 className="ask-me-h2">Ask me anything</h1>
+          <h2>Ask me anything</h2>
           <div className="error">{error}</div>
-          <form className="form-ask-anything">
-            <Grid container onFocus={handleFocus}>
-
-              <AuthInput
-                name="askMe"
-                id="Ask a Question..."
-                label="Ask a Question..."
-                multiline={true}
-                inputGridSm={10}
-                rows={2}
-                maxRows={2}
-                required={true}
-              />
-              <Grid
-                item
-                xs={2}
-                sx={{ textAlign: "right", marginTop: '2px' }}
-              >
-                <ButtonSubmitBlack>
-                  <SendIcon />
-                </ButtonSubmitBlack>
-              </Grid>
+          <Grid container onFocus={handleFocus} pb={2}>
+            <AuthInput
+              name="askMe"
+              id="Ask a Question..."
+              label="Ask a Question..."
+              multiline={true}
+              inputGridSm={10}
+              rows={2}
+              maxRows={2}
+              required={true}
+            />
+            <Grid
+              item
+              xs={2}
+              sx={{ textAlign: "right", marginTop: "2px" }}
+            >
+              <ButtonSubmitBlack>
+                <SendIcon />
+              </ButtonSubmitBlack>
             </Grid>
-          </form>
+          </Grid>
         </div>
       </section>
 
