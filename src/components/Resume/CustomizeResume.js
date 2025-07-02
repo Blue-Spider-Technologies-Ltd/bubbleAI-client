@@ -2195,9 +2195,9 @@ const CustomizeResume = () => {
           <PlainModalOverlay>
             <h2>Welcome {basicInfo.firstName}!</h2>
             <p>Kindly fill out the following, and I'll get you started</p>
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", marginBottom: "1rem" }}>
               <div className={resumeCss.DetachedLabels} style={{color: '#EE7B1C'}}>
-                Country (will be used to connect you to jobs) *
+                Country* : (will be used to connect you to jobs so choose a country with remote jobs if remote is your preference.) You can always change this in your profile.
               </div>
             </div>
             <AuthInput

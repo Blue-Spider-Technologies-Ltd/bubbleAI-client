@@ -690,35 +690,35 @@ const toggleAuthMenu = () => {
                     {/* Tabs for desktop, Accordions for mobile */}
                     {!mobile ? (
                         <div className={mockCss.TabNav}>
-                        {segments.map(seg => (
-                            <div
-                            key={seg.key}
-                            className={`${mockCss.TabItem} ${activeTab === seg.key ? mockCss.ActiveTab : ""}`}
-                            onClick={() => setActiveTab(seg.key)}
-                            >
-                            {seg.icon} {seg.label}
-                            </div>
-                        ))}
+                          {segments.map(seg => (
+                              <div
+                                key={seg.key}
+                                className={`${mockCss.TabItem} ${activeTab === seg.key ? mockCss.ActiveTab : ""}`}
+                                onClick={() => setActiveTab(seg.key)}
+                              >
+                                {seg.icon} {seg.label}
+                              </div>
+                          ))}
                         </div>
                     ) : (
                         <div className={mockCss.AccordionNav}>
-                        {segments.map(seg => (
-                            <div key={seg.key}>
-                            <SegmentHeader
-                                icon={seg.icon}
-                                label={seg.label}
-                                desc={segmentDescriptions[seg.key]}
-                                open={!!openAccordions[seg.key]}
-                                onClick={() => handleAccordion(seg.key)}
-                                mobile
-                            />
-                            {openAccordions[seg.key] && (
-                                <div className={mockCss.AccordionBody}>
-                                {React.createElement(segmentComponents[seg.key])}
-                                </div>
-                            )}
-                            </div>
-                        ))}
+                          {segments.map(seg => (
+                              <div key={seg.key}>
+                              <SegmentHeader
+                                  icon={seg.icon}
+                                  label={seg.label}
+                                  desc={segmentDescriptions[seg.key]}
+                                  open={!!openAccordions[seg.key]}
+                                  onClick={() => handleAccordion(seg.key)}
+                                  mobile
+                              />
+                              {openAccordions[seg.key] && (
+                                  <div className={mockCss.AccordionBody}>
+                                  {React.createElement(segmentComponents[seg.key])}
+                                  </div>
+                              )}
+                              </div>
+                          ))}
                         </div>
                     )}
 

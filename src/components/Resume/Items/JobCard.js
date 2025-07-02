@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from "react";
+import React, { memo } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -102,6 +102,19 @@ const JobCard = memo(({
         }
     }
 
+    // Helper to format description into paragraphs and line breaks
+    const renderDescription = (desc) => {
+        if (!desc) return null;
+        // Split by double newlines for paragraphs
+        return desc.split(/\n\n+/).map((para, idx) => (
+            <p key={idx} style={{margin: '0 0 8px 0', lineHeight: 1.6}}>
+                {para.split(/\n/).map((line, i, arr) =>
+                    i < arr.length - 1 ? <React.Fragment key={i}>{line}<br /></React.Fragment> : line
+                )}
+            </p>
+        ));
+    };
+
     return (
         <Card sx={activeIndex !== index + 1 ? styles.card : styles.cardLarge}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -165,9 +178,9 @@ const JobCard = memo(({
                     <div style={styles.desc}>
                         {activeIndex !== index + 1 
                             ? <>
-                                {job.description.slice(0, 200)}... <span onClick={() => setActiveIndex(index + 1)} style={{ cursor: 'pointer', color: '#3E8F93' }}>see more</span>
+                                {renderDescription(job.description.slice(0, 200))}... <span onClick={() => setActiveIndex(index + 1)} style={{ cursor: 'pointer', color: '#3E8F93' }}>see more</span>
                             </>
-                            : <> {job.description} <span onClick={() => setActiveIndex(null)} style={{ cursor: 'pointer', color: '#3E8F93' }}>...see less</span></>}
+                            : <>{renderDescription(job.description)} <span onClick={() => setActiveIndex(null)} style={{ cursor: 'pointer', color: '#3E8F93' }}>...see less</span></>}
                     </div>
                 </div>
 

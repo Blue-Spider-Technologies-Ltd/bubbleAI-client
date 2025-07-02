@@ -17,6 +17,7 @@ import { ButtonSubmitBlack, ButtonSubmitGreen, ButtonOutlineGreenWithDiffStyle }
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { ThreeCircles } from 'react-loader-spinner';
+import { MdOutlineGppGood } from "react-icons/md";
 import refundImg from '../../../images/refund-stamp.png';
 import successImg from '../../../images/success.gif';
 import failedImg from '../../../images/failed.gif';
@@ -63,7 +64,7 @@ export const Modal = ({header3, header4, progress}) => {
     return (
         <div className={modalCss.ModalContainer}>
 
-            <div className={modalCss.ModalBody}>
+            <div className={modalCss.ModalBody + " " + modalCss.BubblePopIn}>
 
                 <div className={modalCss.ModalBlobBg}>
                     <Blob bgImage={bubbleBgAuthImg} />
@@ -138,7 +139,7 @@ export const PlainModalOverlay = (props) => {
 
     return (
         <div className={modalCss.ModalContainer}>
-            <div className={modalCss.PlainModalOverlay}>
+            <div className={modalCss.PlainModalOverlay + " " + modalCss.BubblePopIn}>
                 {props.children}
             </div>
         </div>
@@ -356,13 +357,16 @@ export const CheckoutSummaryModal = () => {
 
     return (
         <div className={modalCss.ModalContainer}>
-            <div className={modalCss.CheckoutContainer}>
+            <div className={modalCss.CheckoutContainer + " " + modalCss.BubblePopIn}>
                 <div className={modalCss.CheckoutLogoWrapper}>
                     <img src={logoImg} alt='Bubble Ai' style={{width: '100%'}} />
                 </div>
 
                 <h2>Secure Checkout</h2>
 
+                <div className={modalCss.CheckoutHeader}>
+                    <span><MdOutlineGppGood style={{ fontSize: "1.5rem"}} /></span><span>All payment methods accepted</span>
+                </div>
                 <div style={{width: '100%', display: 'flex', justifyContent: 'center', borderRadius: '5px', overflow: 'hidden'}}>
                     <img src={secureImg} alt='Bubble Ai' style={{width: '60%', height: '60px'}} />
                 </div>
@@ -496,13 +500,13 @@ export const CheckoutSummaryModal = () => {
 
                             <div>
                                 <h5>100% Refund</h5>
-                                <h2>GUARANTEED</h2>
+                                <h2>POSSIBLE</h2>
                                 <a 
                                     href='/privacy' 
                                     target='_blank'
-                                    style={{fontSize: '.65rem', color: '#3E8F93', position: 'relative', top: '-20px'}}
+                                    style={{fontSize: '.65rem', color: '#3E8F93', position: 'relative', top: '-20px', textDecoration: 'underline'}}
                                 >
-                                    See Terms & Conditions
+                                    Terms & Conditions Apply
                                 </a>
 
                                 <div className='Segment'>
