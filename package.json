@@ -71,6 +71,7 @@
     }
   },
   "scripts": {
+    "heroku-prebuild": "git submodule update --init --recursive",
     "start": "node --max-old-space-size=4096 node_modules/react-scripts/scripts/start.js",
     "build": "set \"GENERATE_SOURCEMAP=false\" && node --max-old-space-size=4096 node_modules/react-scripts/scripts/build.js",
     "test": "react-scripts test",
