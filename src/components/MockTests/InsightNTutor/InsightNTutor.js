@@ -23,6 +23,23 @@ import {
     checkAuthenticatedUser,
     formatTime
 } from "../../../utils/client-functions";
+import { 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Legend,
+  Cell 
+} from 'recharts';
+
+import {
+  PlainModalOverlay
+} from "../../UI/Modal/Modal"
 
 
 const segments = [
@@ -72,7 +89,7 @@ const GradingSegment = () => (
           </span>
         </div>
         <div>
-          <span className={mockCss.ScoreTopic}>Subject: {gradingData.topic}</span>
+          <span className={mockCss.ScoreTopic}>Subject: {gradingData.subject}</span>
         </div>
         <div>
           <span className={mockCss.ScoreCompare}>
@@ -128,6 +145,8 @@ const GradingSegment = () => (
             <th>#</th>
             <th>Question</th>
             <th>Correct</th>
+            <th>You Chose</th>
+            <th>Should Be</th>
             <th>Time (s)</th>
             <th>Difficulty</th>
             <th>Topic</th>
@@ -139,6 +158,8 @@ const GradingSegment = () => (
               <td>{q.number}</td>
               <td>{q.question}</td>
               <td>{q.correct ? <FaCheckCircle color="#3E8F93" /> : <FaTimesCircle color="#d80707" />}</td>
+              <td>{q.chose}</td>
+              <td>{q.right}</td>
               <td>{q.time}</td>
               <td>{q.difficulty}</td>
               <td>{q.topic}</td>
@@ -168,109 +189,133 @@ const GradingSegment = () => (
 );
 
 const StudyPlanSegment = () => {
-  const [showModal, setShowModal] = useState(false);
   const [examDate, setExamDate] = useState("");
   const [showPlan, setShowPlan] = useState(false);
+  const [progress, setProgress] = useState(
+    studyPlanData.schedule.map(day =>
+      day.tasks.map(task => !!task.done)
+    ).flat()
+  );
+
+  // Flatten all tasks for table rows
+  const allTasks = studyPlanData.schedule.flatMap((day, dayIdx) =>
+    day.tasks.map((task, taskIdx) => ({
+      ...task,
+      date: day.date,
+      idx: `${dayIdx}-${taskIdx}`
+    }))
+  );
+
+  const handleTick = idx => {
+    setProgress(prev => {
+      const newProgress = [...prev];
+      newProgress[idx] = !newProgress[idx];
+      return newProgress;
+    });
+  };
+
+  const getPriorityLabel = (importance) => {
+    if (importance >= 4) return "High";
+    if (importance === 3) return "Medium";
+    return "Low";
+  };
 
   const handleContinue = () => {
     setShowPlan(true);
-    setShowModal(false);
   };
 
   return (
-    <div className={mockCss.SegmentBody}>
-      {!showPlan && (
-        <div className={mockCss.Overlay}>
-          <ButtonSubmitGreen onClick={() => setShowModal(true)}>
-            <FaCalendarAlt style={{ marginRight: 8 }} /> Get Study Plan
-          </ButtonSubmitGreen>
-        </div>
-      )}
-    {showModal && (
-        <div className={mockCss.ModalOverlay}>
-            <div className={mockCss.ModalContent}>
-                <h4>When is your exam?</h4>
-                <div style={{width: '100%'}}>
-                    <AuthInput
-                        inputType="select2"
-                        label="Select Exam Date"
-                        name="examDate"
-                        value={examDate}
-                        onChange={e => setExamDate(e.target.value)}
-                        list={examDateOptions}
-                        required
-                    />
-                </div>
-                <ButtonSubmitGreen onClick={handleContinue} disabled={!examDate}>
-                    Continue
-                </ButtonSubmitGreen>
-            </div>
-        </div>
-    )}
-      {showPlan && (
-        <>
-          <div className={mockCss.StudySchedule}>
-            <h6>Study Schedule</h6>
-            <ul>
-              {studyPlanData.schedule.map((d, i) => (
-                <li key={i}>
-                  <b>{d.date}:</b> {d.tasks.join(", ")}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={mockCss.PrioritizedTopics}>
-            <h6>Prioritized Topics</h6>
-            <ul>
-              {studyPlanData.prioritizedTopics.map((t, i) => (
-                <li key={i}>
-                  {t.topic}{" "}
-                  {[...Array(t.importance)].map((_, j) => (
-                    <FaStar key={j} color="#FFD700" />
+    <div>
+      <div className={mockCss.SegmentBody}>
+        {showPlan && (
+          <>
+            <div className={mockCss.StudyPlanTableWrapper}>
+              <h6>Study Plan</h6>
+              <table className={mockCss.StudyPlanTable}>
+                <thead>
+                  <tr>
+                    <th>Task(s)</th>
+                    <th>Date</th>
+                    <th>Time Allocation (mins)</th>
+                    <th>Priority</th>
+                    <th>Progress</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allTasks.map((task, i) => (
+                    <tr key={task.idx}>
+                      <td>
+                        {task.title}
+                        {task.resource && (
+                          <div>
+                            <a href={task.resource.link} target="_blank" rel="noopener noreferrer" className={mockCss.ResourceLink}>
+                              {task.resource.type}: {task.resource.title}
+                            </a>
+                          </div>
+                        )}
+                      </td>
+                      <td>{task.date}</td>
+                      <td>{task.timeAllocation}</td>
+                      <td>{getPriorityLabel(task.importance)}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={progress[i]}
+                          onChange={() => handleTick(i)}
+                          aria-label="Mark as done"
+                        />
+                      </td>
+                    </tr>
                   ))}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={mockCss.Resources}>
-            <h6>Resource Recommendations</h6>
-            <div className={mockCss.ResourceCards}>
-              {studyPlanData.resources.map((r, i) => (
-                <a key={i} href={r.link} className={mockCss.ResourceCard}>
-                  <span>{r.type}</span>
-                  <b>{r.title}</b>
-                </a>
-              ))}
+                </tbody>
+              </table>
             </div>
-          </div>
-          <div className={mockCss.TimeAllocation}>
-            <h6>Time Allocation Guide</h6>
-            <div className={mockCss.PieChart}>
-              {studyPlanData.timeAllocation.map((t, i) => (
-                <div
-                  key={i}
-                  className={mockCss.PieSlice}
-                  style={{
-                    "--percent": t.percent,
-                    background: `conic-gradient(#3E8F93 0% ${t.percent}%, #e6f6f7 ${t.percent}% 100%)`
-                  }}
-                >
-                  <span>{t.topic}: {t.percent}%</span>
-                </div>
-              ))}
+            <div className={mockCss.TimeAllocation}>
+              <h6>Time Allocation Guide</h6>
+              <div className={mockCss.PieChart}>
+                <PieChart width={600} height={500}>
+                  <Pie
+                    data={studyPlanData.timeAllocation}
+                    dataKey="percent"
+                    nameKey="topic"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={150}
+                    labelLine={false}
+                    label={({ percent, name }) => `${name}: ${(percent).toFixed(0)}%`}
+                  >
+                    {studyPlanData.timeAllocation.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={["teal", "#6FCBD1", "#56A8AC", "#5fbec5", "#3E8F93", "#7CC9CC", "#99E1E4", "#c0d1d4"][index % 4]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                </PieChart>
+              </div>
             </div>
-          </div>
-          <div className={mockCss.ProgressTracker}>
-            <h6>Progress Tracker</h6>
-            <ul>
-              {studyPlanData.progress.map((p, i) => (
-                <li key={i}>
-                  {p.done ? <FaCheckCircle color="#3E8F93" /> : <FaTimesCircle color="#d80707" />} {p.task}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
+          </>
+        )}
+      </div>
+      {!showPlan && (
+          <PlainModalOverlay>
+              <h4>When is your exam?</h4>
+              <p>
+                This will be used to properly curate a study schedule. Your study plan will be tailored specifically based on your performance in the previous exam.
+              </p>
+              <div style={{width: '100%', marginBottom: "15px"}}>
+                  <AuthInput
+                      inputType="select2"
+                      label="Select Exam Date"
+                      name="examDate"
+                      value={examDate}
+                      onChange={e => setExamDate(e.target.value)}
+                      list={examDateOptions}
+                      required
+                  />
+              </div>
+              <ButtonSubmitGreen onClick={handleContinue} disabled={!examDate}>
+                <FaCalendarAlt style={{ marginRight: 8, color: "#FFD700" }} /> Get Study Plan
+              </ButtonSubmitGreen>
+          </PlainModalOverlay>
       )}
     </div>
   );
@@ -318,14 +363,16 @@ const ExamInsightsSegment = () => (
     </div>
     <div className={mockCss.HistoricalTrends}>
       <h6>Historical Trends</h6>
-      <div className={mockCss.LineChart}>
-        {examInsightsData.trends.map((t, i) => (
-          <div key={i} className={mockCss.LinePoint}>
-            <span>{t.year}</span>
-            <div className={mockCss.LineBar} style={{ height: `${t.avg}%`, background: "#3E8F93" }} />
-            <span>{t.avg}%</span>
-          </div>
-        ))}
+      <div style={{ width: "100%", height: 250 }}>
+        <ResponsiveContainer>
+          <LineChart data={examInsightsData.trends}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="year" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="avg" stroke="#3E8F93" strokeWidth={3} dot />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
     <div className={mockCss.RubricTable}>
@@ -383,11 +430,11 @@ const PeerBenchmarkingSegment = () => {
   return (
     <div className={mockCss.SegmentBody}>
       {showOverlay && (
-        <div className={mockCss.Overlay}>
+        <PlainModalOverlay>
           <ButtonSubmitGreen onClick={() => setShowOverlay(false)}>
             <FaUsers style={{ marginRight: 8 }} /> View how Others Performed
           </ButtonSubmitGreen>
-        </div>
+        </PlainModalOverlay>
       )}
       {!showOverlay && (
         <>
@@ -508,14 +555,16 @@ const ProgressMonitoringSegment = () => {
     <div className={mockCss.SegmentBody}>
       <div className={mockCss.PerformanceDashboard}>
         <h6>Performance Dashboard</h6>
-        <div className={mockCss.LineChart}>
-          {progressMonitoringData.performance.map((p, i) => (
-            <div key={i} className={mockCss.LinePoint}>
-              <span>{p.date}</span>
-              <div className={mockCss.LineBar} style={{ height: `${p.score}%`, background: "#3E8F93" }} />
-              <span>{p.score}</span>
-            </div>
-          ))}
+        <div style={{ width: "100%", height: 250 }}>
+          <ResponsiveContainer>
+            <LineChart data={progressMonitoringData.performance}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="score" stroke="#3E8F93" strokeWidth={3} dot />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
       <div className={mockCss.Milestones}>
@@ -542,18 +591,22 @@ const ProgressMonitoringSegment = () => {
       <div className={mockCss.StudyTimeAnalytics}>
         <h6>Study Time Analytics</h6>
         <div className={mockCss.PieChart}>
-          {progressMonitoringData.studyTime.map((s, i) => (
-            <div
-              key={i}
-              className={mockCss.PieSlice}
-              style={{
-                "--percent": s.hours * 10,
-                background: `conic-gradient(#3E8F93 0% ${s.hours * 10}%, #e6f6f7 ${s.hours * 10}% 100%)`
-              }}
+          <PieChart width={600} height={500}>
+            <Pie
+              data={progressMonitoringData.studyTime}
+              dataKey="hours"
+              nameKey="topic"
+              cx="50%"
+              cy="50%"
+              outerRadius={150}
+              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
             >
-              <span>{s.topic}: {s.hours}h</span>
-            </div>
-          ))}
+              {progressMonitoringData.studyTime.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={["teal", "#6FCBD1", "#56A8AC", "#5fbec5", "#3E8F93", "#7CC9CC", "#99E1E4", "#c0d1d4"][index % 4]} />
+              ))}
+            </Pie>
+            <Legend />
+          </PieChart>
         </div>
       </div>
       <div className={mockCss.GoalSetting}>

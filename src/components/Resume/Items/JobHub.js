@@ -439,6 +439,10 @@ const JobHub = () => {
 
     const handleGenerate = async () => {
         checkIfAuth()
+        if (Object.keys(singleResume).length === 0) {
+            errorSetter("Please select a resume first");
+            return;
+        }
         switch (actionString) {
             case "Cover Letter":
                 const date = getOrdinalDate()

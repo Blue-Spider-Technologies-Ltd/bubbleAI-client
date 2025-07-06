@@ -4,7 +4,7 @@ export const gradingData = {
   score: 82,
   percentage: 82,
   pass: true,
-  topic: "Financial Accounting",
+  subject: "Financial Accounting",
   comparative: { user: 82, average: 68 },
   topicBreakdown: [
     { topic: "Depreciation", correct: 4, total: 5 },
@@ -12,9 +12,9 @@ export const gradingData = {
     { topic: "Double Entry", correct: 2, total: 5 },
   ],
   questionAnalysis: [
-    { number: 1, question: "The formula for calculating depreciation...", correct: true, time: 45, difficulty: "Medium", topic: "Depreciation" },
-    { number: 2, question: "Petty cash book records transactions on...", correct: false, time: 30, difficulty: "Easy", topic: "Petty Cash" },
-    { number: 3, question: "Double entry principle means...", correct: true, time: 60, difficulty: "Hard", topic: "Double Entry" },
+    { number: 1, question: "The formula for calculating depreciation...", correct: true, chose: "A. Straight Line Method", right: "A. Straight Line Method", time: 45, difficulty: "Medium", topic: "Depreciation" },
+    { number: 2, question: "Petty cash book records transactions on...", correct: false, chose: "C. Cash basis", right: "B. Accrual basis", time: 30, difficulty: "Easy", topic: "Petty Cash" },
+    { number: 3, question: "Double entry principle means...", correct: true, chose: "D. Every transaction has a debit and credit", right: "D. Every transaction has a debit and credit", time: 60, difficulty: "Hard", topic: "Double Entry" },
   ],
   errors: [
     { question: 2, mistake: "Chose debit only, should be both sides", explanation: "Petty cash book records both credit and debit sides." }
@@ -24,29 +24,68 @@ export const gradingData = {
 
 export const studyPlanData = {
   schedule: [
-    { date: "2025-07-01", tasks: ["Review Depreciation notes", "Practice 10 questions"] },
-    { date: "2025-07-02", tasks: ["Watch Petty Cash video", "Take mock test"] },
-    { date: "2025-07-03", tasks: ["Revise Double Entry", "Group discussion"] },
-  ],
-  prioritizedTopics: [
-    { topic: "Petty Cash", importance: 5 },
-    { topic: "Double Entry", importance: 4 },
-    { topic: "Depreciation", importance: 3 },
-  ],
-  resources: [
-    { type: "Video", title: "Depreciation Explained", link: "#" },
-    { type: "Notes", title: "Petty Cash Book", link: "#" },
-    { type: "Practice", title: "Double Entry Quiz", link: "#" },
+    {
+      date: "2025-07-01",
+      tasks: [
+        {
+          title: "Review Depreciation notes",
+          timeAllocation: 40,
+          importance: 4,
+          resource: { type: "Notes", title: "Depreciation Explained", link: "#" },
+          done: true
+        },
+        {
+          title: "Practice 10 questions",
+          timeAllocation: 30,
+          importance: 3,
+          resource: { type: "Practice", title: "Depreciation Quiz", link: "#" },
+          done: false
+        }
+      ]
+    },
+    {
+      date: "2025-07-02",
+      tasks: [
+        {
+          title: "Watch Petty Cash video",
+          timeAllocation: 25,
+          importance: 5,
+          resource: { type: "Video", title: "Petty Cash Book", link: "#" },
+          done: false
+        },
+        {
+          title: "Take mock test",
+          timeAllocation: 60,
+          importance: 4,
+          resource: { type: "Practice", title: "Mock Test", link: "#" },
+          done: false
+        }
+      ]
+    },
+    {
+      date: "2025-07-03",
+      tasks: [
+        {
+          title: "Revise Double Entry",
+          timeAllocation: 35,
+          importance: 3,
+          resource: { type: "Notes", title: "Double Entry Notes", link: "#" },
+          done: false
+        },
+        {
+          title: "Group discussion",
+          timeAllocation: 30,
+          importance: 2,
+          resource: null,
+          done: false
+        }
+      ]
+    }
   ],
   timeAllocation: [
     { topic: "Petty Cash", percent: 40 },
     { topic: "Double Entry", percent: 35 },
-    { topic: "Depreciation", percent: 25 },
-  ],
-  progress: [
-    { task: "Review Depreciation notes", done: true },
-    { task: "Practice 10 questions", done: false },
-    { task: "Watch Petty Cash video", done: false },
+    { topic: "Depreciation", percent: 25 }
   ]
 };
 
@@ -64,9 +103,10 @@ export const aiTutorData = {
 export const examInsightsData = {
   structure: "The exam consists of 50 multiple-choice questions covering Depreciation, Petty Cash, and Double Entry. Duration: 60 minutes.",
   trends: [
+    { year: 2021, avg: 70 },
     { year: 2022, avg: 65 },
-    { year: 2023, avg: 68 },
-    { year: 2024, avg: 70 }
+    { year: 2023, avg: 72 },
+    { year: 2024, avg: 74 }
   ],
   rubric: [
     { section: "Depreciation", marks: 20 },

@@ -5,7 +5,6 @@
   "proxy": "http://localhost:5000",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.1",
@@ -47,6 +46,7 @@
     "react-toastify": "^11.0.5",
     "react-type-animation": "^3.2.0",
     "react-virtuoso": "^4.10.4",
+    "recharts": "^3.0.2",
     "recorder-js": "^1.0.7",
     "recordrtc": "^5.6.2",
     "styled-components": "^6.1.13",
