@@ -975,7 +975,7 @@ const JobHub = () => {
                                 onClick={() => setShowExternalJobModal(true)}
                                 style={{maxWidth: '300px'}}
                             >
-                                <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Auto-Apply to External Jobs
+                                <MdOutlineAutoAwesome style={{fontSize: '1.2rem'}} /> &nbsp;Help me Apply to External Jobs
                             </ButtonSubmitGreen>
                         </div>
 

@@ -118,6 +118,33 @@ const Utme = (props) => {
         setAuthMenuOpen(!authMenuOpen);
     };
 
+    const handleStartExam = async () => {
+        await checkIfAuth();
+        if (Object.keys(subject).length === 0) {
+            errorSetter("Please select a subject to start the exam");
+            return;
+        }
+        console.log(subject)
+        // Start the exam
+        try {
+            const response = await axios.post("/mock/utme/start-exam", subject, {
+                headers: {
+                    "x-access-token": isAuth,
+                },
+            });
+
+            console.log(response)
+            // if (response.data.answer?.isValidCourseOfStudy) {
+            //     successSetter("Subjects fetched successfully");
+            // } else {
+            //     errorSetter("Invalid course of study. Please try again with a valid one.");
+            // }
+        } catch (error) {
+            console.error("Error fetching course subjects:", error);
+            errorSetter("Failed to fetch course subjects. Please try again.");
+        }
+    };
+
     return (
         <div className="auth-container">
             <div style={{ width: "100%", padding: "0" }}>
@@ -280,7 +307,7 @@ const Utme = (props) => {
                         </li>
                     </ul>
                     <div className={mockCss.modalOverlayStartBtn}>
-                        <ButtonSubmitGreen type="button" onClick={() => {/* TODO: Start exam logic */}}>
+                        <ButtonSubmitGreen type="button" onClick={handleStartExam}>
                             Start Exam
                         </ButtonSubmitGreen>
                     </div>
