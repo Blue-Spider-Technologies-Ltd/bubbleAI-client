@@ -226,6 +226,17 @@
     background: #3E8F93;
     color: #fff;
 }
+
+/* Add this */
+.QuickNavAnswered {
+  position: relative;
+}
+.QuickNavAnswered .AnsweredCheck {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 0.9em;
+}
 @media (max-width: 700px) {
     .QuestionArea { padding: 0.7rem; }
     .QuestionText { font-size: 1rem; }

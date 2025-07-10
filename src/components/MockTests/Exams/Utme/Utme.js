@@ -7,14 +7,14 @@ import AuthInput from '../../../UI/Input/AuthInputs';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { ButtonThin, ButtonTransparentSquare, ButtonSubmitGreen } from "../../../UI/Buttons/Buttons";
-import { PlainModalOverlay } from "../../../UI/Modal/Modal";
+import { PlainModalOverlay, Modal } from "../../../UI/Modal/Modal";
 import { Oval } from 'react-loader-spinner';
 import { GrSend } from "react-icons/gr";
 import { LiaSchoolSolid } from "react-icons/lia";
 import { GiTimeBomb } from "react-icons/gi";
 import { LuInfo } from "react-icons/lu";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { setError, setSuccessMini, setFetching } from "../../../../redux/states";
+import { setError, setSuccessMini, setFetching, setExamDetails } from "../../../../redux/states";
 import {
     errorAnimation,
     successMiniAnimation,
@@ -32,6 +32,9 @@ const Utme = (props) => {
     const [subjects, setSubjects] = useState(UtmeSubjects);
     const [subject, setSubject] = useState({});
     const [courseOfStudy, setCourseOfStudy] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [progressStatus, setProgressStatus] = useState('Gathering Exam Details...');
+    const [progressPercentage, setProgressPercentage] = useState(0);
 
     const screenWidth = window.innerWidth;
     const isAuth = localStorage?.getItem("token");
@@ -124,24 +127,37 @@ const Utme = (props) => {
             errorSetter("Please select a subject to start the exam");
             return;
         }
-        console.log(subject)
+        //get event progress
+        const eventSource = new EventSource('/user/progress');
+        //listen for SSE
+        eventSource.onmessage = (event) =>  {
+            const progressUpdate = JSON.parse(event.data)
+            setProgressPercentage(progressUpdate.percent);
+            setProgressStatus(progressUpdate.status)
+        };
         // Start the exam
         try {
+            setLoading(true)
             const response = await axios.post("/mock/utme/start-exam", subject, {
                 headers: {
                     "x-access-token": isAuth,
                 },
             });
 
-            console.log(response)
-            // if (response.data.answer?.isValidCourseOfStudy) {
-            //     successSetter("Subjects fetched successfully");
-            // } else {
-            //     errorSetter("Invalid course of study. Please try again with a valid one.");
-            // }
+            if (response.status !== 201 && response.status !== 200) {
+                return errorSetter(response.data.error || "Failed to start exam. Please try again. If issue persist, please chat with us.");
+            }
+            console.log(response.data.examDetails);
+            const examDetails = response.data.examDetails;
+            dispatch(setExamDetails(examDetails));
+            eventSource.close(); // Close the SSE connection after exam starts
+            // Navigate to the exam started page
+            navigate("/user/dashboard/mock/exam-started");
+            setLoading(false);
         } catch (error) {
-            console.error("Error fetching course subjects:", error);
-            errorSetter("Failed to fetch course subjects. Please try again.");
+            setLoading(false);
+            eventSource.close();
+            errorSetter("An Error Occured. Please try again. If issue persist, please chat with us.");
         }
     };
 
@@ -298,6 +314,10 @@ const Utme = (props) => {
                             Do not use external help—this affects your assessment and personalized plan
                         </li>
                         <li className={mockCss.modalOverlayListItem}>
+                            <span style={{ fontSize: '1.2rem' }}>🚫</span>
+                            Do NOT close window, leave tab or reload page, this will END your exam
+                        </li>
+                        <li className={mockCss.modalOverlayListItem}>
                             <span style={{ fontSize: '1.2rem' }}>📈</span>
                             Bubble Ai will grade, tutor you in weak areas, and curate a personalized study plan to help you focus only on what matters
                         </li>
@@ -313,6 +333,14 @@ const Utme = (props) => {
                     </div>
                 </div>
             </PlainModalOverlay>
+        )}
+
+        {loading && (
+            <Modal
+                header4={`PROCESSING... DO NOT RELOAD`}
+                header3={progressStatus}
+                progress={progressPercentage}
+            />
         )}
         </div>
     );
