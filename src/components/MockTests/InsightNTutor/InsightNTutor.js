@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import mockCss from "../Mock.module.css";
-import {
-  gradingData,
-  studyPlanData,
-  aiTutorData,
-  examInsightsData,
-  peerBenchmarkingData,
-  careerAlignmentData,
-  progressMonitoringData
-} from "./data";
+import axios from "axios";
+// import {
+//   gradingData,
+//   studyPlanData,
+//   aiTutorData,
+//   examInsightsData,
+//   peerBenchmarkingData,
+//   careerAlignmentData,
+//   progressMonitoringData
+// } from "./data";
 import { ButtonThin, ButtonSubmitGreen } from "../../UI/Buttons/Buttons";
 import { FaChartPie, FaBookOpen, FaRobot, FaLightbulb, FaUsers, FaSuitcase, FaChartLine, FaChevronDown, FaChevronUp, FaTrophy, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaStar, FaArrowRight, FaDownload, FaMedal } from "react-icons/fa";
 import { FaLock } from "react-icons/fa6";
@@ -74,7 +75,7 @@ const SegmentHeader = ({ icon, label, desc, open, onClick, mobile }) => (
   </div>
 );
 
-const GradingSegment = () => (
+const GradingSegment = ({gradingData}) => (
   <div className={mockCss.SegmentBody}>
     <div className={mockCss.ScoreCard}>
       <div className={mockCss.ScoreCircle} style={{ background: gradingData.pass ? "#3E8F93" : "#d80707" }}>
@@ -93,7 +94,7 @@ const GradingSegment = () => (
         </div>
         <div>
           <span className={mockCss.ScoreCompare}>
-            You: {gradingData.comparative.user} | Peers: {gradingData.comparative.average}
+            You: {gradingData.comparative?.user} | Peers: {gradingData.comparative?.average}
           </span>
         </div>
       </div>
@@ -102,7 +103,7 @@ const GradingSegment = () => (
       <div className={mockCss.ChartCard}>
         <h6>Topic Breakdown</h6>
         <div className={mockCss.BarChart}>
-          {gradingData.topicBreakdown.map((t, i) => (
+          {gradingData.topicBreakdown?.map((t, i) => (
             <div key={i} className={mockCss.BarRow}>
               <span>{t.topic}</span>
               <div className={mockCss.BarTrack}>
@@ -124,16 +125,16 @@ const GradingSegment = () => (
         <div className={mockCss.CompareBar}>
           <span style={{ color: "#3E8F93" }}>You</span>
           <div className={mockCss.CompareTrack}>
-            <div className={mockCss.CompareFill} style={{ width: `${gradingData.comparative.user}%`, background: "#3E8F93" }} />
+            <div className={mockCss.CompareFill} style={{ width: `${gradingData.comparative?.user}%`, background: "#3E8F93" }} />
           </div>
-          <span>{gradingData.comparative.user}%</span>
+          <span>{gradingData.comparative?.user}%</span>
         </div>
         <div className={mockCss.CompareBar}>
           <span style={{ color: "#d80707" }}>Peers</span>
           <div className={mockCss.CompareTrack}>
-            <div className={mockCss.CompareFill} style={{ width: `${gradingData.comparative.average}%`, background: "#d80707" }} />
+            <div className={mockCss.CompareFill} style={{ width: `${gradingData.comparative?.average}%`, background: "#d80707" }} />
           </div>
-          <span>{gradingData.comparative.average}%</span>
+          <span>{gradingData.comparative?.average}%</span>
         </div>
       </div>
     </div>
@@ -153,7 +154,7 @@ const GradingSegment = () => (
           </tr>
         </thead>
         <tbody>
-          {gradingData.questionAnalysis.map((q, i) => (
+          {gradingData.questionAnalysis?.map((q, i) => (
             <tr key={i}>
               <td>{q.number}</td>
               <td>{q.question}</td>
@@ -170,10 +171,10 @@ const GradingSegment = () => (
     </div>
     <div className={mockCss.ErrorCard}>
       <h6>Error Categorization</h6>
-      {gradingData.errors.length === 0 ? (
+      {gradingData.errors?.length === 0 ? (
         <p>No mistakes! 🎉</p>
       ) : (
-        gradingData.errors.map((e, i) => (
+        gradingData.errors?.map((e, i) => (
           <div key={i} className={mockCss.ErrorItem}>
             <b>Q{e.question}:</b> {e.mistake}
             <div className={mockCss.ErrorExplain}>{e.explanation}</div>
@@ -183,12 +184,12 @@ const GradingSegment = () => (
     </div>
     <div className={mockCss.FeedbackCard}>
       <h6>Feedback Summary</h6>
-      <p>{gradingData.feedback}</p>
+      <p style={{ textAlign: "left"}}>{gradingData.feedback}</p>
     </div>
   </div>
 );
 
-const StudyPlanSegment = () => {
+const StudyPlanSegment = ({studyPlanData}) => {
   const [examDate, setExamDate] = useState("");
   const [showPlan, setShowPlan] = useState(false);
   const [progress, setProgress] = useState(
@@ -321,7 +322,7 @@ const StudyPlanSegment = () => {
   );
 };
 
-const AiTutorSegment = () => {
+const AiTutorSegment = ({aiTutorData, gradingData}) => {
   const handleAskAi = () => {
     localStorage.setItem("bubbleai_exam_details", JSON.stringify(gradingData));
     window.open("/chat", "_blank");
@@ -337,7 +338,7 @@ const AiTutorSegment = () => {
       <div className={mockCss.ConceptExplanations}>
         <h6>Concept Explanations</h6>
         <div className={mockCss.ConceptExplanationsInner}>
-            {aiTutorData.failedConcepts.map((c, i) => (
+            {aiTutorData.failedConcepts?.map((c, i) => (
             <div key={i} className={mockCss.ConceptCard}>
                 <b>{c.topic}:</b> {c.explanation}
             </div>
@@ -345,7 +346,7 @@ const AiTutorSegment = () => {
         </div>
       </div>
       <div className={mockCss.Motivational}>
-        {aiTutorData.motivational.map((m, i) => (
+        {aiTutorData.motivational?.map((m, i) => (
           <div key={i} className={mockCss.MotivationalMsg}>
             <FaTrophy color="#FFD700" /> {m}
           </div>
@@ -355,7 +356,7 @@ const AiTutorSegment = () => {
   );
 };
 
-const ExamInsightsSegment = () => (
+const ExamInsightsSegment = ({examInsightsData}) => (
   <div className={mockCss.SegmentBody}>
     <div className={mockCss.ExamStructure}>
       <h6>Exam Structure Overview</h6>
@@ -385,7 +386,7 @@ const ExamInsightsSegment = () => (
           </tr>
         </thead>
         <tbody>
-          {examInsightsData.rubric.map((r, i) => (
+          {examInsightsData.rubric?.map((r, i) => (
             <tr key={i}>
               <td>{r.section}</td>
               <td>{r.marks}</td>
@@ -397,7 +398,7 @@ const ExamInsightsSegment = () => (
     <div className={mockCss.Pitfalls}>
       <h6>Common Pitfalls</h6>
       <ul>
-        {examInsightsData.pitfalls.map((p, i) => (
+        {examInsightsData.pitfalls?.map((p, i) => (
           <li key={i}>{p}</li>
         ))}
       </ul>
@@ -405,7 +406,7 @@ const ExamInsightsSegment = () => (
     <div className={mockCss.Logistics}>
       <h6>Exam Logistics</h6>
       <ul>
-        {examInsightsData.logistics.map((l, i) => (
+        {examInsightsData.logistics?.map((l, i) => (
           <li key={i}>{l}</li>
         ))}
       </ul>
@@ -413,7 +414,7 @@ const ExamInsightsSegment = () => (
     <div className={mockCss.SuccessStories}>
       <h6>Success Stories</h6>
       <div className={mockCss.StorySlider}>
-        {examInsightsData.successStories.map((s, i) => (
+        {examInsightsData.successStories?.map((s, i) => (
           <div key={i} className={mockCss.StoryCard}>
             <FaMedal color="#FFD700" size={24} />
             <blockquote>"{s.quote}"</blockquote>
@@ -425,7 +426,7 @@ const ExamInsightsSegment = () => (
   </div>
 );
 
-const PeerBenchmarkingSegment = () => {
+const PeerBenchmarkingSegment = ({peerBenchmarkingData}) => {
   const [showOverlay, setShowOverlay] = useState(true);
   return (
     <div className={mockCss.SegmentBody}>
@@ -446,7 +447,7 @@ const PeerBenchmarkingSegment = () => {
           </div>
           <div className={mockCss.StrengthComparison}>
             <h6>Strength Comparison</h6>
-            {peerBenchmarkingData.strengthComparison.map((s, i) => (
+            {peerBenchmarkingData.strengthComparison?.map((s, i) => (
               <div key={i} className={mockCss.CompareBar}>
                 <span>{s.topic}</span>
                 <div className={mockCss.CompareTrack}>
@@ -459,7 +460,7 @@ const PeerBenchmarkingSegment = () => {
           </div>
           <div className={mockCss.GapAnalysis}>
             <h6>Gap Analysis</h6>
-            {peerBenchmarkingData.gapAnalysis.map((g, i) => (
+            {peerBenchmarkingData.gapAnalysis?.map((g, i) => (
               <div key={i} className={mockCss.GapCard}>
                 {g.topic}: {g.gap > 0 ? "+" : ""}{g.gap}%
               </div>
@@ -470,7 +471,7 @@ const PeerBenchmarkingSegment = () => {
             <p>{peerBenchmarkingData.communityInsights}</p>
           </div>
           <div className={mockCss.Motivational}>
-            {peerBenchmarkingData.motivational.map((m, i) => (
+            {peerBenchmarkingData.motivational?.map((m, i) => (
               <div key={i} className={mockCss.MotivationalMsg}>
                 <FaTrophy color="#FFD700" /> {m.text}
               </div>
@@ -485,12 +486,12 @@ const PeerBenchmarkingSegment = () => {
   );
 };
 
-const CareerAlignmentSegment = () => (
+const CareerAlignmentSegment = ({careerAlignmentData}) => (
   <div className={mockCss.SegmentBody}>
     <div className={mockCss.CareerMapping}>
       <h6>Career Mapping</h6>
       <ul>
-        {careerAlignmentData.mapping.map((c, i) => (
+        {careerAlignmentData.mapping?.map((c, i) => (
           <li key={i}>
             {c.career} <span className={mockCss.MatchPercent}>{c.match}% match</span>
           </li>
@@ -500,7 +501,7 @@ const CareerAlignmentSegment = () => (
     <div className={mockCss.Courses}>
       <h6>Course Recommendations</h6>
       <div className={mockCss.CourseCards}>
-        {careerAlignmentData.courses.map((c, i) => (
+        {careerAlignmentData.courses?.map((c, i) => (
           <a key={i} href={c.link} className={mockCss.CourseCard}>
             <b>{c.name}</b>
             <span>Requirements: {c.requirements}</span>
@@ -510,7 +511,7 @@ const CareerAlignmentSegment = () => (
     </div>
     <div className={mockCss.SkillGap}>
       <h6>Skill Gap Analysis</h6>
-      {careerAlignmentData.skillGap.map((s, i) => (
+      {careerAlignmentData.skillGap?.map((s, i) => (
         <div key={i} className={mockCss.SkillGapBar}>
           <span>{s.skill}</span>
           <div className={mockCss.SkillTrack}>
@@ -524,7 +525,7 @@ const CareerAlignmentSegment = () => (
     <div className={mockCss.Requirements}>
       <h6>Requirements</h6>
       <ul>
-        {careerAlignmentData.requirements.map((r, i) => (
+        {careerAlignmentData.requirements?.map((r, i) => (
           <li key={i}>{r.course}: {r.criteria}</li>
         ))}
       </ul>
@@ -532,7 +533,7 @@ const CareerAlignmentSegment = () => (
     <div className={mockCss.Alternatives}>
       <h6>Alternative Pathways</h6>
       <ul>
-        {careerAlignmentData.alternatives.map((a, i) => (
+        {careerAlignmentData.alternatives?.map((a, i) => (
           <li key={i}><a href={a.link}>{a.name}</a></li>
         ))}
       </ul>
@@ -540,7 +541,7 @@ const CareerAlignmentSegment = () => (
     <div className={mockCss.NextSteps}>
       <h6>Actionable Next Steps</h6>
       <ul>
-        {careerAlignmentData.nextSteps.map((n, i) => (
+        {careerAlignmentData.nextSteps?.map((n, i) => (
           <li key={i}>{n}</li>
         ))}
       </ul>
@@ -548,7 +549,7 @@ const CareerAlignmentSegment = () => (
   </div>
 );
 
-const ProgressMonitoringSegment = () => {
+const ProgressMonitoringSegment = ({progressMonitoringData}) => {
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [goal, setGoal] = useState("");
   return (
@@ -569,7 +570,7 @@ const ProgressMonitoringSegment = () => {
       </div>
       <div className={mockCss.Milestones}>
         <h6>Milestone Alerts</h6>
-        {progressMonitoringData.milestones.map((m, i) => (
+        {progressMonitoringData.milestones?.map((m, i) => (
           <div key={i} className={mockCss.MilestoneCard}>
             <FaTrophy color="#FFD700" /> {m.text} <span>{m.date}</span>
           </div>
@@ -577,7 +578,7 @@ const ProgressMonitoringSegment = () => {
       </div>
       <div className={mockCss.WeaknessTracker}>
         <h6>Weakness Reduction Tracker</h6>
-        {progressMonitoringData.weaknessTracker.map((w, i) => (
+        {progressMonitoringData.weaknessTracker?.map((w, i) => (
           <div key={i} className={mockCss.WeaknessBar}>
             <span>{w.topic}</span>
             <div className={mockCss.WeaknessTrack}>
@@ -601,7 +602,7 @@ const ProgressMonitoringSegment = () => {
               outerRadius={150}
               label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
             >
-              {progressMonitoringData.studyTime.map((entry, index) => (
+              {progressMonitoringData.studyTime?.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={["teal", "#6FCBD1", "#56A8AC", "#5fbec5", "#3E8F93", "#7CC9CC", "#99E1E4", "#c0d1d4"][index % 4]} />
               ))}
             </Pie>
@@ -632,7 +633,7 @@ const ProgressMonitoringSegment = () => {
           </div>
         )}
         <ul>
-          {progressMonitoringData.goals.map((g, i) => (
+          {progressMonitoringData.goals?.map((g, i) => (
             <li key={i}>
               {g.done ? <FaCheckCircle color="#3E8F93" /> : <FaTimesCircle color="#d80707" />} {g.goal}
             </li>
@@ -648,15 +649,6 @@ const ProgressMonitoringSegment = () => {
   );
 };
 
-const segmentComponents = {
-  grading: GradingSegment,
-  studyPlan: StudyPlanSegment,
-  aiTutor: AiTutorSegment,
-  examInsights: ExamInsightsSegment,
-  peerBenchmarking: PeerBenchmarkingSegment,
-  careerAlignment: CareerAlignmentSegment,
-  progressMonitoring: ProgressMonitoringSegment
-};
 
 const segmentDescriptions = {
   grading: "See your score, strengths, and where you can improve. Dive deep into your exam performance.",
@@ -675,6 +667,35 @@ export default function InsightNTutor() {
     const [authMenuOpen, setAuthMenuOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("grading");
     const [openAccordions, setOpenAccordions] = useState({ grading: true });
+    const [gradingData, setGradingData] = useState({});
+    const [aiTutorData, setAiTutorData] = useState({});
+    const [examInsightsData, setExamInsightsData] = useState({});
+    const [peerBenchmarkingData, setPeerBenchmarkingData] = useState({});
+    const [careerAlignmentData, setCareerAlignmentData] = useState({});
+    const [progressMonitoringData, setProgressMonitoringData] = useState({});
+    const [studyPlanData, setStudyPlanData] = useState({});
+
+    const isAuth = localStorage?.getItem("token");
+
+    const segmentComponents = {
+      grading: (props) => <GradingSegment {...props} />,
+      studyPlan: (props) => <StudyPlanSegment {...props} />,
+      aiTutor: (props) => <AiTutorSegment {...props} />,
+      examInsights: (props) => <ExamInsightsSegment {...props} />,
+      peerBenchmarking: (props) => <PeerBenchmarkingSegment {...props} />,
+      careerAlignment: (props) => <CareerAlignmentSegment {...props} />,
+      progressMonitoring: (props) => <ProgressMonitoringSegment {...props} />
+    };
+
+    const segmentProps = {
+      grading: { gradingData },
+      studyPlan: { studyPlanData },
+      aiTutor: { aiTutorData, gradingData },
+      examInsights: { examInsightsData },
+      peerBenchmarking: { peerBenchmarkingData },
+      careerAlignment: { careerAlignmentData },
+      progressMonitoring: { progressMonitoringData }
+    };
 
     const mobile = isMobile();
 
@@ -704,9 +725,45 @@ export default function InsightNTutor() {
         }
     };
 
-const toggleAuthMenu = () => {
-    setAuthMenuOpen(!authMenuOpen);
-};
+    useEffect(() => {
+        const fetchExamDetails = async (examId) => {
+            try {
+                dispatch(setFetching(true))
+                const response = await axios.get(`/mock/get-exam-details?examId=${examId}`, {
+                    headers: { "x-access-token": isAuth }
+                });
+                const data = response.data.examDetails || response.data.gradedExam || response.data.exam || {};
+                // Defensive: fallback to empty object if not found
+                setGradingData(data.grading || gradingData);
+                setAiTutorData(data.aiTutor || aiTutorData);
+                setExamInsightsData(data.examInsights || examInsightsData);
+                setPeerBenchmarkingData(data.peerBenchmarking || peerBenchmarkingData);
+                setCareerAlignmentData(data.careerAlignment || careerAlignmentData);
+                setProgressMonitoringData(data.progressMonitoring || progressMonitoringData);
+                setStudyPlanData(data.studyPlan || studyPlanData);
+            } catch (err) {
+                errorSetter("Failed to fetch exam details. Please try again.");
+                navigate("/user/dashboard/mock");
+            } finally {
+                dispatch(setFetching(false));
+            }
+        };
+
+        checkIfAuth();
+        const urlParams = new URLSearchParams(window.location.search);
+        const examId = urlParams.get("examId");
+
+        if (examId && examId !== "") {
+            fetchExamDetails(examId);
+        } else {
+            navigate("/user/dashboard/mock");
+        }
+        // eslint-disable-next-line
+    }, []);
+
+    const toggleAuthMenu = () => {
+        setAuthMenuOpen(!authMenuOpen);
+    };
 
 
   return (
@@ -766,9 +823,9 @@ const toggleAuthMenu = () => {
                                   mobile
                               />
                               {openAccordions[seg.key] && (
-                                  <div className={mockCss.AccordionBody}>
-                                  {React.createElement(segmentComponents[seg.key])}
-                                  </div>
+                                <div className={mockCss.AccordionBody}>
+                                  {segmentComponents[seg.key](segmentProps[seg.key])}
+                                </div>
                               )}
                               </div>
                           ))}
@@ -777,14 +834,14 @@ const toggleAuthMenu = () => {
 
                     {/* Segment content for desktop */}
                     {!mobile && (
-                        <div className={mockCss.TabContent}>
-                            <SegmentHeader
-                                icon={segments.find(s => s.key === activeTab).icon}
-                                label={segments.find(s => s.key === activeTab).label}
-                                desc={segmentDescriptions[activeTab]}
-                            />
-                            {React.createElement(segmentComponents[activeTab])}
-                        </div>
+                      <div className={mockCss.TabContent}>
+                        <SegmentHeader
+                          icon={segments.find(s => s.key === activeTab).icon}
+                          label={segments.find(s => s.key === activeTab).label}
+                          desc={segmentDescriptions[activeTab]}
+                        />
+                        {segmentComponents[activeTab](segmentProps[activeTab])}
+                      </div>
                     )}
                 </div>
             </div>
