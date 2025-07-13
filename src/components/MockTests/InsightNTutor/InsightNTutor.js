@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import AuthHeader from "../../UI/AuthHeader/AuthHeader";
 import AuthInput from "../../UI/Input/AuthInputs";
-import { setError, setSuccessMini, setFetching } from "../../../redux/states";
+import { setError, setSuccessMini, setFetching, setExamDetails } from "../../../redux/states";
 import {
     errorAnimation,
     successMiniAnimation,
@@ -727,6 +727,7 @@ export default function InsightNTutor() {
 
     useEffect(() => {
         const fetchExamDetails = async (examId) => {
+            dispatch(setExamDetails({})) // clear exam details to prevent going to previous exam written
             try {
                 dispatch(setFetching(true))
                 const response = await axios.get(`/mock/get-exam-details?examId=${examId}`, {

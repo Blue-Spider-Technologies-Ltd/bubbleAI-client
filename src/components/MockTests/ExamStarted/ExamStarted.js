@@ -99,7 +99,7 @@ const ExamStarted = (props) => {
                 return;
             }
             const gradedExamId = response.data.gradedExamId;
-
+            dispatch(setExamDetails({}))
             // Navigate to the exam started page
             navigate(`/user/dashboard/mock/exam-insight?examId=${gradedExamId}`);
         } catch (error) {
@@ -115,10 +115,6 @@ const ExamStarted = (props) => {
         setQuestionStartTime(Date.now());
     }, [currentQuestion]);
 
-    //TESTING PURPOSE ONLY
-    useEffect(() => {
-        console.log(questions[currentQuestion]);
-    }, [questions]);
 
     useEffect(() => {
         let isMounted = true;
@@ -408,7 +404,7 @@ const ExamStarted = (props) => {
                             <div style={{ marginBottom: 16 }}>
                                 Failed to grade exam. We are deeply sorry about this. If issue persist, please chat with us.
                             </div>
-                            <div className={mockCss.modalOverlayStartBtn}>
+                            <div style={{width: "80%", margin: "0 auto"}}>
                                 <ButtonSubmitGreen 
                                     type="button" 
                                     onClick={() => {
