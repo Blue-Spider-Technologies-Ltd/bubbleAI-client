@@ -90,6 +90,9 @@ const GradingSegment = ({gradingData}) => (
           </span>
         </div>
         <div>
+          <span className={mockCss.ScoreTopic}>Exam Name: {gradingData.examName}</span>
+        </div>
+        <div>
           <span className={mockCss.ScoreTopic}>Subject: {gradingData.subject}</span>
         </div>
         <div>
@@ -150,6 +153,7 @@ const GradingSegment = ({gradingData}) => (
             <th>Should Be</th>
             <th>Time (s)</th>
             <th>Difficulty</th>
+            <th>Attempts</th>
             <th>Topic</th>
           </tr>
         </thead>
@@ -163,6 +167,7 @@ const GradingSegment = ({gradingData}) => (
               <td>{q.right}</td>
               <td>{q.time}</td>
               <td>{q.difficulty}</td>
+              <td>{q.attempts}</td>
               <td>{q.topic}</td>
             </tr>
           ))}
@@ -189,7 +194,8 @@ const GradingSegment = ({gradingData}) => (
   </div>
 );
 
-const StudyPlanSegment = ({studyPlanData}) => {
+const StudyPlanSegment = ({studyPlanData, setStudyPlanData, errorSetter, successSetter}) => {
+  const dispatch = useDispatch();
   const [examDate, setExamDate] = useState("");
   const [showPlan, setShowPlan] = useState(false);
   const [progress, setProgress] = useState(
@@ -207,12 +213,35 @@ const StudyPlanSegment = ({studyPlanData}) => {
     }))
   );
 
-  const handleTick = idx => {
+  const handleTick = async idx => {
     setProgress(prev => {
       const newProgress = [...prev];
       newProgress[idx] = !newProgress[idx];
       return newProgress;
     });
+
+    // Find the task info for backend update
+    const task = allTasks[idx];
+    if (!task) return;
+
+    try {
+      await axios.post(
+        "/mock/update-studyplan-progress",
+        {
+          examId: new URLSearchParams(window.location.search).get("examId"),
+          date: task.date,
+          taskIdx: idx,
+          done: !progress[idx]
+        },
+        {
+          headers: { "x-access-token": localStorage.getItem("token") }
+        }
+      );
+
+      successSetter("Progress updated!");
+    } catch (err) {
+      errorSetter("Failed to update progress. Please try again.");
+    }
   };
 
   const getPriorityLabel = (importance) => {
@@ -221,9 +250,71 @@ const StudyPlanSegment = ({studyPlanData}) => {
     return "Low";
   };
 
-  const handleContinue = () => {
-    setShowPlan(true);
-  };
+  useEffect(() => {
+    // Only show the plan if studyPlanData has a non-empty schedule array
+    if (
+      studyPlanData &&
+      Array.isArray(studyPlanData.schedule) &&
+      studyPlanData.schedule.length > 0
+    ) {
+      setShowPlan(true);
+    } else {
+      setShowPlan(false);
+    }
+  }, [studyPlanData]);
+
+  const handleGetStudyPlan = useCallback(async () => {
+    try {
+      // Defensive: check if examDate is selected
+      if (!examDate) {
+        errorSetter("Please select your exam date before generating a study plan.");
+        return;
+      }
+
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      const currentDate = today.toISOString().split("T")[0];
+
+      // Get examId from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const examId = urlParams.get("examId");
+
+      if (!examId) {
+        errorSetter("No exam ID found. Please return to your dashboard and try again.");
+        return;
+      }
+
+      dispatch(setFetching(true));
+
+      // Make request to backend to generate/fetch study plan
+      const response = await axios.post(
+        "/mock/get-study-plan",
+        {
+          examId,
+          examDate,
+          currentDate
+        },
+        {
+          headers: { "x-access-token": localStorage.getItem("token") }
+        }
+      );
+
+      if (response.data && response.data.studyPlan) {
+        setShowPlan(true);
+        setStudyPlanData(response.data.studyPlan);
+        successSetter("Study plan generated successfully!");
+      } else {
+        errorSetter("Could not generate a study plan. Please try again later.");
+      }
+    } catch (err) {
+      errorSetter(
+        err?.response?.data?.error ||
+        "Failed to generate study plan. Please check your network and try again."
+      );
+    } finally {
+      dispatch(setFetching(false));
+    }
+  }, [examDate, dispatch, errorSetter, successSetter, setStudyPlanData]);
 
   return (
     <div>
@@ -250,7 +341,7 @@ const StudyPlanSegment = ({studyPlanData}) => {
                         {task.resource && (
                           <div>
                             <a href={task.resource.link} target="_blank" rel="noopener noreferrer" className={mockCss.ResourceLink}>
-                              {task.resource.type}: {task.resource.title}
+                              {task.resource.resourceType}: {task.resource.title}
                             </a>
                           </div>
                         )}
@@ -313,7 +404,7 @@ const StudyPlanSegment = ({studyPlanData}) => {
                       required
                   />
               </div>
-              <ButtonSubmitGreen onClick={handleContinue} disabled={!examDate}>
+              <ButtonSubmitGreen onClick={handleGetStudyPlan}>
                 <FaCalendarAlt style={{ marginRight: 8, color: "#FFD700" }} /> Get Study Plan
               </ButtonSubmitGreen>
           </PlainModalOverlay>
@@ -676,6 +767,17 @@ export default function InsightNTutor() {
     const [studyPlanData, setStudyPlanData] = useState({});
 
     const isAuth = localStorage?.getItem("token");
+    const mobile = isMobile();
+
+    const errorSetter = useCallback((string) => {
+        dispatch(setError(string));
+        errorAnimation();
+    }, [dispatch]);
+
+    const successSetter = useCallback((string) => {
+        dispatch(setSuccessMini(string));
+        successMiniAnimation();
+    }, [dispatch]);
 
     const segmentComponents = {
       grading: (props) => <GradingSegment {...props} />,
@@ -689,15 +791,13 @@ export default function InsightNTutor() {
 
     const segmentProps = {
       grading: { gradingData },
-      studyPlan: { studyPlanData },
+      studyPlan: { studyPlanData, setStudyPlanData, errorSetter, successSetter },
       aiTutor: { aiTutorData, gradingData },
       examInsights: { examInsightsData },
       peerBenchmarking: { peerBenchmarkingData },
       careerAlignment: { careerAlignmentData },
       progressMonitoring: { progressMonitoringData }
     };
-
-    const mobile = isMobile();
 
     const handleAccordion = key => {
         setOpenAccordions(prev => ({
@@ -706,15 +806,6 @@ export default function InsightNTutor() {
         }));
     };
 
-    const errorSetter = useCallback((string) => {
-        dispatch(setError(string));
-        errorAnimation();
-    }, [dispatch]);
-
-    const successSetter = useCallback((string) => {
-        dispatch(setSuccessMini(string));
-        successMiniAnimation();
-    }, [dispatch]);
 
     const checkIfAuth = async () => {
         try {
