@@ -121,45 +121,133 @@ const Utme = (props) => {
         setAuthMenuOpen(!authMenuOpen);
     };
 
+    // const handleStartExam = async () => {
+    //     await checkIfAuth();
+    //     if (Object.keys(subject).length === 0) {
+    //         errorSetter("Please select a subject to start the exam");
+    //         return;
+    //     }
+    //     //get event progress
+    //     const eventSource = new EventSource('/user/progress');
+    //     //listen for SSE
+    //     eventSource.onmessage = (event) =>  {
+    //         const progressUpdate = JSON.parse(event.data)
+    //         setProgressPercentage(progressUpdate.percent);
+    //         setProgressStatus(progressUpdate.status)
+    //     };
+    //     // Start the exam
+    //     try {
+    //         setLoading(true)
+    //         const response = await axios.post("/mock/utme/start-exam", subject, {
+    //             headers: {
+    //                 "x-access-token": isAuth,
+    //             },
+    //         });
+
+    //         if (response.status !== 201 && response.status !== 200) {
+    //             return errorSetter(response.data.error || "Failed to start exam. Please try again. If issue persist, please chat with us.");
+    //         }
+    //         console.log(response.data.examDetails);
+    //         const examDetails = response.data.examDetails;
+    //         dispatch(setExamDetails(examDetails));
+    //         eventSource.close(); // Close the SSE connection after exam starts
+    //         // Navigate to the exam started page
+    //         navigate("/user/dashboard/mock/exam-started");
+    //         setLoading(false);
+    //     } catch (error) {
+    //         setLoading(false);
+    //         eventSource.close();
+    //         errorSetter("An Error Occured. Please try again. If issue persist, please chat with us.");
+    //     }
+    // };
+
+
     const handleStartExam = async () => {
         await checkIfAuth();
         if (Object.keys(subject).length === 0) {
             errorSetter("Please select a subject to start the exam");
             return;
         }
-        //get event progress
-        const eventSource = new EventSource('/user/progress');
-        //listen for SSE
-        eventSource.onmessage = (event) =>  {
-            const progressUpdate = JSON.parse(event.data)
-            setProgressPercentage(progressUpdate.percent);
-            setProgressStatus(progressUpdate.status)
-        };
-        // Start the exam
+
+        setLoading(true);
+        setProgressStatus("Gathering Exam Details...");
+        setProgressPercentage(5);
+
         try {
-            setLoading(true)
-            const response = await axios.post("/mock/utme/start-exam", subject, {
+            // 1. Start the exam (get jobId)
+            const response = await axios.post("/mock/start-utme-exam", subject, {
                 headers: {
                     "x-access-token": isAuth,
                 },
             });
-
-            if (response.status !== 201 && response.status !== 200) {
-                return errorSetter(response.data.error || "Failed to start exam. Please try again. If issue persist, please chat with us.");
+            if (response.data.status === "ongoing") {
+                setLoading(false);
+                dispatch(setExamDetails(response.data.examDetails));
+                navigate("/user/dashboard/mock/exam-started");
+                return;
             }
-            console.log(response.data.examDetails);
-            const examDetails = response.data.examDetails;
-            dispatch(setExamDetails(examDetails));
-            eventSource.close(); // Close the SSE connection after exam starts
-            // Navigate to the exam started page
-            navigate("/user/dashboard/mock/exam-started");
-            setLoading(false);
+            if (!response.data.jobId) {
+                setLoading(false);
+                errorSetter(response.data.error || "Failed to start exam. Please try again.");
+                return;
+            }
+
+            const jobId = response.data.jobId;
+
+            // 2. Open SSE connection for progress and result
+            const evtSource = new EventSource(`/mock/exam-progress/${jobId}`);
+
+            evtSource.onerror = (error) => {
+                console.error('EventSource error:', error);
+                setLoading(false);
+                evtSource.close();
+                errorSetter("Connection lost. Please try again.");
+            };
+
+            evtSource.addEventListener("progress", (e) => {
+                try {
+                    const { status, progress } = JSON.parse(e.data);
+            
+                    setProgressStatus(status || "Processing...");
+                    setProgressPercentage(progress || 10);
+                } catch {
+                    setProgressStatus("Processing...");
+                }
+            });
+
+            evtSource.addEventListener("done", (e) => {
+                try {
+                    const examDetails = JSON.parse(e.data);
+                    dispatch(setExamDetails(examDetails));
+                    setLoading(false);
+                    evtSource.close();
+                    navigate("/user/dashboard/mock/exam-started");
+                } catch {
+                    setLoading(false);
+                    evtSource.close();
+                    errorSetter("Failed to parse exam details. Please try again.");
+                }
+            });
+
+            evtSource.addEventListener("error", (e) => {
+                setLoading(false);
+                evtSource.close();
+                try {
+                    const err = e.data ? JSON.parse(e.data) : {};
+                    errorSetter(err.error || "An error occurred. Please try again.");
+                } catch {
+                    errorSetter("An error occurred. Please try again.");
+                }
+            });
+
         } catch (error) {
             setLoading(false);
-            eventSource.close();
-            errorSetter("An Error Occured. Please try again. If issue persist, please chat with us.");
+            errorSetter("An Error Occurred. Please try again. If issue persist, please chat with us.");
         }
     };
+
+
+
 
     return (
         <div className="auth-container">
