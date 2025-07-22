@@ -121,46 +121,6 @@ const Utme = (props) => {
         setAuthMenuOpen(!authMenuOpen);
     };
 
-    // const handleStartExam = async () => {
-    //     await checkIfAuth();
-    //     if (Object.keys(subject).length === 0) {
-    //         errorSetter("Please select a subject to start the exam");
-    //         return;
-    //     }
-    //     //get event progress
-    //     const eventSource = new EventSource('/user/progress');
-    //     //listen for SSE
-    //     eventSource.onmessage = (event) =>  {
-    //         const progressUpdate = JSON.parse(event.data)
-    //         setProgressPercentage(progressUpdate.percent);
-    //         setProgressStatus(progressUpdate.status)
-    //     };
-    //     // Start the exam
-    //     try {
-    //         setLoading(true)
-    //         const response = await axios.post("/mock/utme/start-exam", subject, {
-    //             headers: {
-    //                 "x-access-token": isAuth,
-    //             },
-    //         });
-
-    //         if (response.status !== 201 && response.status !== 200) {
-    //             return errorSetter(response.data.error || "Failed to start exam. Please try again. If issue persist, please chat with us.");
-    //         }
-    //         console.log(response.data.examDetails);
-    //         const examDetails = response.data.examDetails;
-    //         dispatch(setExamDetails(examDetails));
-    //         eventSource.close(); // Close the SSE connection after exam starts
-    //         // Navigate to the exam started page
-    //         navigate("/user/dashboard/mock/exam-started");
-    //         setLoading(false);
-    //     } catch (error) {
-    //         setLoading(false);
-    //         eventSource.close();
-    //         errorSetter("An Error Occured. Please try again. If issue persist, please chat with us.");
-    //     }
-    // };
-
 
     const handleStartExam = async () => {
         await checkIfAuth();

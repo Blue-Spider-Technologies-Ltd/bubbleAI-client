@@ -65,52 +65,88 @@ const ExamStarted = (props) => {
         }
     };
     
+   
     const handleSubmit = async () => {
         await checkIfAuth();
 
-        const fiftyPercentOfQ =  Math.floor(totalQuestions / 2);
+        const fiftyPercentOfQ = Math.floor(totalQuestions / 2);
         if (Object.keys(answers).length < fiftyPercentOfQ) {
             errorSetter("Please answer at least 50% of the questions before submitting.");
             return;
         }
-        //get event progress
-        const eventSource = new EventSource('/user/progress');
-        //listen for SSE
-        eventSource.onmessage = (event) =>  {
-            const progressUpdate = JSON.parse(event.data)
-            setProgressPercentage(progressUpdate.percent);
-            setProgressStatus(progressUpdate.status)
-        };
-        // Start submission
+
+        setLoading(true);
+        setProgressStatus("Beginning exam submission...");
+        setProgressPercentage(5);
+
         try {
-            setLoading(true)
+            // 1. Start the exam grading (get jobId)
             const examObj = {
                 examMeta: examDetails.examMeta,
                 questions: questions
-            }
-            const response = await axios.post("/mock/submit-exam", examObj, {
+            };
+            
+            const response = await axios.post("/mock/submit-exam-job", examObj, {
                 headers: {
                     "x-access-token": isAuth,
                 },
             });
-
-            if (response.status !== 201 && response.status !== 200) {
-                setShowFailedSubmissionModal(true)
+            
+            if (!response.data.jobId) {
+                setLoading(false);
+                errorSetter(response.data.error || "Failed to submit exam. Please try again.");
                 return;
             }
-            const gradedExamId = response.data.gradedExamId;
-            dispatch(setExamDetails({}))
-            // Navigate to the exam started page
-            navigate(`/user/dashboard/mock/exam-insight?examId=${gradedExamId}`);
+
+            const jobId = response.data.jobId;
+
+            // 2. Open SSE connection for progress and result
+            const evtSource = new EventSource(`/mock/exam-grading-progress/${jobId}`);
+
+            evtSource.onerror = (error) => {
+                console.error('EventSource error:', error);
+                setLoading(false);
+                evtSource.close();
+                setShowFailedSubmissionModal(true);
+            };
+
+            evtSource.addEventListener("progress", (e) => {
+                try {
+                    const { status, progress } = JSON.parse(e.data);
+                    setProgressStatus(status || "Grading exam...");
+                    setProgressPercentage(progress || 10);
+                } catch {
+                    setProgressStatus("Grading in progress...");
+                }
+            });
+
+            evtSource.addEventListener("done", (e) => {
+                try {
+                    const result = JSON.parse(e.data);
+                    const gradedExamId = result.gradedExamId;
+                    dispatch(setExamDetails({}));
+                    setLoading(false);
+                    evtSource.close();
+                    navigate(`/user/dashboard/mock/exam-insight?examId=${gradedExamId}`);
+                } catch (error) {
+                    setLoading(false);
+                    evtSource.close();
+                    setShowFailedSubmissionModal(true);
+                }
+            });
+
+            evtSource.addEventListener("error", (e) => {
+                setLoading(false);
+                evtSource.close();
+                setShowFailedSubmissionModal(true);
+            });
         } catch (error) {
-            setShowFailedSubmissionModal(true)
-        } finally {
-            eventSource.close(); // Close the SSE connection after exam starts
             setLoading(false);
+            setShowFailedSubmissionModal(true);
         }
     };
-
-    //use effect to track average time per question
+   
+   
     useEffect(() => {
         setQuestionStartTime(Date.now());
     }, [currentQuestion]);
