@@ -959,7 +959,7 @@ const CustomizeResume = () => {
       );
       if (response.status === 500) {
         setLoading(false);
-        errorSetter("Throttling, try again after a while");
+        errorSetter("So many people currently querying Bubble Ai, try again");
         return
       }
 
@@ -985,7 +985,7 @@ const CustomizeResume = () => {
       navigate("/user/dashboard/resume?preview");
     } catch (error) {
       setLoading(false);
-      errorSetter("Throttling, try again after a while");
+      errorSetter("So many people currently querying Bubble Ai, try again");
       eventSource.close();
     }
   }
