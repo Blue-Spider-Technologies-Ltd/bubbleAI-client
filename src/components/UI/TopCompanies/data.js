@@ -1,7 +1,6 @@
 import microsoft from '../../../images/microsoft.png';
 import exxon from '../../../images/exxon.png';
 import meta from '../../../images/meta.png';
-import facebook from '../../../images/facebook.png';
 import nvidia from '../../../images/nvidia.png';
 
 

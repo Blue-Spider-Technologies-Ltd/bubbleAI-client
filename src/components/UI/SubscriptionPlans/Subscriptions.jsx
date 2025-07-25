@@ -3,7 +3,7 @@ import {SectionTitleStyled} from "../../../styled/HomeContent";
 import {useTheme} from "../Theme/ThemeContext"
 import Card from "./Card";
 
-const SubscriptionPlans = ({ subscriptions }) => {
+const SubscriptionPlans = () => {
     const {themeName} = useTheme();
     return (
         <ContainerStyled theme={themeName} >

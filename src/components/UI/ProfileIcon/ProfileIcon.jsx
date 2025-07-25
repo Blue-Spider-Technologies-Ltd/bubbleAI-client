@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from "@mui/material";
 import profileImg from "../../../images/genericprofileimg.png";
 import ProfileImageStyled from "../../../styled/ProfileImage"
 

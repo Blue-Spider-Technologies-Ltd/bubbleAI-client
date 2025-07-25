@@ -17,9 +17,7 @@ const TestimonialStyled = styled.div`
         gap: 1.5rem;
         padding: 1rem;
         color: #000;
-        .weeks{
-            color: #0C1E2880;
-        }
+        
         p{
             width: 30ch;
         }

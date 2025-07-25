@@ -58,25 +58,30 @@ const Footer = () => {
 
             <div className="bottomHalf">
                 <div className="socials">
-                    <div className="background" >
+                    <div className="background">
                         <IconButtonStyled bg='#6FCBD1' color='#18343b' pad='0.4rem' fontSize='1.5rem'>
-                            <FaFacebookF />
+                            <FaFacebookF/>
                         </IconButtonStyled>
 
                     </div>
-                    <div className="background" >
+                    <div className="background">
                         <IconButtonStyled bg='#6FCBD1' color='#18343b' pad='0.4rem' fontSize='1.5rem'>
-                            <FaInstagram />
-                        </IconButtonStyled>
-                    </div>
-                    <div className="background" >
-                        <IconButtonStyled bg='#6FCBD1' color='#18343b' pad='0.4rem' fontSize='1.5rem'>
-                            <FaTiktok />
+                            <FaInstagram/>
                         </IconButtonStyled>
                     </div>
                     <div className="background">
                         <IconButtonStyled bg='#6FCBD1' color='#18343b' pad='0.4rem' fontSize='1.5rem'>
-                            <FaXTwitter />
+                            <FaTiktok/>
+                        </IconButtonStyled>
+                    </div>
+                    <div className="background">
+                        <IconButtonStyled bg='#6FCBD1' color='#18343b' pad='0.4rem' fontSize='1.5rem'>
+                            <FaXTwitter/>
+                        </IconButtonStyled>
+                    </div>
+                    <div className="background">
+                        <IconButtonStyled bg='#6FCBD1' color='#18343b' pad='0.4rem' fontSize='1.5rem'>
+                            <FaLinkedinIn/>
                         </IconButtonStyled>
                     </div>
 
@@ -85,7 +90,7 @@ const Footer = () => {
             </div>
 
             <div className="copyright">
-                <p>copyright @bubble-ai.tech  2025</p>
+                <p>copyright @bubble-ai.tech 2025</p>
                 <span className="others">
                     <Link className='copyLinks'>Terms of Service</Link>
                     <Link className='copyLinks'>Cookie Policy</Link>
