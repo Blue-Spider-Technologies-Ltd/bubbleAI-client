@@ -102,15 +102,32 @@ const JobCard = memo(({
         }
     }
 
-    // Helper to format description into paragraphs and line breaks
     const renderDescription = (desc) => {
         if (!desc) return null;
         // Split by double newlines for paragraphs
         return desc.split(/\n\n+/).map((para, idx) => (
-            <p key={idx} style={{margin: '0 0 8px 0', lineHeight: 1.6}}>
-                {para.split(/\n/).map((line, i, arr) =>
-                    i < arr.length - 1 ? <React.Fragment key={i}>{line}<br /></React.Fragment> : line
-                )}
+            <p key={idx} style={{ margin: '0 0 8px 0', lineHeight: 1.6 }}>
+                {para.split(/\n/).map((line, i, arr) => {
+                    // Replace **bold** with <b>bold</b>
+                    const parts = [];
+                    let lastIndex = 0;
+                    const boldRegex = /\*\*(.+?)\*\*/g;
+                    let match, key = 0;
+                    while ((match = boldRegex.exec(line)) !== null) {
+                        if (match.index > lastIndex) {
+                            parts.push(line.slice(lastIndex, match.index));
+                        }
+                        parts.push(<b key={`b-${key++}`}>{match[1]}</b>);
+                        lastIndex = match.index + match[0].length;
+                    }
+                    if (lastIndex < line.length) {
+                        parts.push(line.slice(lastIndex));
+                    }
+                    // Add <br /> except for last line
+                    return i < arr.length - 1
+                        ? <React.Fragment key={i}>{parts}<br /></React.Fragment>
+                        : <React.Fragment key={i}>{parts}</React.Fragment>;
+                })}
             </p>
         ));
     };

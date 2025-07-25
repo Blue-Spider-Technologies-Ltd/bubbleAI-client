@@ -9,10 +9,10 @@ import { ButtonSubmitGreen } from '../../UI/Buttons/Buttons';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Alert from '@mui/material/Alert';
 import CustomizedAccordions from '../../UI/CustomizedAccordions/CustomizedAccordions';
-import ChatViewTranscription from './ChatViewTranscription';
+// import ChatViewTranscription from './ChatViewTranscription';
 import { errorAnimation } from '../../../utils/client-functions';
 import axios from 'axios'
-import { RealtimeTranscriber } from 'assemblyai/streaming';
+// import { RealtimeTranscriber } from 'assemblyai/streaming';
 import * as RecordRTC from 'recordrtc';
 
 const Meeting = (props) => {

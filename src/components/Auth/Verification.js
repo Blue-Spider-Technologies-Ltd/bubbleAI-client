@@ -81,6 +81,10 @@ const Verification = () => {
             setVerified(true)
             
 
+            //FOR TRACKING REGISTRATION ON A DEVICE BROWSER
+            localStorage.setItem('isRegUse6aghajghdjfja', 'true');
+            localStorage.setItem('isRegEm6aghajghdjfja', data.email);
+
         } catch (error) {
             setLoading(false)
             errorSetter(error?.response?.data?.message)

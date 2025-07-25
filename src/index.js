@@ -8,6 +8,7 @@ import store from "./redux/store.js"
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import { registerServiceWorker } from './utils/pwa-utils';
+import {ThemeProvider} from "../src/components/UI/Theme/ThemeContext";
 
 
 const handleSubdomain = () => { 
@@ -16,7 +17,11 @@ const handleSubdomain = () => {
   if (subDomains[0].includes("origin")) { 
     return <Origin />; 
   } else { 
-    return <App />; 
+    return (
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+    );
   } 
 };
 

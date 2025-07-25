@@ -57,6 +57,10 @@ const Register = () => {
     })
     const [loading, setLoading] = useState(false)
     const [pwdChecklist, showPwdChecklist] = useState(false)
+
+    const isUserRegistered = localStorage?.getItem('isRegUse6aghajghdjfja');
+    const isEmailRegistered = localStorage.getItem('isRegEm6aghajghdjfja');
+
     //Set password rules parameters
     const minLength = 8
     const numberLength = 1
@@ -121,6 +125,11 @@ const Register = () => {
             return errorSetter("Password too weak")
         }
 
+        if (isUserRegistered === 'true') {
+            errorSetter('You have already registered to Bubble Ai with another email: ' + isEmailRegistered + '. Avoid getting permanently banned from using Bubble Ai.');
+            return
+        }
+
         if (user.password === user.confirmPassword){
             const userData = {
                 email: user.email,
@@ -180,6 +189,10 @@ const Register = () => {
     }
 
     const handleGoogleLogin = async (credentialResponse) => {
+        if (isUserRegistered === 'true') {
+            errorSetter('You have already registered to Bubble Ai with another email: ' + isEmailRegistered + '. Avoid getting permanently barred from using Bubble Ai.');
+            return
+        }
         dispatch(setFetching(true))
         try {
             const token = credentialResponse.credential

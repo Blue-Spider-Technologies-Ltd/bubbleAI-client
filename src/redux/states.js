@@ -25,6 +25,7 @@ const initialState = {
     interviewMocks: 0,
     followUpEmails: 0
   },
+  examDetails: {}
 }
 
 export const stateSlice = createSlice({
@@ -100,6 +101,9 @@ export const stateSlice = createSlice({
     setResumeServicesNumbers: (state, action) => {
       state.resumeServicesNumbers = action.payload;
     },
+    setExamDetails: (state, action) => {
+      state.examDetails = action.payload;
+    }
   },
 })
 
@@ -124,7 +128,8 @@ export const {
   setShowCheckout, 
   setResumeSubDuration,
   setIsResumeSubbed,
-  setResumeServicesNumbers
+  setResumeServicesNumbers,
+  setExamDetails
 } = stateSlice.actions
 
 export default stateSlice.reducer

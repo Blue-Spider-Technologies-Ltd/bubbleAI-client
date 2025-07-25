@@ -182,7 +182,7 @@ const AskMe = () => {
             const messagesArrayofArray = response.data
             dispatch(setAllMessagesArray(messagesArrayofArray));
             dispatch(setMessages(messagesArrayofArray[messagesArrayofArray.length - 1]));
-            successSetter("Generating...")
+            successSetter("Generating Interview, Do NOT Reload...")
             await prepFunc(param)
           } catch (error) {
             dispatch(setFetching(false))

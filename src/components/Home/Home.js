@@ -14,6 +14,15 @@ import { setMessages, setUser, setError } from "../../redux/states";
 import { checkAuthenticatedUser, errorAnimation } from "../../utils/client-functions";
 import ChatwootWidget from "../../utils/chatwoot";
 import axios from "axios";
+import FreeTrial from "../UI/FreeTrial/FreeTrial";
+import MainBanner from "./MainBanner";
+import Offers from "../UI/Offers/Offers";
+import Companies from "../UI/TopCompanies/Companies";
+import Testimonials from "../UI/Testimonials/Testimonial";
+import AppAd from "../UI/AppAd/AppAd";
+import SubscriptionPlans from "../UI/SubscriptionPlans/Subscriptions";
+import FAQ from "../UI/FAQ/FAQ";
+import Footer from "../UI/Footer/Footer";
 
 
 
@@ -89,60 +98,78 @@ const Home = () => {
 
       <MenuBar />
 
-      <section id="ask-me" className="container" style={{ marginTop: "100px" }}>
-        <div className="container-inner">
-          <h2>Ask me anything</h2>
-          <div className="error">{error}</div>
-          <Grid container onFocus={handleFocus} pb={2}>
-            <AuthInput
-              name="askMe"
-              id="Ask a Question..."
-              label="Ask a Question..."
-              multiline={true}
-              inputGridSm={10}
-              rows={2}
-              maxRows={2}
-              required={true}
-            />
-            <Grid
-              item
-              xs={2}
-              sx={{ textAlign: "right", marginTop: "2px" }}
-            >
-              <ButtonSubmitBlack>
-                <SendIcon />
-              </ButtonSubmitBlack>
-            </Grid>
-          </Grid>
-        </div>
-      </section>
+      <FreeTrial />
 
-      <section id="categories" className="container">
-        <div className="container-inner">
-          <h2>I can also help you with:</h2>
-          <Grid container>
-            {categoriesData.map((data, index) => {
-              return (
-                <Grid item xs={12} md={6} lg={4} mb={5} key={index}>
-                  <Blob
-                    link={isAuth ? data.isAuthURL : data.unAuthURL}
-                    bgImage={data.image}
-                    altText={data.title}
-                    desc={data.desc}
-                    title={data.title}
-                  />
-                  <h3>{data.title}</h3>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-      </section>
-      <div 
-        style={{color: "#56A8AC", fontSize: ".7rem", fontWeight: '500', textAlign: "center", textDecoration: "underline", marginBottom: "20px"}}
-      >
-        <a style={{color: "#56A8AC"}} href="/privacy">privacy</a>
-      </div>
+      <MainBanner isAuth={isAuth} start={handleFocus} />
+
+      <Offers isAuth={isAuth} />
+
+      <Testimonials />
+
+      <AppAd />
+
+      <Companies />
+
+      <SubscriptionPlans/>
+
+      <FAQ/>
+
+      <Footer/>
+
+      {/*<section id="ask-me" className="container" style={{ marginTop: "100px" }}>*/}
+      {/*  <div className="container-inner">*/}
+      {/*    <h2>Ask me anything</h2>*/}
+      {/*    <div className="error">{error}</div>*/}
+      {/*    <Grid container onFocus={handleFocus} pb={2}>*/}
+      {/*      <AuthInput*/}
+      {/*        name="askMe"*/}
+      {/*        id="Ask a Question..."*/}
+      {/*        label="Ask a Question..."*/}
+      {/*        multiline={true}*/}
+      {/*        inputGridSm={10}*/}
+      {/*        rows={2}*/}
+      {/*        maxRows={2}*/}
+      {/*        required={true}*/}
+      {/*      />*/}
+      {/*      <Grid*/}
+      {/*        item*/}
+      {/*        xs={2}*/}
+      {/*        sx={{ textAlign: "right", marginTop: "2px" }}*/}
+      {/*      >*/}
+      {/*        <ButtonSubmitBlack>*/}
+      {/*          <SendIcon />*/}
+      {/*        </ButtonSubmitBlack>*/}
+      {/*      </Grid>*/}
+      {/*    </Grid>*/}
+      {/*  </div>*/}
+      {/*</section>*/}
+
+      {/*<section id="categories" className="container">*/}
+      {/*  <div className="container-inner">*/}
+      {/*    <h2>I can also help you with:</h2>*/}
+      {/*    <Grid container>*/}
+      {/*      {categoriesData.map((data, index) => {*/}
+      {/*        return (*/}
+      {/*          <Grid item xs={12} md={6} lg={4} mb={5} key={index}>*/}
+      {/*            <Blob*/}
+      {/*              link={isAuth ? data.isAuthURL : data.unAuthURL}*/}
+      {/*              bgImage={data.image}*/}
+      {/*              altText={data.title}*/}
+      {/*              desc={data.desc}*/}
+      {/*              title={data.title}*/}
+      {/*            />*/}
+      {/*            <h3>{data.title}</h3>*/}
+      {/*          </Grid>*/}
+      {/*        );*/}
+      {/*      })}*/}
+      {/*    </Grid>*/}
+      {/*  </div>*/}
+      {/*</section>*/}
+      {/*<div*/}
+      {/*  style={{color: "#56A8AC", fontSize: ".7rem", fontWeight: '500', textAlign: "center", textDecoration: "underline", marginBottom: "20px"}}*/}
+      {/*>*/}
+      {/*  <a style={{color: "#56A8AC"}} href="/privacy">privacy</a>*/}
+      {/*</div>*/}
       <ChatwootWidget />
     </div>
   );

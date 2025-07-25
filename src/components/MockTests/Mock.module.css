@@ -226,6 +226,17 @@
     background: #3E8F93;
     color: #fff;
 }
+
+/* Add this */
+.QuickNavAnswered {
+  position: relative;
+}
+.QuickNavAnswered .AnsweredCheck {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 0.9em;
+}
 @media (max-width: 700px) {
     .QuestionArea { padding: 0.7rem; }
     .QuestionText { font-size: 1rem; }
@@ -328,7 +339,7 @@
 .AnalysisTable { width: 100%; border-collapse: collapse; }
 .AnalysisTable th, .AnalysisTable td { padding: 0.5rem; border-bottom: 1px solid #e6f6f7; text-align: left; }
 .ErrorCard { background: #fffbe6; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
-.ErrorItem { margin-bottom: 0.5rem; }
+.ErrorItem { margin-bottom: 0.5rem; text-align: left; }
 .ErrorExplain { color: #d80707; font-size: 0.95rem; }
 .FeedbackCard { background: #e6f6f7; border-radius: 10px; padding: 1rem; }
 .Overlay {
@@ -392,14 +403,14 @@
 .ProgressTracker ul, .PrioritizedTopics ul, .StudySchedule ul { padding-left: 1.2rem; }
 .AiTutorCard { margin-bottom: 1.2rem; }
 .ConceptExplanations { margin-bottom: 1.2rem; }
-.ConceptExplanationsInner { height: 250px; max-height: 300px; overflow-y: auto; }
+.ConceptExplanationsInner { height: 250px; max-height: 300px; overflow-y: auto; text-align: left; }
 .ConceptCard { background: #e6f6f7; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; }
 .Motivational { margin-bottom: 1.2rem; }
 .MotivationalMsg { background: #fffbe6; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-.ExamStructure, .HistoricalTrends, .RubricTable, .Pitfalls, .Logistics, .SuccessStories { margin-bottom: 1.2rem; }
+.ExamStructure, .HistoricalTrends, .RubricTable, .Pitfalls, .Logistics, .SuccessStories { margin-bottom: 1.2rem; text-align: left; }
 .RubricTable table { width: 100%; border-collapse: collapse; }
-.RubricTable th, .RubricTable td { padding: 0.5rem; border-bottom: 1px solid #e6f6f7; }
-.Pitfalls ul, .Logistics ul, .Alternatives ul, .NextSteps ul, .Requirements ul { padding-left: 1.2rem; }
+.RubricTable th, .RubricTable td { padding: 0.5rem; border-bottom: 1px solid #e6f6f7; text-align: left; }
+.Pitfalls ul, .CareerMapping ul, .Logistics ul, .Alternatives ul, .NextSteps ul, .Requirements ul { padding-left: 1.2rem; text-align: left; }
 .StorySlider { display: flex; gap: 1rem; overflow-x: auto; }
 .StoryCard { background: #e6f6f7; border-radius: 8px; padding: 1rem; min-width: 220px; }
 .PercentileCard { margin-bottom: 1.2rem; }
@@ -409,7 +420,7 @@
 .GapCard { background: #fffbe6; border-radius: 8px; padding: 0.7rem 1.2rem; margin-bottom: 0.5rem; }
 .CommunityInsights { margin-bottom: 1.2rem; }
 .PrivacyAssurance { color: #888; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
-.CareerMapping, .Courses, .SkillGap, .Requirements, .Alternatives, .NextSteps { margin-bottom: 1.2rem; }
+.CareerMapping, .Courses, .SkillGap, .Requirements, .Alternatives, .NextSteps { margin-bottom: 1.2rem; text-align: left;}
 .MatchPercent { color: #3E8F93; font-weight: 700; margin-left: 0.5rem; }
 .CourseCards { display: flex; gap: 1rem; flex-wrap: wrap; }
 .CourseCard { background: #fff; border-radius: 8px; padding: 0.7rem 1.2rem; box-shadow: 0 2px 8px rgba(62,143,147,0.07); text-decoration: none; color: #3E8F93; font-weight: 600; transition: background 0.2s; }
