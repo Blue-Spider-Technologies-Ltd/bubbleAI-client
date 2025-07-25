@@ -50,6 +50,8 @@ import { ConfirmProvider } from "material-ui-confirm";
 import { useSelector } from "react-redux";
 import { Fetching } from './components/UI/Modal/Modal';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import GlobalStyle from "./styled/GlobalStyles";
+import ThemeToggle from "./components/UI/Theme/ThemeToggle";
 
 //Wrap whole app around ConfirmProvider to be able to open confirmation dialog prompt
 
@@ -93,70 +95,75 @@ const App = () => {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId="260080247067-o0iar4akf4pce1j5ilstvkdeb9tr3elm.apps.googleusercontent.com">
-      <ConfirmProvider>
-        <Routes>
-          <Route path={'/auth/google/callback'} element={ <GoogleCallback /> } />
-          <Route path={'/user/dashboard/mock/acca'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/cee'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/ceh'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/cfa'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/cima'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/cissp'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/frm'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/gre'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/ielts'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/neco'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/pmp'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/toefl'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/mock/utme'} element={ <Utme /> } />
-          <Route path={'/user/dashboard/mock/exam-started'} element={ <ExamStarted /> } />
-          <Route path={'/user/dashboard/mock/exam-insight'} element={ <InsightNTutor /> } />
+      <>
+        <GlobalStyle />
+        <GoogleOAuthProvider clientId="260080247067-o0iar4akf4pce1j5ilstvkdeb9tr3elm.apps.googleusercontent.com">
+          <ConfirmProvider>
+            <Routes>
+              <Route path={'/auth/google/callback'} element={ <GoogleCallback /> } />
+              <Route path={'/user/dashboard/mock/acca'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/cee'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/ceh'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/cfa'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/cima'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/cissp'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/frm'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/gre'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/ielts'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/neco'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/pmp'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/toefl'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/mock/utme'} element={ <Utme /> } />
+              <Route path={'/user/dashboard/mock/exam-started'} element={ <ExamStarted /> } />
+              <Route path={'/user/dashboard/mock/exam-insight'} element={ <InsightNTutor /> } />
 
-          <Route path={'/user/dashboard/mock/wassce'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
-          <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />
-          <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
-          <Route path={'/user/dashboard/resume-hub'} element={ <ResumeHub /> } />
-          <Route path={'/user/dashboard/job-hub'} element={ <JobHub /> } />
-          {/* <Route path={'/user/dashboard/auto-apply'} element={ <AutoApplyAgent /> } /> */}
-          <Route path={'/user/dashboard/referral-hub'} element={ <ReferralHub /> } />
-          <Route path={'/user/dashboard/recruiter'} element={ <RecruiterHub /> } />
+              <Route path={'/user/dashboard/mock/wassce'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/profile'} element={ <Profile /> } />
+              <Route path={'/user/dashboard/dash-support'} element={ <DashSupport /> } />
+              <Route path={'/user/dashboard/reset-pass'} element={ <ResetPass /> } />
+              <Route path={'/user/dashboard/resume-hub'} element={ <ResumeHub /> } />
+              <Route path={'/user/dashboard/job-hub'} element={ <JobHub /> } />
+              {/* <Route path={'/user/dashboard/auto-apply'} element={ <AutoApplyAgent /> } /> */}
+              <Route path={'/user/dashboard/referral-hub'} element={ <ReferralHub /> } />
+              <Route path={'/user/dashboard/recruiter'} element={ <RecruiterHub /> } />
 
-          <Route path={'/user/dashboard/resume'} element={ <Resume /> } />
-          <Route path={'/user/dashboard/depositions'} element={ <Depositions /> } />
-          <Route path={'/user/dashboard/mock'} element={ <MockTests /> } />
-          <Route path={'/user/dashboard/business-plan'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/business-proposal'} element={ <BizProposal /> } />
-          <Route path={'/user/dashboard/product-price'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/councellor'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/fraud-detector'} element={ <UnderConstruction /> } />
-          <Route path={'/user/dashboard/generate-report'} element={ <UnderConstruction /> } />
-          <Route path={'/learn-more'} element={<ResumeLearnMore />} />
-          <Route path={'/view-resume'} element={<ViewResume />} />
-          <Route path={'/popin'} element={ <Login /> } />
-          <Route path={'/verify'} element={ <Verification /> } />
-          <Route path={'/reset-password'} element={ <PwdRecovery /> } />
-          <Route path={'/join-bubble'} element={<Register />} />
-          <Route path={'/pricing'} element={<Pricing />} />
-          <Route path={'/privacy'} element={<Terms />} />
-          <Route path={'/how-i-work'} element={<ResumeLearnMore />} />
-          <Route path={'/support'} element={<ContactUsPage />} />
-          <Route path={'/transaction'} element={<TransactionDone />} />
-          <Route path={'/chat'} element={<AskMe />} />
-          <Route path={'/cover-letter'} element={<DownloadCoverLetter />} />
-          <Route path="/not-found" element={<NotFound />} />
-          <Route exact path={'/'} element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        
-        {fetching && <Fetching />}
-      </ConfirmProvider>
-      
-      {/* PWA Components */}
-      <PWAInstallPrompt />
-      <PWANotificationPrompt />
-    </GoogleOAuthProvider>
+              <Route path={'/user/dashboard/resume'} element={ <Resume /> } />
+              <Route path={'/user/dashboard/depositions'} element={ <Depositions /> } />
+              <Route path={'/user/dashboard/mock'} element={ <MockTests /> } />
+              <Route path={'/user/dashboard/business-plan'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/business-proposal'} element={ <BizProposal /> } />
+              <Route path={'/user/dashboard/product-price'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/councellor'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/fraud-detector'} element={ <UnderConstruction /> } />
+              <Route path={'/user/dashboard/generate-report'} element={ <UnderConstruction /> } />
+              <Route path={'/learn-more'} element={<ResumeLearnMore />} />
+              <Route path={'/view-resume'} element={<ViewResume />} />
+              <Route path={'/popin'} element={ <Login /> } />
+              <Route path={'/verify'} element={ <Verification /> } />
+              <Route path={'/reset-password'} element={ <PwdRecovery /> } />
+              <Route path={'/join-bubble'} element={<Register />} />
+              <Route path={'/pricing'} element={<Pricing />} />
+              <Route path={'/privacy'} element={<Terms />} />
+              <Route path={'/how-i-work'} element={<ResumeLearnMore />} />
+              <Route path={'/support'} element={<ContactUsPage />} />
+              <Route path={'/transaction'} element={<TransactionDone />} />
+              <Route path={'/chat'} element={<AskMe />} />
+              <Route path={'/cover-letter'} element={<DownloadCoverLetter />} />
+              <Route path="/not-found" element={<NotFound />} />
+              <Route exact path={'/'} element={<Home />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+
+            {fetching && <Fetching />}
+          </ConfirmProvider>
+
+          {/* PWA Components */}
+          <PWAInstallPrompt />
+          <PWANotificationPrompt />
+        </GoogleOAuthProvider>
+
+      </>
+
   );
 }
 

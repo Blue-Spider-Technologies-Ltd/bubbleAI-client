@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from 'react';
-import { Box } from "@mui/material";
+import {Box} from "@mui/material";
 import { Link } from "@mui/material";
 import { Sling as Hamburger } from 'hamburger-react'
 import "./Menu.css"
@@ -9,6 +9,20 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { setUser } from '../../../redux/states';
 import { isIOSStandalonePWA } from '../../../utils/client-functions';
+import NavButtonStyled from "../../../styled/NavButtons";
+import ThemeToggle from "../Theme/ThemeToggle";
+import ProfileIcon from "../ProfileIcon/ProfileIcon";
+import { FaBell } from "react-icons/fa";
+import IconButtonStyled from "../../../styled/IconButton";
+import Logo from "../Logo/Logo";
+import styled from "styled-components";
+import {useTheme} from "../Theme/ThemeContext"
+
+
+const DesktopHeadLinks = styled.div`
+    color: ${({theme})=> theme === 'dark' ? '#fff' : '#000'};
+`;
+
 
 const screenWidth = window.innerWidth
 
@@ -19,6 +33,7 @@ const MenuBarLarge = () => {
     const navigate = useNavigate()
     const isAuth = localStorage?.getItem("token");
     const dispatch = useDispatch()
+    const {themeName} = useTheme();
 
     const handleLogout = async () => {
         if (isAuth) {
@@ -39,13 +54,14 @@ const MenuBarLarge = () => {
 
             <div>
                 <div className='MenuItems'>
+                    <ThemeToggle />
                     <Link href='/how-i-work' className="ListItem">
-                        <div>How I Work</div>
+                        <DesktopHeadLinks theme={themeName}>How I Work</DesktopHeadLinks>
                     </Link>
                     <Link href='/pricing' className="ListItem">
-                        <div>Pricing</div>
+                        <DesktopHeadLinks theme={themeName}>Pricing</DesktopHeadLinks>
                     </Link>
-                    <div style={{marginTop: '11px', width: '150px', marginLeft: '20px'}}>
+                    <div style={{width: '150px'}}>
                         {location.pathname === "/popin" ? <ButtonSubmitGreen><a href="/join-bubble" className="regLoginLink">Register</a></ButtonSubmitGreen> 
                         : isAuth ? <div style={{marginTop: '12px'}}><ButtonLogOut clicked={handleLogout}>Logout</ButtonLogOut></div> : <ButtonSubmitGreen><a href="/popin" className="regLoginLink">Login</a></ButtonSubmitGreen>}
                     </div>
@@ -130,22 +146,36 @@ const MenuBarSmall = () => {
         <Box>
             <div style={{marginTop: isIOSStandalonePWA() ? "50px" : "auto"}}>
                 <div id="small-menu-top" className='SmallMenuContainer'>
-                    <div style={{paddingTop: "10px"}}>
-                        <Link href='/'>
-                            <img src={logoImg} alt='LOGO' className="Logo" />
-                        </Link>
-                    </div>                
+
+                    <Logo/>
+
+
+                    <div className="NavButtons">
+
+                        <NavButtonStyled>
+                            <IconButtonStyled color='#6FCBD1'>
+                                <FaBell />
+                            </IconButtonStyled>
+                            <ProfileIcon />
+                            <ThemeToggle />
+                        </NavButtonStyled>
+
+
+                        <div className='HamburgerContainer'>
+                            <Hamburger
+                                color="#6FCBD1"
+                                rounded
+                                size={30}
+                                distance="md"
+                                toggled={menuOpen}
+                                toggle={setMenuOpen}
+                            />
+                        </div>
+
+                    </div>
+
                 </div>
-                <div className='HamburgerContainer'>
-                    <Hamburger 
-                        color="#6FCBD1" 
-                        rounded 
-                        size={25} 
-                        distance="md"
-                        toggled={menuOpen} 
-                        toggle={setMenuOpen}
-                    />
-                </div>
+
             </div>
 
             {/* MENU BLOCK */}
@@ -154,8 +184,8 @@ const MenuBarSmall = () => {
 
                 <nav>
                     <ul>
-                        {location.pathname === "/popin" ? <li id="nav-1"><a href="/join-bubble">Register</a></li> 
-                        : isAuth ? <li id="nav-1" className='logout' onClick={handleLogout}>Logout</li> : <li id="nav-1"><a href="/popin">Login</a></li>}
+                        {location.pathname === "/popin" ? <li id="nav-1"><a href="/join-bubble">Register</a></li>
+                            : isAuth ? <li id="nav-1" className='logout' onClick={handleLogout}>Logout</li> : <li id="nav-1"><a href="/popin">Login</a></li>}
                         <li id="nav-2"><a href="/pricing">Pricing</a></li>
                         <li id="nav-3"><a href="/how-i-work">How I Work</a></li>
                         <li id="nav-4"><a href="/support">Support</a></li>
