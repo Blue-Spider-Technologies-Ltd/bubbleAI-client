@@ -100,9 +100,9 @@ const Home = () => {
 
       <FreeTrial />
 
-      <MainBanner />
+      <MainBanner isAuth={isAuth} start={handleFocus} />
 
-      <Offers />
+      <Offers isAuth={isAuth} />
 
       <Testimonials />
 
@@ -165,7 +165,7 @@ const Home = () => {
       {/*    </Grid>*/}
       {/*  </div>*/}
       {/*</section>*/}
-      {/*<div */}
+      {/*<div*/}
       {/*  style={{color: "#56A8AC", fontSize: ".7rem", fontWeight: '500', textAlign: "center", textDecoration: "underline", marginBottom: "20px"}}*/}
       {/*>*/}
       {/*  <a style={{color: "#56A8AC"}} href="/privacy">privacy</a>*/}

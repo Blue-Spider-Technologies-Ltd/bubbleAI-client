@@ -3,7 +3,7 @@ import {OffersDataStyled} from "../../../styled/HomeContent";
 import {useTheme} from "../Theme/ThemeContext";
 import Button from "../Buttons/Button";
 
-const RenderOfferData = ({data}) => {
+const RenderOfferData = ({data, isAuth}) => {
     const { themeName } = useTheme();
     return (
         <>
@@ -15,7 +15,7 @@ const RenderOfferData = ({data}) => {
                         <img src={item.image} alt="offer image"/>
                     </span>
                     <p>{item.description}</p>
-                    <Button theme={themeName} title={item.action} />
+                    <Button link={isAuth ? item.link : '/popin?resume'} theme={themeName} title={item.action} />
 
                 </OffersDataStyled>
             ))

@@ -5,13 +5,13 @@ import {useTheme} from "../Theme/ThemeContext";
 import RenderOfferData from "./RenderData";
 
 
-const Offers = () => {
+const Offers = ({isAuth}) => {
     const {themeName} = useTheme();
     return (
         <>
             <SectionTitleStyled theme={themeName}>What we offer</SectionTitleStyled>
             <OffersContainerStyled>
-                <RenderOfferData data={offersData} />
+                <RenderOfferData isAuth={isAuth} data={offersData} />
             </OffersContainerStyled>
         </>
 

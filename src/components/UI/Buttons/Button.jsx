@@ -4,10 +4,10 @@ import ButtonsStyled from "../../../styled/Buttons";
 
 
 const Button = (props) => {
-    const {title, theme, pricing, pad, color, borderRadius, clickHandle } = props;
+    const {title, theme, pricing, pad, color, borderRadius, clickHandle,link } = props;
     return (
         <ButtonsStyled pricing={pricing} theme={theme} pad={pad} color={color} borderRadius={borderRadius}>
-            <Link onClick={clickHandle} className='btn'>
+            <Link to={link} onClick={clickHandle} className='btn'>
                 {title}
             </Link>
         </ButtonsStyled>

@@ -9,7 +9,8 @@ const offersData = [
         title: 'Automate job Application',
         image: automate,
         description: 'Let Bubble Ai automatically apply to jobs for you!',
-        action: 'Learn More'
+        action: 'Learn More',
+        link: '/user/dashboard/resume'
     },
     {
         title: 'Depositor',
